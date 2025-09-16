@@ -27,7 +27,6 @@ import { cn } from "@/lib/utils";
 const mainNav = [
   { href: '/dashboard', label: 'Home', icon: Home },
   { href: '/dashboard/marketing', label: 'Apps', icon: Puzzle },
-  { href: '/dashboard/market', label: 'Market', icon: LineChart },
   { href: '/dashboard/tool/projects-finder', label: 'Projects Library', icon: Building },
   { href: '/dashboard/assistant', label: 'AI Assistant', icon: Bot },
 ];

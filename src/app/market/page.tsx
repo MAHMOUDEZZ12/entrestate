@@ -10,6 +10,8 @@ import { LineChart, Users2, Eye, Target, Sparkles, Download, ArrowRight, Trendin
 import { PageHeader } from '@/components/ui/page-header';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 const kpiData = {
   averagePrice: 2450000,
@@ -39,10 +41,12 @@ export default function MarketPage() {
   const [timeRange, setTimeRange] = useState('30d');
 
   return (
-    <main className="p-4 md:p-10 space-y-8">
+    <div className="flex min-h-screen flex-col bg-background">
+      <LandingHeader />
+      <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
       <PageHeader
         title="Market Pulse"
-        description="Your real-time overview of the real estate market landscape."
+        description="A real-time overview of the Dubai real estate market landscape, powered by AI."
         icon={<LineChart className="h-8 w-8" />}
       >
         <div className="flex items-center gap-2">
@@ -60,7 +64,7 @@ export default function MarketPage() {
         </div>
       </PageHeader>
       
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mt-8">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Average Price (AED)</CardTitle>
@@ -103,7 +107,7 @@ export default function MarketPage() {
             </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-8">
             <Card className="lg:col-span-3">
                 <CardHeader>
                     <CardTitle>Price Index Trend (AED M)</CardTitle>
@@ -128,12 +132,12 @@ export default function MarketPage() {
             <div className="lg:col-span-2 space-y-6">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Market Intelligence Tools</CardTitle>
-                        <CardDescription>Dive deeper into the market data.</CardDescription>
+                        <CardTitle>AI-Powered Intelligence Tools</CardTitle>
+                        <CardDescription>Try our tools to dive deeper into the market data.</CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-3">
                         <Link href="/dashboard/tool/market-reports">
-                            <Button variant="outline" className="w-full justify-start gap-3">
+                            <Button variant="outline" className="w-full justify-start gap-3 h-auto py-3">
                                 <FileText className="h-5 w-5 text-primary"/>
                                 <div>
                                     <p className="font-semibold text-left">Generate Market Report</p>
@@ -142,7 +146,7 @@ export default function MarketPage() {
                             </Button>
                         </Link>
                         <Link href="/dashboard/tool/market-trends">
-                             <Button variant="outline" className="w-full justify-start gap-3">
+                             <Button variant="outline" className="w-full justify-start gap-3 h-auto py-3">
                                 <TrendingUp className="h-5 w-5 text-primary"/>
                                 <div>
                                     <p className="font-semibold text-left">Analyze Market Trends</p>
@@ -154,33 +158,8 @@ export default function MarketPage() {
                 </Card>
             </div>
         </div>
-
-        <Card>
-            <CardHeader>
-                <CardTitle>Top Performing Listings</CardTitle>
-                <CardDescription>Listings with the most views this period.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Listing Name</TableHead>
-                            <TableHead className="text-right">Views</TableHead>
-                            <TableHead className="text-right">Leads</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {topListings.map((listing) => (
-                            <TableRow key={listing.id}>
-                                <TableCell className="font-medium">{listing.name}</TableCell>
-                                <TableCell className="text-right">{listing.views.toLocaleString()}</TableCell>
-                                <TableCell className="text-right">{listing.leads.toLocaleString()}</TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </CardContent>
-        </Card>
-    </main>
+      </main>
+      <LandingFooter />
+    </div>
   );
 }
