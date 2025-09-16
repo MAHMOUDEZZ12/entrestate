@@ -106,11 +106,11 @@ function OnboardingComponent() {
 
     const nextStep = () => {
         track('onboarding_step_completed', { step });
-        router.push(`/onboarding?step=${step + 1}`);
+        router.push(`/dashboard/onboarding?step=${step + 1}`);
     };
     const prevStep = () => {
         track('onboarding_step_navigated_back', { fromStep: step, toStep: step - 1 });
-        router.push(`/onboarding?step=${step - 1}`);
+        router.push(`/dashboard/onboarding?step=${step - 1}`);
     };
     
     const finishOnboarding = () => {
@@ -487,3 +487,5 @@ export default function OnboardingPage() {
         </div>
     )
 }
+
+    

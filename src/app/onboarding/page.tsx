@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, 'useState', 'useEffect', 'Suspense' } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
@@ -17,6 +17,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import Image from 'next/image';
 import { track } from '@/lib/events';
 import type { Project } from '@/types';
+import { useAuth } from '@/hooks/useAuth';
 
 const MOCK_DEVELOPERS = ['Emaar', 'Damac', 'Sobha', 'Nakheel', 'Meraas', 'Aldar'];
 
@@ -24,6 +25,7 @@ function OnboardingComponent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const { toast } = useToast();
+    const { user } = useAuth();
     const step = parseInt(searchParams.get('step') || '1', 10);
     
     const [isLoading, setIsLoading] = useState(false);
@@ -135,11 +137,34 @@ function OnboardingComponent() {
         nextStep();
     }
     
-    const handleFinalizeShortlist = () => {
+    const handleFinalizeShortlist = async () => {
+        if (!user) {
+            toast({ title: "Please log in", description: "You must be logged in to save projects.", variant: "destructive" });
+            return;
+        }
         const selectedProjectObjects = scannedProjects.filter(p => draft.scanSelected.includes(p.id));
-        localStorage.setItem('myProjects', JSON.stringify(selectedProjectObjects));
         track('onboarding_shortlist_finalized', { projects: draft.scanSelected, count: draft.scanSelected.length });
-        nextStep();
+
+        setIsLoading(true);
+        try {
+            const idToken = await user.getIdToken();
+            for (const project of selectedProjectObjects) {
+                 await fetch('/api/user/projects', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${idToken}`
+                    },
+                    body: JSON.stringify(project)
+                });
+            }
+             toast({ title: "Projects Saved!", description: `${selectedProjectObjects.length} projects have been saved to your library.` });
+            nextStep();
+        } catch(error: any) {
+             toast({ title: "Error Saving Projects", description: error.message, variant: "destructive" });
+        } finally {
+            setIsLoading(false);
+        }
     };
 
 
@@ -306,7 +331,10 @@ function OnboardingComponent() {
                             <Button variant="ghost" onClick={prevStep}><ArrowLeft /> Back</Button>
                              <div className="flex gap-2">
                                  <Button variant="outline" onClick={nextStep}>Skip</Button>
-                                 <Button onClick={handleFinalizeShortlist}>Use Selected ({draft.scanSelected.length})</Button>
+                                 <Button onClick={handleFinalizeShortlist} disabled={isLoading}>
+                                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : null}
+                                    Use Selected ({draft.scanSelected.length})
+                                </Button>
                             </div>
                         </CardFooter>
                     </Card>
@@ -459,3 +487,5 @@ export default function OnboardingPage() {
         </div>
     )
 }
+
+    
