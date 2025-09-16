@@ -13,7 +13,7 @@ import {
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import Link from "next/link";
-import { LifeBuoy, LogOut, Settings, User, Search, Home, Building, Palette, Users, Bot, Menu, Puzzle } from "lucide-react";
+import { LifeBuoy, LogOut, Settings, User, Search, Home, Building, Palette, Users, Bot, Menu, Puzzle, LineChart } from "lucide-react";
 import React from "react";
 import { GlobalSearch } from "./ui/global-search";
 import { useTheme } from "./theme-switcher";
@@ -27,6 +27,7 @@ import { cn } from "@/lib/utils";
 const mainNav = [
   { href: '/dashboard', label: 'Home', icon: Home },
   { href: '/dashboard/marketing', label: 'Apps', icon: Puzzle },
+  { href: '/dashboard/market', label: 'Market', icon: LineChart },
   { href: '/dashboard/tool/projects-finder', label: 'Projects Library', icon: Building },
   { href: '/dashboard/assistant', label: 'AI Assistant', icon: Bot },
 ];
