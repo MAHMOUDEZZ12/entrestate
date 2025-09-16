@@ -13,9 +13,6 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { Builder } from 'xml2js';
-import { config } from 'dotenv';
-
-config(); // Load environment variables
 
 /**
  * Zod schema for a single image URL.
