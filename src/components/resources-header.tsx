@@ -29,6 +29,8 @@ export function ResourcesHeader() {
     { name: 'MindMap', href: '/sx3-mindmap' },
     { name: 'Documentation', href: '/documentation' },
     { name: 'Technology', href: '/technology' },
+    { name: 'Community', href: '/community' },
+    { name: 'Account', href: '/login' },
   ];
 
   return (
