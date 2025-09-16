@@ -2,19 +2,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { LandingFooter } from '@/components/landing-footer';
+import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { LineChart, Users2, Eye, Target, Sparkles, Download, ArrowRight, TrendingUp, FileText, Building, BookOpen, GitBranch, Cpu, BarChart } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 import { ResourcesHeader } from '@/components/resources-header';
 
 const kpiData = {
@@ -84,7 +83,7 @@ const ProjectPipelineCard = ({ project }: { project: { name: string, developer: 
                                     <div className="p-1">
                                     <Card>
                                         <CardContent className="flex aspect-video items-center justify-center p-6 relative">
-                                             <Image src={`https://picsum.photos/seed/${project.name.replace(/\s/g, '-')}-${index}/600/400`} alt={`${project.name} image ${index+1}`} layout="fill" objectFit="cover" className="rounded-lg" />
+                                             <Image src={`https://picsum.photos/seed/${project.name.replace(/\s/g, '-')}-${index}/600/400`} alt={`${project.name} image ${index+1}`} layout="fill" objectFit="cover" className="rounded-lg" data-ai-hint="building apartment" />
                                         </CardContent>
                                     </Card>
                                     </div>
@@ -108,33 +107,23 @@ const ProjectPipelineCard = ({ project }: { project: { name: string, developer: 
 );
 
 export default function ResourcesPage() {
-  const [timeRange, setTimeRange] = useState('30d');
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <ResourcesHeader />
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
-        <PageHeader
-            icon={<BarChart className="h-8 w-8" />}
-            title="Market Pulse: Dubai"
-            description="A real-time overview of the Dubai real estate market landscape, powered by AI."
-        >
-          <div className="flex items-center gap-2">
-            <Select value={timeRange} onValueChange={setTimeRange}>
-                <SelectTrigger className="w-[180px]">
-                    <SelectValue placeholder="Select date range" />
-                </SelectTrigger>
-                <SelectContent>
-                    <SelectItem value="7d">Last 7 Days</SelectItem>
-                    <SelectItem value="30d">Last 30 Days</SelectItem>
-                    <SelectItem value="90d">Last 90 Days</SelectItem>
-                </SelectContent>
-            </Select>
+      <main className="flex-1 w-full px-4 md:px-6 lg:px-8 py-16 md:py-24">
+
+        <div className="container max-w-7xl mx-auto">
+            <PageHeader
+                icon={<BarChart className="h-8 w-8" />}
+                title="Market Pulse: Dubai"
+                description="A real-time overview of the Dubai real estate market landscape, powered by AI."
+            >
              <Button variant="outline"><Download className="mr-2 h-4 w-4" /> Export Overview</Button>
-          </div>
-        </PageHeader>
+            </PageHeader>
+        </div>
       
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mt-8">
+        <div className="container max-w-7xl mx-auto grid gap-6 md:grid-cols-2 lg:grid-cols-4 mt-12">
             <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle className="text-sm font-medium">Average Price (AED)</CardTitle>
@@ -177,7 +166,7 @@ export default function ResourcesPage() {
             </Card>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-8">
+        <div className="container max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8 mt-12">
             <Card className="lg:col-span-3">
                 <CardHeader>
                     <CardTitle>Price Index Trend (AED M)</CardTitle>
@@ -229,42 +218,43 @@ export default function ResourcesPage() {
             </div>
         </div>
 
-        <section className="mt-16">
-            <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold tracking-tight">Project Pipeline</h2>
-                <p className="text-muted-foreground">A snapshot of the latest project developments in the market.</p>
+        <section className="mt-24">
+            <div className="container max-w-7xl mx-auto">
+                <div className="text-center mb-12">
+                    <h2 className="text-4xl font-bold tracking-tighter">Project Pipeline</h2>
+                    <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">A snapshot of the latest off-plan and new launch project developments across the market.</p>
+                </div>
+                 <Tabs defaultValue="latest-launches">
+                    <TabsList className="grid w-full grid-cols-3 mb-8">
+                        <TabsTrigger value="latest-launches">Latest Launches</TabsTrigger>
+                        <TabsTrigger value="upcoming-soon">Upcoming Soon</TabsTrigger>
+                        <TabsTrigger value="delivering-soon">Delivering Soon</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="latest-launches">
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {projectPipeline.latestLaunches.map((p, i) => (
+                                <ProjectPipelineCard key={i} project={p} />
+                            ))}
+                        </div>
+                    </TabsContent>
+                     <TabsContent value="upcoming-soon">
+                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {projectPipeline.upcomingSoon.map((p, i) => (
+                                <ProjectPipelineCard key={i} project={p} />
+                            ))}
+                        </div>
+                    </TabsContent>
+                     <TabsContent value="delivering-soon">
+                         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {projectPipeline.deliveringSoon.map((p, i) => (
+                               <ProjectPipelineCard key={i} project={p} />
+                            ))}
+                        </div>
+                    </TabsContent>
+                </Tabs>
             </div>
-             <Tabs defaultValue="latest-launches">
-                <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="latest-launches">Latest Launches</TabsTrigger>
-                    <TabsTrigger value="upcoming-soon">Upcoming Soon</TabsTrigger>
-                    <TabsTrigger value="delivering-soon">Delivering Soon</TabsTrigger>
-                </TabsList>
-                <TabsContent value="latest-launches">
-                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                        {projectPipeline.latestLaunches.map((p, i) => (
-                            <ProjectPipelineCard key={i} project={p} />
-                        ))}
-                    </div>
-                </TabsContent>
-                 <TabsContent value="upcoming-soon">
-                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                        {projectPipeline.upcomingSoon.map((p, i) => (
-                            <ProjectPipelineCard key={i} project={p} />
-                        ))}
-                    </div>
-                </TabsContent>
-                 <TabsContent value="delivering-soon">
-                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                        {projectPipeline.deliveringSoon.map((p, i) => (
-                           <ProjectPipelineCard key={i} project={p} />
-                        ))}
-                    </div>
-                </TabsContent>
-            </Tabs>
         </section>
       </main>
-      <LandingFooter />
     </div>
   );
 }
