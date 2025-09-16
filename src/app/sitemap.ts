@@ -21,7 +21,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/superfreetime',
     '/blog',
     '/market',
-    '/resources'
+    '/resources',
+    '/community'
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),

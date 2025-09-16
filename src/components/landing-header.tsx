@@ -24,6 +24,7 @@ export function LandingHeader() {
   const { setTheme, themes } = useTheme();
   
   const navLinks = [
+    { name: 'Community', href: '/community' },
     { name: 'Resources', href: '/resources' },
   ];
 

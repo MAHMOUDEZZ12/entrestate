@@ -10,7 +10,7 @@ import { Separator } from './ui/separator';
 export function LandingFooter() {
   const footerLinks = {
     explore: [
-        { name: 'Home', href: '/' },
+        { name: 'Community', href: '/community' },
         { name: 'Apps', href: '/apps' },
         { name: 'Market', href: '/market' },
         { name: 'Pricing', href: '/pricing' },
