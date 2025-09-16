@@ -164,39 +164,16 @@ export default function DiscoverResultsPage() {
                 if (!response.ok) {
                     throw new Error(data.error || "Search failed");
                 }
-
-                // Transform the API response to the format expected by the UI
-                 const mockResults = (data.results || []).map((res: any) => {
-                    const doc = res.document;
-                    if (doc.structData?.tool_id) {
-                        const tool = tools.find(t => t.id === doc.structData.tool_id);
-                        return tool ? { type: 'Tool', tool: tool } : null;
+                
+                const processedResults = (data.results || []).map((res: any) => {
+                    if (res.type === 'Tool' && res.toolId) {
+                        const tool = tools.find(t => t.id === res.toolId);
+                        return tool ? { type: 'Tool', tool } : null;
                     }
-                    if (doc.structData?.project_id) {
-                         return { 
-                            type: 'Project',
-                            project: {
-                                name: doc.structData.name,
-                                developer: doc.structData.developer,
-                                area: doc.structData.area,
-                                status: doc.structData.status,
-                                priceFrom: doc.structData.price_from,
-                            }
-                        };
-                    }
-                    if (doc.structData?.market_topic) {
-                         return { type: 'Market', query: doc.structData.market_topic };
-                    }
-                    return null;
+                    return res;
                 }).filter(Boolean);
 
-                // If no smart results, fallback to a default set
-                 if (mockResults.length === 0) {
-                     mockResults.push({ type: 'Tool', tool: tools.find(t => t.id === 'projects-finder') });
-                     mockResults.push({ type: 'Tool', tool: tools.find(t => t.id === 'market-reports') });
-                }
-
-                setResults(mockResults);
+                setResults(processedResults);
 
             } catch (error) {
                 console.error("Search failed:", error);

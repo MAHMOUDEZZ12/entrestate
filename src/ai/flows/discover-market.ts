@@ -2,14 +2,14 @@
 'use server';
 
 /**
- * @fileOverview An AI flow to search the market using Vertex AI Search.
+ * @fileOverview DEPRECATED - An AI flow to search the market using Vertex AI Search.
  *
- * This flow acts as the backend for the "Discover" feature, querying a 
- * Vertex AI Search data store to find relevant projects, tools, and market info.
+ * This flow has been replaced by the more advanced, LLM-driven `discover-engine.ts`.
+ * This file is kept for historical reference but is no longer actively used. The new
+ * engine uses a reasoning model to determine user intent and dispatch to various
+ * tools or data sources, rather than directly querying a single data store.
  *
- * @export {function} discoverMarket - The main function to perform a market search.
- * @export {type} DiscoverMarketInput - The Zod schema for the input.
- * @export {type} DiscoverMarketOutput - The Zod schema for the output.
+ * @deprecated
  */
 
 import { ai } from '@/ai/genkit';
@@ -36,19 +36,16 @@ export type DiscoverMarketOutput = z.infer<typeof DiscoverMarketOutputSchema>;
 
 
 /**
- * An AI flow that searches the market using Vertex AI Search.
- *
- * @param {DiscoverMarketInput} input - The search query.
- * @returns {Promise<DiscoverMarketOutput>} A promise that resolves with the search results.
+ * @deprecated Use the discoverEngineFlow instead.
  */
 export async function discoverMarket(input: DiscoverMarketInput): Promise<DiscoverMarketOutput> {
-  return discoverMarketFlow(input);
+  throw new Error("This flow is deprecated. Please use the 'discover-engine' flow.");
 }
 
 
 const discoverMarketFlow = ai.defineFlow(
   {
-    name: 'discoverMarketFlow',
+    name: 'discoverMarketFlow_DEPRECATED',
     inputSchema: DiscoverMarketInputSchema,
     outputSchema: DiscoverMarketOutputSchema,
   },
