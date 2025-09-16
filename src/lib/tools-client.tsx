@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React from 'react';
@@ -1195,7 +1196,7 @@ export const tools: Feature[] = [
     icon: <Percent />,
     color: '#16a34a',
     cta: 'Calculate Commission',
-    categories: ['Sales Tools'],
+    categories: ['Sales Tools', 'Utilities'],
     mindMapCategory: 'Sales Enablement',
     badge: 'NEW',
     href: '/dashboard/tool/commission-calculator',
