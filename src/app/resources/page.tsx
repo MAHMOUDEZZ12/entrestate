@@ -262,7 +262,9 @@ export default function ResourcesPage() {
                 </Tabs>
             </div>
         </section>
+
       </main>
+      <LandingFooter />
     </div>
   );
 }
