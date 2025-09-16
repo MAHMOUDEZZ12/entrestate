@@ -115,8 +115,8 @@ function OnboardingComponent() {
     
     const finishOnboarding = () => {
         track('onboarding_completed');
-        toast({ title: "Setup Complete!", description: "Welcome to your new dashboard." });
-        router.push('/dashboard');
+        toast({ title: "Setup Complete!", description: "Welcome to your new dashboard. Let's start by exploring the market." });
+        router.push('/discover');
     }
     
     const handleSaveCard = () => {
@@ -459,7 +459,7 @@ function OnboardingComponent() {
                              <p className="text-xs text-muted-foreground">You can always change your plan later. No charges until you confirm.</p>
                         </CardContent>
                         <CardFooter>
-                           <Button onClick={finishOnboarding} className="w-full md:w-auto mx-auto" variant="secondary">Finish Setup & Go to Dashboard</Button>
+                           <Button onClick={finishOnboarding} className="w-full md:w-auto mx-auto" variant="secondary">Finish Setup & Go to Discover</Button>
                         </CardFooter>
                     </Card>
                  );
