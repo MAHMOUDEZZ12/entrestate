@@ -76,15 +76,15 @@ export default {
             height: '0',
           },
         },
-        'gradient-spin': {
-            '0%': { transform: 'rotate(0deg)' },
-            '100%': { transform: 'rotate(360deg)' },
+        'gradient-pulse': {
+            '0%, 100%': { backgroundPosition: '0% 50%', opacity: '0.75' },
+            '50%': { backgroundPosition: '100% 50%', opacity: '1' },
         },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'gradient-spin': 'gradient-spin 3s linear infinite',
+        'gradient-pulse': 'gradient-pulse 6s ease-in-out infinite',
       },
       screens: {
         '2xl': '1600px',

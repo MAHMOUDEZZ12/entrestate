@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Input } from '@/components/ui/input';
@@ -17,13 +17,6 @@ import { useToast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
 import { Skeleton } from '@/components/ui/skeleton';
 
-
-const popularQueries = [
-    "Market trends in Dubai Marina",
-    "Emaar Beachfront floor plans",
-    "Generate a landing page for Sobha Hartland",
-    "Compare Damac Hills 2 vs. Arabian Ranches",
-];
 
 const mockChartData = [
   { name: 'Jan', value: 2.1 },
@@ -247,7 +240,7 @@ export default function DiscoverPage() {
 
                 <div className="w-full max-w-2xl sticky top-24 z-20">
                      <div className="relative group">
-                         <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-full blur-lg opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-gradient-spin"></div>
+                         <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-full blur-lg opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-gradient-pulse"></div>
                          <form onSubmit={handleSearch} className="relative">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                             <Input 
