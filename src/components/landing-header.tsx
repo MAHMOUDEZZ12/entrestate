@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Menu, X, Sun, Moon, Laptop, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Logo } from '@/components/logo';
+import { Logo } from './logo';
 import {
   Sheet,
   SheetContent,
@@ -24,9 +24,6 @@ export function LandingHeader() {
   const { setTheme, themes } = useTheme();
   
   const navLinks = [
-    { name: 'Pricing', href: '/pricing' },
-    { name: 'Apps', href: '/apps' },
-    { name: 'Market', href: '/market' },
     { name: 'Resources', href: '/resources' },
   ];
 
