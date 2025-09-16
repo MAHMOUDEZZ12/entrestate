@@ -12,21 +12,28 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Check if all required environment variables are set
-const isFirebaseConfigValid = firebaseConfig.apiKey &&
-                              firebaseConfig.authDomain &&
-                              firebaseConfig.projectId &&
-                              firebaseConfig.storageBucket &&
-                              firebaseConfig.messagingSenderId &&
-                              firebaseConfig.appId;
+function getClientApp() {
+    if (getApps().length) {
+        return getApp();
+    }
+    
+    const isFirebaseConfigValid = firebaseConfig.apiKey &&
+                                  firebaseConfig.authDomain &&
+                                  firebaseConfig.projectId;
 
-// Initialize Firebase only if the config is valid
-const app = isFirebaseConfigValid && !getApps().length ? initializeApp(firebaseConfig) : (getApps().length ? getApp() : null);
+    if (!isFirebaseConfigValid) {
+        console.error("Firebase client configuration is missing or incomplete. Please check your environment variables.");
+        return null;
+    }
+    
+    return initializeApp(firebaseConfig);
+}
 
-// Export the instances only if the app was initialized
+const app = getClientApp();
+
 export const db = app ? getFirestore(app) : null;
 export const auth = app ? getAuth(app) : null;
 
 if (!app) {
-    console.error("Firebase initialization failed: Missing environment variables. Please check your .env file.");
+    console.warn("Firebase client was not initialized. This may be expected during server-side rendering or if config is missing.");
 }
