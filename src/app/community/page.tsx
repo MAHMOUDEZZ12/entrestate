@@ -4,7 +4,7 @@
 import React from 'react';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Users, BookOpen, Briefcase, Mail, BarChart, User, ArrowRight } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import Link from 'next/link';
