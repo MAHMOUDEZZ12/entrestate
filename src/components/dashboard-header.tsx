@@ -50,8 +50,7 @@ export function DashboardHeader() {
         router.push('/login');
     };
     
-    const handleNavigation = (href: string, label: string, e: React.MouseEvent) => {
-        e.preventDefault();
+    const handleNavigation = (href: string, label: string) => {
         addTab({ href, label });
         router.push(href);
     }
@@ -63,17 +62,16 @@ export function DashboardHeader() {
                     <Logo />
                     <nav className="hidden md:flex items-center gap-2">
                         {mainNav.map((item) => (
-                           <Link href={item.href} key={item.href} passHref legacyBehavior>
-                                <Button 
-                                    variant="ghost" 
-                                    size="sm"
-                                    onClick={(e: any) => handleNavigation(item.href, item.label, e)}
-                                    className={cn(pathname === item.href && "bg-muted text-foreground")}
-                                >
-                                    <item.icon className="mr-2 h-4 w-4" />
-                                    {item.label}
-                                </Button>
-                            </Link>
+                           <Button 
+                                key={item.href}
+                                variant="ghost" 
+                                size="sm"
+                                onClick={() => handleNavigation(item.href, item.label)}
+                                className={cn(pathname === item.href && "bg-muted text-foreground")}
+                            >
+                                <item.icon className="mr-2 h-4 w-4" />
+                                {item.label}
+                            </Button>
                         ))}
                     </nav>
                 </div>
@@ -100,12 +98,10 @@ export function DashboardHeader() {
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
                           {mainNav.map((item) => (
-                            <Link href={item.href} key={item.href} passHref legacyBehavior>
-                                <DropdownMenuItem onClick={(e: any) => handleNavigation(item.href, item.label, e)}>
-                                  <item.icon className="mr-2 h-4 w-4" />
-                                  {item.label}
-                                </DropdownMenuItem>
-                            </Link>
+                            <DropdownMenuItem key={item.href} onClick={() => handleNavigation(item.href, item.label)}>
+                              <item.icon className="mr-2 h-4 w-4" />
+                              {item.label}
+                            </DropdownMenuItem>
                           ))}
                         </DropdownMenuGroup>
                       </DropdownMenuContent>
@@ -129,12 +125,10 @@ export function DashboardHeader() {
                             <DropdownMenuSeparator />
                              <DropdownMenuGroup>
                                 {settingsNav.map((item) => (
-                                <Link href={item.href} key={item.href} passHref legacyBehavior>
-                                    <DropdownMenuItem onClick={(e: any) => handleNavigation(item.href, item.label, e)}>
+                                <DropdownMenuItem key={item.href} onClick={() => handleNavigation(item.href, item.label)}>
                                     <item.icon className="mr-2 h-4 w-4" />
                                     {item.label}
-                                    </DropdownMenuItem>
-                                </Link>
+                                </DropdownMenuItem>
                                 ))}
                             </DropdownMenuGroup>
 

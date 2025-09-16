@@ -74,5 +74,5 @@ const createMetaCampaignFlow = ai.defineFlow(
  * @returns {Promise<CreateMetaCampaignOutput>} A promise that resolves with the generated campaign structure.
  */
 export async function createMetaCampaign(input: CreateMetaCampaignInput): Promise<CreateMetaCampaignOutput> {
-  return await createMetaCampaignFlow(input);
+  return createMetaCampaignFlow(input);
 }
