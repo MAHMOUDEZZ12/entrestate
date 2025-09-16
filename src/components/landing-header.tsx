@@ -35,14 +35,21 @@ export function LandingHeader() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
-        <div className="mr-auto">
+        <div className="mr-auto flex items-center gap-6">
             <Logo />
+             <nav className="hidden md:flex items-center gap-2">
+                {navLinks.map((link) => (
+                    <Link key={link.name} href={link.href}>
+                        <Button variant="ghost">{link.name}</Button>
+                    </Link>
+                ))}
+            </nav>
         </div>
         <div className="hidden md:flex items-center gap-2">
             <Link href="/login">
                 <Button variant="ghost">Log In</Button>
             </Link>
-            <Link href="/signup">
+            <Link href="/login">
                 <Button>Sign Up</Button>
             </Link>
             <DropdownMenu>
@@ -110,7 +117,7 @@ export function LandingHeader() {
                         <Link href="/login" onClick={() => setIsOpen(false)}>
                             <Button variant="outline" className="w-full text-lg py-6">Log In</Button>
                         </Link>
-                        <Link href="/signup" onClick={() => setIsOpen(false)}>
+                        <Link href="/login" onClick={() => setIsOpen(false)}>
                             <Button className="w-full text-lg py-6">Sign Up</Button>
                         </Link>
                     </div>

@@ -151,7 +151,7 @@ export default function PricingPage() {
                        </ul>
                     </CardContent>
                     <CardFooter>
-                       <Link href="/signup" className="w-full">
+                       <Link href="/login" className="w-full">
                            {tier.isFeatured ? (
                                 <ShinyButton className="w-full">{tier.cta}</ShinyButton>
                            ) : (
