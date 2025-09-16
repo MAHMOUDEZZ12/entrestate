@@ -2,7 +2,6 @@
 'use client';
 
 import React from 'react';
-import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Users, BookOpen, Briefcase, Mail, BarChart, User, ArrowRight } from 'lucide-react';
@@ -12,15 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-
-const communityNavLinks = [
-    { name: 'About', href: '/about' },
-    { name: 'Academy', href: '#' },
-    { name: 'Career', href: '#' },
-    { name: 'Contact', href: '#' },
-    { name: 'Resources', href: '/resources' },
-    { name: 'Account', href: '/login' },
-];
+import { CommunityHeader } from '@/components/community-header';
 
 const successStories = [
     {
@@ -44,7 +35,7 @@ const successStories = [
 export default function CommunityPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
+      <CommunityHeader />
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
         <PageHeader
             icon={<Users className="h-8 w-8" />}
@@ -52,46 +43,34 @@ export default function CommunityPage() {
             description="Learn from the best, share your successes, and grow with a network of forward-thinking real estate professionals."
         />
 
-        <div className="mt-8 border rounded-lg">
-            <nav className="p-4">
-                <ul className="flex items-center gap-4 md:gap-6 text-sm md:text-base font-medium text-muted-foreground overflow-x-auto no-scrollbar">
-                    {communityNavLinks.map(link => (
-                        <li key={link.name} className="flex-shrink-0">
-                            <Link href={link.href} className="hover:text-primary transition-colors">{link.name}</Link>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
-            <Separator />
-            <div className="p-6 md:p-8">
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {successStories.map((story, index) => (
-                        <Card key={index} className="overflow-hidden">
-                            <CardContent className="p-0">
-                                <div className="relative h-56 w-full">
-                                    <Image src={story.image} alt={story.name} layout="fill" objectFit="cover" data-ai-hint={story.dataAiHint} />
+        <div className="mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {successStories.map((story, index) => (
+                    <Card key={index} className="overflow-hidden">
+                        <CardContent className="p-0">
+                            <div className="relative h-56 w-full">
+                                <Image src={story.image} alt={story.name} layout="fill" objectFit="cover" data-ai-hint={story.dataAiHint} />
+                            </div>
+                            <div className="p-6">
+                                <blockquote className="text-lg font-semibold leading-snug text-foreground">
+                                    “{story.quote}”
+                                </blockquote>
+                            </div>
+                        </CardContent>
+                        <CardFooter className="bg-muted/50 p-4">
+                            <div className="flex items-center gap-3">
+                                <Avatar>
+                                    <AvatarImage src={story.avatar} />
+                                    <AvatarFallback>{story.name.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <div>
+                                    <p className="font-semibold text-foreground">{story.name}</p>
+                                    <p className="text-sm text-muted-foreground">{story.title}</p>
                                 </div>
-                                <div className="p-6">
-                                    <blockquote className="text-lg font-semibold leading-snug text-foreground">
-                                        “{story.quote}”
-                                    </blockquote>
-                                </div>
-                            </CardContent>
-                            <CardFooter className="bg-muted/50 p-4">
-                                <div className="flex items-center gap-3">
-                                    <Avatar>
-                                        <AvatarImage src={story.avatar} />
-                                        <AvatarFallback>{story.name.charAt(0)}</AvatarFallback>
-                                    </Avatar>
-                                    <div>
-                                        <p className="font-semibold text-foreground">{story.name}</p>
-                                        <p className="text-sm text-muted-foreground">{story.title}</p>
-                                    </div>
-                                </div>
-                            </CardFooter>
-                        </Card>
-                    ))}
-                </div>
+                            </div>
+                        </CardFooter>
+                    </Card>
+                ))}
             </div>
         </div>
       </main>

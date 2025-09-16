@@ -2,14 +2,12 @@
 'use client';
 
 import React, { useState } from 'react';
-import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { LineChart, Users2, Eye, Target, Sparkles, Download, ArrowRight, TrendingUp, FileText, Building, BookOpen, GitBranch, Cpu, BarChart } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from '@/components/ui/badge';
@@ -17,14 +15,7 @@ import Image from 'next/image';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
-
-const internalNavLinks = [
-    { name: 'Academy', href: '#' },
-    { name: 'Handbook', href: '/blog' },
-    { name: 'MindMap', href: '/sx3-mindmap' },
-    { name: 'Documentation', href: '/documentation' },
-    { name: 'Technology', href: '/technology' },
-];
+import { ResourcesHeader } from '@/components/resources-header';
 
 const kpiData = {
   averagePrice: 2450000,
@@ -121,171 +112,157 @@ export default function ResourcesPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
+      <ResourcesHeader />
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
         <PageHeader
             icon={<BarChart className="h-8 w-8" />}
-            title="Resources Hub"
-            description="Your center for market intelligence, guides, and technical documentation."
-        />
+            title="Market Pulse: Dubai"
+            description="A real-time overview of the Dubai real estate market landscape, powered by AI."
+        >
+          <div className="flex items-center gap-2">
+            <Select value={timeRange} onValueChange={setTimeRange}>
+                <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Select date range" />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value="7d">Last 7 Days</SelectItem>
+                    <SelectItem value="30d">Last 30 Days</SelectItem>
+                    <SelectItem value="90d">Last 90 Days</SelectItem>
+                </SelectContent>
+            </Select>
+             <Button variant="outline"><Download className="mr-2 h-4 w-4" /> Export Overview</Button>
+          </div>
+        </PageHeader>
+      
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mt-8">
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Average Price (AED)</CardTitle>
+                    <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{(kpiData.averagePrice / 1000000).toFixed(2)}M</div>
+                    <p className="text-xs text-muted-foreground">+2.1% from last month</p>
+                </CardContent>
+            </Card>
+             <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Transactions</CardTitle>
+                    <Users2 className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{kpiData.transactions.toLocaleString()}</div>
+                    <p className="text-xs text-muted-foreground">+15% from last month</p>
+                </CardContent>
+            </Card>
+             <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Active Listings</CardTitle>
+                    <Eye className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{kpiData.activeListings.toLocaleString()}</div>
+                    <p className="text-xs text-muted-foreground">-5% from last month</p>
+                </CardContent>
+            </Card>
+            <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Market Sentiment</CardTitle>
+                    <Sparkles className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                    <div className="text-2xl font-bold">{kpiData.marketSentiment}</div>
+                    <p className="text-xs text-muted-foreground">Based on news & social analysis</p>
+                </CardContent>
+            </Card>
+        </div>
 
-        <div className="mt-8 border rounded-lg">
-            <nav className="p-4">
-                <ul className="flex items-center gap-4 md:gap-6 text-sm md:text-base font-medium text-muted-foreground overflow-x-auto no-scrollbar">
-                    {internalNavLinks.map(link => (
-                        <li key={link.name} className="flex-shrink-0">
-                            <Link href={link.href} className="hover:text-primary transition-colors">{link.name}</Link>
-                        </li>
-                    ))}
-                </ul>
-            </nav>
-            <Separator />
-            <div className="p-6 md:p-8">
-              <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold">Market Pulse: Dubai</h2>
-                 <Select value={timeRange} onValueChange={setTimeRange}>
-                    <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select date range" />
-                    </SelectTrigger>
-                    <SelectContent>
-                        <SelectItem value="7d">Last 7 Days</SelectItem>
-                        <SelectItem value="30d">Last 30 Days</SelectItem>
-                        <SelectItem value="90d">Last 90 Days</SelectItem>
-                    </SelectContent>
-                </Select>
-              </div>
-
-               <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                  <Card>
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-medium">Average Price (AED)</CardTitle>
-                          <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                      </CardHeader>
-                      <CardContent>
-                          <div className="text-2xl font-bold">{(kpiData.averagePrice / 1000000).toFixed(2)}M</div>
-                          <p className="text-xs text-muted-foreground">+2.1% from last month</p>
-                      </CardContent>
-                  </Card>
-                  <Card>
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-medium">Transactions</CardTitle>
-                          <Users2 className="h-4 w-4 text-muted-foreground" />
-                      </CardHeader>
-                      <CardContent>
-                          <div className="text-2xl font-bold">{kpiData.transactions.toLocaleString()}</div>
-                          <p className="text-xs text-muted-foreground">+15% from last month</p>
-                      </CardContent>
-                  </Card>
-                  <Card>
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-medium">Active Listings</CardTitle>
-                          <Eye className="h-4 w-4 text-muted-foreground" />
-                      </CardHeader>
-                      <CardContent>
-                          <div className="text-2xl font-bold">{kpiData.activeListings.toLocaleString()}</div>
-                          <p className="text-xs text-muted-foreground">-5% from last month</p>
-                      </CardContent>
-                  </Card>
-                  <Card>
-                      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                          <CardTitle className="text-sm font-medium">Market Sentiment</CardTitle>
-                          <Sparkles className="h-4 w-4 text-muted-foreground" />
-                      </CardHeader>
-                      <CardContent>
-                          <div className="text-2xl font-bold">{kpiData.marketSentiment}</div>
-                          <p className="text-xs text-muted-foreground">Based on news & social analysis</p>
-                      </CardContent>
-                  </Card>
-              </div>
-
-               <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-8">
-                  <Card className="lg:col-span-3">
-                      <CardHeader>
-                          <CardTitle>Price Index Trend (AED M)</CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                          <ResponsiveContainer width="100%" height={300}>
-                              <AreaChart data={chartData}>
-                                  <defs>
-                                      <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-                                          <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
-                                          <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
-                                      </linearGradient>
-                                  </defs>
-                                  <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
-                                  <YAxis fontSize={12} tickLine={false} axisLine={false} domain={['dataMin - 0.2', 'dataMax + 0.2']} />
-                                  <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}/>
-                                  <Area type="monotone" dataKey="value" stroke="hsl(var(--primary))" fill="url(#colorUv)" />
-                              </AreaChart>
-                          </ResponsiveContainer>
-                      </CardContent>
-                  </Card>
-                  <div className="lg:col-span-2 space-y-6">
-                      <Card>
-                          <CardHeader>
-                              <CardTitle>AI-Powered Intelligence Tools</CardTitle>
-                              <CardDescription>Dive deeper into the market data.</CardDescription>
-                          </CardHeader>
-                          <CardContent className="space-y-3">
-                              <Link href="/dashboard/tool/market-reports">
-                                  <Button variant="outline" className="w-full justify-start gap-3 h-auto py-3">
-                                      <FileText className="h-5 w-5 text-primary"/>
-                                      <div>
-                                          <p className="font-semibold text-left">Generate Market Report</p>
-                                          <p className="text-xs text-muted-foreground text-left">Create a detailed PDF for any location.</p>
-                                      </div>
-                                  </Button>
-                              </Link>
-                              <Link href="/dashboard/tool/market-trends">
-                                  <Button variant="outline" className="w-full justify-start gap-3 h-auto py-3">
-                                      <TrendingUp className="h-5 w-5 text-primary"/>
-                                      <div>
-                                          <p className="font-semibold text-left">Analyze Market Trends</p>
-                                          <p className="text-xs text-muted-foreground text-left">Synthesize news to find emerging trends.</p>
-                                      </div>
-                                  </Button>
-                              </Link>
-                          </CardContent>
-                      </Card>
-                  </div>
-              </div>
-
-               <section className="mt-16">
-                  <div className="text-center mb-8">
-                      <h2 className="text-3xl font-bold tracking-tight">Project Pipeline</h2>
-                      <p className="text-muted-foreground">A snapshot of the latest project developments in the market.</p>
-                  </div>
-                  <Tabs defaultValue="latest-launches">
-                      <TabsList className="grid w-full grid-cols-3">
-                          <TabsTrigger value="latest-launches">Latest Launches</TabsTrigger>
-                          <TabsTrigger value="upcoming-soon">Upcoming Soon</TabsTrigger>
-                          <TabsTrigger value="delivering-soon">Delivering Soon</TabsTrigger>
-                      </TabsList>
-                      <TabsContent value="latest-launches">
-                          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                              {projectPipeline.latestLaunches.map((p, i) => (
-                                  <ProjectPipelineCard key={i} project={p} />
-                              ))}
-                          </div>
-                      </TabsContent>
-                      <TabsContent value="upcoming-soon">
-                          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                              {projectPipeline.upcomingSoon.map((p, i) => (
-                                  <ProjectPipelineCard key={i} project={p} />
-                              ))}
-                          </div>
-                      </TabsContent>
-                      <TabsContent value="delivering-soon">
-                          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-                              {projectPipeline.deliveringSoon.map((p, i) => (
-                                <ProjectPipelineCard key={i} project={p} />
-                              ))}
-                          </div>
-                      </TabsContent>
-                  </Tabs>
-              </section>
+        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 mt-8">
+            <Card className="lg:col-span-3">
+                <CardHeader>
+                    <CardTitle>Price Index Trend (AED M)</CardTitle>
+                </CardHeader>
+                <CardContent>
+                     <ResponsiveContainer width="100%" height={300}>
+                        <AreaChart data={chartData}>
+                            <defs>
+                                <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
+                                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                                </linearGradient>
+                            </defs>
+                            <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
+                            <YAxis fontSize={12} tickLine={false} axisLine={false} domain={['dataMin - 0.2', 'dataMax + 0.2']} />
+                            <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}/>
+                            <Area type="monotone" dataKey="value" stroke="hsl(var(--primary))" fill="url(#colorUv)" />
+                        </AreaChart>
+                    </ResponsiveContainer>
+                </CardContent>
+            </Card>
+            <div className="lg:col-span-2 space-y-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>AI-Powered Intelligence Tools</CardTitle>
+                        <CardDescription>Dive deeper into the market data.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-3">
+                        <Link href="/dashboard/tool/market-reports">
+                            <Button variant="outline" className="w-full justify-start gap-3 h-auto py-3">
+                                <FileText className="h-5 w-5 text-primary"/>
+                                <div>
+                                    <p className="font-semibold text-left">Generate Market Report</p>
+                                    <p className="text-xs text-muted-foreground text-left">Create a detailed PDF for any location.</p>
+                                </div>
+                            </Button>
+                        </Link>
+                        <Link href="/dashboard/tool/market-trends">
+                             <Button variant="outline" className="w-full justify-start gap-3 h-auto py-3">
+                                <TrendingUp className="h-5 w-5 text-primary"/>
+                                <div>
+                                    <p className="font-semibold text-left">Analyze Market Trends</p>
+                                    <p className="text-xs text-muted-foreground text-left">Synthesize news to find emerging trends.</p>
+                                </div>
+                            </Button>
+                        </Link>
+                    </CardContent>
+                </Card>
             </div>
         </div>
+
+        <section className="mt-16">
+            <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold tracking-tight">Project Pipeline</h2>
+                <p className="text-muted-foreground">A snapshot of the latest project developments in the market.</p>
+            </div>
+             <Tabs defaultValue="latest-launches">
+                <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="latest-launches">Latest Launches</TabsTrigger>
+                    <TabsTrigger value="upcoming-soon">Upcoming Soon</TabsTrigger>
+                    <TabsTrigger value="delivering-soon">Delivering Soon</TabsTrigger>
+                </TabsList>
+                <TabsContent value="latest-launches">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                        {projectPipeline.latestLaunches.map((p, i) => (
+                            <ProjectPipelineCard key={i} project={p} />
+                        ))}
+                    </div>
+                </TabsContent>
+                 <TabsContent value="upcoming-soon">
+                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                        {projectPipeline.upcomingSoon.map((p, i) => (
+                            <ProjectPipelineCard key={i} project={p} />
+                        ))}
+                    </div>
+                </TabsContent>
+                 <TabsContent value="delivering-soon">
+                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                        {projectPipeline.deliveringSoon.map((p, i) => (
+                           <ProjectPipelineCard key={i} project={p} />
+                        ))}
+                    </div>
+                </TabsContent>
+            </Tabs>
+        </section>
       </main>
       <LandingFooter />
     </div>
