@@ -36,7 +36,7 @@ export function LandingFooter() {
 
   return (
     <footer className="relative w-full overflow-hidden mt-32 border-t border-border/40">
-      <div className="absolute -top-1/2 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-to-t from-primary/10 to-transparent rounded-t-full" />
+      <div className="absolute -top-1/2 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-to-t from-primary/10 to-transparent rounded-t-full -z-10" />
       <div className="container relative z-10 py-16">
         <div className="mt-8">
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
@@ -121,3 +121,5 @@ export function LandingFooter() {
     </footer>
   );
 }
+
+    
