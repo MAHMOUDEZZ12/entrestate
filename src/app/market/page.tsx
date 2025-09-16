@@ -12,6 +12,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Badge } from '@/components/ui/badge';
 
 const kpiData = {
   averagePrice: 2450000,
@@ -35,6 +37,24 @@ const topListings = [
     { id: 2, name: 'Damac Hills 2', views: 3200, leads: 140 },
     { id: 3, name: 'Sobha Hartland', views: 2500, leads: 95 },
 ];
+
+const projectPipeline = {
+    latestLaunches: [
+        { name: 'Azure Residences', developer: 'Emaar', location: 'Dubai Marina', status: 'New Launch' },
+        { name: 'Verde by Sobha', developer: 'Sobha Realty', location: 'JLT', status: 'New Launch' },
+        { name: 'Eterno at Damac Hills 2', developer: 'Damac', location: 'Damac Hills 2', status: 'New Launch' },
+    ],
+    upcomingSoon: [
+        { name: 'Project Oasis', developer: 'Emaar', location: 'To be announced', status: 'Upcoming' },
+        { name: 'The Altitude Tower', developer: 'Meraas', location: 'Business Bay', status: 'Upcoming' },
+        { name: 'Nakheel Palm Gateway', developer: 'Nakheel', location: 'Palm Jumeirah', status: 'Upcoming' },
+    ],
+    deliveringSoon: [
+        { name: 'Address The Bay', developer: 'Emaar', location: 'Emaar Beachfront', status: 'Handover Q4 2024' },
+        { name: 'Sobha Hartland II - Villas', developer: 'Sobha Realty', location: 'Sobha Hartland', status: 'Handover Q1 2025' },
+        { name: 'Binghatti Phantom', developer: 'Binghatti', location: 'JVC', status: 'Handover Q4 2024' },
+    ]
+}
 
 
 export default function MarketPage() {
@@ -158,6 +178,65 @@ export default function MarketPage() {
                 </Card>
             </div>
         </div>
+
+        <section className="mt-16">
+            <div className="text-center mb-8">
+                <h2 className="text-3xl font-bold tracking-tight">Project Pipeline</h2>
+                <p className="text-muted-foreground">A snapshot of the latest project developments in the market.</p>
+            </div>
+             <Tabs defaultValue="latest-launches">
+                <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="latest-launches">Latest Launches</TabsTrigger>
+                    <TabsTrigger value="upcoming-soon">Upcoming Soon</TabsTrigger>
+                    <TabsTrigger value="delivering-soon">Delivering Soon</TabsTrigger>
+                </TabsList>
+                <TabsContent value="latest-launches">
+                    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                        {projectPipeline.latestLaunches.map((p, i) => (
+                            <Card key={i}>
+                                <CardHeader>
+                                    <CardTitle>{p.name}</CardTitle>
+                                    <CardDescription>{p.developer} - {p.location}</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <Badge>{p.status}</Badge>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </TabsContent>
+                 <TabsContent value="upcoming-soon">
+                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                        {projectPipeline.upcomingSoon.map((p, i) => (
+                            <Card key={i}>
+                                <CardHeader>
+                                    <CardTitle>{p.name}</CardTitle>
+                                    <CardDescription>{p.developer} - {p.location}</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <Badge variant="secondary">{p.status}</Badge>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </TabsContent>
+                 <TabsContent value="delivering-soon">
+                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                        {projectPipeline.deliveringSoon.map((p, i) => (
+                            <Card key={i}>
+                                <CardHeader>
+                                    <CardTitle>{p.name}</CardTitle>
+                                    <CardDescription>{p.developer} - {p.location}</CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <Badge variant="outline">{p.status}</Badge>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </TabsContent>
+            </Tabs>
+        </section>
       </main>
       <LandingFooter />
     </div>
