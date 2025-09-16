@@ -53,7 +53,7 @@ export default function AuthPage() {
       await signInWithPopup(auth, provider);
       toast({ title: "Authentication Successful!", description: "Redirecting..." });
       router.push('/dashboard');
-    } catch (err: any) => {
+    } catch (err: any) {
       setError(err.message);
       toast({ title: "Google Auth Failed", description: err.message, variant: "destructive" });
     } finally {

@@ -25,11 +25,10 @@ export function LandingHeader() {
   
   const navLinks = [
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Market', href: '/market' },
-    { name: 'Discover', href: '/discover' },
-    { name: 'Handbook', href: '/blog' },
     { name: 'Apps', href: '/apps' },
-];
+    { name: 'Market', href: '/market' },
+    { name: 'Handbook', href: '/blog' },
+  ];
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -38,13 +37,6 @@ export function LandingHeader() {
             <Logo />
         </div>
         <div className="hidden md:flex items-center gap-2">
-             <nav className="flex items-center gap-2 mr-4">
-                {navLinks.map((link) => (
-                    <Link key={link.name} href={link.href}>
-                        <Button variant="ghost">{link.name}</Button>
-                    </Link>
-                ))}
-            </nav>
             <Link href="/login">
                 <Button variant="ghost">Log In</Button>
             </Link>
