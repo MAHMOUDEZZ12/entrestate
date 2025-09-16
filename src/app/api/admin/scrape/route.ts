@@ -18,6 +18,10 @@ async function scrapeDxbOffplan() {
         const developer = $(el).find('.developer-name span').text().trim();
         const location = $(el).find('.location-name span').text().trim();
         const priceText = $(el).find('.price-details .starting-price').text().trim();
+        let thumbnailUrl = $(el).find('img').attr('src');
+        if (thumbnailUrl && !thumbnailUrl.startsWith('http')) {
+            thumbnailUrl = baseUrl + thumbnailUrl;
+        }
         
         if (name && developer) {
             const project = {
@@ -30,6 +34,7 @@ async function scrapeDxbOffplan() {
                 city: 'Dubai',
                 status: 'Off-plan', // Assuming most are off-plan from this site
                 tags: ['dxboffplan.com', 'scrape'],
+                thumbnailUrl: thumbnailUrl || null,
             };
             projects.push(project);
         }
@@ -43,8 +48,8 @@ async function scrapeDxbOffplan() {
 }
 
 async function scrapePropertyFinder() {
-    const baseUrl = "https://www.propertyfinder.ae/en/new-projects";
-    const response = await fetch(baseUrl);
+    const baseUrl = "https://www.propertyfinder.ae";
+    const response = await fetch(`${baseUrl}/en/new-projects`);
     const html = await response.text();
     const $ = cheerio.load(html);
 
@@ -55,6 +60,8 @@ async function scrapePropertyFinder() {
             const developer = $(el).find('.card__property-logo-name').text().trim();
             const location = $(el).find('.card__location').text().trim();
             const priceText = $(el).find('.card__price-value').text().trim();
+            const thumbnailUrl = $(el).find('.card__image').attr('src');
+
 
             if (name && developer) {
                  const project = {
@@ -67,6 +74,7 @@ async function scrapePropertyFinder() {
                     city: 'Dubai',
                     status: 'New Launch', // Assuming these are new from this page
                     tags: ['propertyfinder.ae', 'scrape'],
+                    thumbnailUrl: thumbnailUrl || null,
                 };
                 projects.push(project);
             }

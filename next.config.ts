@@ -22,6 +22,18 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+       {
+        protocol: 'https',
+        hostname: 'dxboffplan.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.propertyfinder.ae',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   async redirects() {
