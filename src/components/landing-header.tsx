@@ -27,7 +27,7 @@ export function LandingHeader() {
     { name: 'Pricing', href: '/pricing' },
     { name: 'Apps', href: '/apps' },
     { name: 'Market', href: '/market' },
-    { name: 'Handbook', href: '/blog' },
+    { name: 'Resources', href: '/resources' },
   ];
 
   return (
@@ -35,6 +35,13 @@ export function LandingHeader() {
       <div className="container flex h-16 items-center">
         <div className="mr-auto flex items-center gap-6">
             <Logo />
+            <nav className="hidden md:flex items-center gap-2">
+              {navLinks.map((link) => (
+                <Link key={link.name} href={link.href}>
+                  <Button variant="ghost">{link.name}</Button>
+                </Link>
+              ))}
+            </nav>
         </div>
         <div className="hidden md:flex items-center gap-2">
             <Link href="/login">

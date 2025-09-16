@@ -25,6 +25,7 @@ export function LandingFooter() {
         { name: 'Handbook', href: '/blog' },
         { name: 'Technology', href: '/technology' },
         { name: 'Play a Game', href: '/superfreetime' },
+        { name: 'Resources', href: '/resources' },
     ],
     legal: [
         { name: 'Data Privacy', href: '/privacy' },

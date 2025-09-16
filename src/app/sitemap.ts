@@ -7,6 +7,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutes = [
     '/',
+    '/apps',
     '/dashboard',
     '/pricing',
     '/sx3-mindmap',
@@ -20,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/superfreetime',
     '/blog',
     '/market',
-    '/discover'
+    '/resources'
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
