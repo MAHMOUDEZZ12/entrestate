@@ -38,10 +38,7 @@ export function LandingHeader() {
         </div>
         <div className="hidden md:flex items-center gap-2">
             <Link href="/login">
-                <Button variant="ghost">Log In</Button>
-            </Link>
-            <Link href="/login">
-                <Button>Sign Up</Button>
+                <Button>Account</Button>
             </Link>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -106,10 +103,7 @@ export function LandingHeader() {
                     </nav>
                      <div className="mt-auto flex flex-col gap-4">
                         <Link href="/login" onClick={() => setIsOpen(false)}>
-                            <Button variant="outline" className="w-full text-lg py-6">Log In</Button>
-                        </Link>
-                        <Link href="/login" onClick={() => setIsOpen(false)}>
-                            <Button className="w-full text-lg py-6">Sign Up</Button>
+                            <Button className="w-full text-lg py-6">Account</Button>
                         </Link>
                     </div>
                  </div>
