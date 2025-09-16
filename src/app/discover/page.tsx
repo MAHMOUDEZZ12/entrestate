@@ -32,7 +32,7 @@ const mockChartData = [
 
 const ResultComponents = {
     Tool: ({ tool }: { tool: any }) => (
-        <Card className="h-full hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all col-span-1 md:col-span-1">
+        <Card className="h-full hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all col-span-1 md:col-span-1 flex flex-col">
             <CardHeader className="flex-row items-center gap-4">
                 <div className="p-3 bg-primary/10 text-primary rounded-lg">
                     {React.cloneElement(tool.icon, { className: 'h-6 w-6' })}
@@ -42,7 +42,7 @@ const ResultComponents = {
                     <CardDescription>{tool.description}</CardDescription>
                 </div>
             </CardHeader>
-            <CardFooter>
+            <CardFooter className="mt-auto">
                  <Link href={`/dashboard/tool/${tool.id}`} className="w-full">
                     <Button variant="outline" className="w-full">
                         Go to Tool <ArrowRight className="ml-2 h-4 w-4" />
@@ -52,7 +52,7 @@ const ResultComponents = {
         </Card>
     ),
     Project: ({ project }: { project: any }) => (
-        <Card className="h-full hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all col-span-1 md:col-span-1">
+        <Card className="h-full hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all col-span-1 md:col-span-1 flex flex-col">
              <CardHeader className="flex-row items-center gap-4">
                 <div className="p-3 bg-primary/10 text-primary rounded-lg">
                     <Building className="h-6 w-6" />
@@ -66,22 +66,23 @@ const ResultComponents = {
                 <p className="text-sm">Status: <span className="font-semibold">{project.status}</span></p>
                 <p className="text-sm">Price From: <span className="font-semibold">{project.priceFrom}</span></p>
             </CardContent>
-            <CardFooter>
-                 <Link href="/dashboard/tool/projects-finder" className="w-full">
-                    <Button variant="outline" className="w-full">
-                        View in Market Library <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                </Link>
+            <CardFooter className="mt-auto grid grid-cols-2 gap-2">
+                 <Link href="/dashboard/tool/landing-pages">
+                    <Button variant="outline" className="w-full text-xs h-auto py-2">Generate Landing Page</Button>
+                 </Link>
+                 <Link href="/dashboard/tool/meta-ads-copilot">
+                    <Button variant="outline" className="w-full text-xs h-auto py-2">Create Ad Campaign</Button>
+                 </Link>
             </CardFooter>
         </Card>
     ),
     Market: ({ query }: { query: string }) => (
-        <Card className="h-full col-span-1 md:col-span-2">
+        <Card className="h-full col-span-1 md:col-span-2 flex flex-col">
             <CardHeader>
                 <CardTitle>Market Trend: {query}</CardTitle>
                 <CardDescription>Live price index trend for properties in this area.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex-grow">
                  <ResponsiveContainer width="100%" height={200}>
                     <AreaChart data={mockChartData}>
                         <defs>
@@ -97,6 +98,14 @@ const ResultComponents = {
                     </AreaChart>
                 </ResponsiveContainer>
             </CardContent>
+            <CardFooter className="mt-auto grid grid-cols-2 gap-2">
+                 <Link href="/dashboard/tool/market-reports">
+                    <Button variant="outline" className="w-full text-xs h-auto py-2">Generate Full Report (PDF)</Button>
+                 </Link>
+                 <Link href="/dashboard/tool/instagram-content-creator">
+                    <Button variant="outline" className="w-full text-xs h-auto py-2">Create Social Post about this Trend</Button>
+                 </Link>
+            </CardFooter>
         </Card>
     ),
 };
