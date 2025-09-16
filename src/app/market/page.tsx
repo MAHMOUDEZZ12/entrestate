@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
-import { LineChart, Users2, Eye, Target, Sparkles, Download, ArrowRight, TrendingUp, FileText } from 'lucide-react';
+import { LineChart, Users2, Eye, Target, Sparkles, Download, ArrowRight, TrendingUp, FileText, Building } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
@@ -41,21 +41,41 @@ const topListings = [
 
 const projectPipeline = {
     latestLaunches: [
-        { name: 'Azure Residences', developer: 'Emaar', location: 'Dubai Marina', status: 'New Launch', thumbnailUrl: 'https://picsum.photos/seed/launch1/400/300' },
-        { name: 'Verde by Sobha', developer: 'Sobha Realty', location: 'JLT', status: 'New Launch', thumbnailUrl: 'https://picsum.photos/seed/launch2/400/300' },
-        { name: 'Eterno at Damac Hills 2', developer: 'Damac', location: 'Damac Hills 2', status: 'New Launch', thumbnailUrl: 'https://picsum.photos/seed/launch3/400/300' },
+        { name: 'Azure Residences', developer: 'Emaar', location: 'Dubai Marina', status: 'New Launch' },
+        { name: 'Verde by Sobha', developer: 'Sobha Realty', location: 'JLT', status: 'New Launch' },
+        { name: 'Eterno at Damac Hills 2', developer: 'Damac', location: 'Damac Hills 2', status: 'New Launch' },
     ],
     upcomingSoon: [
-        { name: 'Project Oasis', developer: 'Emaar', location: 'To be announced', status: 'Upcoming', thumbnailUrl: 'https://picsum.photos/seed/upcoming1/400/300' },
-        { name: 'The Altitude Tower', developer: 'Meraas', location: 'Business Bay', status: 'Upcoming', thumbnailUrl: 'https://picsum.photos/seed/upcoming2/400/300' },
-        { name: 'Nakheel Palm Gateway', developer: 'Nakheel', location: 'Palm Jumeirah', status: 'Upcoming', thumbnailUrl: 'https://picsum.photos/seed/upcoming3/400/300' },
+        { name: 'Project Oasis', developer: 'Emaar', location: 'To be announced', status: 'Upcoming' },
+        { name: 'The Altitude Tower', developer: 'Meraas', location: 'Business Bay', status: 'Upcoming' },
+        { name: 'Nakheel Palm Gateway', developer: 'Nakheel', location: 'Palm Jumeirah', status: 'Upcoming' },
     ],
     deliveringSoon: [
-        { name: 'Address The Bay', developer: 'Emaar', location: 'Emaar Beachfront', status: 'Handover Q4 2024', thumbnailUrl: 'https://picsum.photos/seed/delivery1/400/300' },
-        { name: 'Sobha Hartland II - Villas', developer: 'Sobha Realty', location: 'Sobha Hartland', status: 'Handover Q1 2025', thumbnailUrl: 'https://picsum.photos/seed/delivery2/400/300' },
-        { name: 'Binghatti Phantom', developer: 'Binghatti', location: 'JVC', status: 'Handover Q4 2024', thumbnailUrl: 'https://picsum.photos/seed/delivery3/400/300' },
+        { name: 'Address The Bay', developer: 'Emaar', location: 'Emaar Beachfront', status: 'Handover Q4 2024' },
+        { name: 'Sobha Hartland II - Villas', developer: 'Sobha Realty', location: 'Sobha Hartland', status: 'Handover Q1 2025' },
+        { name: 'Binghatti Phantom', developer: 'Binghatti', location: 'JVC', status: 'Handover Q4 2024' },
     ]
 }
+
+const ProjectPipelineCard = ({ project }: { project: { name: string, developer: string, location: string, status: string } }) => (
+    <Card className="flex flex-col">
+        <CardHeader>
+            <div className="flex items-center gap-3">
+                <div className="p-3 bg-primary/10 rounded-lg text-primary">
+                    <Building className="h-6 w-6" />
+                </div>
+                <div>
+                    <CardTitle>{project.name}</CardTitle>
+                    <CardDescription>{project.developer} - {project.location}</CardDescription>
+                </div>
+            </div>
+        </CardHeader>
+        <CardFooter className="mt-auto">
+            <Badge variant={project.status === 'Upcoming' ? 'secondary' : 'default'}>{project.status}</Badge>
+            <Button variant="outline" size="sm" className="ml-auto">View Details</Button>
+        </CardFooter>
+    </Card>
+);
 
 
 export default function MarketPage() {
@@ -194,63 +214,21 @@ export default function MarketPage() {
                 <TabsContent value="latest-launches">
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         {projectPipeline.latestLaunches.map((p, i) => (
-                            <Card key={i} className="flex flex-col">
-                                <CardContent className="p-0">
-                                     <div className="aspect-video relative">
-                                        <Image src={p.thumbnailUrl} alt={p.name} layout="fill" objectFit="cover" className="rounded-t-lg" data-ai-hint="modern building exterior" />
-                                    </div>
-                                </CardContent>
-                                <CardHeader>
-                                    <CardTitle>{p.name}</CardTitle>
-                                    <CardDescription>{p.developer} - {p.location}</CardDescription>
-                                </CardHeader>
-                                <CardFooter className="mt-auto">
-                                    <Badge>{p.status}</Badge>
-                                    <Button variant="outline" size="sm" className="ml-auto">View Details</Button>
-                                </CardFooter>
-                            </Card>
+                            <ProjectPipelineCard key={i} project={p} />
                         ))}
                     </div>
                 </TabsContent>
                  <TabsContent value="upcoming-soon">
                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         {projectPipeline.upcomingSoon.map((p, i) => (
-                             <Card key={i} className="flex flex-col">
-                                <CardContent className="p-0">
-                                     <div className="aspect-video relative">
-                                        <Image src={p.thumbnailUrl} alt={p.name} layout="fill" objectFit="cover" className="rounded-t-lg" data-ai-hint="architectural rendering concept" />
-                                    </div>
-                                </CardContent>
-                                <CardHeader>
-                                    <CardTitle>{p.name}</CardTitle>
-                                    <CardDescription>{p.developer} - {p.location}</CardDescription>
-                                </CardHeader>
-                                <CardFooter className="mt-auto">
-                                     <Badge variant="secondary">{p.status}</Badge>
-                                     <Button variant="outline" size="sm" className="ml-auto">View Details</Button>
-                                </CardFooter>
-                            </Card>
+                            <ProjectPipelineCard key={i} project={p} />
                         ))}
                     </div>
                 </TabsContent>
                  <TabsContent value="delivering-soon">
                      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
                         {projectPipeline.deliveringSoon.map((p, i) => (
-                            <Card key={i} className="flex flex-col">
-                                <CardContent className="p-0">
-                                     <div className="aspect-video relative">
-                                        <Image src={p.thumbnailUrl} alt={p.name} layout="fill" objectFit="cover" className="rounded-t-lg" data-ai-hint="building construction site" />
-                                    </div>
-                                </CardContent>
-                                <CardHeader>
-                                    <CardTitle>{p.name}</CardTitle>
-                                    <CardDescription>{p.developer} - {p.location}</CardDescription>
-                                </CardHeader>
-                                <CardFooter className="mt-auto">
-                                    <Badge variant="outline">{p.status}</Badge>
-                                    <Button variant="outline" size="sm" className="ml-auto">View Details</Button>
-                                </CardFooter>
-                            </Card>
+                           <ProjectPipelineCard key={i} project={p} />
                         ))}
                     </div>
                 </TabsContent>
