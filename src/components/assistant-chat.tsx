@@ -19,25 +19,9 @@ type Message = {
 
 const InitialAssistantMessage = () => (
     <div>
-        <p className="font-semibold mb-2">Hello! I'm your AI co-pilot, the brain of your Super Seller Suite.</p>
-        <p className="mb-2">You can command me to perform complex tasks, but first, you should train me. The more I know, the better I can help you.</p>
-        <div className="p-3 bg-background rounded-lg border space-y-2">
-            <div className="flex items-start gap-3">
-                <div className="p-2 bg-primary/10 text-primary rounded-md mt-1"><BookOpen className="h-5 w-5" /></div>
-                <div>
-                    <h4 className="font-semibold text-foreground">How to Train Me</h4>
-                    <p className="text-sm text-foreground/80">Go to the <Link href="/dashboard/brand" className="underline font-semibold hover:text-primary">Brand & Assets</Link> page and upload your brochures, price lists, and market reports. This is my "Knowledge Base".</p>
-                </div>
-            </div>
-             <div className="flex items-start gap-3">
-                 <div className="p-2 bg-primary/10 text-primary rounded-md mt-1"><Sparkles className="h-5 w-5" /></div>
-                <div>
-                    <h4 className="font-semibold text-foreground">Next Best Step</h4>
-                    <p className="text-sm text-foreground/80">A great place to start is the <Link href="/dashboard/tool/meta-auto-pilot" className="underline font-semibold hover:text-primary">Meta Auto Pilot</Link>. It can run an entire ad campaign for you with a single click.</p>
-                </div>
-            </div>
-        </div>
-         <p className="mt-3 text-sm">If you have a secret code, feel free to enter it below.</p>
+        <p className="font-semibold mb-2">Hello! I'm your AI co-pilot.</p>
+        <p className="mb-3">Train me by uploading your brochures, price lists, and market reports to the <Link href="/dashboard/brand" className="underline font-semibold hover:text-primary">Brand & Assets</Link> page. This gives me a knowledge base to help you better.</p>
+        <p className="text-sm">What can I help you accomplish today? You can ask a question, give a command, or enter a secret code.</p>
     </div>
 );
 

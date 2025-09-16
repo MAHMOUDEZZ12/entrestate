@@ -7,6 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Search, X } from 'lucide-react';
 import { tools, FilterCategory } from '@/lib/tools-client';
 import Link from 'next/link';
+import { useTabManager } from '@/context/TabManagerContext';
+import { useRouter } from 'next/navigation';
+
 
 interface GlobalSearchProps {
   isOpen: boolean;
@@ -27,6 +30,8 @@ const searchCategories: {title: string, category: FilterCategory | 'All'}[] = [
 export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
   const [query, setQuery] = useState('');
   const [filteredTools, setFilteredTools] = useState(allTools);
+  const { addTab } = useTabManager();
+  const router = useRouter();
 
   useEffect(() => {
     if (query.trim() === '') {
@@ -53,6 +58,12 @@ export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
     document.addEventListener("keydown", down)
     return () => document.removeEventListener("keydown", down)
   }, [isOpen, setIsOpen])
+  
+  const handleSelect = (tool: typeof allTools[0]) => {
+    addTab({ href: tool.href, label: tool.title });
+    router.push(tool.href);
+    setIsOpen(false);
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -81,14 +92,14 @@ export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
                             <h3 className="font-semibold text-muted-foreground">{cat.title}</h3>
                             <div className="space-y-2">
                                 {toolsInCategory.map(tool => (
-                                    <Link key={tool.id} href={`/dashboard/tool/${tool.id}`} onClick={() => setIsOpen(false)}>
+                                    <button key={tool.id} onClick={() => handleSelect(tool)} className="w-full text-left">
                                         <div className="flex items-center gap-3 p-2 rounded-md hover:bg-muted cursor-pointer">
                                             <div className="p-1.5 rounded-md text-white" style={{backgroundColor: tool.color}}>
                                                 {React.cloneElement(tool.icon, {className: 'h-5 w-5'})}
                                             </div>
                                             <span className="font-medium text-sm">{tool.title}</span>
                                         </div>
-                                    </Link>
+                                    </button>
                                 ))}
                             </div>
                         </div>

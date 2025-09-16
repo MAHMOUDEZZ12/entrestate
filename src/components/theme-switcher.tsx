@@ -14,47 +14,45 @@ export const themes = [
 export function useTheme() {
   const [theme, setThemeState] = useState('system');
 
+  // Effect to set the initial theme from localStorage
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme && themes.some(t => t.value === savedTheme)) {
-        setThemeState(savedTheme);
+      setThemeState(savedTheme);
     }
   }, []);
 
   const setTheme = (newTheme: string) => {
+    localStorage.setItem('theme', newTheme);
+    setThemeState(newTheme);
+  };
+  
+  // Effect to apply the theme class to the <html> element
+  useEffect(() => {
     const root = document.documentElement;
     
-    // Clear existing theme classes from both globals.css and the html element
-    themes.forEach(t => root.classList.remove(t.value));
-    
-    let activeTheme = newTheme;
-    if (newTheme === 'system') {
+    // Remove all possible theme classes
+    themes.forEach(t => {
+      if (t.value !== 'system') {
+        root.classList.remove(t.value);
+      }
+    });
+    root.classList.remove('light', 'dark');
+
+    let activeTheme = theme;
+    if (theme === 'system') {
       activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
     }
     
     root.classList.add(activeTheme);
-    localStorage.setItem('theme', newTheme);
-    setThemeState(newTheme);
-  };
-
-  useEffect(() => {
-    // This effect ensures the correct class is applied on initial load
-    // and when the system preference changes.
-     let activeTheme = theme;
-     if (theme === 'system') {
-        activeTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-     }
-     const root = document.documentElement;
-     themes.forEach(t => root.classList.remove(t.value));
-     root.classList.add(activeTheme);
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = () => {
-        if (localStorage.getItem('theme') === 'system') {
-            const newActiveTheme = mediaQuery.matches ? 'dark' : 'light';
-            themes.forEach(t => root.classList.remove(t.value));
-            root.classList.add(newActiveTheme);
-        }
+      if (localStorage.getItem('theme') === 'system') {
+        const newActiveTheme = mediaQuery.matches ? 'dark' : 'light';
+        root.classList.remove('light', 'dark');
+        root.classList.add(newActiveTheme);
+      }
     };
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
@@ -62,12 +60,4 @@ export function useTheme() {
   }, [theme]);
 
   return { theme, setTheme, themes };
-}
-
-/**
- * @deprecated This component is deprecated and should not be used directly.
- * Use the `useTheme` hook and build the menu items in your component instead.
- */
-export function ThemeSwitcher() {
-    return null;
 }
