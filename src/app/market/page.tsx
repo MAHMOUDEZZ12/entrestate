@@ -15,6 +15,8 @@ import { LandingFooter } from '@/components/landing-footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 const kpiData = {
   averagePrice: 2450000,
@@ -72,7 +74,42 @@ const ProjectPipelineCard = ({ project }: { project: { name: string, developer: 
         </CardHeader>
         <CardFooter className="mt-auto">
             <Badge variant={project.status === 'Upcoming' ? 'secondary' : 'default'}>{project.status}</Badge>
-            <Button variant="outline" size="sm" className="ml-auto">View Details</Button>
+            <Dialog>
+                <DialogTrigger asChild>
+                    <Button variant="outline" size="sm" className="ml-auto">View Details</Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[625px]">
+                    <DialogHeader>
+                        <DialogTitle>{project.name}</DialogTitle>
+                        <DialogDescription>{project.developer} - {project.location}</DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                        <Carousel>
+                            <CarouselContent>
+                                {Array.from({ length: 3 }).map((_, index) => (
+                                <CarouselItem key={index}>
+                                    <div className="p-1">
+                                    <Card>
+                                        <CardContent className="flex aspect-video items-center justify-center p-6 relative">
+                                             <Image src={`https://picsum.photos/seed/${project.name.replace(/\s/g, '-')}-${index}/600/400`} alt={`${project.name} image ${index+1}`} layout="fill" objectFit="cover" className="rounded-lg" />
+                                        </CardContent>
+                                    </Card>
+                                    </div>
+                                </CarouselItem>
+                                ))}
+                            </CarouselContent>
+                            <CarouselPrevious />
+                            <CarouselNext />
+                        </Carousel>
+                        <div className="text-sm">
+                            <p className="font-semibold">Price Range:</p>
+                            <p>AED 1.5M - AED 5M</p>
+                            <p className="font-semibold mt-2">Unit Types:</p>
+                            <p>1-3 Bedroom Apartments, 4-Bedroom Penthouses</p>
+                        </div>
+                    </div>
+                </DialogContent>
+            </Dialog>
         </CardFooter>
     </Card>
 );
