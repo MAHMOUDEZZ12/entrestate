@@ -21,7 +21,7 @@ export const ShinyButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ c
         <span
           className={cn(
             "absolute inset-x-0 -bottom-1/2 h-full w-full",
-            "bg-[radial-gradient(150%_150%_at_50%_100%,#fff_20%,rgba(255,255,255,0)_80%)]",
+            "bg-[radial-gradient(150%_150%_at_50%_100%,hsl(var(--primary-foreground))_20%,transparent_80%)]",
             "opacity-0 transition-opacity duration-500 group-hover:opacity-30"
           )}
         />

@@ -6,12 +6,15 @@ import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Loader2, Sparkles, Building, BarChart, LayoutTemplate, ArrowRight } from 'lucide-react';
+import { Search, Loader2, Sparkles, Building, BarChart, LayoutTemplate, ArrowRight, UserPlus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { tools } from '@/lib/tools-client';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { useToast } from '@/hooks/use-toast';
+import { Label } from '@/components/ui/label';
 
 const popularQueries = [
     "Market trends in Dubai Marina",
@@ -112,14 +115,15 @@ const ResultComponents = {
 
 
 export default function DiscoverPage() {
+    const { toast } = useToast();
     const [query, setQuery] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [results, setResults] = useState<any[] | null>(null);
+    const [searchCount, setSearchCount] = useState(0);
+    const [showSignup, setShowSignup] = useState(false);
+    const [email, setEmail] = useState('');
 
-    const handleSearch = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!query) return;
-
+    const runSearch = () => {
         setIsLoading(true);
         setResults(null);
 
@@ -158,11 +162,35 @@ export default function DiscoverPage() {
                  ];
             }
 
-
             setResults(mockResults);
             setIsLoading(false);
         }, 2000);
+    }
+
+    const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!query) return;
+
+        if (searchCount > 0) {
+            setShowSignup(true);
+        } else {
+            setSearchCount(prev => prev + 1);
+            runSearch();
+        }
     };
+    
+    const handleSignupAndSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!email) {
+            toast({ title: "Email required", description: "Please enter your email to create an account.", variant: "destructive"});
+            return;
+        }
+        // Simulate account creation
+        toast({ title: "Welcome!", description: "Your account has been created. Running your search now."});
+        setShowSignup(false);
+        setSearchCount(prev => prev + 1); // Increment to prevent modal on next search
+        runSearch();
+    }
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
@@ -235,6 +263,24 @@ export default function DiscoverPage() {
                         )}
                     </AnimatePresence>
                 </div>
+                
+                 <Dialog open={showSignup} onOpenChange={setShowSignup}>
+                    <DialogContent>
+                        <DialogHeader>
+                            <DialogTitle className="flex items-center gap-2"><UserPlus /> Enjoying the Discover experience?</DialogTitle>
+                            <DialogDescription>
+                                Create a free account to save your discoveries, access more tools, and continue searching.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <form onSubmit={handleSignupAndSearch} className="space-y-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="email">Email Address</Label>
+                                <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} required />
+                            </div>
+                            <Button type="submit" className="w-full">Create Free Account & Continue</Button>
+                        </form>
+                    </DialogContent>
+                </Dialog>
 
             </main>
             <LandingFooter />
