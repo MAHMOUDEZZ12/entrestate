@@ -11,7 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/pricing',
     '/sx3-mindmap',
     '/login',
-    '/signup',
     '/privacy',
     '/terms',
     '/status',

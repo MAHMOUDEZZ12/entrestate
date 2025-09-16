@@ -26,10 +26,9 @@ export function LandingHeader() {
   const navLinks = [
     { name: 'Pricing', href: '/pricing' },
     { name: 'Market', href: '/market' },
-    { name: 'Home', href: '/' },
+    { name: 'Discover', href: '/discover' },
     { name: 'Handbook', href: '/blog' },
     { name: 'Apps', href: '/apps' },
-    { name: 'Play', href: '/superfreetime' },
 ];
 
   return (
@@ -37,15 +36,15 @@ export function LandingHeader() {
       <div className="container flex h-16 items-center">
         <div className="mr-auto flex items-center gap-6">
             <Logo />
-             <nav className="hidden md:flex items-center gap-2">
+        </div>
+        <div className="hidden md:flex items-center gap-2">
+             <nav className="flex items-center gap-2 mr-4">
                 {navLinks.map((link) => (
                     <Link key={link.name} href={link.href}>
                         <Button variant="ghost">{link.name}</Button>
                     </Link>
                 ))}
             </nav>
-        </div>
-        <div className="hidden md:flex items-center gap-2">
             <Link href="/login">
                 <Button variant="ghost">Log In</Button>
             </Link>

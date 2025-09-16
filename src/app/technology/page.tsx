@@ -45,7 +45,7 @@ export default function AIHostPage() {
                     description="The AI presenter that never sleeps. Create lifelike video presenters to deliver pitches, tours, and market updates 24/7."
                 />
                  <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                     <Link href="/signup">
+                     <Link href="/login">
                         <ShinyButton>Get Your AI Presenter Now</ShinyButton>
                     </Link>
                  </div>
