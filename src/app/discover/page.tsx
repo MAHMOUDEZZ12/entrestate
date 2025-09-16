@@ -6,10 +6,12 @@ import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Loader2, Sparkles, Building, BarChart, LayoutTemplate } from 'lucide-react';
+import { Search, Loader2, Sparkles, Building, BarChart, LayoutTemplate, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { tools } from '@/lib/tools-client';
+import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 
 const popularQueries = [
     "Market trends in Dubai Marina",
@@ -18,27 +20,86 @@ const popularQueries = [
     "Compare Damac Hills 2 vs. Arabian Ranches",
 ];
 
-const SearchResultCard = ({ icon, title, description, href }: { icon: React.ReactNode, title: string, description: string, href: string }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-    >
-        <Link href={href}>
-            <Card className="h-full hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all">
-                <CardHeader className="flex-row items-center gap-4">
-                    <div className="p-3 bg-primary/10 text-primary rounded-lg">
-                        {icon}
-                    </div>
-                    <div>
-                        <CardTitle>{title}</CardTitle>
-                        <CardDescription>{description}</CardDescription>
-                    </div>
-                </CardHeader>
-            </Card>
-        </Link>
-    </motion.div>
-);
+const mockChartData = [
+  { name: 'Jan', value: 2.1 },
+  { name: 'Feb', value: 2.3 },
+  { name: 'Mar', value: 2.2 },
+  { name: 'Apr', value: 2.5 },
+  { name: 'May', value: 2.4 },
+  { name: 'Jun', value: 2.6 },
+  { name: 'Jul', value: 2.8 },
+];
+
+const ResultComponents = {
+    Tool: ({ tool }: { tool: any }) => (
+        <Card className="h-full hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all col-span-1 md:col-span-1">
+            <CardHeader className="flex-row items-center gap-4">
+                <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                    {React.cloneElement(tool.icon, { className: 'h-6 w-6' })}
+                </div>
+                <div>
+                    <CardTitle>{tool.title}</CardTitle>
+                    <CardDescription>{tool.description}</CardDescription>
+                </div>
+            </CardHeader>
+            <CardFooter>
+                 <Link href={`/dashboard/tool/${tool.id}`} className="w-full">
+                    <Button variant="outline" className="w-full">
+                        Go to Tool <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                </Link>
+            </CardFooter>
+        </Card>
+    ),
+    Project: ({ project }: { project: any }) => (
+        <Card className="h-full hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all col-span-1 md:col-span-1">
+             <CardHeader className="flex-row items-center gap-4">
+                <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                    <Building className="h-6 w-6" />
+                </div>
+                <div>
+                    <CardTitle>Project: {project.name}</CardTitle>
+                    <CardDescription>{project.developer} - {project.area}</CardDescription>
+                </div>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm">Status: <span className="font-semibold">{project.status}</span></p>
+                <p className="text-sm">Price From: <span className="font-semibold">{project.priceFrom}</span></p>
+            </CardContent>
+            <CardFooter>
+                 <Link href="/dashboard/tool/projects-finder" className="w-full">
+                    <Button variant="outline" className="w-full">
+                        View in Market Library <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                </Link>
+            </CardFooter>
+        </Card>
+    ),
+    Market: ({ query }: { query: string }) => (
+        <Card className="h-full col-span-1 md:col-span-2">
+            <CardHeader>
+                <CardTitle>Market Trend: {query}</CardTitle>
+                <CardDescription>Live price index trend for properties in this area.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                 <ResponsiveContainer width="100%" height={200}>
+                    <AreaChart data={mockChartData}>
+                        <defs>
+                            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                            </linearGradient>
+                        </defs>
+                        <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
+                        <YAxis fontSize={12} tickLine={false} axisLine={false} domain={['dataMin - 0.2', 'dataMax + 0.2']} />
+                        <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}/>
+                        <Area type="monotone" dataKey="value" stroke="hsl(var(--primary))" fill="url(#colorUv)" />
+                    </AreaChart>
+                </ResponsiveContainer>
+            </CardContent>
+        </Card>
+    ),
+};
 
 
 export default function DiscoverPage() {
@@ -55,11 +116,40 @@ export default function DiscoverPage() {
 
         // Simulate an AI-powered search and content generation
         setTimeout(() => {
-            const mockResults = [
-                { icon: <Building className="h-6 w-6" />, title: `Project Details: ${query}`, description: "Explore units, prices, and handover dates for this project.", href: "/dashboard/tool/projects-finder" },
-                { icon: <BarChart className="h-6 w-6" />, title: `Market Report: ${query}`, description: "Generate an in-depth market analysis PDF for this area.", href: "/dashboard/tool/market-reports" },
-                { icon: <LayoutTemplate className="h-6 w-6" />, title: `Landing Page for ${query}`, description: "Create a dedicated, high-converting landing page.", href: "/dashboard/tool/landing-pages" },
-            ];
+            const lowerQuery = query.toLowerCase();
+            let mockResults = [];
+
+            // Intent 1: User is asking for a tool
+            const toolKeywords = ['create', 'generate', 'build', 'design', 'edit', 'plan'];
+            const foundTool = tools.find(t => 
+                lowerQuery.includes(t.title.toLowerCase()) || 
+                toolKeywords.some(kw => lowerQuery.includes(kw))
+            );
+
+            if (foundTool) {
+                mockResults.push({ type: 'Tool', tool: foundTool });
+            }
+
+            // Intent 2: User is asking about market data
+            if (lowerQuery.includes('market') || lowerQuery.includes('trend') || lowerQuery.includes('price')) {
+                 mockResults.push({ type: 'Market', query: query });
+            }
+            
+            // Intent 3: User is asking about a project
+            if (lowerQuery.includes('emaar') || lowerQuery.includes('damac') || lowerQuery.includes('sobha')) {
+                mockResults.push({ type: 'Project', project: { name: 'Emaar Beachfront', developer: 'Emaar', area: 'Dubai Harbour', status: 'Ready', priceFrom: 'AED 2.5M' }});
+            }
+
+            // Fallback for generic queries
+            if (mockResults.length === 0) {
+                 mockResults = [
+                    { type: 'Tool', tool: tools.find(t => t.id === 'projects-finder') },
+                    { type: 'Tool', tool: tools.find(t => t.id === 'market-reports') },
+                    { type: 'Tool', tool: tools.find(t => t.id === 'landing-pages') },
+                 ];
+            }
+
+
             setResults(mockResults);
             setIsLoading(false);
         }, 2000);
@@ -100,7 +190,7 @@ export default function DiscoverPage() {
                     </div>
                 </div>
 
-                <div className="mt-16 w-full max-w-4xl">
+                <div className="mt-16 w-full max-w-5xl">
                      <AnimatePresence>
                         {isLoading && (
                             <motion.div
@@ -118,11 +208,21 @@ export default function DiscoverPage() {
 
                      <AnimatePresence>
                         {results && (
-                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                                {results.map((res, index) => (
-                                    <SearchResultCard key={index} {...res} />
-                                ))}
-                            </div>
+                             <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.5, staggerChildren: 0.1 }}
+                                className="grid grid-cols-1 md:grid-cols-2 gap-6"
+                             >
+                                {results.map((res, index) => {
+                                    const Component = ResultComponents[res.type as keyof typeof ResultComponents];
+                                    return (
+                                       <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+                                          {Component ? <Component {...res} /> : null}
+                                       </motion.div>
+                                    );
+                                })}
+                            </motion.div>
                         )}
                     </AnimatePresence>
                 </div>
