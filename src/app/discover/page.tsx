@@ -15,6 +15,8 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'rec
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { Label } from '@/components/ui/label';
+import { Skeleton } from '@/components/ui/skeleton';
+
 
 const popularQueries = [
     "Market trends in Dubai Marina",
@@ -191,6 +193,41 @@ export default function DiscoverPage() {
         setSearchCount(prev => prev + 1); // Increment to prevent modal on next search
         runSearch();
     }
+    
+     const LoadingSkeleton = () => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <Card className="h-full col-span-1 md:col-span-1 flex flex-col">
+                <CardHeader className="flex-row items-center gap-4">
+                    <Skeleton className="h-16 w-16 rounded-lg" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-5 w-40" />
+                        <Skeleton className="h-4 w-60" />
+                    </div>
+                </CardHeader>
+                <CardFooter className="mt-auto">
+                    <Skeleton className="h-10 w-32" />
+                </CardFooter>
+            </Card>
+            <Card className="h-full col-span-1 md:col-span-1 flex flex-col">
+                <CardHeader className="flex-row items-center gap-4">
+                     <Skeleton className="h-16 w-16 rounded-lg" />
+                    <div className="space-y-2">
+                        <Skeleton className="h-5 w-48" />
+                        <Skeleton className="h-4 w-40" />
+                    </div>
+                </CardHeader>
+                <CardContent>
+                    <Skeleton className="h-4 w-24 mb-2" />
+                    <Skeleton className="h-4 w-32" />
+                </CardContent>
+                <CardFooter className="mt-auto grid grid-cols-2 gap-2">
+                    <Skeleton className="h-10 w-full" />
+                    <Skeleton className="h-10 w-full" />
+                </CardFooter>
+            </Card>
+        </div>
+    );
+
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
@@ -209,36 +246,29 @@ export default function DiscoverPage() {
                 </div>
 
                 <div className="w-full max-w-2xl sticky top-24 z-20">
-                     <form onSubmit={handleSearch} className="relative">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                        <Input 
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            placeholder='Search for anything... e.g., "Emaar Beachfront"' 
-                            className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-lg"
-                        />
-                    </form>
-                    <div className="text-center mt-4 space-x-2">
-                        {popularQueries.map((q, i) => (
-                             <Button key={i} variant="ghost" size="sm" className="text-xs text-muted-foreground" onClick={() => setQuery(q)}>
-                                {q}
-                            </Button>
-                        ))}
-                    </div>
+                     <div className="relative group">
+                         <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-full blur-lg opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-gradient-spin"></div>
+                         <form onSubmit={handleSearch} className="relative">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input 
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                placeholder='Search for anything... e.g., "Emaar Beachfront"' 
+                                className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-lg"
+                            />
+                        </form>
+                     </div>
                 </div>
 
                 <div className="mt-16 w-full max-w-5xl">
-                     <AnimatePresence>
+                    <AnimatePresence>
                         {isLoading && (
-                            <motion.div
+                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
-                                className="flex flex-col items-center justify-center text-center text-muted-foreground"
                             >
-                                <Loader2 className="h-10 w-10 animate-spin text-primary mb-4" />
-                                <p className="font-semibold">Searching the suite...</p>
-                                <p className="text-sm">Generating intelligent results for you.</p>
+                                <LoadingSkeleton />
                             </motion.div>
                         )}
                     </AnimatePresence>
