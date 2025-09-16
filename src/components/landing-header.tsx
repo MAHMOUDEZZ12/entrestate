@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { Menu, X, Sun, Moon, Laptop, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/logo';
-import { cn } from '@/lib/utils';
 import {
   Sheet,
   SheetContent,
@@ -20,19 +19,19 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from './theme-switcher';
 
-const navLinks = [
+export function LandingHeader() {
+  const [isOpen, setIsOpen] = useState(false);
+  const { setTheme, themes } = useTheme();
+  
+  const navLinks = [
     { name: 'Pricing', href: '/pricing' },
     { name: 'Market', href: '/market' },
-    { name: 'Discover', href: '/' },
+    { name: 'Home', href: '/' },
     { name: 'Handbook', href: '/blog' },
     { name: 'Apps', href: '/apps' },
     { name: 'Play', href: '/superfreetime' },
 ];
 
-export function LandingHeader() {
-  const [isOpen, setIsOpen] = useState(false);
-  const { setTheme, themes } = useTheme();
-  
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center">
@@ -40,11 +39,6 @@ export function LandingHeader() {
             <Logo />
         </div>
         <div className="hidden md:flex items-center gap-2">
-            {navLinks.map((link) => (
-                 <Link key={link.name} href={link.href}>
-                    <Button variant="ghost">{link.name}</Button>
-                </Link>
-            ))}
             <Link href="/login">
                 <Button variant="ghost">Log In</Button>
             </Link>

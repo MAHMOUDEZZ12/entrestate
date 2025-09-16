@@ -9,17 +9,22 @@ import { Separator } from './ui/separator';
 
 export function LandingFooter() {
   const footerLinks = {
-    gemin: [
-        { name: 'About', href: '/about' },
+    explore: [
+        { name: 'Home', href: '/' },
+        { name: 'Apps', href: '/apps' },
+        { name: 'Market', href: '/market' },
         { name: 'Pricing', href: '/pricing' },
+    ],
+    company: [
+        { name: 'About', href: '/about' },
         { name: 'System Status', href: '/status' },
-        { name: 'SuperFreeTime', href: '/superfreetime' },
+        { name: 'Documentation', href: '/documentation' },
+        { name: 'Gemin Mindmap', href: '/sx3-mindmap' },
     ],
     resources: [
         { name: 'Handbook', href: '/blog' },
-        { name: 'Documentation', href: '/documentation' },
-        { name: 'Gemin Mindmap', href: '/sx3-mindmap' },
         { name: 'Technology', href: '/technology' },
+        { name: 'Play a Game', href: '/superfreetime' },
     ],
     legal: [
         { name: 'Data Privacy', href: '/privacy' },
@@ -33,18 +38,30 @@ export function LandingFooter() {
       <div className="absolute -top-1/2 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-to-t from-primary/10 to-transparent rounded-t-full" />
       <div className="container relative z-10 py-16">
         <div className="mt-8">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div className="md:col-span-1">
+            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
+                <div className="lg:col-span-1">
                     <Logo />
                     <p className="mt-4 text-foreground/60 max-w-xs">
                         The ultimate sales suite, empowering agents to create stunning marketing campaigns and close more deals.
                     </p>
                 </div>
-                <div className='md:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-8'>
+                <div className='lg:col-span-4 grid grid-cols-2 md:grid-cols-4 gap-8'>
                      <div>
-                        <h3 className="font-semibold text-foreground">Gemin</h3>
+                        <h3 className="font-semibold text-foreground">Explore</h3>
                         <ul className="mt-4 space-y-2">
-                            {footerLinks.gemin.map((link) => (
+                            {footerLinks.explore.map((link) => (
+                                <li key={link.name}>
+                                    <Link href={link.href} className="text-foreground/60 hover:text-primary transition-colors">
+                                        {link.name}
+                                    </Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                     <div>
+                        <h3 className="font-semibold text-foreground">Company</h3>
+                        <ul className="mt-4 space-y-2">
+                            {footerLinks.company.map((link) => (
                                 <li key={link.name}>
                                     <Link href={link.href} className="text-foreground/60 hover:text-primary transition-colors">
                                         {link.name}
