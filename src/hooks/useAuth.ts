@@ -21,17 +21,10 @@ export function useAuth() {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
-
-      const isAuthPage = pathname === '/login' || pathname === '/signup' || pathname === '/onboarding';
-      
-      if (!user && !isAuthPage) {
-        // If user is not logged in and not on an auth page, redirect to login
-        router.push('/login');
-      }
     });
 
     return () => unsubscribe();
-  }, [router, pathname]);
+  }, []);
 
   return { user, loading };
 }
