@@ -146,44 +146,65 @@ export default function DiscoverResultsPage() {
     const [results, setResults] = useState<any[] | null>(null);
 
     useEffect(() => {
-        const runSearch = () => {
+        const runSearch = async () => {
             setIsLoading(true);
             setResults(null);
 
-            setTimeout(() => {
-                const lowerQuery = decodeURIComponent(query).toLowerCase();
-                let mockResults = [];
+            try {
+                 const response = await fetch('/api/run', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        toolId: 'discover-market',
+                        payload: { query: decodeURIComponent(query) }
+                    })
+                });
 
-                const toolKeywords = ['create', 'generate', 'build', 'design', 'edit', 'plan'];
-                const foundTool = tools.find(t => 
-                    lowerQuery.includes(t.title.toLowerCase()) || 
-                    toolKeywords.some(kw => lowerQuery.includes(kw))
-                );
-
-                if (foundTool) {
-                    mockResults.push({ type: 'Tool', tool: foundTool });
+                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(data.error || "Search failed");
                 }
 
-                if (lowerQuery.includes('market') || lowerQuery.includes('trend') || lowerQuery.includes('price')) {
-                     mockResults.push({ type: 'Market', query: query });
-                }
-                
-                if (lowerQuery.includes('emaar') || lowerQuery.includes('damac') || lowerQuery.includes('sobha')) {
-                    mockResults.push({ type: 'Project', project: { name: 'Emaar Beachfront', developer: 'Emaar', area: 'Dubai Harbour', status: 'Ready', priceFrom: 'AED 2.5M' }});
-                }
+                // Transform the API response to the format expected by the UI
+                 const mockResults = (data.results || []).map((res: any) => {
+                    const doc = res.document;
+                    if (doc.structData?.tool_id) {
+                        const tool = tools.find(t => t.id === doc.structData.tool_id);
+                        return tool ? { type: 'Tool', tool: tool } : null;
+                    }
+                    if (doc.structData?.project_id) {
+                         return { 
+                            type: 'Project',
+                            project: {
+                                name: doc.structData.name,
+                                developer: doc.structData.developer,
+                                area: doc.structData.area,
+                                status: doc.structData.status,
+                                priceFrom: doc.structData.price_from,
+                            }
+                        };
+                    }
+                    if (doc.structData?.market_topic) {
+                         return { type: 'Market', query: doc.structData.market_topic };
+                    }
+                    return null;
+                }).filter(Boolean);
 
-                if (mockResults.length === 0) {
-                     mockResults = [
-                        { type: 'Tool', tool: tools.find(t => t.id === 'projects-finder') },
-                        { type: 'Tool', tool: tools.find(t => t.id === 'market-reports') },
-                        { type: 'Tool', tool: tools.find(t => t.id === 'landing-pages') },
-                     ];
+                // If no smart results, fallback to a default set
+                 if (mockResults.length === 0) {
+                     mockResults.push({ type: 'Tool', tool: tools.find(t => t.id === 'projects-finder') });
+                     mockResults.push({ type: 'Tool', tool: tools.find(t => t.id === 'market-reports') });
                 }
 
                 setResults(mockResults);
+
+            } catch (error) {
+                console.error("Search failed:", error);
+                 setResults([]);
+            } finally {
                 setIsLoading(false);
-            }, 1500);
-        }
+            }
+        };
 
         if (query) {
             runSearch();
@@ -208,7 +229,12 @@ export default function DiscoverResultsPage() {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 exit={{ opacity: 0 }}
+                                className="space-y-4"
                             >
+                                <div className="flex items-center gap-3 text-muted-foreground">
+                                    <Loader2 className="h-5 w-5 animate-spin" />
+                                    <p className="font-semibold">The AI is searching the market...</p>
+                                </div>
                                 <LoadingSkeleton />
                             </motion.div>
                         )}
@@ -235,7 +261,7 @@ export default function DiscoverResultsPage() {
                     </AnimatePresence>
                 </div>
 
-                 {!isLoading && !results && (
+                 {!isLoading && results?.length === 0 && (
                      <div className="text-center py-16 text-muted-foreground">
                         <p>No results found for &quot;{decodeURIComponent(query)}&quot;.</p>
                      </div>
