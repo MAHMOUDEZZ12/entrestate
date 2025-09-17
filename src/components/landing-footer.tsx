@@ -10,27 +10,27 @@ import { Separator } from './ui/separator';
 export function LandingFooter() {
   const footerLinks = {
     explore: [
-        { name: 'Community', href: '/community' },
         { name: 'Apps', href: '/apps' },
         { name: 'Market', href: '/market' },
         { name: 'Pricing', href: '/pricing' },
+        { name: 'Community', href: '/community' },
     ],
     company: [
         { name: 'About', href: '/about' },
         { name: 'System Status', href: '/status' },
-        { name: 'Documentation', href: '/documentation' },
         { name: 'Gemin Mindmap', href: '/sx3-mindmap' },
     ],
     resources: [
-        { name: 'Handbook', href: '/blog' },
-        { name: 'Technology', href: '/technology' },
-        { name: 'Play a Game', href: '/superfreetime' },
         { name: 'Resources', href: '/resources' },
+        { name: 'Handbook (Blog)', href: '/blog' },
+        { name: 'Documentation', href: '/documentation' },
+        { name: 'Technology', href: '/technology' },
     ],
     legal: [
         { name: 'Data Privacy', href: '/privacy' },
         { name: 'Terms of Service', href: '/terms' },
         { name: 'Cookie Policy', href: '/cookies' },
+        { name: 'Play a Game', href: '/superfreetime' },
     ]
   };
 
@@ -121,5 +121,3 @@ export function LandingFooter() {
     </footer>
   );
 }
-
-    
