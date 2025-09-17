@@ -26,6 +26,7 @@ export function ResourcesHeader() {
   const navLinks = [
     { name: 'Academy', href: '#' },
     { name: 'Handbook', href: '/blog' },
+    { name: 'Apps', href: '/apps' },
     { name: 'MindMap', href: '/sx3-mindmap' },
     { name: 'Documentation', href: '/documentation' },
     { name: 'Technology', href: '/technology' },

@@ -25,6 +25,7 @@ export function CommunityHeader() {
   
   const navLinks = [
     { name: 'About', href: '/about' },
+    { name: 'Apps', href: '/apps' },
     { name: 'Academy', href: '#' },
     { name: 'Career', href: '#' },
     { name: 'Contact', href: '#' },

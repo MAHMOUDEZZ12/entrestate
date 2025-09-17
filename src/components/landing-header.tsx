@@ -25,6 +25,7 @@ export function LandingHeader() {
   
   const navLinks = [
     { name: 'Community', href: '/community' },
+    { name: 'Apps', href: '/apps' },
     { name: 'Resources', href: '/resources' },
   ];
 
