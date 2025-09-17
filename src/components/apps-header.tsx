@@ -24,7 +24,6 @@ export function AppsHeader() {
   const { setTheme, themes } = useTheme();
   
   const navLinks = [
-    { name: 'Apps', href: '/apps' },
     { name: 'Community', href: '/community' },
     { name: 'Resources', href: '/resources' },
     { name: 'Mindmap', href: '/sx3-mindmap' },
