@@ -11,9 +11,8 @@ export function LandingFooter() {
   const footerLinks = {
     explore: [
         { name: 'Apps', href: '/apps' },
-        { name: 'Market', href: '/market' },
-        { name: 'Pricing', href: '/pricing' },
         { name: 'Community', href: '/community' },
+        { name: 'Pricing', href: '/pricing' },
     ],
     company: [
         { name: 'About', href: '/about' },
