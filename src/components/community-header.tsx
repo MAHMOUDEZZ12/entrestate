@@ -30,7 +30,6 @@ export function CommunityHeader() {
     { name: 'Career', href: '#' },
     { name: 'Contact', href: '#' },
     { name: 'Resources', href: '/resources' },
-    { name: 'Account', href: '/login' },
   ];
 
   return (
@@ -47,6 +46,9 @@ export function CommunityHeader() {
             </nav>
         </div>
         <div className="hidden md:flex items-center gap-2">
+            <Link href="/login">
+                <Button>Account</Button>
+            </Link>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">

@@ -31,7 +31,6 @@ export function ResourcesHeader() {
     { name: 'Documentation', href: '/documentation' },
     { name: 'Technology', href: '/technology' },
     { name: 'Community', href: '/community' },
-    { name: 'Account', href: '/login' },
   ];
 
   return (
@@ -48,6 +47,9 @@ export function ResourcesHeader() {
             </nav>
         </div>
         <div className="hidden md:flex items-center gap-2">
+            <Link href="/login">
+                <Button>Account</Button>
+            </Link>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">
