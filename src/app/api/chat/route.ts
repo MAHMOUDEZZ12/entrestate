@@ -1,56 +1,57 @@
+
 import { NextRequest, NextResponse } from 'next/server';
-import { ai } from '@/ai/genkit'; // Import our configured Genkit AI instance
-import { Part } from 'genkit/ai';
-import { AiChatResponse } from '@/lib/chat';
+import { ai } from '@/ai/genkit';
+import { z } from 'zod';
+
+// 1. Define a schema for our knowledge base tool.
+const lookupKnowledgeTool = ai.defineTool(
+  {
+    name: 'lookupKnowledge',
+    description: 'Looks up information in the user\'s private knowledge base (uploaded documents, brochures, etc.). Use this to answer specific questions about projects, brand guidelines, or any other information the user has provided.',
+    inputSchema: z.object({
+      query: z.string().describe("The user's question or topic to search for."),
+    }),
+    outputSchema: z.string().describe("A summary of the relevant information found, or a message indicating no information was found."),
+  },
+  async ({ query }) => {
+    // 2. In a real application, this would query a vector database (e.g., Firestore Vector Search)
+    // containing the indexed content of the user's uploaded documents.
+    // For this prototype, we'll simulate a lookup.
+    console.log(`Simulating knowledge base lookup for query: "${query}"`);
+    
+    // Simulate finding a relevant document
+    if (query.toLowerCase().includes('emaar beachfront')) {
+      return "Found document: Emaar_Beachfront_Brochure.pdf. Key details: Luxury 1-4 bedroom apartments, private beach access, stunning views of the Palm Jumeirah. Price from AED 2.5M.";
+    }
+    if (query.toLowerCase().includes('brand')) {
+        return "Found document: Brand_Guide.pdf. Primary color: #003366 (Navy Blue), Secondary color: #FFD700 (Gold). Logo is a stylized falcon.";
+    }
+
+    return `No specific information found for "${query}". You can try asking about broader topics or upload relevant documents to the knowledge base.`;
+  }
+);
 
 export async function POST(req: NextRequest) {
   try {
-    const { text, imageDataUri } = await req.json();
+    const { text, history } = await req.json();
 
-    if (!text && !imageDataUri) {
-      return NextResponse.json({ message: 'No text or image provided' }, { status: 400 });
+    if (!text) {
+      return NextResponse.json({ message: 'No text provided' }, { status: 400 });
     }
 
-    const model = ai.get-default-model(); // Get the default model (gemini-1.5-pro)
+    // 3. Use the generate function with the new tool and a system prompt.
+    const response = await ai.generate({
+      model: 'gemini-1.5-pro-preview', // A model that supports tool use
+      tools: [lookupKnowledgeTool],
+      system: "You are a helpful real estate assistant. Use your knowledge base to answer questions whenever possible. If you use the knowledge base, cite the source of your information.",
+      prompt: text,
+      history: history, // Pass chat history for context
+    });
 
-    const requestParts: Part[] = [];
+    const aiResponseText = response.text();
 
-    if (text) {
-      requestParts.push({ text: text });
-    }
+    return NextResponse.json({ text: aiResponseText }, { status: 200 });
 
-    if (imageDataUri) {
-      // Genkit expects the data URI format directly for inline images
-      requestParts.push({ image: { url: imageDataUri } });
-    }
-
-    // Send the multimodal content to the Gemini model
-    const geminiResponse = await model.generate({ messages: [{ role: 'user', content: requestParts }] });
-
-    // Extract the AI's response
-    const aiResponseContent = geminiResponse.candidates[0].message.content;
-
-    let aiResponseText: string = '';
-    let aiResponseImageDataUri: string | undefined;
-
-    // Process Gemini's multimodal response
-    for (const part of aiResponseContent) {
-      if (part.text) {
-        aiResponseText += part.text;
-      } else if (part.image && typeof part.image === 'object' && 'url' in part.image) {
-        // If Gemini returns an image, assume it's a data URI or a publicly accessible URL
-        // For simplicity, we'll just pass it through. In a real app, you might re-encode or store it.
-        aiResponseImageDataUri = part.image.url;
-      }
-      // Handle other part types if necessary (e.g., data, media)
-    }
-
-    const chatResponse: AiChatResponse = {
-      text: aiResponseText || 'No response text from AI.',
-      imageDataUri: aiResponseImageDataUri,
-    };
-
-    return NextResponse.json(chatResponse, { status: 200 });
   } catch (error) {
     console.error('Error in /api/chat:', error);
     return NextResponse.json(
