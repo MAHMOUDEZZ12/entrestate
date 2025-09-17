@@ -30,7 +30,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { LandingHeader } from '@/components/landing-header';
+import { AppsHeader } from '@/components/apps-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import {
@@ -291,7 +291,7 @@ export default function AppsPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
+      <AppsHeader />
       <main className="flex-1 w-full max-w-full px-4 md:px-6 lg:px-8 py-12 md:py-20">
         <div className="text-center mb-24 max-w-5xl mx-auto">
           <h1 className="text-4xl md:text-7xl font-bold font-heading tracking-tighter mb-4 text-foreground">
@@ -449,3 +449,5 @@ export default function AppsPage() {
     </div>
   );
 }
+
+    
