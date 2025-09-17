@@ -82,7 +82,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'keyword-planner': generateKeywordPlan,
     'market-chat-assistant': marketChatAssistantFlow,
     'ai-video-presenter': generateVideoPresenter,
-    'discover-market': discoverEngineFlow,
+    'discover-engine': discoverEngineFlow,
     'deal-analyzer': dealAnalyzer,
 };
 

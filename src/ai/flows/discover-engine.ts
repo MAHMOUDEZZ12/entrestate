@@ -63,20 +63,22 @@ const discoverEnginePrompt = ai.definePrompt({
     - landing-pages: Builds a high-converting landing page for a project.
     - market-reports: Generates PDF reports on market trends and pricing.
     - projects-finder: Searches the public Market Library for verified projects.
+    - chatbot-creator: Creates an embeddable AI chatbot for a website.
+    - deal-analyzer: Calculates financial metrics for a real estate investment.
 
     Instructions:
-    1.  **Analyze Intent**: Determine what the user is trying to accomplish. Are they looking for a tool, a specific project, or market information?
+    1.  **Analyze Intent**: Determine what the user is trying to accomplish. Are they looking for a tool, a specific project, or market information? Your primary goal is to return the most relevant and actionable results.
     2.  **Return Structured Results**: Based on the intent, generate a list of 2-3 relevant results.
-        -   If the query mentions a task (e.g., "create an ad"), return a 'Tool' result with the most relevant 'toolId'.
+        -   If the query mentions a specific task (e.g., "create an ad", "find buyers", "build a website"), return a 'Tool' result with the most relevant 'toolId'.
         -   If the query mentions a specific, well-known project name (e.g., "Emaar Beachfront", "Damac Hills 2"), return a 'Project' result with mock but realistic data for that project.
-        -   If the query asks about a market trend or location (e.g., "prices in Dubai Marina"), return a 'Market' result with the query as the topic.
+        -   If the query asks about a market trend, pricing, or a location (e.g., "prices in Dubai Marina", "rental yields downtown"), return a 'Market' result with the query as the topic.
     3.  **Provide Reasoning**: For each result, provide a brief, helpful 'reasoning' string explaining why it's a good match for the user's query.
 
     Example:
     -   Query: "How do I make an ad for Sobha Hartland?"
     -   Results:
         1.  Type: 'Tool', toolId: 'insta-ads-designer', reasoning: "This tool is perfect for creating ads from project details."
-        2.  Type: 'Project', project: { name: 'Sobha Hartland', ... }, reasoning: "Here are the details for the project you mentioned."
+        2.  Type: 'Project', project: { name: 'Sobha Hartland', developer: 'Sobha Realty', area: 'MBR City', priceFrom: 'AED 1.2M', status: 'Ready' }, reasoning: "Here are the details for the project you mentioned."
     
     Now, process the user's query and return the best results.`,
 });
