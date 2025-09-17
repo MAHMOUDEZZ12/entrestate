@@ -26,6 +26,11 @@ export function AppsHeader() {
   const navLinks = [
     { name: 'Apps', href: '/apps' },
     { name: 'Community', href: '/community' },
+    { name: 'Resources', href: '/resources' },
+    { name: 'Mindmap', href: '/sx3-mindmap' },
+    { name: 'Marketing', href: '/dashboard/marketing' },
+    { name: 'Creative', href: '/dashboard/marketing' },
+    { name: 'Sales', href: '/dashboard/marketing' },
   ];
 
   return (
