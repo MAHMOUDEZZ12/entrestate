@@ -1,0 +1,238 @@
+whatsmap_ingestion_policy:
+  description: >
+    Ingestion cadence, SLAs, retention and recommended ingestion method
+    for WhatsMAP training layers (structured → social → internal).
+  global_defaults:
+    retry_policy:
+      max_attempts: 5
+      backoff_strategy: exponential
+      base_delay_seconds: 5
+    error_handling:
+      transient: requeue_with_backoff
+      permanent: mark_source_alarm
+    monitoring:
+      metrics: [ingest_latency_seconds, success_rate, error_rate, items_per_run]
+      logging_destination: bigquery_logs.whatsmap_ingest_runs
+  layers:
+
+    layer_1_structured_core:
+      priority: high
+      description: "Official portals, developer sites, primary marketplaces, government registries."
+      sources:
+        - name: Bayut
+          url: https://www.bayut.com
+          method: api_or_scrape
+          recommended_frequency: "15m"
+          sla_latency_target: "30m"
+          freshness_threshold: "24h"
+          archive_policy: keep_full_history
+          dedupe_strategy: canonical_by_listing_id + fingerprint(title, price, area)
+          notes: "Prefer official API if available; fallback to site scraping with user-agent rotation."
+        - name: PropertyFinder
+          url: https://www.propertyfinder.ae
+          method: api_or_scrape
+          recommended_frequency: "15m"
+          sla_latency_target: "30m"
+          freshness_threshold: "24h"
+          archive_policy: keep_full_history
+          dedupe_strategy: canonical_by_listing_id
+        - name: Simsari (gov)
+          url: https://www.simsari.ae
+          method: api_or_rss
+          recommended_frequency: "hourly"
+          sla_latency_target: "2h"
+          freshness_threshold: "6h"
+          archive_policy: keep_full_history_and_versioned
+          dedupe_strategy: authoritative_source_wins
+          notes: "Treat as source-of-truth for ownership/registration fields."
+        - name: Developer_Sites
+          examples: [https://www.emaar.com, https://www.damacproperties.com, https://www.nakheel.com]
+          method: rss_or_sitemap_watch
+          recommended_frequency: "1h"
+          sla_latency_target: "3h"
+          freshness_threshold: "24h"
+          archive_policy: keep_full_history
+          dedupe_strategy: match_by_project_code_or_name_then_fuzzy
+      layer_sla:
+        max_data_staleness: "24h"
+        max_ingest_latency: "2h"
+        availability_target: "99.9%"
+      storage:
+        raw_bucket: gs://whatsmap/layer1/raw/
+        processed_table: bigquery.whatsmap.layer1_listings
+        graph_target: neo4j.properties
+
+    layer_2_semi_structured_dynamic:
+      priority: medium
+      description: "News, press releases, YouTube channels, LinkedIn updates."
+      sources:
+        - name: Google_News_RSS
+          method: rss
+          recommended_frequency: "30m"
+          sla_latency_target: "1h"
+          freshness_threshold: "12h"
+          archive_policy: keep_90_days_then_archive
+          dedupe_strategy: fingerprint(url, title)
+        - name: Developer_Press_Releases
+          method: rss_or_sitemap_notify
+          recommended_frequency: "1h"
+          sla_latency_target: "3h"
+          freshness_threshold: "24h"
+          archive_policy: keep_full_history
+        - name: YouTube_Channels
+          examples: [Bayut, PropertyFinder, Emaar_Official]
+          method: api (YouTube Data API)
+          recommended_frequency: "2h"
+          sla_latency_target: "4h"
+          freshness_threshold: "48h"
+          archive_policy: store_video_metadata + transcription_archive
+          dedupe_strategy: video_id_unique
+      layer_sla:
+        max_data_staleness: "48h"
+        max_ingest_latency: "6h"
+        availability_target: "99.5%"
+      storage:
+        raw_bucket: gs://whatsmap/layer2/raw/
+        processed_table: bigquery.whatsmap.layer2_media
+
+    layer_3_social_pulse:
+      priority: real_time
+      description: "Social networks, ads library, TikTok, Reddit, Telegram groups."
+      sources:
+        - name: Facebook_Ads_Library
+          url: https://www.facebook.com/ads/library/housing
+          method: api_or_scrape
+          recommended_frequency: "5m"
+          sla_latency_target: "15m"
+          freshness_threshold: "1h"
+          archive_policy: keep_180_days_then_aggregate
+          dedupe_strategy: ad_id_unique
+        - name: Instagram_hashtag_stream
+          hashtags: ["#DubaiRealEstate","#InvestInDubai","#OffPlanDubai"]
+          method: streaming_api_or_scrape
+          recommended_frequency: "near_real_time"
+          sla_latency_target: "5m"
+          freshness_threshold: "15m"
+          archive_policy: keep_90_days_then_aggregate
+          dedupe_strategy: post_id_unique
+        - name: Twitter_X_search_stream
+          keywords: ["Dubai real estate","off-plan Dubai","UAE property"]
+          method: streaming_api
+          recommended_frequency: "near_real_time"
+          sla_latency_target: "1m"
+          freshness_threshold: "5m"
+          archive_policy: keep_30_days_raw_then_embeddings
+          dedupe_strategy: tweet_id_unique
+        - name: Reddit_subs
+          subreddits: [r/dubai, r/realestate, r/expats, r/uae]
+          method: polling_api
+          recommended_frequency: "5m"
+          sla_latency_target: "10m"
+          freshness_threshold: "30m"
+          archive_policy: keep_180_days
+          dedupe_strategy: post_id_unique
+        - name: Telegram_groups
+          method: join_and_stream + archive
+          recommended_frequency: "near_real_time"
+          sla_latency_target: "5m"
+          freshness_threshold: "15m"
+          archive_policy: keep_180_days
+      layer_sla:
+        max_data_staleness: "15m"
+        max_ingest_latency: "5m"
+        availability_target: "99.0%"
+      storage:
+        raw_bucket: gs://whatsmap/layer3/raw/
+        processed_table: bigquery.whatsmap.layer3_social
+      notes:
+        - "Prefer streaming APIs where available (Twitter X, Instagram Graph, Facebook)."
+        - "Respect rate limits; use batching and backoff to avoid bans."
+        - "Anonymize PII and apply consent rules before storage."
+
+    layer_4_internal_market_signals:
+      priority: sovereign
+      description: "WhatsMAP native signals (search trends, user actions, derived KPIs)."
+      sources:
+        - name: User_Search_Trends
+          method: event_stream
+          recommended_frequency: "real_time"
+          sla_latency_target: "1m"
+          freshness_threshold: "1m"
+          archive_policy: keep_full_history_with_retention_tiers
+          dedupe_strategy: event_id_unique
+        - name: Hot_Area_Analysis
+          method: scheduled_batch (1h)
+          recommended_frequency: "1h"
+          sla_latency_target: "2h"
+          freshness_threshold: "1h"
+          archive_policy: keep_full_history
+        - name: Investor_Sentiment
+          method: deduped_stream + nightly_aggregation
+          recommended_frequency: "near_real_time"
+          sla_latency_target: "30m"
+          freshness_threshold: "1h"
+      layer_sla:
+        max_data_staleness: "1m"
+        max_ingest_latency: "5m"
+        availability_target: "99.99%"
+      storage:
+        raw_bucket: gs://whatsmap/layer4/raw/
+        processed_table: bigquery.whatsmap.layer4_user_signals
+
+  cross_layer_rules:
+    deduplication:
+      strategy: "fingerprint + canonical_source_priority"
+      canonical_priority: [Simsari, DLD, Developer_Site, Bayut, PropertyFinder, Propsearch, Social]
+    source_of_truth_reconciliation:
+      rule: "If conflicting fields, authoritative_source_wins; if same_priority, use most_recent + validation_score"
+    validation_and_cleaning:
+      tools: [Cloud_Dataflow, Dataproc, custom_normalizers]
+      steps:
+        - schema_validation
+        - timezone_normalization
+        - currency_normalization
+        - address_normalization (geo-lookup)
+        - language_normalization (Arabic↔English mapping)
+    retention_and_archive:
+      active_index_window: "2 years"
+      long_term_archive: "cold_storage (GCS Nearline/Archive) 10 years"
+      historical_value_policy: "Keep everything; mark as historical with timestamp and provenance"
+    provenance_and_audit:
+      require_source_links: true
+      store_retrieval_metadata: [source_url, fetch_timestamp, etag, content_hash]
+      auditable_fields: [price_history, owner_changes, permit_changes]
+  operational_slas:
+    alerting:
+      critical_alerts: [source_down, ingestion_failures > 3 runs, massive_schema_change]
+      channels: [slack_ops, pagerduty, email_admin]
+    runbook:
+      auto_recovery_steps:
+        - check_retry_queue
+        - rotate_ip_user_agent_if_blocked
+        - escalate_to_engineer_if_error_persists > 3 retries
+    cost_controls:
+      budget_thresholds: [monthly_gpu_cost, api_costs, data_egress]
+      throttle_policy: "Reduce polling frequency on budget_exceed and batch non-critical tasks"
+  sample_cron_schedules:
+    - name: high_freq_market_update
+      cron: "*/15 * * * *"
+      target: layer_1_structured_core
+      description: "Update major portals every 15 minutes for active listing changes."
+    - name: social_stream_ingest
+      cron: "*/1 * * * *"
+      target: layer_3_social_pulse
+      description: "Poll streaming buffers for social posts/events (near-real-time)."
+    - name: daily_batch_archive
+      cron: "0 2 * * *"
+      target: all_layers
+      description: "Run daily consolidation, archive and embeddings refresh for new data."
+  monitoring_and_metrics:
+    primary_metrics:
+      - ingestion_success_rate
+      - avg_ingest_latency_seconds
+      - items_ingested_per_minute
+      - data_freshness_age_seconds
+      - deduplication_rate
+      - validation_failure_rate
+    dashboards:
+      grafana_or_looker: "dashboards/ingestion_overview"
