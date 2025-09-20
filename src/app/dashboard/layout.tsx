@@ -1,14 +1,7 @@
-
-'use client';
-
-import * as React from 'react';
-import { AssistantChat } from '@/components/assistant-chat';
+import React from 'react';
 import { DashboardHeader } from '@/components/dashboard-header';
-import { DashboardFooter } from '@/components/dashboard-footer';
-import { TabProvider } from '@/context/TabManagerContext';
-import { CanvasProvider } from '@/context/CanvasContext';
-import { CreativeCanvas } from '@/components/creative-canvas';
-
+import { DashboardSidebar } from '@/components/dashboard-sidebar';
+import { TabProvider } from '@/context/TabManagerContext'; // Import TabProvider
 
 export default function DashboardLayout({
   children,
@@ -16,18 +9,16 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <TabProvider>
-      <CanvasProvider>
-       <div className="flex flex-col min-h-screen">
-        <DashboardHeader />
-        <div className="flex-1 flex flex-col">
-          <main className="flex-1 overflow-y-auto">{children}</main>
-          <DashboardFooter />
+    <TabProvider> {/* Wrap the layout with TabProvider */}
+      <div className="flex min-h-screen w-full flex-col bg-muted/40">
+        <DashboardSidebar />
+        <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
+          <DashboardHeader />
+          <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
+            {children}
+          </main>
         </div>
-         <AssistantChat />
-         <CreativeCanvas />
-       </div>
-      </CanvasProvider>
+      </div>
     </TabProvider>
   );
 }

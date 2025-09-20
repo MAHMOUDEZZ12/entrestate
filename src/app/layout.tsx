@@ -5,6 +5,9 @@ import './globals.css';
 import { Poppins, PT_Sans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { CookieConsent } from '@/components/cookie-consent';
+import { ThemeProvider } from '@/components/theme-switcher';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 const fontSans = PT_Sans({ 
   subsets: ['latin'],
@@ -18,13 +21,12 @@ const fontHeading = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://supersellersuite.ai'),
-  title: 'Super Seller Suite — AI tools for ads, creatives, and sales',
-  description: 'Use AI tools for ads, rebranding, pages, posts, CRM, and reports—all in one sales suite.',
+  metadataBase: new URL('https://whatsap.ai'),
+  title: 'WhatsMAP — AI-Native Real Estate Ecosystem',
+  description: 'An AI-native ecosystem for real estate professionals, featuring intelligent search and a suite of powerful B2B tools.',
   openGraph: {
-    title: 'Super Seller Suite',
-    description: 'Create ads, pages, PDFs, emails, and reports from any brochure. Train your AI assistant.',
-    // Replace with a URL to your actual OpenGraph image
+    title: 'WhatsMAP — AI-Native Real Estate Ecosystem',
+    description: 'The future of real estate is here. Intelligent, persona-driven search and a complete suite of professional AI tools.',
     images: ['/og-image.png'],
   },
 };
@@ -37,13 +39,24 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn(
-        "min-h-screen bg-background font-sans antialiased",
+        "min-h-screen flex flex-col bg-background font-sans antialiased",
         fontSans.variable,
         fontHeading.variable
       )}>
-        {children}
-        <Toaster />
-        <CookieConsent />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <LandingHeader />
+          <main className="flex-1">
+            {children}
+          </main>
+          <LandingFooter />
+          <Toaster />
+          <CookieConsent />
+        </ThemeProvider>
       </body>
     </html>
   );

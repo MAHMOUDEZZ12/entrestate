@@ -1,120 +1,76 @@
-
-"use client";
-
 import Link from 'next/link';
-import { ArrowRight, Twitter, Facebook, Linkedin, Puzzle } from 'lucide-react';
-import { ShinyButton } from './ui/shiny-button';
-import { Logo } from './logo';
-import { Separator } from './ui/separator';
+import { Facebook, Twitter, Linkedin } from 'lucide-react';
+import Image from 'next/image';
+
+const AIXA_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/Aixa-logo.png?alt=media&token=16231f13-d6e3-489d-be1a-e1ecc38c2df6';
 
 export function LandingFooter() {
-  const footerLinks = {
-    explore: [
-        { name: 'Apps', href: '/apps' },
-        { name: 'Community', href: '/community' },
-        { name: 'Pricing', href: '/pricing' },
-    ],
-    company: [
-        { name: 'About', href: '/about' },
-        { name: 'System Status', href: '/status' },
-        { name: 'Gemin Mindmap', href: '/sx3-mindmap' },
-    ],
-    resources: [
-        { name: 'Resources', href: '/resources' },
-        { name: 'Handbook (Blog)', href: '/blog' },
-        { name: 'Documentation', href: '/documentation' },
-        { name: 'Technology', href: '/technology' },
-    ],
-    legal: [
-        { name: 'Data Privacy', href: '/privacy' },
-        { name: 'Terms of Service', href: '/terms' },
-        { name: 'Cookie Policy', href: '/cookies' },
-        { name: 'Play a Game', href: '/superfreetime' },
-    ]
-  };
-
+  const currentYear = new Date().getFullYear();
   return (
-    <footer className="relative w-full overflow-hidden mt-32 border-t border-border/40">
-      <div className="absolute -top-1/2 left-1/2 -translate-x-1/2 w-[150%] h-[150%] bg-gradient-to-t from-primary/10 to-transparent rounded-t-full -z-10" />
-      <div className="container relative z-10 py-16">
-        <div className="mt-8">
-            <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
-                <div className="lg:col-span-1">
-                    <Logo />
-                    <p className="mt-4 text-foreground/60 max-w-xs">
-                        The ultimate sales suite, empowering agents to create stunning marketing campaigns and close more deals.
-                    </p>
-                </div>
-                <div className='lg:col-span-4 grid grid-cols-2 md:grid-cols-4 gap-8'>
-                     <div>
-                        <h3 className="font-semibold text-foreground">Explore</h3>
-                        <ul className="mt-4 space-y-2">
-                            {footerLinks.explore.map((link) => (
-                                <li key={link.name}>
-                                    <Link href={link.href} className="text-foreground/60 hover:text-primary transition-colors">
-                                        {link.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                     <div>
-                        <h3 className="font-semibold text-foreground">Company</h3>
-                        <ul className="mt-4 space-y-2">
-                            {footerLinks.company.map((link) => (
-                                <li key={link.name}>
-                                    <Link href={link.href} className="text-foreground/60 hover:text-primary transition-colors">
-                                        {link.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 className="font-semibold text-foreground">Resources</h3>
-                        <ul className="mt-4 space-y-2">
-                            {footerLinks.resources.map((link) => (
-                                <li key={link.name}>
-                                    <Link href={link.href} className="text-foreground/60 hover:text-primary transition-colors">
-                                        {link.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                     <div>
-                        <h3 className="font-semibold text-foreground">Legal</h3>
-                        <ul className="mt-4 space-y-2">
-                            {footerLinks.legal.map((link) => (
-                                <li key={link.name}>
-                                    <Link href={link.href} className="text-foreground/60 hover:text-primary transition-colors">
-                                        {link.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            </div>
+    <footer className="w-full border-t bg-card text-card-foreground py-8 md:py-12">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 md:gap-12">
+          
+          <div className="col-span-2 lg:col-span-1">
+            <Link href="/" className="flex items-center gap-2">
+              <Image src={AIXA_LOGO_URL} alt="WhatsMAP Logo" width={32} height={32} />
+              <span className="text-2xl font-bold font-heading text-primary">WhatsMAP</span>
+            </Link>
+            <p className="mt-4 text-sm text-foreground/70">
+              The AI-Native Operating System for Real Estate.
+            </p>
+            <p className="mt-2 text-sm text-muted-foreground">
+              &copy; {currentYear} WhatsMAP. All rights reserved.
+            </p>
+          </div>
 
-            <Separator className="my-8" />
+          <div className="col-span-1">
+            <h4 className="text-lg font-semibold font-heading mb-4">Solutions</h4>
+            <nav className="flex flex-col space-y-2">
+              <Link href="/solutions/agents" className="text-muted-foreground hover:text-primary transition-colors">For Agents</Link>
+              <Link href="/solutions/developers" className="text-muted-foreground hover:text-primary transition-colors">For Developers</Link>
+              <Link href="/solutions/investors" className="text-muted-foreground hover:text-primary transition-colors">For Investors</Link>
+            </nav>
+          </div>
 
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                 <div className="text-sm text-foreground/50 text-center md:text-left space-y-1">
-                    <p>Gemin © 2025 <a href="https://mtcmartech.com" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">mtc'</a>. All rights reserved.</p>
-                    <p>AI Intelligence powered by Gemini (Google AI)</p>
-                 </div>
-                <div className="flex items-center gap-4">
-                    <Link href="#" aria-label="Twitter">
-                        <Twitter className="h-5 w-5 text-foreground/60 hover:text-primary transition-colors" />
-                    </Link>
-                     <Link href="#" aria-label="Facebook">
-                        <Facebook className="h-5 w-5 text-foreground/60 hover:text-primary transition-colors" />
-                    </Link>                     <Link href="#" aria-label="LinkedIn">
-                        <Linkedin className="h-5 w-5 text-foreground/60 hover:text-primary transition-colors" />
-                    </Link>
-                </div>
+          <div className="col-span-1">
+            <h4 className="text-lg font-semibold font-heading mb-4">Platform</h4>
+            <nav className="flex flex-col space-y-2">
+              <Link href="/pricing" className="text-muted-foreground hover:text-primary transition-colors">Pricing</Link>
+              <Link href="/dashboard/marketing" className="text-muted-foreground hover:text-primary transition-colors">All Tools</Link>
+              <Link href="/search" className="text-muted-foreground hover:text-primary transition-colors">Discovery Engine</Link>
+            </nav>
+          </div>
+          
+          <div className="col-span-1">
+            <h4 className="text-lg font-semibold font-heading mb-4">Company</h4>
+            <nav className="flex flex-col space-y-2">
+              <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About Us</Link>
+              <Link href="/community" className="text-muted-foreground hover:text-primary transition-colors">Community</Link>
+              <Link href="/status" className="text-muted-foreground hover:text-primary transition-colors">Status</Link>
+            </nav>
+          </div>
+
+          <div className="col-span-1">
+            <h4 className="text-lg font-semibold font-heading mb-4">Legal & Social</h4>
+            <nav className="flex flex-col space-y-2 mb-6">
+              <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">Privacy</Link>
+              <Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors">Terms</Link>
+              <Link href="/cookies" className="text-muted-foreground hover:text-primary transition-colors">Cookies</Link>
+            </nav>
+            
+            <div className="flex items-center gap-4">
+              <Link href="#" aria-label="Twitter">
+                <Twitter className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
+              </Link>
+              <Link href="#" aria-label="Facebook">
+                <Facebook className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
+              </Link>
+              <Link href="#" aria-label="LinkedIn">
+                <Linkedin className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
+              </Link>
             </div>
+          </div>
         </div>
       </div>
     </footer>

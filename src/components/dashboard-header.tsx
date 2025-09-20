@@ -1,162 +1,36 @@
-
 'use client';
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-  DropdownMenuGroup,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "./ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import Link from "next/link";
-import { LifeBuoy, LogOut, Settings, User, Search, Home, Building, Palette, Users, Bot, Menu, Puzzle, LineChart } from "lucide-react";
-import React from "react";
-import { GlobalSearch } from "./ui/global-search";
-import { useTheme } from "./theme-switcher";
-import { useAuth } from "@/hooks/useAuth";
-import { useRouter, usePathname } from "next/navigation";
-import { auth } from "@/lib/firebase";
-import { Logo } from "./logo";
-import { useTabManager } from "@/context/TabManagerContext";
-import { cn } from "@/lib/utils";
-
-const mainNav = [
-  { href: '/dashboard', label: 'Home', icon: Home },
-  { href: '/dashboard/marketing', label: 'Apps', icon: Puzzle },
-  { href: '/dashboard/tool/projects-finder', label: 'Projects Library', icon: Building },
-  { href: '/dashboard/assistant', label: 'AI Assistant', icon: Bot },
-];
-
-const settingsNav = [
-  { href: '/dashboard/brand', label: 'Brand & Assets', icon: Palette },
-  { href: '/dashboard/clients', label: 'Clients', icon: Users },
-  { href: '/dashboard/settings', label: 'Settings', icon: Settings },
-];
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Menu, Search } from 'lucide-react';
+import { GlobalSearch } from '@/components/ui/global-search';
 
 export function DashboardHeader() {
-    const [isSearchOpen, setIsSearchOpen] = React.useState(false);
-    const { setTheme, themes } = useTheme();
-    const { user, loading } = useAuth();
-    const router = useRouter();
-    const pathname = usePathname();
-    const { addTab } = useTabManager();
+  return (
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+      {/* Mobile Menu */}
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button size="icon" variant="outline" className="sm:hidden">
+            <Menu className="h-5 w-5" />
+            <span className="sr-only">Toggle Menu</span>
+          </Button>
+        </SheetTrigger>
+        <SheetContent side="left" className="sm:max-w-xs">
+          <nav className="grid gap-6 text-lg font-medium">
+            <Link href="/dashboard" className="font-bold text-lg">WhatsMAP</Link>
+            <Link href="/dashboard/marketing" className="text-muted-foreground hover:text-foreground">Marketing</Link>
+            <Link href="/dashboard/flows" className="text-muted-foreground hover:text-foreground">Flows</Link>
+            <Link href="/dashboard/brand" className="text-muted-foreground hover:text-foreground">Brand & Assets</Link>
+            <Link href="/dashboard/settings" className="text-muted-foreground hover:text-foreground">Settings</Link>
+          </nav>
+        </SheetContent>
+      </Sheet>
 
-    const handleLogout = async () => {
-        await auth.signOut();
-        router.push('/login');
-    };
-    
-    const handleNavigation = (href: string, label: string) => {
-        addTab({ href, label });
-        router.push(href);
-    }
-
-    return (
-        <>
-            <header className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-background/95 px-4 backdrop-blur-sm sm:px-6">
-                <div className="flex items-center gap-6">
-                    <Logo />
-                    <nav className="hidden md:flex items-center gap-2">
-                        {mainNav.map((item) => (
-                           <Button 
-                                key={item.href}
-                                variant="ghost" 
-                                size="sm"
-                                onClick={() => handleNavigation(item.href, item.label)}
-                                className={cn(pathname === item.href && "bg-muted text-foreground")}
-                            >
-                                <item.icon className="mr-2 h-4 w-4" />
-                                {item.label}
-                            </Button>
-                        ))}
-                    </nav>
-                </div>
-                
-                <div className="flex flex-1 items-center justify-end md:justify-center">
-                   <div className="w-full max-w-sm">
-                     <Button variant="outline" className="w-full justify-start text-muted-foreground" onClick={() => setIsSearchOpen(true)}>
-                       <Search className="mr-2 h-4 w-4" />
-                       <span className="hidden sm:inline-block">Search tools, projects... (⌘K)</span>
-                       <span className="sm:hidden">Search... (⌘K)</span>
-                     </Button>
-                   </div>
-                </div>
-
-                <div className="flex items-center gap-2">
-                     <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                         <Button variant="ghost" size="icon" className="md:hidden">
-                          <Menu className="h-5 w-5" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Navigation</DropdownMenuLabel>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuGroup>
-                          {mainNav.map((item) => (
-                            <DropdownMenuItem key={item.href} onClick={() => handleNavigation(item.href, item.label)}>
-                              <item.icon className="mr-2 h-4 w-4" />
-                              {item.label}
-                            </DropdownMenuItem>
-                          ))}
-                        </DropdownMenuGroup>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                            variant="outline"
-                            size="icon"
-                            className="overflow-hidden rounded-full"
-                            >
-                                <Avatar>
-                                    <AvatarImage src={user?.photoURL || ''} alt={user?.displayName || 'User Avatar'} />
-                                    <AvatarFallback>{user?.displayName?.charAt(0) || 'U'}</AvatarFallback>
-                                </Avatar>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end" className="w-56">
-                            <DropdownMenuLabel>{user?.displayName || "My Account"}</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                             <DropdownMenuGroup>
-                                {settingsNav.map((item) => (
-                                <DropdownMenuItem key={item.href} onClick={() => handleNavigation(item.href, item.label)}>
-                                    <item.icon className="mr-2 h-4 w-4" />
-                                    {item.label}
-                                </DropdownMenuItem>
-                                ))}
-                            </DropdownMenuGroup>
-
-                            <DropdownMenuSeparator />
-                             <a href="mailto:support@supersalessuite.com">
-                                <DropdownMenuItem>
-                                    <LifeBuoy className="mr-2 h-4 w-4" />
-                                    Support
-                                </DropdownMenuItem>
-                             </a>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuLabel>Theme</DropdownMenuLabel>
-                            {themes.map((t) => (
-                                <DropdownMenuItem key={t.value} onClick={() => setTheme(t.value)}>
-                                <t.icon className="mr-2 h-4 w-4" />
-                                <span>{t.label}</span>
-                                </DropdownMenuItem>
-                            ))}
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem onClick={handleLogout}>
-                                 <LogOut className="mr-2 h-4 w-4" />
-                                Logout
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
-            </header>
-            <GlobalSearch isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
-        </>
-    );
+      <div className="relative ml-auto flex-1 md:grow-0">
+        <GlobalSearch />
+      </div>
+      {/* User Dropdown can be added here */}
+    </header>
+  );
 }

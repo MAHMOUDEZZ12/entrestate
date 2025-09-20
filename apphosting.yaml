@@ -1,7 +1,28 @@
 # Settings to manage and configure a Firebase App Hosting backend.
 # https://firebase.google.com/docs/app-hosting/configure
 
+# next.js apps require a custom build/run command configuration.
+# see https://firebase.google.com/docs/app-hosting/framework-support/nextjs
+# for more information.
+
+build:
+  command: "npm run build"
+
 runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
   maxInstances: 1
+  # You can also configure environment variables here.
+  # env:
+  #   - variable: MY_ENV_VAR
+  #     value: my-value
+
+headers:
+  - key: "Cache-Control"
+    value: "max-age=604800"
+
+rewrites:
+  - source: "/api/**"
+    run: { serviceId: "{SERVICE_ID}", region: "{REGION}" }
+
+# We will add other configurations such as routes and frameworks here as needed.

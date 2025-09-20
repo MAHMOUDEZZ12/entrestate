@@ -1,49 +1,19 @@
-
 'use client';
-
-import React from 'react';
-import { useTabManager } from '@/context/TabManagerContext';
-import { Button } from './ui/button';
-import { X } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
 
 export function DashboardFooter() {
-    const { openTabs, removeTab } = useTabManager();
-    const pathname = usePathname();
-    
-    if (openTabs.length <= 1) return null;
+  const currentYear = new Date().getFullYear();
 
-    return (
-        <footer className="sticky bottom-0 z-30 flex h-10 items-center gap-2 border-t bg-background/95 px-4 backdrop-blur-sm sm:px-6 overflow-x-auto no-scrollbar">
-            {openTabs.map((tab) => (
-                <div key={tab.href} className="group relative flex items-center flex-shrink-0">
-                    <Link href={tab.href} passHref legacyBehavior>
-                        <Button
-                            variant={pathname === tab.href ? "secondary" : "ghost"}
-                            size="sm"
-                            className="h-8 pr-8 text-xs"
-                        >
-                            <span>{tab.label}</span>
-                        </Button>
-                    </Link>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="absolute right-0 h-8 w-8 rounded-l-none opacity-50 group-hover:opacity-100 transition-opacity"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            removeTab(tab.href);
-                        }}
-                    >
-                        <X className="h-3 w-3" />
-                    </Button>
-                </div>
-            ))}
-        </footer>
-    );
+  return (
+    <footer className="w-full border-t bg-card text-card-foreground py-4 mt-auto">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between text-sm text-muted-foreground">
+        <p>&copy; {currentYear} WhatsMAP. All rights reserved.</p>
+        <nav className="flex items-center gap-4">
+          <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
+          <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+          <Link href="/status" className="hover:text-primary transition-colors">System Status</Link>
+        </nav>
+      </div>
+    </footer>
+  );
 }
-
-    

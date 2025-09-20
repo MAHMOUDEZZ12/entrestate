@@ -17,7 +17,7 @@ export function CookieConsent() {
         setShowConsent(true);
       }
     } catch (error) {
-      // localStorage is not available
+      // localStorage is not available on the server, so we default to showing consent on the client
       setShowConsent(true);
     }
   }, []);

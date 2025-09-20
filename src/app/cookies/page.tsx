@@ -44,7 +44,7 @@ export default function CookiesPage() {
                 Super Seller Suite<br />
                 123 AI Lane<br />
                 Innovation City, 12345<br />
-                <a href="mailto:privacy@superseller.ai">privacy@superseller.ai</a>
+                <a href="mailto:privacy@supersellersuite.ai">privacy@supersellersuite.ai</a>
               </p>
             </CardContent>
         </Card>

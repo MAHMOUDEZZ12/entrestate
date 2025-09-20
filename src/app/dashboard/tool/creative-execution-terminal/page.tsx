@@ -1,143 +1,109 @@
-
 'use client';
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, Sparkles, Circle, CheckCircle, Play, FileText, ClipboardPaste } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { PageHeader } from '@/components/ui/page-header';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { cn } from '@/lib/utils';
-import { track } from '@/lib/events';
+import { Label } from '@/components/ui/label';
+import { Sparkles, Loader2, Wand2 } from 'lucide-react';
+import { PageHeader } from '@/components/ui/page-header';
+import Image from 'next/image';
 
-type Status = 'pending' | 'running' | 'completed' | 'error';
-
-interface Step {
-  description: string;
-  tool: string;
-  parameters: any;
-  status: Status;
-}
+// This is a placeholder for the actual API call
+// import { runGenerateModelVisual } from '@/lib/api'; 
 
 export default function CreativeExecutionTerminalPage() {
-  const { toast } = useToast();
-  const [isExecuting, setIsExecuting] = useState(false);
-  const [workflow, setWorkflow] = useState<Step[]>([]);
-  const [pastedPlan, setPastedPlan] = useState('');
+  const [prompt, setPrompt] = useState('');
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleRunWorkflow = () => {
-    let parsedPlan;
-    try {
-      parsedPlan = JSON.parse(pastedPlan);
-      if (!Array.isArray(parsedPlan) || parsedPlan.length === 0) {
-        throw new Error("Plan must be a non-empty array.");
-      }
-    } catch (e) {
-      toast({ title: 'Invalid Plan', description: 'The pasted text is not a valid JSON execution plan. Please generate one from a compatible tool.', variant: 'destructive' });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!prompt) {
+      setError('Please provide a prompt for the visual.');
       return;
     }
+    setIsLoading(true);
+    setError(null);
+    setGeneratedImage(null);
 
-    const initialWorkflow: Step[] = parsedPlan.map(step => ({ ...step, status: 'pending' }));
-    setWorkflow(initialWorkflow);
-    setIsExecuting(true);
-    track('execution_terminal_workflow_started', { toolCount: initialWorkflow.length });
-
-    const runStep = (index: number) => {
-      if (index >= initialWorkflow.length) {
-        setIsExecuting(false);
-        toast({ title: 'Execution Complete!', description: 'The creative workflow has finished successfully.' });
-        track('execution_terminal_workflow_completed');
-        return;
-      }
-
-      setWorkflow(prev => prev.map((step, i) => i === index ? { ...step, status: 'running' } : step));
-
-      setTimeout(() => {
-        setWorkflow(prev => prev.map((step, i) => i === index ? { ...step, status: 'completed' } : step));
-        runStep(index + 1);
-      }, 1200 + Math.random() * 800);
-    };
-
-    runStep(0);
-  };
-
-  const getStatusIcon = (status: Status) => {
-    switch (status) {
-      case 'running': return <Loader2 className="h-5 w-5 animate-spin text-primary" />;
-      case 'completed': return <CheckCircle className="h-5 w-5 text-green-500" />;
-      default: return <Circle className="h-5 w-5 text-muted-foreground/50" />;
-    }
+    // Simulate API call to the Genkit flow
+    setTimeout(() => {
+        // This is where you would call your actual API:
+        // const { imageDataUri } = await runGenerateModelVisual({ prompt });
+        
+        // For now, we'll use a placeholder image to simulate the output
+        const placeholderImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjUxMiIgaGVpZ2h0PSI1MTIiIHJ4PSI0MCIgZmlsbD0iIzIyYzVlZSI+PC9yZWN0Pjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBkb21pbmFudC1iYXNlbGluZT0ibWlkZGxlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxMDBweCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPjUwMCB4IDUwMDwvdGV4dD48L3N2Zz4=';
+        setGeneratedImage(placeholderImage);
+        setIsLoading(false);
+    }, 3000);
   };
 
   return (
-    <main className="p-4 md:p-10 space-y-8">
+    <div className="flex flex-col">
       <PageHeader
         title="Creative Execution Terminal"
-        description="The engine for your creative tasks. Paste a plan from a tool like the PDF Editor and watch the AI work."
-        icon={<Sparkles className="h-8 w-8" />}
+        description="Your personal AI studio for generating stunning visuals from text prompts."
+        icon={<Wand2 className="h-6 w-6" />}
       />
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        <div className="lg:col-span-1 space-y-6 sticky top-24">
-          <Card>
+      <div className="p-4 md:p-6 grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+        <div className="lg:col-span-1">
+          <Card className="bg-card/80 backdrop-blur-lg sticky top-24">
             <CardHeader>
-              <CardTitle>Execution Plan</CardTitle>
-              <CardDescription>Paste the plan generated by another tool.</CardDescription>
+              <CardTitle>Image Prompt</CardTitle>
+              <CardDescription>Describe the visual you want the AI to create.</CardDescription>
             </CardHeader>
             <CardContent>
-              <Textarea
-                placeholder='Paste your execution plan JSON here...'
-                value={pastedPlan}
-                onChange={(e) => setPastedPlan(e.target.value)}
-                rows={10}
-                className="font-mono text-xs"
-                disabled={isExecuting}
-              />
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="space-y-2">
+                  <Label htmlFor="prompt">Prompt</Label>
+                  <Textarea 
+                    id="prompt" 
+                    placeholder="e.g., 'An abstract, minimalist visualization of three glowing chat bubbles...'" 
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    className="h-40"
+                  />
+                </div>
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
+                  Generate Visual
+                </Button>
+              </form>
+              {error && <p className="text-destructive text-sm mt-4">{error}</p>}
             </CardContent>
-            <CardFooter>
-              <Button onClick={handleRunWorkflow} disabled={isExecuting || !pastedPlan} className="w-full">
-                {isExecuting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Play className="mr-2 h-4 w-4" />}
-                {isExecuting ? 'Executing...' : 'Run Workflow'}
-              </Button>
-            </CardFooter>
           </Card>
         </div>
 
-        <div className="lg:col-span-2">
-          <Card>
+        <div className="lg:col-span-1">
+           <Card className="bg-card/80 backdrop-blur-lg h-full min-h-[400px]">
             <CardHeader>
-              <CardTitle>Execution Progress</CardTitle>
-              <CardDescription>Follow the AI as it executes each step of your plan.</CardDescription>
+              <CardTitle>Generated Visual</CardTitle>
+              <CardDescription>The AI-generated image will appear here.</CardDescription>
             </CardHeader>
-            <CardContent>
-              {workflow.length > 0 ? (
-                <div className="space-y-6">
-                  {workflow.map((step, index) => (
-                    <div key={index} className="flex items-start gap-4">
-                      <div>{getStatusIcon(step.status)}</div>
-                      <div className="flex-1">
-                        <p className={cn("font-medium", step.status !== 'pending' && "text-foreground")}>
-                          Step {index + 1}: {step.description}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Tool: <code className="font-mono text-xs bg-muted px-1 py-0.5 rounded">{step.tool}</code>
-                        </p>
-                      </div>
-                    </div>
-                  ))}
+            <CardContent className="flex items-center justify-center h-full">
+              {isLoading ? (
+                <div className="flex items-center justify-center">
+                    <Loader2 className="h-12 w-12 animate-spin text-primary" />
                 </div>
+              ) : generatedImage ? (
+                <Image 
+                    src={generatedImage} 
+                    alt="AI-generated visual" 
+                    width={512} 
+                    height={512} 
+                    className="rounded-lg object-contain"
+                />
               ) : (
-                <div className="flex flex-col items-center justify-center h-64 border-dashed border-2 rounded-lg text-center p-6">
-                  <ClipboardPaste className="h-12 w-12 text-muted-foreground/50 mb-4" />
-                  <h3 className="text-lg font-semibold text-foreground">Waiting for a plan</h3>
-                  <p className="text-muted-foreground">Paste an execution plan on the left to begin.</p>
+                <div className="text-center text-muted-foreground">
+                    <p>Your generated visual will be displayed here.</p>
                 </div>
               )}
             </CardContent>
           </Card>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

@@ -1,170 +1,98 @@
-
 'use client';
 
 import React from 'react';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Check, Star } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { ShinyButton } from '@/components/ui/shiny-button';
 import Link from 'next/link';
-import { Switch } from '@/components/ui/switch';
+import { Button } from '@/components/ui/button';
+import { PageHeader } from '@/components/ui/page-header';
+import { ArrowRight, CheckCircle, Wallet } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
-
-export default function PricingPage() {
-  const [isAnnual, setIsAnnual] = React.useState(true);
-  
-  const pricingTiers = [
-    {
-        name: 'Student',
-        price: '$0',
-        pricePeriod: '/ forever',
-        description: 'Real tools, real outputs, never pay to start.',
-        features: [
-            '1 Brand Kit',
-            `Local Projects Library`,
-            'AI Social Posts',
-            'AI Reels Lite',
-            'PDF Rebrand Lite',
-            'AI Copilot Daily (1/day)',
-            'Free *.sx3.site subdomain',
-            '1 custom domain credit',
-        ],
-        cta: 'Start Learning',
-        variant: 'outline'
-    },
-    {
-        name: 'Seller',
-        price: isAnnual ? '$19' : '$29',
-        pricePeriod: '/ month',
-        description: 'Everything you need to sell as a solo agent.',
-        features: [
-            'Everything in Student, plus:',
-            `All Creative Suite tools`,
-            '5 GB Storage',
-            'WhatsApp & Email sender',
-            'AI Copilot Lite (10/day)',
-        ],
-        cta: 'Start Selling',
-        variant: 'default',
-        isFeatured: true,
-    },
-    {
-        name: 'Marketer',
-        price: isAnnual ? '$89' : '$129',
-        pricePeriod: '/ month',
-        description: 'For power users who want to operate like an agency.',
-        features: [
-            'Everything in Seller, plus:',
-            'Ad write access (Meta, etc.)',
-            'Audience Tools',
-            'Creative Suite Pro',
-            'Automations & Scheduling',
-            '50 GB Storage',
-            'AI Copilot Pro (Unlimited)',
-        ],
-        cta: 'Start Marketing',
-        variant: 'outline'
-    },
-    {
-        name: 'CEO',
-        price: isAnnual ? '$349' : '$499',
-        pricePeriod: '/ month',
-        description: 'For brokerages that need team governance.',
-        features: [
-            'Everything in Marketer, plus:',
-            '5 Team Seats',
-            'Multi-brand Kits',
-            'Shared Project Libraries',
-            'Portfolio Reporting & Analytics',
-            'SSO, Audit Logs, & Export Controls',
-            'Priority Support',
-        ],
-        cta: 'Contact Sales',
-        variant: 'outline'
-    }
+const pricingTiers = [
+  {
+    name: 'Free Trial',
+    price: '$0',
+    period: 'for 14 days',
+    description: 'Get a taste of our core AI tools and see the power for yourself.',
+    features: [
+      'Access to 5 Core AI Tools',
+      '10 AI Generations per month',
+      'Basic Market Insights',
+      'Community Support',
+    ],
+    cta: 'Start Your Free Trial',
+    href: '/signup'
+  },
+  {
+    name: 'Professional',
+    price: '$99',
+    period: 'per month',
+    description: 'For individual agents and power users who want to dominate their market.',
+    features: [
+      'Access to All AI Tools',
+      '500 AI Generations per month',
+      'Advanced Market Reports',
+      'Priority Email Support',
+      'Connect 1 Social Account',
+    ],
+    cta: 'Choose Professional',
+    href: '/signup'
+  },
+  {
+    name: 'Enterprise',
+    price: 'Custom',
+    period: 'for teams & brokerages',
+    description: 'A bespoke solution for teams that need unlimited scale and dedicated support.',
+    features: [
+      'Everything in Professional, plus:',
+      'Unlimited AI Generations',
+      'Team Collaboration Tools',
+      'Dedicated Account Manager',
+      'API Access & Custom Integrations',
+    ],
+    cta: 'Contact Sales',
+    href: '/contact' // Assuming you have a contact page
+  },
 ];
 
+export default function PricingPage() {
   return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
-      <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-foreground/60">
-            Find the Plan That's Right for You
-          </h1>
-           <p className="text-lg md:text-xl text-foreground/60 max-w-3xl mx-auto">
-            Choose a plan that fits your needs and start closing more deals today. Simple, transparent pricing with no hidden fees.
-          </p>
+    <div className="flex flex-col">
+      <PageHeader
+        title="Find the Plan That's Right for You"
+        description="Simple, transparent pricing. No hidden fees. Cancel anytime."
+        icon={<Wallet className="h-8 w-8" />}
+      />
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20">
+        <div className="grid md:grid-cols-3 gap-8">
+          {pricingTiers.map((tier) => (
+            <Card key={tier.name} className="flex flex-col bg-card/80 backdrop-blur-lg">
+              <CardHeader>
+                <CardTitle className="text-2xl font-bold font-heading">{tier.name}</CardTitle>
+                <div className="flex items-baseline gap-2">
+                    <span className="text-4xl font-bold">{tier.price}</span>
+                    <span className="text-muted-foreground">{tier.period}</span>
+                </div>
+                <CardDescription>{tier.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col flex-1">
+                <ul className="space-y-4 flex-1">
+                  {tier.features.map((feature) => (
+                    <li key={feature} className="flex items-center gap-3">
+                      <CheckCircle className="h-5 w-5 text-primary" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link href={tier.href} className="mt-8">
+                  <Button size="lg" className="w-full">
+                    {tier.cta}
+                  </Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
         </div>
-        
-        <div className="flex justify-center items-center gap-4 mb-12">
-            <span className={cn("font-medium", !isAnnual && "text-primary")}>Monthly</span>
-            <Switch
-                checked={isAnnual}
-                onCheckedChange={setIsAnnual}
-                aria-label="Toggle annual pricing"
-            />
-            <span className={cn("font-medium", isAnnual && "text-primary")}>
-                Annual (Save up to 30%)
-            </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
-            {pricingTiers.map((tier) => (
-                 <Card 
-                    key={tier.name}
-                    className={cn(
-                        "flex flex-col h-full",
-                        tier.isFeatured && "border-primary ring-2 ring-primary/50 shadow-lg shadow-primary/20"
-                    )}
-                 >
-                    <CardHeader className="h-48">
-                        {tier.isFeatured && (
-                            <div className="flex items-center justify-center gap-2 mb-2">
-                                <Star className="h-5 w-5 text-primary" />
-                                <p className="font-semibold text-primary">Most Popular</p>
-                            </div>
-                        )}
-                        <CardTitle className="text-3xl font-heading text-center">{tier.name}</CardTitle>
-                        <CardDescription className="text-center min-h-[40px]">{tier.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex flex-col flex-grow">
-                       <div className="text-center mb-8 h-20">
-                         <span className="text-5xl font-bold">
-                            {tier.price}
-                         </span>
-                          {tier.pricePeriod && <span className="text-muted-foreground">{tier.pricePeriod}</span>}
-                           {tier.name !== 'Student' && tier.name !== 'CEO' && isAnnual && (
-                            <p className="text-sm text-muted-foreground">billed annually</p>
-                          )}
-                       </div>
-                       <ul className="space-y-3 text-foreground/80 text-sm">
-                         {tier.features.map((feature, i) => (
-                            <li key={i} className="flex items-center gap-3">
-                                <Check className="h-5 w-5 text-primary shrink-0" />
-                                <span>{feature}</span>
-                            </li>
-                         ))}
-                       </ul>
-                    </CardContent>
-                    <CardFooter>
-                       <Link href="/login" className="w-full">
-                           {tier.isFeatured ? (
-                                <ShinyButton className="w-full">{tier.cta}</ShinyButton>
-                           ) : (
-                                <Button className="w-full" variant={tier.variant as any}>{tier.cta}</Button>
-                           )}
-                       </Link>
-                    </CardFooter>
-                 </Card>
-            ))}
-        </div>
-        <p className="text-center text-xs text-muted-foreground mt-8">*Domain credit for student plan is subject to verification and fair-use limits.</p>
       </main>
-      <LandingFooter />
     </div>
   );
 }

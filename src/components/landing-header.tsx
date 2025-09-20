@@ -1,122 +1,131 @@
+'use client';
 
-"use client";
-
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { Menu, X, Sun, Moon, Laptop, Bot } from 'lucide-react';
+import Image from 'next/image';
+import { Menu, X, Sun, Moon, Search, ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Logo } from './logo';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from './theme-switcher';
+import { CommandMenu } from './ui/command-menu';
+
+const AIXA_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/Aixa-logo.png?alt=media&token=16231f13-d6e3-489d-be1a-e1ecc38c2df6';
 
 export function LandingHeader() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
+  const [isCommandMenuOpen, setIsCommandMenuOpen] = React.useState(false);
   const { setTheme, themes } = useTheme();
-  
+
   const navLinks = [
-    { name: 'Apps', href: '/apps' },
+    { name: 'Solutions', href: '/solutions' },
+    { name: 'Pricing', href: '/pricing' },
     { name: 'Community', href: '/community' },
-    { name: 'Resources', href: '/resources' },
+    { name: 'Blog', href: '/blog' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center">
-        <div className="mr-auto flex items-center gap-6">
-            <Logo />
-            <nav className="hidden md:flex items-center gap-2">
-              {navLinks.map((link) => (
-                <Link key={link.name} href={link.href}>
-                  <Button variant="ghost">{link.name}</Button>
-                </Link>
-              ))}
-            </nav>
-        </div>
-        <div className="hidden md:flex items-center gap-2">
-            <Link href="/login">
-                <Button>Account</Button>
-            </Link>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                  <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                  <span className="sr-only">Toggle theme</span>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                 {themes.map((t) => (
-                    <DropdownMenuItem key={t.value} onClick={() => setTheme(t.value)}>
-                    <t.icon className="mr-2 h-4 w-4" />
-                    <span>{t.label}</span>
-                    </DropdownMenuItem>
+    <>
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-16 items-center">
+          <div className="mr-auto flex items-center gap-6">
+              <Link href="/" className="flex items-center gap-2"> 
+                <Image 
+                  src={AIXA_LOGO_URL} 
+                  alt="WhatsMAP Logo" 
+                  width={32} 
+                  height={32} 
+                  className="w-auto h-8 object-contain"
+                  priority
+                />
+              </Link>
+              <nav className="hidden md:flex items-center gap-1">
+                {navLinks.map((link) => (
+                    <Link key={link.name} href={link.href}>
+                      <Button variant="ghost">{link.name}</Button>
+                    </Link>
                 ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
+              </nav>
+          </div>
+          <div className="hidden md:flex items-center gap-2">
+              <Button
+                variant="outline"
+                className="flex items-center gap-2 text-muted-foreground"
+                onClick={() => setIsCommandMenuOpen(true)}
+              >
+                <Search className="h-4 w-4" />
+                <span>Search...</span>
+                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                  <span className="text-xs">⌘</span>K
+                </kbd>
+              </Button>
+               <Link href="/login">
+                  <Button variant="ghost">Log In</Button>
+              </Link>
+              <Link href="/signup">
+                  <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
+              </Link>
+          </div>
+          <div className="md:hidden">
+              <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
+                    <span className="sr-only">Open menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-full">
+                   <div className="p-4 flex flex-col h-full">
+                       <div className="flex justify-between items-center mb-8">
+                          <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
+                            <Image 
+                              src={AIXA_LOGO_URL} 
+                              alt="WhatsMAP Logo" 
+                              width={32} 
+                              height={32} 
+                              className="w-auto h-8 object-contain"
+                              priority
+                            />
+                          </Link>
+                          <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
+                              <X className="h-6 w-6" />
+                               <span className="sr-only">Close menu</span>
+                          </Button>
+                      </div>
+                      <nav className="flex flex-col items-center gap-6 text-center">
+                           {navLinks.map((link) => (
+                               <Link key={link.name} href={link.href} onClick={() => setIsMobileMenuOpen(false)}>
+                                  <span className="text-2xl font-semibold text-foreground hover:text-primary transition-colors">{link.name}</span>
+                              </Link>
+                          ))}
+                      </nav>
+                       <div className="mt-auto flex flex-col gap-4">
+                          <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>
+                              <Button className="w-full text-lg py-6">Get Started</Button>
+                          </Link>
+                           <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                              <Button className="w-full text-lg py-6" variant="ghost">Log In</Button>
+                          </Link>
+                      </div>
+                   </div>
+                </SheetContent>
+              </Sheet>
+          </div>
         </div>
-        <div className="md:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-6 w-6" />
-                  <span className="sr-only">Open menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-full">
-                 <div className="p-4 flex flex-col h-full">
-                     <div className="flex justify-between items-center mb-8">
-                        <Logo />
-                        <div className="flex items-center">
-                             <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="icon">
-                                  <Sun className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                                  <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                                  <span className="sr-only">Toggle theme</span>
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent align="end">
-                                {themes.map((t) => (
-                                    <DropdownMenuItem key={t.value} onClick={() => setTheme(t.value)}>
-                                    <t.icon className="mr-2 h-4 w-4" />
-                                    <span>{t.label}</span>
-                                    </DropdownMenuItem>
-                                ))}
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                            <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)}>
-                                <X className="h-6 w-6" />
-                                 <span className="sr-only">Close menu</span>
-                            </Button>
-                        </div>
-                    </div>
-                    <nav className="flex flex-col items-center gap-6 text-center">
-                         {navLinks.map((link) => (
-                             <Link key={link.name} href={link.href} onClick={() => setIsOpen(false)}>
-                                <span className="text-2xl font-semibold text-foreground hover:text-primary transition-colors">{link.name}</span>
-                            </Link>
-                        ))}
-                    </nav>
-                     <div className="mt-auto flex flex-col gap-4">
-                        <Link href="/login" onClick={() => setIsOpen(false)}>
-                            <Button className="w-full text-lg py-6">Account</Button>
-                        </Link>
-                    </div>
-                 </div>
-              </SheetContent>
-            </Sheet>
-        </div>
-      </div>
-    </header>
+      </header>
+      <CommandMenu open={isCommandMenuOpen} setOpen={setIsCommandMenuOpen} />
+    </>
   );
 }

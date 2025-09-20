@@ -12,6 +12,7 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
+// Initialize Firebase for client-side (browser) usage
 function getClientApp() {
     if (getApps().length) {
         return getApp();
@@ -23,6 +24,7 @@ function getClientApp() {
 
     if (!isFirebaseConfigValid) {
         console.error("Firebase client configuration is missing or incomplete. Please check your environment variables.");
+        // Return null or throw an error to prevent further issues if config is bad
         return null;
     }
     
@@ -31,8 +33,9 @@ function getClientApp() {
 
 const app = getClientApp();
 
-export const db = app ? getFirestore(app) : null;
-export const auth = app ? getAuth(app) : null;
+// Export the Firestore and Auth instances
+export const db = app ? getFirestore(app) : undefined; // Use undefined for better type inference if not initialized
+export const auth = app ? getAuth(app) : undefined; // Use undefined for better type inference if not initialized
 
 if (!app) {
     console.warn("Firebase client was not initialized. This may be expected during server-side rendering or if config is missing.");
