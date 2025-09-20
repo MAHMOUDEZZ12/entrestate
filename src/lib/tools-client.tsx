@@ -1,5 +1,8 @@
+
 'use client';
 import React from 'react';
+import { tools as toolsData } from './tools-data';
+import { blogContent } from './blog-content';
 import {
     Bot, BrainCircuit, CheckCircle, Plus, Sparkles, Upload, Megaphone, User,
     ShieldQuestion, Search, MessageCircle, PenTool, Clock2, Wallet, BadgeCheck,
@@ -8,9 +11,25 @@ import {
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
     FileCheck, Palette, Map, LandPlot, Building2, Camera, Calculator, Album, Wand2, Database
 } from 'lucide-react';
+import { toast as sonnerToast } from "sonner";
+import { Copy, Download, Trash2, Eye } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer';
+export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
 export type BadgeType = 'NEW' | 'AUTO' | 'DEPRECATED';
+
+export type Field = {
+    id: string;
+    name: string;
+    type: 'text' | 'file' | 'textarea' | 'select' | 'button' | 'group-header' | 'number';
+    placeholder?: string;
+    value?: string;
+    description?: string;
+    multiple?: boolean;
+    options?: string[];
+    hidden?: boolean;
+    cta?: string;
+}
 
 export interface Feature {
     id: string;
@@ -22,6 +41,12 @@ export interface Feature {
     categories: FilterCategory[];
     badge?: BadgeType;
     cta: string;
+    mindMapCategory: string;
+    isPage?: boolean;
+    href: string;
+    guideHref?: string;
+    creationFields: Field[];
+    renderResult?: (result: any, toast: (options: any) => void) => React.ReactNode;
     details: {
         steps: { icon: React.ReactElement, text: string }[];
         aiVsManual: { metric: string, manual: string, ai: string, icon: React.ReactElement }[];
@@ -30,416 +55,183 @@ export interface Feature {
     };
 }
 
-export const tools: Feature[] = [
-    // === Meta Pilot (Campaign Automation) ===
-    {
-        id: 'meta-auto-pilot',
-        title: "Meta Auto Pilot",
-        description: "The single-click manager for your entire Meta suite.",
-        longDescription: "The ultimate command center for ad automation. Provide a project ID and a goal, and the Meta Auto Pilot will orchestrate a complete workflow: creating the audience, generating creatives, writing copy, and launching the campaign.",
-        icon: <Terminal />,
-        color: '#0078FF',
-        categories: ['Ads', 'Marketing'],
-        badge: 'AUTO',
-        cta: "Launch Pilot",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'campaign-builder',
-        title: "Campaign Builder",
-        description: "Your dedicated agent for Facebook & Instagram advertising.",
-        longDescription: "Never start from a blank slate again. This guided, multi-step tool is your co-pilot for building high-performance Meta ad campaigns. It helps you define objectives, create ad sets, and generate a full suite of creatives and copy.",
-        icon: <BotMessageSquare />,
-        color: '#00A4FF',
-        categories: ['Ads', 'Marketing', 'Lead Gen'],
-        cta: "Build a Campaign",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'audience-creator',
-        title: "Audience Creator",
-        description: "Find high-intent buyers before they search.",
-        longDescription: "Move beyond basic demographics. The Audience Creator analyzes your project and the market to identify high-intent buyer personas, complete with detailed interests, behaviors, and targeting parameters for your ad campaigns.",
-        icon: <Users2 />,
-        color: '#00C2FF',
-        categories: ['Ads', 'Lead Gen', 'Market Intelligence'],
-        cta: "Find Your Audience",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'insta-ads-designer',
-        title: "Insta Ads Designer",
-        description: "Create perfect ads for Instagram Stories & Feed.",
-        longDescription: "Generate Instagram-specific ad copy and visuals from a project brochure. The AI understands the nuances of the platform and creates high-impact, visually-driven ads that stop the scroll.",
-        icon: <Instagram />,
-        color: '#D43F9D',
-        categories: ['Ads', 'Creative', 'Social & Comms'],
-        cta: "Design an Ad",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    // === Archy (Creative Marketing) ===
-    {
-        id: 'reel-ads',
-        title: "Reel Ads",
-        description: "Generate engaging video ads for Instagram Reels.",
-        longDescription: "Create short-form video ads optimized for Instagram Reels. The AI generates scripts, suggests visuals, and even creates video storyboards to maximize engagement and conversions.",
-        icon: <Video />,
-        color: '#C13584',
-        categories: ['Ads', 'Creative', 'Social & Comms'],
-        badge: 'NEW',
-        cta: "Create a Reel",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'instagram-admin',
-        title: "Instagram Admin",
-        description: "Schedules posts and handles replies on Instagram.",
-        longDescription: "Your AI social media manager. It can schedule posts generated by other tools, and uses your knowledge base to provide intelligent, on-brand replies to comments and messages.",
-        icon: <Bot />,
-        color: '#833AB4',
-        categories: ['Social & Comms', 'Marketing'],
-        badge: 'AUTO',
-        cta: "Manage Instagram",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'story-planner',
-        title: "Story Planner",
-        description: "Plan and design animated Instagram stories.",
-        longDescription: "Create engaging, multi-slide Instagram stories with animations. The AI helps you plan the narrative arc and designs each slide for a cohesive, professional look.",
-        icon: <Album />,
-        color: '#F56040',
-        categories: ['Creative', 'Social & Comms'],
-        cta: "Plan a Story",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'ai-video-presenter',
-        title: "AI Video Presenter",
-        description: "Create a lifelike AI presenter to deliver your project pitch.",
-        longDescription: "Create professional video presentations without a camera or crew. Provide a script, and our AI will generate a video with a lifelike digital presenter, perfect for market updates or property introductions.",
-        icon: <Video />,
-        color: '#4A90E2',
-        categories: ['Creative', 'Marketing', 'Ads'],
-        cta: "Create Your Presenter",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'ugc-script-writer',
-        title: "UGC Script Writer",
-        description: "Generate authentic, user-generated content style video ad scripts.",
-        longDescription: "Create User-Generated Content (UGC) style scripts that feel genuine and relatable. Our AI is trained on successful social media ad formats to produce scripts that are perfect for platforms like TikTok and Instagram Reels.",
-        icon: <MessageCircle />,
-        color: '#B8E986',
-        categories: ['Creative', 'Social & Comms', 'Ads'],
-        cta: "Write Your Script",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'ai-youtube-video-editor',
-        title: "AI YouTube Video Editor",
-        description: "Edit any video to be YouTube-ready.",
-        longDescription: "A canvas-based interface to provide natural language instructions for video editing. Upload your footage and tell the AI what to do: 'Trim the beginning,' 'add background music,' 'create a title card.'",
-        icon: <Video />,
-        color: '#FF0000',
-        categories: ['Editing', 'Creative'],
-        badge: 'NEW',
-        cta: "Edit a Video",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'landing-page-builder',
-        title: "Landing Page Builder",
-        description: "Launch a high-converting page in minutes.",
-        longDescription: "Instantly create high-converting landing pages. Our AI analyzes your project details and brand kit to assemble a complete, responsive landing page from a library of optimized modules.",
-        icon: <LayoutTemplate />,
-        color: '#9013FE',
-        categories: ['Web', 'Marketing', 'Lead Gen'],
-        cta: "Build Your Page",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'automated-rebranding',
-        title: "Automated Rebranding",
-        description: "Apply your brand identity to any brochure with text-based commands.",
-        longDescription: "Take an existing property brochure (PDF) and instantly apply a new brand identity. The AI swaps logos, updates color palettes, and replaces contact information, saving hours of manual design work.",
-        icon: <Palette />,
-        color: '#F5A623',
-        categories: ['Creative', 'Editing', 'Sales Tools'],
-        cta: "Rebrand a Document",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'brochure-translator',
-        title: "Brochure Translator",
-        description: "Translate any brochure to multiple languages in seconds.",
-        longDescription: "Translate the text content of a brochure PDF to a different language while aiming to preserve the original layout and design.",
-        icon: <Globe />,
-        color: '#7ED321',
-        categories: ['Editing', 'Sales Tools'],
-        cta: "Translate a Brochure",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'visual-pdf-editor',
-        title: "Visual PDF Editor (Deprecated)",
-        description: "A legacy tool for simple PDF edits.",
-        longDescription: "A legacy tool for performing simple visual edits on PDF documents. For more advanced, AI-powered document manipulation, please use our Automated Rebranding and Brochure Translator tools.",
-        icon: <FileText />,
-        color: '#888888',
-        categories: ['Editing'],
-        badge: 'DEPRECATED',
-        cta: "Open Editor",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'aerial-view-generator',
-        title: "Aerial View Generator",
-        description: "Create cinematic, aerial video tours of any property.",
-        longDescription: "Transform a property address into a stunning, cinematic aerial tour. Our AI uses advanced generative video models to create drone-style footage, perfect for showcasing a property's location and surroundings.",
-        icon: <Camera />,
-        color: '#50E3C2',
-        categories: ['Creative', 'Marketing', 'Ads'],
-        badge: 'NEW',
-        cta: "Generate Aerial Tour",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    // === Listing & CRM Tools ===
-    {
-        id: 'listing-manager',
-        title: "Listing Manager",
-        description: "Your central hub to prepare and syndicate listings to major portals.",
-        longDescription: "A central hub for preparing your listings before syndication. Write descriptions, upload photos, and ensure all data is perfect before pushing to portals.",
-        icon: <ListChecks />,
-        color: '#FF6F61',
-        categories: ['CRM', 'Sales Tools'],
-        cta: "Manage Listings",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'listing-performance',
-        title: "Listing Performance",
-        description: "Track listing views and performance.",
-        longDescription: "Track and display analytics for listing views and lead generation across all the portals you've syndicated to.",
-        icon: <BarChart3 />,
-        color: '#FF8C42',
-        categories: ['CRM', 'Market Intelligence'],
-        cta: "View Performance",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'listing-generator',
-        title: "Listing Generator",
-        description: "Craft perfect listings for portals like Property Finder & Bayut.",
-        longDescription: "Transform a few bullet points into a compelling, SEO-friendly property listing. Our AI is trained on top-performing listings to write descriptions that attract buyers and rank well on portals.",
-        icon: <PenTool />,
-        color: '#FFC107',
-        categories: ['Sales Tools', 'Marketing', 'Web'],
-        cta: "Write Your Listing",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'property-finder-pilot',
-        title: "Property Finder Pilot",
-        description: "The execution terminal for pushing listings to Property Finder.",
-        longDescription: "A dedicated execution pilot for syncing your listings to the Property Finder portal. It takes a standardized plan and pushes your listings live, handling the specific API requirements for that portal.",
-        icon: <Container />,
-        color: '#6610F2',
-        categories: ['Developer', 'CRM'],
-        badge: 'AUTO',
-        cta: "Initiate Sync",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'bayut-pilot',
-        title: "Bayut Pilot",
-        description: "The execution terminal for pushing listings to Bayut.",
-        longDescription: "A dedicated execution pilot for syncing your listings to the Bayut portal. It takes a standardized plan and pushes your listings live, handling the specific API requirements for that portal.",
-        icon: <Container />,
-        color: '#28A745',
-        categories: ['Developer', 'CRM'],
-        badge: 'AUTO',
-        cta: "Initiate Sync",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'ai-price-estimator',
-        title: "AI Price Estimator",
-        description: "Get an AI-powered price estimate for any property.",
-        longDescription: "Uses a structured prompt with our AI to simulate a regression model, providing a property valuation with confidence intervals and comparable sales.",
-        icon: <Calculator />,
-        color: '#6F42C1',
-        categories: ['Market Intelligence', 'Sales Tools'],
-        cta: "Estimate a Price",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'commission-calculator',
-        title: "Commission Calculator",
-        description: "Instantly calculate your sales commission.",
-        longDescription: "A simple but essential tool to instantly calculate your sales commission based on deal size, percentage, and any other relevant factors.",
-        icon: <Wallet />,
-        color: '#20C997',
-        categories: ['Sales Tools'],
-        cta: "Calculate Commission",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'payment-planner',
-        title: "Payment Planner",
-        description: "Generate tailored payment plans for off-plan properties.",
-        longDescription: "Generate client-friendly payment schedules for off-plan properties, taking into account milestones, percentages, and dates.",
-        icon: <ClipboardList />,
-        color: '#FD7E14',
-        categories: ['Sales Tools'],
-        cta: "Create a Plan",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'investor-matching',
-        title: "Investor Matching",
-        description: "Pair budgets with the right projects.",
-        longDescription: "Stop mass-emailing. Upload your client list (CSV) and select a property. The AI analyzes each client's profile against the property's financials and features to rank the best-fit investors.",
-        icon: <Handshake />,
-        color: '#17A2B8',
-        categories: ['Lead Gen', 'Sales Tools', 'CRM'],
-        cta: "Match Investors",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'multi-offer-builder',
-        title: "Multi-Offer Builder",
-        description: "Compare property options side-by-side for clients.",
-        longDescription: "Create a side-by-side comparison document for multiple properties, highlighting key features, financials, and benefits to help clients make informed decisions.",
-        icon: <LayoutTemplate />,
-        color: '#E83E8C',
-        categories: ['Sales Tools'],
-        cta: "Build an Offer",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'whatsapp-manager',
-        title: "WhatsApp Manager",
-        description: "Send personalized broadcasts and drip campaigns.",
-        longDescription: "Manage broadcasts and drip campaigns via WhatsApp. Use AI to personalize messages and schedule them for maximum impact.",
-        icon: <MessageCircle />,
-        color: '#25D366',
-        categories: ['Social & Comms', 'CRM', 'Marketing'],
-        cta: "Manage WhatsApp",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'lead-investigator-ai',
-        title: "Lead Investigator AI",
-        description: "Find social profiles and professional history for any lead.",
-        longDescription: "Turn a name and email into a rich profile. The Lead Investigator simulates an Open-Source Intelligence (OSINT) search to find publicly available information about a lead, such as their professional background and interests.",
-        icon: <FileSearch />,
-        color: '#DC3545',
-        categories: ['Lead Gen', 'Sales Tools', 'CRM'],
-        cta: "Investigate a Lead",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    // === Market Intelligence ===
-    {
-        id: 'market-library',
-        title: "Market Library",
-        description: "Search our intelligent library for verified projects.",
-        longDescription: "Search our intelligent library of verified projects, powered by our multi-layered data ingestion engine. Get clean, reliable data on past and present projects.",
-        icon: <Search />,
-        color: '#6C757D',
-        categories: ['Market Intelligence'],
-        cta: "Search the Library",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'market-reports',
-        title: "Market Reports",
-        description: "Generate PDF reports on market trends, pricing, and sentiment.",
-        longDescription: "Create beautifully formatted, data-rich market analysis reports for any location. Tailor the entire narrative for a specific audience (Investor, Buyer, or Seller) to create a powerful, persuasive document.",
-        icon: <Newspaper />,
-        color: '#28A745',
-        categories: ['Market Intelligence', 'Sales Tools'],
-        cta: "Generate a Report",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'market-trends-watcher',
-        title: "Market Trends Watcher",
-        description: "Identify emerging market trends before they become mainstream.",
-        longDescription: "Synthesizes news, social pulse data, and listing information to identify emerging market trends, giving you a competitive edge.",
-        icon: <LineChart />,
-        color: '#17A2B8',
-        categories: ['Market Intelligence'],
-        cta: "Watch Trends",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    // === Core Platform ===
-    {
-        id: 'brand-creator',
-        title: "Brand Creator",
-        description: "Configure your entire brand kit by analyzing uploaded documents.",
-        longDescription: "The core of your AI's personalization. Upload your brand guides, brochures, and other documents, and the AI will automatically extract your logo, colors, and contact info to set up your brand kit.",
-        icon: <Palette />,
-        color: '#6F42C1',
-        categories: ['CRM', 'Developer'],
-        cta: "Configure Your Brand",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'crm-memory',
-        title: "CRM Memory",
-        description: "The core data store that remembers every client interaction.",
-        longDescription: "The core data store for your professional suite. It remembers every client interaction, every document uploaded, and every preference, providing the contextual memory for all other AI tools.",
-        icon: <Database />,
-        color: '#343A40',
-        categories: ['CRM', 'Developer'],
-        cta: "View Memory",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'assistant',
-        title: "Assistant",
-        description: "Your personal, trainable AI partner.",
-        longDescription: "Your personal AI Command Center. Train it with your private knowledge base, issue direct commands, and let it orchestrate complex workflows across all your other tools.",
-        icon: <Bot />,
-        color: '#007BFF',
-        categories: ['CRM', 'Sales Tools'],
-        cta: "Open Assistant",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'embeddable-site-assistant',
-        title: "Embeddable Site Assistant",
-        description: "Add a market-aware AI chatbot to any website.",
-        longDescription: "Add a market-aware AI chatbot to your own website. It comes pre-trained with your private knowledge base, ready to answer questions and capture leads.",
-        icon: <BotMessageSquare />,
-        color: '#0056b3',
-        categories: ['Web', 'Lead Gen'],
-        badge: 'NEW',
-        cta: "Get Embed Code",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'vm-creator',
-        title: "VM Creator",
-        description: "A utility for developers to provision Google Cloud virtual machines.",
-        longDescription: "A utility for developers to provision Google Cloud virtual machines via an AI command, simplifying infrastructure management.",
-        icon: <Terminal />,
-        color: '#ADB5BD',
-        categories: ['Developer'],
-        badge: 'AUTO',
-        cta: "Provision VM",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-    {
-        id: 'creative-execution-terminal',
-        title: "Creative Execution Terminal",
-        description: "The execution engine for complex creative tasks.",
-        longDescription: "The execution engine for complex creative tasks planned by other tools. Use it to generate visuals, videos, and other creative assets on demand.",
-        icon: <Wand2 />,
-        color: '#495057',
-        categories: ['Creative', 'Developer'],
-        cta: "Open Terminal",
-        details: { /* Placeholder details */ steps: [], aiVsManual: [], synergy: [], faqs: [] }
-    },
-];
+
+const copyToClipboard = (text: string, toast: (options: any) => void) => {
+    navigator.clipboard.writeText(text);
+    toast({
+        title: "Copied to clipboard!",
+        description: "The result has been copied successfully.",
+    });
+};
+
+export const fileToDataUri = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+};
+
+export const filesToDataUris = (files: FileList): Promise<string[]> => {
+    const promises = Array.from(files).map(fileToDataUri);
+    return Promise.all(promises);
+};
+
+
+// Function to merge data with details
+const mergeToolData = (): Feature[] => {
+    return toolsData.map(tool => {
+        const details = blogContent[tool.id] || { sections: [], title: '', intro: '', cta: '' };
+
+        // Define a default details structure
+        const defaultDetails = {
+            steps: [
+                { icon: <Upload />, text: 'Provide your source content, like a brochure or project details.' },
+                { icon: <Sparkles />, text: 'The AI analyzes your input and generates the content.' },
+                { icon: <Download />, text: 'Review, refine, and use your new AI-generated asset.' },
+            ],
+            aiVsManual: [
+                { metric: "Time to Complete", manual: "Hours to Days", ai: "Seconds to Minutes", icon: <Clock2 /> },
+                { metric: "Cost", manual: "$$$ - $$$$", ai: "$", icon: <Wallet /> },
+                { metric: "Quality & Consistency", manual: "Variable", ai: "Consistently High", icon: <BadgeCheck /> },
+            ],
+            synergy: [],
+            faqs: []
+        };
+        
+        let toolDetails = {
+            steps: details.sections.slice(0, 3).map((s: any, i: number) => ({
+                icon: i === 0 ? <Upload /> : i === 1 ? <Sparkles /> : <Download />,
+                text: s.body
+            })),
+             aiVsManual: defaultDetails.aiVsManual, // Keep default for now
+            synergy: [
+                 { tool: "AI Assistant", benefit: "Use the assistant to run this tool via a simple text command for faster workflow." },
+                 { tool: "Brand Kit", benefit: "Automatically applies your logos and colors to ensure all outputs are on-brand." },
+            ],
+            faqs: [
+                { question: "Is my data used to train the AI?", answer: "No. Your data is kept private and is only used to generate content for you. It is not used for training external models." },
+                { question: "Can I edit the generated content?", answer: "Yes, all generated content can be downloaded and edited in other tools, or you can use our built-in editors to refine the results." }
+            ]
+        };
+
+        if (toolDetails.steps.length === 0) {
+            toolDetails.steps = defaultDetails.steps;
+        }
+
+        return {
+            ...(tool as any),
+            longDescription: details.intro || tool.description,
+            isPage: false,
+            href: `/dashboard/tool/${tool.id}`,
+            guideHref: `/apps/${tool.id}`,
+            mindMapCategory: tool.categories.includes('Ads') ? 'Meta Pilot (Campaign Automation)' :
+                             tool.categories.includes('Creative') || tool.categories.includes('Web') || tool.categories.includes('Editing') ? 'Archy (Creative Marketing)' :
+                             tool.categories.includes('Market Intelligence') ? 'Market Intelligence' :
+                             tool.categories.includes('CRM') || tool.categories.includes('Sales Tools') ? 'Listing & CRM Tools' : 'Core Platform',
+            creationFields: [], // This will be populated below based on ID
+            details: toolDetails,
+        };
+    });
+};
+
+
+export const tools: Feature[] = mergeToolData().map(tool => {
+    switch (tool.id) {
+         case 'insta-ads-designer':
+            tool.creationFields = [
+                { id: 'projectId', name: 'Project', type: 'select', placeholder: 'Select a project from your library', options: ['Emaar Beachfront', 'Damac Hills 2', 'Sobha Hartland', 'Add New Project...'], description: "Select a project you've saved to your library to use its assets." },
+                { id: 'brochureDataUri', name: 'OR Upload Brochure', type: 'file', description: "If the project isn't in your library, upload its brochure (PDF)." },
+                { id: 'focusArea', name: 'Ad Focus', type: 'text', placeholder: 'e.g., Luxury amenities, investment potential', description: 'What is the main selling point for this ad?' },
+                { id: 'toneOfVoice', name: 'Tone of Voice', type: 'select', options: ['Professional', 'Friendly', 'Urgent', 'Luxury'], description: 'The desired tone for the ad copy.' },
+            ];
+            tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                    <h3 className="font-semibold">Ad Copy:</h3>
+                    <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap">{result.adCopy}</pre>
+                    <Button onClick={() => copyToClipboard(result.adCopy, toast)}><Copy className="mr-2"/> Copy Text</Button>
+                     <h3 className="font-semibold">Generated Brochure:</h3>
+                    <iframe src={result.adDesign} className="w-full h-96 rounded-md border" />
+                     <h3 className="font-semibold">Generated Landing Page:</h3>
+                     <iframe src={result.landingPage} className="w-full h-96 rounded-md border" />
+                </div>
+            );
+            break;
+        case 'audience-creator':
+             tool.creationFields = [
+                { id: 'projectId', name: 'Project', type: 'select', options: ['Emaar Beachfront', 'Damac Hills 2', 'Sobha Hartland'], placeholder: 'Select a project to generate an audience for', description: 'The AI will analyze the project to find the ideal buyer.' },
+            ];
+            tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                    {result.strategies.map((strategy: any, index: number) => (
+                        <div key={index} className="p-4 border rounded-lg bg-muted/50">
+                            <h3 className="font-bold text-lg text-primary">{strategy.strategyName}</h3>
+                            <p className="text-sm text-muted-foreground mb-2">Meta Audience Type: <span className="font-semibold">{strategy.audienceType}</span></p>
+                            <p><strong>Demographics:</strong> {strategy.demographics}</p>
+                            <p><strong>Interests (for Meta):</strong> {strategy.interests}</p>
+                            <p><strong>Keywords (for Google):</strong> {strategy.keywords}</p>
+                        </div>
+                    ))}
+                </div>
+            );
+            break;
+        case 'rebranding':
+            tool.creationFields = [
+                { id: 'brochureDataUri', name: 'Source Brochure', type: 'file', description: 'The original brochure you want to rebrand (PDF).' },
+                { id: 'contactDetails', name: 'Your Contact Info', type: 'textarea', placeholder: 'Jane Doe\n+971 50 123 4567\njane.doe@agency.com', description: 'The contact details to add to the brochure.' },
+                { id: 'companyName', name: 'Your Company Name', type: 'text', placeholder: 'e.g., Luxe Properties Dubai', description: 'Your brand name for the rebranding.' },
+                { id: 'companyLogoDataUri', name: 'Your Logo (Optional)', type: 'file', description: 'Upload your logo (PNG/JPG). If not provided, an AI logo will be generated.' },
+                { id: 'toneOfVoice', name: 'Tone of Voice', type: 'select', options: ['Professional', 'Friendly', 'Luxury'], description: 'The tone for any AI-generated text.' },
+                { id: 'colors', name: 'Color Palette', type: 'text', placeholder: 'e.g., "Navy Blue and Gold"', description: 'The desired brand colors.' },
+                { id: 'deepEditInstructions', name: 'Specific Instructions (Optional)', type: 'textarea', placeholder: 'e.g., "Replace the cover image with an image of the Dubai Marina skyline. Change all prices to be 5% higher."', description: 'Give the AI specific, detailed changes to make.' },
+            ];
+             tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                    {result.logoDataUri && (
+                        <div>
+                             <h3 className="font-semibold">AI Generated Logo:</h3>
+                             <div className="p-4 bg-muted rounded-md my-2 flex justify-center">
+                                <img src={result.logoDataUri} alt="AI Generated Logo" className="h-24 object-contain" />
+                            </div>
+                        </div>
+                    )}
+                    <h3 className="font-semibold">Rebranded Brochure:</h3>
+                    <iframe src={result.rebrandedBrochureDataUri} className="w-full h-96 rounded-md border" />
+                </div>
+            );
+            break;
+        case 'pdf-editor':
+             tool.creationFields = [
+                { id: 'sourcePdf', name: 'Source PDF', type: 'file', description: 'Upload the PDF you want to edit.' },
+                { id: 'editInstructions', name: 'Editing Instructions', type: 'textarea', placeholder: 'e.g., "Change the main title to \'Luxury Living in Dubai\'. Replace the logo on page 1. Swap the image on page 3 with the new one I uploaded."', description: 'Describe the changes you want to make.' },
+                { id: 'newImages', name: 'New Images (Optional)', type: 'file', multiple: true, description: 'Upload any new images to be used in the PDF.' },
+            ];
+            tool.renderResult = (result, toast) => (
+                 <div className="space-y-4">
+                    <h3 className="font-semibold">Execution Plan Summary:</h3>
+                    <p className="p-4 bg-muted rounded-md text-sm">{result.summary}</p>
+                    <h3 className="font-semibold">Steps to be Executed:</h3>
+                    <ul className="space-y-2">
+                        {result.executionPlan.map((step: any, index: number) => (
+                            <li key={index} className="p-3 border rounded-lg bg-muted/50 text-sm">
+                                <p><strong>Step {index+1}:</strong> {step.description}</p>
+                                <p className="font-mono text-xs text-muted-foreground">Tool: {step.tool}, Params: {JSON.stringify(step.parameters)}</p>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            );
+            break;
+        // Other cases would follow...
+        default:
+            tool.creationFields = [
+                { id: 'input', name: 'Input', type: 'text', placeholder: 'Enter your input...' },
+            ];
+            tool.renderResult = (result, toast) => (
+                <pre className="p-4 bg-muted rounded-md text-sm">{JSON.stringify(result, null, 2)}</pre>
+            );
+            break;
+    }
+    return tool;
+});
