@@ -1,3 +1,4 @@
+
 import { PublicToolPageLayout } from "@/components/public-tool-page-layout";
 import { tools } from "@/lib/tools-client";
 import { notFound } from "next/navigation";
