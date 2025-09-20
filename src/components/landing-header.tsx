@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -31,6 +32,7 @@ export function LandingHeader() {
 
   const navLinks = [
     { name: 'Solutions', href: '/solutions' },
+    { name: 'Apps', href: '/apps' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'Community', href: '/community' },
     { name: 'Blog', href: '/blog' },
