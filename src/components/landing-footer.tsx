@@ -1,6 +1,8 @@
+
 import Link from 'next/link';
 import { Facebook, Twitter, Linkedin } from 'lucide-react';
 import Image from 'next/image';
+import { tools } from '@/lib/tools-data';
 
 const AIXA_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/Aixa-logo.png?alt=media&token=16231f13-d6e3-489d-be1a-e1ecc38c2df6';
 
@@ -25,38 +27,41 @@ export function LandingFooter() {
           </div>
 
           <div className="col-span-1">
-            <h4 className="text-lg font-semibold font-heading mb-4">Solutions</h4>
-            <nav className="flex flex-col space-y-2">
-              <Link href="/solutions/agents" className="text-muted-foreground hover:text-primary transition-colors">For Agents</Link>
-              <Link href="/solutions/developers" className="text-muted-foreground hover:text-primary transition-colors">For Developers</Link>
-              <Link href="/solutions/investors" className="text-muted-foreground hover:text-primary transition-colors">For Investors</Link>
-            </nav>
-          </div>
-
-          <div className="col-span-1">
             <h4 className="text-lg font-semibold font-heading mb-4">Platform</h4>
             <nav className="flex flex-col space-y-2">
+              <Link href="/apps" className="text-muted-foreground hover:text-primary transition-colors">Apps</Link>
+              <Link href="/solutions" className="text-muted-foreground hover:text-primary transition-colors">Solutions</Link>
               <Link href="/pricing" className="text-muted-foreground hover:text-primary transition-colors">Pricing</Link>
-              <Link href="/dashboard/marketing" className="text-muted-foreground hover:text-primary transition-colors">All Tools</Link>
-              <Link href="/search" className="text-muted-foreground hover:text-primary transition-colors">Discovery Engine</Link>
+              <Link href="/discover" className="text-muted-foreground hover:text-primary transition-colors">Discovery Engine</Link>
             </nav>
           </div>
           
+          <div className="col-span-1">
+            <h4 className="text-lg font-semibold font-heading mb-4">Resources</h4>
+            <nav className="flex flex-col space-y-2">
+              <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link>
+              <Link href="/market" className="text-muted-foreground hover:text-primary transition-colors">Market Pulse</Link>
+              <Link href="/documentation" className="text-muted-foreground hover:text-primary transition-colors">Documentation</Link>
+              <Link href="/sx3-mindmap" className="text-muted-foreground hover:text-primary transition-colors">Mindmap</Link>
+            </nav>
+          </div>
+
           <div className="col-span-1">
             <h4 className="text-lg font-semibold font-heading mb-4">Company</h4>
             <nav className="flex flex-col space-y-2">
               <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About Us</Link>
               <Link href="/community" className="text-muted-foreground hover:text-primary transition-colors">Community</Link>
-              <Link href="/status" className="text-muted-foreground hover:text-primary transition-colors">Status</Link>
+              <Link href="/status" className="text-muted-foreground hover:text-primary transition-colors">System Status</Link>
+              <Link href="/technology" className="text-muted-foreground hover:text-primary transition-colors">Technology</Link>
             </nav>
           </div>
 
           <div className="col-span-1">
             <h4 className="text-lg font-semibold font-heading mb-4">Legal & Social</h4>
             <nav className="flex flex-col space-y-2 mb-6">
-              <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">Privacy</Link>
-              <Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors">Terms</Link>
-              <Link href="/cookies" className="text-muted-foreground hover:text-primary transition-colors">Cookies</Link>
+              <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link>
+              <Link href="/cookies" className="text-muted-foreground hover:text-primary transition-colors">Cookie Policy</Link>
             </nav>
             
             <div className="flex items-center gap-4">
