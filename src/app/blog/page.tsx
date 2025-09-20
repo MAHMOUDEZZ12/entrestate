@@ -6,7 +6,15 @@ import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
 import { ArrowRight, Rss } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { posts } from '@/lib/blog-content'; // Import the blog posts
+import { blogContent } from '@/lib/blog-content'; // Import the blog posts
+
+// Convert the blogContent object into an array of posts
+const posts = Object.entries(blogContent).map(([slug, content]) => ({
+    slug,
+    title: content.title,
+    description: content.intro,
+    date: "July 29, 2024" // Placeholder date
+}));
 
 export default function BlogPage() {
   return (
