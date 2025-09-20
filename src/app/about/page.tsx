@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -21,7 +22,7 @@ export default function AboutPage() {
         <Card className="bg-card/80 backdrop-blur-lg">
             <CardContent className="p-8 md:p-12 prose prose-lg dark:prose-invert max-w-none">
                  <div className="flex justify-center mb-8">
-                    <Image src={visuals.aixa-intel} alt="AIXA Logo" width={80} height={80} />
+                    <Image src={visuals['aixa-intel']} alt="AIXA Logo" width={80} height={80} />
                 </div>
                 
                 <h2>A Note from the Creator</h2>
