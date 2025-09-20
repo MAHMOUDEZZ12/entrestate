@@ -4,8 +4,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Key, Bomb, X, Search, Lightbulb, Briefcase, UserPlus, Clock, Copy, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { cn } from '@/lib/utils';
 import { Confetti } from '@/components/confetti';
 import { Card, CardContent } from '@/components/ui/card';
@@ -118,7 +116,6 @@ export default function SuperFreeTimePage() {
     return (
         <div className="flex min-h-screen flex-col bg-background">
             {foundKey && <Confetti />}
-            <LandingHeader />
             <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20 flex flex-col items-center">
                 <div className="text-center mb-12">
                     <div className="inline-block p-4 mb-6 text-white rounded-2xl bg-gradient-to-br from-primary to-accent">
@@ -223,7 +220,6 @@ export default function SuperFreeTimePage() {
                 </Dialog>
 
             </main>
-            <LandingFooter />
         </div>
     );
 }

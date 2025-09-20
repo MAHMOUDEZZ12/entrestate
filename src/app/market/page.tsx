@@ -10,8 +10,6 @@ import { LineChart, Users2, Eye, Target, Sparkles, Download, ArrowRight, Trendin
 import { PageHeader } from '@/components/ui/page-header';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
@@ -120,7 +118,6 @@ export default function MarketPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
       <PageHeader
         title="Market Pulse"
@@ -272,7 +269,6 @@ export default function MarketPage() {
             </Tabs>
         </section>
       </main>
-      <LandingFooter />
     </div>
   );
 }

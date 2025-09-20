@@ -11,7 +11,6 @@ import { PageHeader } from '@/components/ui/page-header';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import Link from 'next/link';
 import { ResourcesHeader } from '@/components/resources-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from '@/components/ui/badge';
 import Image from 'next/image';
@@ -264,7 +263,6 @@ export default function ResourcesPage() {
         </section>
 
       </main>
-      <LandingFooter />
     </div>
   );
 }

@@ -3,8 +3,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { Button } from '@/components/ui/button';
 import { Search, Loader2, Sparkles, Building, BarChart, LayoutTemplate, ArrowRight, UserPlus, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -155,7 +153,7 @@ export default function DiscoverResultsPage() {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        toolId: 'discover-market',
+                        toolId: 'discover-engine',
                         payload: { query: decodeURIComponent(query) }
                     })
                 });
@@ -190,7 +188,6 @@ export default function DiscoverResultsPage() {
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
-            <LandingHeader />
             <main className="flex-1 w-full max-w-5xl mx-auto px-4 md:px-6 py-12 md:py-20">
                 <div className="mb-12">
                     <p className="text-muted-foreground">Showing results for:</p>
@@ -244,7 +241,6 @@ export default function DiscoverResultsPage() {
                      </div>
                  )}
             </main>
-            <LandingFooter />
         </div>
     );
 }

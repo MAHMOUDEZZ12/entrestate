@@ -1,8 +1,7 @@
+
 'use client';
 
 import React from 'react';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { tools } from '@/lib/tools-client';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -81,7 +80,6 @@ export default function SX3MindMapPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
       <main className="flex-1 w-full">
         <PageHeader
           title="The WhatsMAP Ecosystem"
@@ -133,7 +131,6 @@ export default function SX3MindMapPage() {
           </MindMapNode>
         </div>
       </main>
-      <LandingFooter />
     </div>
   );
 }

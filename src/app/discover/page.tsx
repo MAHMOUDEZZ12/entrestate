@@ -3,8 +3,6 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { Input } from '@/components/ui/input';
 import { Search, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -23,7 +21,6 @@ const DiscoverPage = () => {
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
-            <LandingHeader />
             <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-20 flex flex-col items-center justify-center">
                 <div className="text-center mb-12">
                     <div className="inline-block p-4 mb-6 text-white rounded-2xl bg-gradient-to-br from-primary to-accent">
@@ -52,7 +49,6 @@ const DiscoverPage = () => {
                      </div>
                 </div>
             </main>
-            <LandingFooter />
         </div>
     );
 }
