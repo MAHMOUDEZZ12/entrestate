@@ -27,7 +27,7 @@ export default function PricingPage() {
 
   const allApps = pricingData.apps;
   const bundles = pricingData.bundles.filter(b => b.name !== 'ENTRESTATE PRO');
-  const proPlan = pricingData.bundles.find(b => b.name === 'ENTRESTATE PROT');
+  const proPlan = pricingData.bundles.find(b => b.name === 'ENTRESTATE PRO');
 
   const handleAppSelection = (appName: string) => {
     setSelectedApps(prev =>
@@ -36,29 +36,27 @@ export default function PricingPage() {
         : [...prev, appName]
     );
   };
+  
+  const isBundleSelected = (bundleApps: string[]) => {
+      if (bundleApps.length !== selectedApps.length) return false;
+      const selectedSet = new Set(selectedApps);
+      return bundleApps.every(app => selectedSet.has(app));
+  }
 
-  const handleBundleSelection = (bundleName: string) => {
-    const bundle = bundles.find(b => b.name === bundleName);
-    if (!bundle) return;
-
-    // Check if this exact bundle is already selected
-    const isCurrentlySelected =
-      bundle.apps.length === selectedApps.length &&
-      bundle.apps.every(app => selectedApps.includes(app));
+  const handleBundleSelection = (bundle: typeof bundles[0]) => {
+    const isCurrentlySelected = isBundleSelected(bundle.apps);
 
     if (isCurrentlySelected) {
-      // If the clicked bundle is already selected, deselect it
       setSelectedApps([]);
     } else {
-      // Otherwise, select the apps of the clicked bundle (this also handles switching from PRO)
       setSelectedApps(bundle.apps);
     }
   };
 
   const isProSelected = useMemo(() => {
     if (!proPlan) return false;
-    return allApps.length > 0 && allApps.every(app => selectedApps.includes(app.name)) && selectedApps.length === allApps.length;
-  }, [selectedApps, proPlan, allApps]);
+    return isBundleSelected(proPlan.apps);
+  }, [selectedApps, proPlan]);
   
   const handleSelectPro = () => {
     if (!proPlan) return;
@@ -77,13 +75,8 @@ export default function PricingPage() {
   }, [selectedApps, allApps]);
 
   const activeBundle = useMemo(() => {
-    if (isProSelected) return null; // Don't show a bundle if PRO is selected
-    
-    const foundBundle = bundles.find(bundle =>
-        bundle.apps.length === selectedApps.length &&
-        bundle.apps.every(app => selectedApps.includes(app))
-      );
-    return foundBundle;
+    if (isProSelected) return null;
+    return bundles.find(bundle => isBundleSelected(bundle.apps));
   }, [selectedApps, bundles, isProSelected]);
 
 
@@ -151,12 +144,12 @@ export default function PricingPage() {
             <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {bundles.map(bundle => {
-                    const isSelected = bundle.apps.length === selectedApps.length && bundle.apps.every(app => selectedApps.includes(app));
+                    const isSelected = isBundleSelected(bundle.apps);
                     const savings = getBundleSavings(bundle);
                     return (
                       <button
                         key={bundle.name}
-                        onClick={() => handleBundleSelection(bundle.name)}
+                        onClick={() => handleBundleSelection(bundle)}
                         className={cn(
                           "p-4 rounded-lg border text-left transition-all relative",
                           isSelected ? "bg-primary/10 border-primary/50" : "bg-muted/30 hover:bg-muted/70",
