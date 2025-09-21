@@ -14,14 +14,16 @@ export function LandingFooter() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 md:gap-12">
           
-          <div className="col-span-2 lg:col-span-1">
+          <div className="col-span-2 lg:col-span-1 flex flex-col">
             <Logo />
-            <p className="mt-2 text-sm text-foreground/70">
-              The AI-Native Operating System for Real Estate.
-            </p>
-            <p className="mt-1 text-sm text-muted-foreground">
-              &copy; {currentYear} Entrestate. All rights reserved.
-            </p>
+            <div className="mt-4">
+                <p className="text-sm text-foreground/70">
+                The AI-Native Operating System for Real Estate.
+                </p>
+                <p className="mt-1 text-sm text-muted-foreground">
+                &copy; {currentYear} Entrestate. All rights reserved.
+                </p>
+            </div>
           </div>
 
           <div className="col-span-1">
