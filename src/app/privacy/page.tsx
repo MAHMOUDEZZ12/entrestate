@@ -12,12 +12,12 @@ export default function PrivacyPage() {
         <PageHeader 
             icon={<Shield className="h-8 w-8" />}
             title="Privacy Policy"
-            description="Last updated: July 26, 2024. Your trust is our top priority."
+            description="Last updated: July 29, 2024. Your trust is our top priority."
         />
         <Card className="mt-8 bg-card/80 backdrop-blur-lg">
             <CardContent className="p-8 prose prose-lg dark:prose-invert max-w-none">
               <p>
-                Welcome to Entrestate ("we," "us," or "our"). We are deeply committed to protecting your privacy and ensuring the security of your data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-native real estate ecosystem. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access or use the application.
+                Welcome to Entrestate by mtc ("we," "us," or "our"). We are deeply committed to protecting your privacy and ensuring the security of your data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-native real estate ecosystem. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access or use the application.
               </p>
 
               <h2>Information We Collect</h2>
@@ -68,9 +68,8 @@ export default function PrivacyPage() {
               <h2>Contact Us</h2>
               <p>If you have questions or comments about this Privacy Policy, please contact us at:</p>
               <p>
-                Entrestate Legal Department<br />
-                123 AI Lane<br />
-                Innovation City, 12345<br />
+                Entrestate by mtc<br />
+                Dubai, UAE<br />
                 <a href="mailto:privacy@entrestate.com">privacy@entrestate.com</a>
               </p>
             </CardContent>

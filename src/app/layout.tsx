@@ -21,7 +21,7 @@ const fontHeading = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://entrestate.com'),
+  metadataBase: new URL('https://www.entrestate.com'),
   title: 'Entrestate — AI-Native Real Estate Ecosystem',
   description: 'An AI-native ecosystem for real estate professionals, featuring intelligent search and a suite of powerful B2B tools.',
   openGraph: {

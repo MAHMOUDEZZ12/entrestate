@@ -14,7 +14,7 @@ export default function TermsPage() {
          <PageHeader 
             icon={<FileText className="h-8 w-8" />}
             title="Terms of Service"
-            description="Last updated: July 26, 2024"
+            description="Last updated: July 29, 2024"
         />
         <Card className="mt-8 bg-card/50">
             <CardContent className="p-8 prose prose-lg dark:prose-invert max-w-none">
@@ -35,7 +35,7 @@ export default function TermsPage() {
 
               <section>
                 <h2>4. Who May Use the Services?</h2>
-                <p>You may use the Services only if you are 18 years or older and capable of forming a binding contract with Entrestate, and not otherwise barred from using the Services under applicable law.</p>
+                <p>You may use the Services only if you are 18 years or older and capable of forming a binding contract with Entrestate by mtc, and not otherwise barred from using the Services under applicable law.</p>
               </section>
 
               <section>
