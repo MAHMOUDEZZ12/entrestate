@@ -93,8 +93,12 @@ const SearchSimulation = () => {
                             <CardTitle className="text-2xl">Project Overview: Damac Lagoons</CardTitle>
                             <CardDescription>Developer: DAMAC Properties</CardDescription>
                         </CardHeader>
-                        <CardContent>
-                            <p className="text-base text-foreground/80">A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
+                        <CardContent className="text-base text-foreground/80 leading-relaxed space-y-4">
+                            <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
+                             <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
+                              <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
+                               <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
+                                <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
                         </CardContent>
                     </Card>
                 </motion.div>
@@ -156,6 +160,53 @@ const SearchSimulation = () => {
                     </Card>
                  </motion.div>
             </div>
+        </div>
+    )
+}
+
+const LlmSimulation = () => {
+    const messages = [
+        { from: 'user', text: "Analyze Damac Lagoons for investment potential." },
+        { from: 'ai', text: "Certainly. Damac Lagoons shows strong investment potential. \n\n- **High Rental Yield:** Expected rental yield is 8-10% due to the unique resort-style amenities. \n- **Capital Appreciation:** Located in a high-growth corridor with significant infrastructure development. \n- **Market Trend:** The sub-community style is popular with both residents and tourists, ensuring high demand.\n\n**Recommendation:** A strong 'Buy', particularly for townhouses aimed at the long-term rental market." },
+        { from: 'user', text: "Compare it to Emaar Beachfront." },
+        { from: 'ai', text: "Emaar Beachfront offers a premium on rental yield due to its prime location and brand, but Damac Lagoons has a lower entry price, potentially offering higher cash-on-cash returns for a leveraged investor. Beachfront is a blue-chip asset; Lagoons is a high-growth opportunity." },
+    ];
+
+    return (
+        <div className="h-full w-full bg-muted/50 rounded-xl p-4 overflow-hidden mask-gradient-vertical">
+             <motion.div
+                animate={{ y: [0, -150] }}
+                transition={{
+                    duration: 12,
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    ease: 'linear',
+                }}
+                className="space-y-3"
+            >
+                {/* Duplicate messages for seamless loop */}
+                {[...messages, ...messages].map((msg, index) => (
+                    <div
+                        key={index}
+                        className={cn(
+                            "flex items-start gap-2",
+                            msg.from === 'user' ? 'justify-end' : 'justify-start'
+                        )}
+                    >
+                         {msg.from === 'ai' && <div className="h-6 w-6 rounded-full bg-primary/20 flex-shrink-0 mt-1" />}
+                        <div
+                            className={cn(
+                                "max-w-[85%] rounded-lg p-2 px-3 text-sm",
+                                msg.from === 'user'
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'bg-background border'
+                            )}
+                        >
+                           <p className="whitespace-pre-wrap">{msg.text}</p>
+                        </div>
+                    </div>
+                ))}
+            </motion.div>
         </div>
     )
 }
@@ -240,7 +291,7 @@ export default function HomePage() {
 
             {/* Product 2: PRO SEARCH ENG.x 3 */}
             <div id="product-pro-search" className="grid lg:grid-cols-2 gap-16 items-center">
-               <Card className="w-full min-h-[600px] mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col items-center justify-center text-center p-2">
+               <Card className="w-full min-h-[600px] mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col text-center p-2">
                     <SearchSimulation />
                </Card>
               <div className="space-y-8 lg:order-1">
@@ -285,11 +336,8 @@ export default function HomePage() {
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
-               <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-green-500/10 to-teal-500/10 flex flex-col items-center justify-center text-center p-8">
-                  <h3 className="text-4xl font-bold font-heading">LLM MODEL X3.5</h3>
-                   <Link href="/products/llm-model" className="mt-4">
-                      <Button variant="outline">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
-                  </Link>
+               <Card className="w-full h-[500px] mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-green-500/10 to-teal-500/10 flex flex-col items-center justify-center text-center p-2">
+                  <LlmSimulation />
                </Card>
             </div>
 
