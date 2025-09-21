@@ -88,12 +88,12 @@ const SearchSimulation = () => {
             </div>
             <div className="space-y-4 overflow-y-auto no-scrollbar">
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
-                    <Card className="bg-background/80">
+                    <Card className="bg-background/80 text-left">
                         <CardHeader>
                             <CardTitle className="text-2xl">Project Overview: Damac Lagoons</CardTitle>
                             <CardDescription>Developer: DAMAC Properties</CardDescription>
                         </CardHeader>
-                        <CardContent className="text-lg text-foreground/80 leading-relaxed">
+                        <CardContent className="text-base text-foreground/80 leading-relaxed">
                             <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
                         </CardContent>
                     </Card>
@@ -124,6 +124,20 @@ const SearchSimulation = () => {
                                 </TableBody>
                             </Table>
                         </CardContent>
+                    </Card>
+                 </motion.div>
+
+                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.3 }}>
+                     <Card className="bg-background/80">
+                         <CardHeader><CardTitle>Key Features</CardTitle></CardHeader>
+                         <CardContent>
+                             <ul className="list-disc list-inside space-y-1 text-sm text-left">
+                                <li>Swimmable Crystal Lagoon</li>
+                                <li>Retail Outlets & Waterfront Cafes</li>
+                                <li>State-of-the-art Gym</li>
+                                <li>Community Parks and Kids Play Areas</li>
+                            </ul>
+                         </CardContent>
                     </Card>
                  </motion.div>
             </div>
@@ -328,7 +342,7 @@ export default function HomePage() {
 
             {/* Product 2: PRO SEARCH ENG.x 3 */}
             <div id="product-pro-search" className="grid lg:grid-cols-2 gap-16 items-center">
-               <Card className="w-full min-h-[600px] mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col text-center p-2">
+               <Card className="w-full min-h-[600px] max-h-[700px] mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col text-center p-2">
                     <SearchSimulation />
                </Card>
               <div className="space-y-8 lg:order-1">
@@ -439,5 +453,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    
