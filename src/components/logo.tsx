@@ -10,9 +10,9 @@ export const Logo = ({ className }: { className?: string }) => (
     <Image 
         src={LOGO_URL}
         alt="Entrestate Logo"
-        width={175}
-        height={40}
-        className="h-10 w-auto object-contain"
+        width={240}
+        height={55}
+        className="h-14 w-auto object-contain"
     />
   </Link>
 );
