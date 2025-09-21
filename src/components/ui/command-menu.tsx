@@ -40,7 +40,7 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
 
   const handleSelectTool = (tool: Feature) => {
     // Navigate to the public marketing page for the tool
-    runCommand(() => router.push(`/tools/${tool.id}`));
+    runCommand(() => router.push(`/apps/${tool.id}`));
   };
 
   return (

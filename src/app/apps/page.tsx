@@ -27,7 +27,7 @@ const announcements = [
 
 const FeatureCard = ({ feature }: { feature: Feature }) => {
   return (
-    <Link href={`/tools/${feature.id}`} className="group flex flex-col h-full">
+    <Link href={`/apps/${feature.id}`} className="group flex flex-col h-full">
         <Card 
             className="flex flex-col flex-grow bg-card/80 backdrop-blur-lg border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 h-full"
         >

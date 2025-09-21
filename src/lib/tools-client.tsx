@@ -124,7 +124,7 @@ const mergeToolData = (): Feature[] => {
             ...(tool as any),
             longDescription: details.intro || tool.description,
             isPage: false,
-            href: `/dashboard/tool/${tool.id}`,
+            href: `/apps/${tool.id}`,
             guideHref: `/apps/${tool.id}`,
             mindMapCategory: tool.categories.includes('Ads') ? 'Meta Pilot (Campaign Automation)' :
                              tool.categories.includes('Creative') || tool.categories.includes('Web') || tool.categories.includes('Editing') ? 'Archy (Creative Marketing)' :

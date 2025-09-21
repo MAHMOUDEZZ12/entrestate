@@ -91,7 +91,7 @@ export default function SolutionsPage() {
                             </div>
 
                             <div className="mt-6">
-                                <Link href={`/tools/${app.id}`}>
+                                <Link href={`/apps/${app.id}`}>
                                     <Button variant="outline">
                                     Explore the {app.title.split(' ')[0]} App <ArrowRight className="ml-2 h-4 w-4" />
                                     </Button>

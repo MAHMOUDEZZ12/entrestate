@@ -110,7 +110,7 @@ export default function SX3MindMapPage() {
                     <MindMapNode
                       key={tool.id}
                       title={tool.title}
-                      href={`/tools/${tool.id}`}
+                      href={`/apps/${tool.id}`}
                       icon={React.cloneElement(tool.icon, {className: 'h-5 w-5'})}
                     />
                   ))}
