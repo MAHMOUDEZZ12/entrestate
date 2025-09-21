@@ -11,297 +11,1151 @@ export type BlogContent = {
     } 
 };
 
-export const blogContent: { [key: string]: BlogContent[string] } = {
-    'meta-auto-pilot': {
-        title: 'The One-Click Campaign: Meet the Meta Auto Pilot',
-        intro: "Why manage the tools when an AI can do it for you? The Meta Auto Pilot is the orchestrator for your entire Meta advertising suite. It takes a single command—'Launch a campaign for this project'—and automates the entire workflow, from audience creation to ad generation to publishing.",
-        sections: [
-          { heading: 'True Automation is Here', body: "The Auto Pilot is more than just a tool; it's a workflow. It sequentially runs the Audience Creator AI, feeds the results into the Campaign Builder, generates all the necessary ad creatives, and publishes the final campaign to your Meta account. It's a complete, end-to-end process that runs with a single click." },
-          { heading: 'How It Works: An AI Workflow', body: "When you start the Auto Pilot, you are watching an AI agent at work. It intelligently connects the different services in your suite, passing data from one to the next, just as a human marketing manager would. This represents the true power of the Super Seller Suite—an integrated system, not just a collection of tools." },
-          { heading: 'Your Role: The CEO', body: "With the Auto Pilot, your role shifts from operator to strategist. You provide the high-level goal and the budget, and the AI handles the tactical execution. You can monitor its progress in real-time and have full control to pause or adjust at any point. It's like having an expert marketing team on standby, ready to launch a campaign at a moment's notice." }
-        ],
-        cta: 'Automated Workflow',
-    },
-    'meta-ads-copilot': {
-        title: 'Your AI Ad Manager: The Meta Ads Co-Pilot',
-        intro: "Stop just boosting posts. The Meta Ads Co-Pilot is your dedicated strategist for Facebook and Instagram. It takes your high-level goal and turns it into a complete, ready-to-launch campaign, from audience targeting to ad creative.",
-        sections: [
-          { heading: 'From Goal to Campaign in Minutes', body: "Simply tell the AI your objective, like 'Generate leads for the new Emaar project,' and provide the brochure. The AI then acts as an expert ad manager. It infers the audience, defines ad sets, writes multiple ad creatives, and provides optimization advice. It's a full campaign strategy, generated in seconds." },
-          { heading: 'Your Command, Your Control', body: "The Co-Pilot generates a comprehensive plan that you can review and approve. Once you're satisfied, the plan can be sent to an execution agent (like the Meta Auto Pilot) to be published directly to your Meta Ads account." },
-          { heading: 'Synergy with Audience Creator', body: "For even more power, use the Audience Creator tool first to identify your perfect buyer persona. You can then provide this audience to the Co-Pilot to ensure your ads are hyper-targeted for maximum impact. It's a seamless workflow from strategy to execution." },
-        ],
-        cta: 'Meta Campaign',
-    },
-    'audience-creator': {
-        title: 'Find Your Perfect Buyer Before They Find You: The Power of Precision Targeting',
-        intro: "Stop wasting your ad budget on broad audiences. In today's digital landscape, the key to a successful ad campaign isn't just reaching more people—it's reaching the *right* people. Our Audience Creator AI gives you an almost unfair advantage by identifying high-intent buyers before they even know they're looking.",
-        sections: [
-            { heading: "Beyond Basic Demographics", body: "Most ad platforms let you target by age and location. That's not enough. Our AI goes deeper, analyzing thousands of anonymous data points to build a rich profile of your ideal buyer for any given property. Is it a young family looking for good schools? A professional couple seeking a downtown lifestyle? Our tool tells you exactly who they are, what they're interested in, and how to reach them." },
-            { heading: "From Property to Persona", body: "Provide the details of your listing, and the AI builds a detailed persona of the most likely buyer. It generates multiple targeting strategies, complete with the exact interests, demographics, and behaviors to plug into your Meta Ads campaigns. It's a roadmap to your ideal customer." },
-            { heading: "Maximize Your ROI", body: "When you know exactly who you're talking to, every ad dollar works harder. Precision Targeting eliminates wasted spend, increases click-through rates, and fills your pipeline with qualified, high-intent leads who are genuinely interested in what you have to offer." }
-        ],
-        cta: 'Targeting Profile',
-    },
-    'insta-ads-designer': {
-        title: 'Stop Guessing, Start Generating: How AI Creates High-Performance Ads in 60 Seconds',
-        intro: "In the competitive world of real estate, a great ad can be the difference between a listing that sits and a property that sells. But creating compelling ads takes time, design skills, and a dash of copywriting magic. What if you could skip the guesswork and generate a full campaign from a single brochure? Now you can.",
-        sections: [
-            { heading: "The Old Way: Hours of Manual Work", body: "Traditionally, creating an ad campaign is a multi-step process. You'd hire a designer for visuals, a copywriter for messaging, and spend hours coordinating revisions. The result? An expensive, time-consuming process that yields only one or two ad variations, leaving you guessing what will actually resonate with buyers." },
-            { heading: "The New Way: Instant, AI-Powered Campaigns", body: "Our Instant Ad Creation tool transforms this entire workflow. Simply upload any property brochure, and our AI gets to work. It analyzes the key features, identifies the most compelling selling points, and generates multiple versions of ad copy and visuals tailored to different audiences. From Facebook carousels to Instagram stories, you get a full suite of assets in under a minute." },
-            { heading: "Why It Works: Data-Driven Creativity", body: "This isn't just about speed; it's about intelligence. The AI understands what drives engagement and conversions in real estate marketing. It crafts headlines that grab attention, highlights amenities that buyers crave, and designs visuals that are clean, professional, and on-brand. Stop the manual grind and start creating ads that work." }
-        ],
-        cta: 'Ad',
-    },
-    'rebranding': {
-        title: "Make It Yours: Rebrand Any Brochure in a Single Click",
-        intro: "You've got the listing, but the developer's brochure doesn't have your name on it. Before, you'd need design skills and hours in a complex tool to add your branding. With our Automated Rebranding tool, you can make any marketing material your own in less time than it takes to make a coffee.",
-        sections: [
-            { heading: "The Branding Bottleneck", body: "Getting your brand onto marketing materials is crucial for building name recognition and trust. But it's often a frustrating bottleneck. You have to ask the developer's team for changes or try to edit a locked PDF yourself. It's slow, inefficient, and holds you back from marketing the property." },
-            { heading: "Instant Brand Alignment", body: "Our tool changes the game. Upload any standard PDF brochure, provide your logo and contact information, and watch as the AI instantly generates a new, perfectly rebranded version. It intelligently places your logo, updates the contact details, and even adjusts colors and fonts to match your brand identity. Don't have a logo? It will create a clean, professional one for you on the fly." },
-            { heading: "Professionalism, Standardized", body: "Now you can present every listing with a consistent, professional look that reinforces your brand. No more generic brochures or inconsistent marketing. Present a unified, polished front to every client, every time, and build the brand you've always envisioned." }
-        ],
-        cta: 'Rebranded Brochure',
-    },
-    'story-planner-ai': {
-        title: 'The Illusion of Quality: How a Simple Prompt Commands Credibility',
-        intro: "In visual marketing, perception is reality. A photo that looks professional and high-quality is inherently more trustworthy. This hack shows you how to use a simple prompt modifier to significantly boost the perceived quality of your AI-generated images.",
-        sections: [
-            { heading: "The 'Credibility' Prompt", body: "When using any AI image tool, a buyer's brain is subconsciously looking for tells that an image is 'fake' or low-effort. You can overcome this by adding a simple phrase to your prompt: 'shot on cinematic camera, 35mm lens'. This doesn't just change the image; it changes the viewer's perception." },
-            { heading: "Why This Works", body: "This phrase signals to the AI that you want an image with specific professional characteristics: a shallow depth of field (blurry background), realistic lighting, and a composition that feels intentional and high-end. The result is an image that feels less like a stock photo and more like a professional photoshoot, immediately boosting its credibility and stopping the scroll." },
-            { heading: "When to Use It", body: "Use this modifier in the Story Planner, Reel Ads designer, or even when generating a new logo. Anytime you need a visual that feels authentic and commands trust, add this phrase to your prompt. It's a small tweak that makes a massive difference in how your marketing is perceived." }
-        ],
-        cta: 'Story',
-    },
-    'instagram-admin-ai': {
-        title: 'The WhatsApp Pro-Move: From Social Post to High-Conversion Chat',
-        intro: "Stop just collecting likes; start conversations. This pro-level hack shows you how to use the AI Page Admin in synergy with your social content to drive interested users directly into high-conversion WhatsApp chats.",
-        sections: [
-            { heading: "Step 1: The Engagement Post", body: "First, use the Social Post Writer to create an engaging post with a clear Call-to-Action, like 'Comment a 'Price' below for details on our new Emaar Beachfront listing.' This invites public engagement and signals buying intent." },
-            { heading: "Step 2: Automate the First Touch", body: "Configure your Instagram Admin AI to monitor comments on that post. When it detects the keyword 'Price,' it should automatically send a Direct Message saying, 'Thanks for your interest! For instant details and floor plans, tap this link to chat with us on WhatsApp.' This moves the conversation from a public forum to a private, one-on-one channel." },
-            { heading: "Step 3: The Conversion", body: "The user is now in a direct, high-intent conversation with you on WhatsApp. Use the WhatsApp Manager tool to send a pre-written, personalized message with the brochure and your contact details. You've just seamlessly converted a passive social media user into a hot lead in your primary sales channel, all with minimal manual effort." }
-        ],
-        cta: 'Admin Task',
-    },
-    'email-creator': {
-        title: 'The Weekly Investor Update: Combining Offers & Email Automation',
-        intro: "Keep your investor clients engaged and ready to act with a powerful weekly update. This hack combines the Multi-Offer Builder and AI Email Campaigns to create a must-read email that showcases your best opportunities.",
-        sections: [
-            { heading: "Step 1: Curate Your 'Top 3'", body: "First, identify the top three investment opportunities of the week. These could be new listings, properties with recent price reductions, or off-market deals. Use the Multi-Offer Builder tool to create a clean, side-by-side comparison document of these three properties, highlighting key metrics like price, cap rate, and potential ROI." },
-            { heading: "Step 2: Generate the Campaign", body: "Next, go to the Email Campaigns tool. Use a prompt like: 'Create a weekly investor update email. The topic is 'This Week's Top 3 Opportunities.' Use an expert, insightful tone. Announce that the full comparison PDF is attached.' The AI will generate a compelling subject line and body copy that teases the opportunities and encourages readers to view the attached document." },
-            { heading: "Step 3: Schedule and Send", body: "Attach the PDF generated by the Multi-Offer Builder to the email draft. Schedule the campaign to go out to your investor list. You've now created a high-value, data-rich touchpoint that took minutes to assemble, positioning you as a market expert and keeping your best deals top-of-mind." }
-        ],
-        cta: 'Email Campaign',
-    },
-    'instagram-content-creator': {
-        title: 'Beyond Single Posts: Generating a Full Week Social Media Strategy',
-        intro: "A single great post is good, but a consistent, strategic presence is what builds an audience and drives leads. This guide shows how to use the AI Social Post Strategist to turn one idea into a complete, seven-day content calendar, saving you hours of planning.",
-        sections: [
-            { heading: "The Problem: The Endless Content Treadmill", body: "Coming up with something new to post every single day is exhausting. It leads to repetitive content, last-minute rushes, and a social media presence that feels reactive rather than strategic. You need a system, not just a single idea." },
-            { heading: "The One-Click Strategy", body: "Our AI Social Post Strategist is the solution. Instead of just giving you one post, it generates an entire week of content from a single topic or link. It creates a varied plan, with different angles for each day—a 'Myth vs. Fact' on Tuesday, a 'Testimonial' on Friday, a 'Market Stat' on Wednesday—all related to your initial idea." },
-            { heading: "The Hashtag Tiers: A Pro Move", body: "The tool also provides a sophisticated, three-tiered hashtag strategy. It gives you broad 'Primary' hashtags for reach, specific 'Secondary' hashtags for targeting, and 'Location' hashtags to dominate your local market. This ensures every post has the maximum chance of being discovered by the right people. It's a full week of expert social media marketing, generated in seconds." }
-        ],
-        cta: 'Social Post',
-    },
-    'market-reports': {
-        title: 'Your Personal Analyst: On-Demand, Hyper-Local Market Reports',
-        intro: "Stop using generic, city-wide data. With the AI Market Reports tool, you become the most informed agent in the room. Generate beautiful, branded, and data-rich reports for any neighborhood, property type, or even a single address in seconds.",
-        sections: [
-            { heading: "The Problem: Data is Everywhere, Insight is Rare", body: "Agents are drowning in data but starving for wisdom. MLS printouts are stale and hard for clients to understand. Manually creating a custom market analysis is a time-consuming process of data exporting, chart-making, and design work." },
-            { heading: "The Hack: On-Demand Intelligence", body: "This tool acts as your personal market analyst. Simply provide a location and a property type, and the AI synthesizes public records, sales data, and economic indicators into a professional, narrative-driven report. It doesn't just show numbers; it explains what they mean." },
-            { heading: "How to Use It:", body: "Use these reports to educate buyers, justify pricing to sellers, or establish your authority on social media. Post a key insight from the report and offer the full, branded PDF as a lead magnet. It's a powerful way to provide immense value and build your pipeline." }
-        ],
-        cta: 'Market Report',
-    },
-     'pdf-editor': {
-        title: 'Unlocking the Uneditable: AI PDF Editing is Here',
-        intro: "You've got a final PDF, but you spot a typo. Or you need to swap an image. Before, this meant going back to the designer or wrestling with clunky software. Now, you can just tell the AI what to change. This is PDF editing, reimagined.",
-        sections: [
-            { heading: "The Locked Box Problem", body: "PDFs are designed to be final, unchangeable documents. This is great for security, but a nightmare for marketers and agents who need to make small, last-minute changes. Finding the original source file can be impossible, and online editors often destroy formatting." },
-            { heading: "Conversational Editing", body: "Our AI PDF Editor works like a conversation. You upload the PDF and simply tell the AI what to do: 'Change the price on page 2 to AED 2.5M,' or 'Replace the logo on the first page with this new file.' The AI understands your instructions, makes the change, and generates a new, perfectly formatted PDF." },
-            { heading: "The Ultimate Failsafe", body: "This tool is your ultimate safety net. It means no brochure is ever truly final, and no marketing material is ever out-of-date. It's the freedom to adapt, correct, and update your assets on the fly, giving you an unparalleled level of agility in your marketing efforts." }
-        ],
-        cta: 'Edited PDF',
-    },
-    'landing-pages': {
-        title: 'The Modular Landing Page: Your Digital Salesperson',
-        intro: "Every great listing deserves its own stage. With our AI-powered modular builder, you can construct and publish a beautiful, high-converting landing page that works as your 24/7 digital salesperson, turning visitors into qualified leads.",
-        sections: [
-            { heading: "Project-First, Purpose-Built", body: "An effective landing page is focused. Our builder starts by asking you to select a project. The AI then uses the project's data—images, details, location—to intelligently suggest content and pre-fill the page, ensuring it's relevant from the very beginning." },
-            { heading: "Build with Blocks", body: "Your page is constructed from 5 core sections. Each section is a modular block (like Hero, Gallery, Features) that you can customize. Click the '+' icon on any section to swap it out for a different component, like changing a photo gallery to a virtual tour embed. You can even choose the position of your lead form—place it in the hero for immediate impact or at the end for a final call to action." },
-            { heading: "Deep Customization & Publishing", body: "Once your layout is set, dive into the details. Use the deep editing panel to tweak colors, fonts, and text to perfectly match your brand. When you're ready, publish your page to a free `.sx3.site` subdomain or connect your own custom domain. All leads captured through your page's form will flow directly into your 'Leads' dashboard, completing your automated sales funnel." }
-        ],
-        cta: 'Landing Page',
-    },
-    'investor-matching': {
-        title: 'Beyond the Rolodex: AI-Powered Investor Matching',
-        intro: "You just landed a great off-market deal. Who's the perfect buyer? The old way was to scroll through your phone or CRM, relying on memory. The new way is to let the AI do the work. Our Investor Matching tool turns your client list into an intelligent, opportunity-finding engine.",
-        sections: [
-            { heading: "The Limits of Human Memory", body: "Even the best agent can't remember the exact buying criteria for every single client. You might remember that John wants a duplex, but forget that he mentioned a specific interest in Dubai Marina three months ago. These forgotten details are missed opportunities." },
-            { heading: "Data-Driven Matchmaking", body: "Our AI doesn't forget. Upload your client list (as a simple CSV file) and the details of your investment property. The AI analyzes your list against the property's specifics—price, cap rate, location, investment thesis—and instantly provides a ranked list of the top 3-5 best-fit investors. It even provides a justification for *why* each client is a good match." },
-            { heading: "From List to Deal", body: "This tool transforms your passive client list into a proactive deal-making machine. It ensures the right opportunities get in front of the right people instantly, increasing your deal velocity and building your reputation as an agent who brings perfect-fit deals to their clients." }
-        ],
-        cta: 'Investor Match',
-    },
-    'listing-generator': {
-        title: 'The End of Writer\'s Block: Generate Perfect Listings, Every Time',
-        intro: "You know the property inside and out, but translating its essence into compelling listing copy is a challenge. Our AI Listing Generator takes the pressure off, turning a few key details into persuasive, SEO-friendly descriptions that attract buyers and sell properties faster.",
-        sections: [
-            { heading: "More Than Just a Description", body: "A great listing isn't just a list of features; it's a story. It needs to be engaging for buyers, but also optimized with the right keywords for search engines like Bayut and Property Finder. Hitting both of these notes consistently is tough." },
-            { heading: "Your Personal Copywriter", body: "This tool is your on-demand real estate copywriter. Simply provide the basic facts—address, beds, baths, square footage—and highlight one or two unique features. The AI will then craft a complete, well-structured listing description. It will write an enticing headline, a narrative-driven opening paragraph, a clear list of key features, and a compelling call-to-action." },
-            { heading: "Optimized for Discovery", body: "Crucially, the AI understands how people search for homes. It automatically weaves in relevant local keywords, neighborhood names, and popular search terms to ensure your listing gets seen by the largest possible audience of relevant buyers. Stop staring at a blank page and start generating listings that sell." }
-        ],
-        cta: 'Listing',
-    },
-    'payment-planner': {
-        title: 'From Price to Plan: AI-Powered Payment Planning',
-        intro: "Don't let a complex payment schedule confuse your clients. The AI Payment Planner takes a total property price and generates a clear, simple, milestone-based payment plan that is easy for anyone to understand.",
-        sections: [
-            { heading: "The Problem: Confusing Spreadsheets", body: "Manually creating a payment plan in Excel is time-consuming and often results in a document that is confusing for clients. It's hard to clearly visualize the payment journey, which can create uncertainty during the closing process." },
-            { heading: "The Hack: Instant Clarity", body: "This tool simplifies everything. Select a project, enter the total price, and choose a plan type (like 'Standard 20/80' or 'Post-Handover'). The AI instantly generates a professional, easy-to-read schedule with clear milestones, dates, and amounts. It removes all ambiguity." },
-            { heading: "How to Use It:", body: "Attach the generated payment plan PDF to your offers to provide complete transparency to your clients. Use it during presentations to walk buyers through their financial commitments clearly and confidently. It's a simple tool that builds immense trust and professionalism." }
-        ],
-        cta: 'Payment Plan',
-    },
-    'brochure-translator': {
-        title: 'Speak Their Language: Translating Brochures for a Global Audience',
-        intro: 'In a global city like Dubai, your next client could be from anywhere. The Brochure Translator breaks down language barriers, allowing you to instantly translate any property brochure into multiple languages, opening up new markets with a single click.',
-        sections: [
-          { heading: 'The Challenge: The Language Barrier', body: "A brochure in the wrong language is a closed door. Manually translating a designed document is a complex process involving expensive translators and designers to re-layout the entire file, taking days or even weeks." },
-          { heading: 'The Solution: Instant, Design-Aware Translation', body: "Our AI translator doesn't just translate words; it understands design. Upload a PDF, choose a target language like Arabic, Chinese, or Russian, and the AI will generate a new PDF with the text translated while preserving the original layout, images, and branding. It's a seamless way to create market-ready materials." },
-          { heading: 'How to Use It:', body: "Preparing for a meeting with an international client? Translate the brochure into their native language beforehand as a professional courtesy. Running an ad campaign targeting a specific nationality? Use a translated landing page and brochure to achieve significantly higher conversion rates. This tool makes global business personal." },
-        ],
-        cta: 'Translated Brochure',
-    },
-    'youtube-video-editor': {
-        title: 'The Conversational Video Editor for YouTube',
-        intro: "Stop wrestling with complex timelines and confusing software. Our AI YouTube Video Editor lets you edit your videos by simply telling the AI what you want. It's a revolutionary workflow for creating professional real estate content.",
-        sections: [
-            { heading: "The Problem: The Complexity of Video Editing", body: "Traditional video editing software like Final Cut Pro or Adobe Premiere has a steep learning curve. It's powerful, but it's also time-consuming and overkill for most agents who just need to create a clean, professional video tour or market update." },
-            { heading: "The Solution: Edit with Words", body: "Our editor changes the paradigm. Upload your video file, and then use our Creative Canvas to give instructions. Want to cut the first 10 seconds? Just type: 'Trim the first 10 seconds.' Need to add background music? 'Add upbeat corporate background music.' The AI understands your commands and executes the edits for you." },
-            { heading: "Smart Tools for Faster Edits", body: "The canvas also includes 'Smart Tool' buttons for common tasks. With one click, you can add templated instructions for tasks like creating a highlight reel, adding text overlays, or changing music, making the editing process even faster and more intuitive. It's the power of a professional editor with the simplicity of a conversation." }
-        ],
-        cta: 'Edited Video',
-    },
-    'ai-video-presenter': {
-        title: 'Your Digital Twin: Creating an AI Video Presenter',
-        intro: "Step into the future of marketing by creating a lifelike AI presenter. This guide shows you how to generate a digital version of a real estate agent who can deliver your pitches, market updates, and property tours 24/7.",
-        sections: [
-            { heading: "The Problem: The Camera is Intimidating", body: "Creating video content is powerful, but being on camera isn't for everyone. It takes time to get comfortable, requires expensive equipment, and multiple takes to get it right. This friction prevents many agents from leveraging the power of video." },
-            { heading: "The Hack: Generate Your Perfect Presenter", body: "Our AI Video Presenter tool removes this barrier entirely. You can select from a gallery of pre-rendered, professional AI characters or create a custom one from a simple text description (e.g., 'a friendly female agent in her 30s'). You provide the script, and the AI handles the performance, creating a high-quality video without you ever needing to step in front of a camera." },
-            { heading: "How to Use It: The Ultimate Scalability", body: "Use your AI presenter to create hyper-personalized videos at scale. Generate a unique video for each of your top 10 leads, addressing them by name. Create weekly market update videos for your social media channels. Record property tours without leaving your desk. It's like having a dedicated media team on standby, ready to create content on your command." }
-        ],
-        cta: 'AI Presenter'
-    },
-    'ai-brand-creator': {
-        title: 'The AI Brand Creator: Configure Your Entire Suite in 5 Minutes',
-        intro: "Don't waste time with manual entry. This power-user hack shows you how to use your AI Assistant to configure your brand, projects, and contacts from a few simple file uploads. Get up and running in minutes, not hours.",
-        sections: [
-            { heading: "The Problem: The 'New App' Grind", body: "Setting up any new software is a chore. You have to find your brand colors, copy and paste contact details, and manually create every single project or client you're working on. It's tedious work that stops you from getting to the exciting part: using the tools." },
-            { heading: "The Hack: Let the Assistant Do the Work", body: "Our AI Assistant can do more than just write copy; it can configure your workspace. By uploading a document like a company profile, a brand guide, or even just a list of current projects, you can command the assistant to set everything up for you. It reads the documents and intelligently extracts the required information." },
-            { heading: "The Prompt: Your Magic Wand", body: "After uploading your documents to the Assistant's Knowledge Base, use this prompt: 'Based on the documents I've uploaded, please extract and set up my brand identity (company name, contact info, brand colors) and create a list of all my current projects.' The AI will then confirm the extracted details and apply them across the entire suite." }
-        ],
-        cta: 'Brand Kit',
-    },
-     'superfreetime': {
-        title: 'Find The Key by Gemini',
-        intro: 'A special game to unlock a secret reward. You have three chances to find the key. Use the hint wisely!',
-        sections: [
-            { heading: "The Mission", body: "Your mission, should you choose to accept it, is to find the hidden key. You'll be given a cryptic clue and a grid of possible locations. You only have three attempts to find the correct spot." },
-            { heading: "The Stakes", body: "Success means unlocking a secret reward—a powerful, unlisted feature within the Super Seller Suite. Failure... well, failure is not an option if you want the prize. But don't worry, you can always try again." },
-            { heading: "How to Play", body: "Read the hint carefully. It's designed to guide you, not trick you. Click on the cell where you think the key is hidden. If you're right, you'll get a secret code. If you're wrong, a bomb will appear. Find the key before you run out of attempts!" }
-        ],
-        cta: 'Game'
-    },
-    'reel-ads-ai': {
-        title: 'Create High-Impact Video Ads for Instagram Reels',
-        intro: "Capture attention where it matters most. The Reel Ads AI tool helps you create dynamic, short-form video ads perfectly optimized for Instagram Reels, turning scrollers into leads.",
-        sections: [
-            { heading: "The Reel-First World", body: "Instagram's algorithm heavily favors Reels. To succeed, you need content that is fast-paced, visually engaging, and feels native to the platform. Static images and long-form videos no longer cut it." },
-            { heading: "Your Personal Video Editor", body: "This tool is your shortcut to professional-quality Reels. Simply provide your project's images or video clips and a few key selling points. The AI will edit them into a compelling narrative, adding dynamic captions, transitions, and suggesting trending audio styles to maximize reach." },
-            { heading: "From Reel to Real Inquiry", body: "Combine your AI-generated Reel with a clear call-to-action to drive viewers to your DMs or a landing page. It's a powerful way to leverage Instagram's most popular format to generate real business results." }
-        ],
-        cta: 'Reel Ad',
-    },
-    'tiktok-editor': {
-        title: 'Go Viral: AI-Powered TikTok Video Editor',
-        intro: "Master the fastest-growing social platform with videos that look and feel like they belong. The TikTok Editor helps you create on-trend, engaging content that speaks the language of TikTok.",
-        sections: [
-            { heading: "The TikTok Challenge", body: "Success on TikTok requires a specific style: quick cuts, engaging text overlays, and content synced to trending sounds. Creating this manually is time-consuming and requires a deep understanding of constantly changing trends." },
-            { heading: "Your In-House Trend Expert", body: "Our AI editor is your guide to TikTok success. It analyzes the latest trends and provides you with templates and suggestions. Simply upload your property clips, add your key messages, and choose a trending 'vibe.' The AI handles the rest, creating a video that is perfectly formatted and styled for the platform." },
-            { heading: "Authenticity at Scale", body: "The key to TikTok is authenticity. This tool helps you create content that feels genuine and user-generated, even when it's for a luxury property. This builds trust and engagement, helping you connect with a new generation of buyers and investors." }
-        ],
-        cta: 'TikTok Video',
-    },
-    'crm-assistant': {
-        title: 'Your AI Memory: The CRM Assistant',
-        intro: "Never forget a client detail again. The CRM Assistant acts as your second brain, giving you instant, summarized recall of every interaction, preference, and important detail for every contact in your database.",
-        sections: [
-            { heading: "The Problem of Scale", body: "As your client list grows, it becomes impossible to remember everything about everyone. What was the last property you showed Jane? What was John's budget? Searching through old emails and notes is inefficient and can lead to missed opportunities." },
-            { heading: "Conversational Recall", body: "Our CRM Assistant gives you this information through a simple conversation. Just ask, 'What was the last thing I discussed with Jane Doe?' and the AI will search your (private) interaction history and provide a concise summary. It's like having a personal assistant who has memorized your entire CRM." },
-            { heading: "Proactive Insights", body: "The assistant doesn't just answer questions; it provides proactive insights. Before a call, it can give you a briefing: 'You are calling John. He was interested in 3-bedroom villas in Arabian Ranches six months ago but was waiting for a price drop. The market there has since corrected by 5%.' This level of preparation ensures every conversation is impactful." }
-        ],
-        cta: 'CRM Query',
-    },
-    'offer-generator': {
-        title: 'From Comparison to Contract: The AI Offer Generator',
-        intro: "Drafting multiple offers is tedious and prone to error. The Multi-Offer Generator streamlines this process, allowing you to create professional, client-ready offer comparison documents in minutes, not hours.",
-        sections: [
-            { heading: "The Pain of Multiple Offers", body: "When a client is considering several properties, creating a clear, side-by-side comparison is a powerful sales tool. But doing it manually involves juggling multiple documents, copying and pasting data, and formatting everything in a spreadsheet. It's a logistical headache." },
-            { heading: "One-Click Comparison", body: "This tool automates the entire process. Simply select the properties your client is interested in from your project library, and the AI will generate a clean, professional PDF comparing them across all key metrics: price, size, amenities, handover date, and more. It presents the information in a way that is easy for your client to understand." },
-            { heading: "Accelerate Decision Making", body: "By presenting a clear, objective comparison, you empower your clients to make faster, more confident decisions. This tool helps eliminate confusion and analysis paralysis, shortening your sales cycle and getting you to a signed contract sooner." }
-        ],
-        cta: 'Offer Package',
-    },
-    'whatsapp-campaigns': {
-        title: 'Your Personal Broadcast System: AI WhatsApp Campaigns',
-        intro: "Reach your clients where they are most responsive. The WhatsApp Campaign Manager allows you to send personalized broadcasts and automated follow-up sequences directly through WhatsApp, turning your contact list into a powerful marketing channel.",
-        sections: [
-            { heading: "The Power of Direct Messaging", body: "Email open rates are declining, but WhatsApp messages are read almost instantly. It's the most direct and personal way to communicate with your clients. However, managing broadcasts manually is time-consuming and lacks personalization." },
-            { heading: "Personalization at Scale", body: "Our tool makes it easy. Upload a CSV of your contacts and choose a campaign type, like 'New Listing Announcement' or 'Open House Invitation.' The AI will draft a friendly, professional message template that can be personalized with each contact's name. You can then broadcast it to your entire list with a single click." },
-            { heading: "From Broadcast to Conversation", body: "The goal is to start a conversation. The messages are designed to elicit a response, turning a mass broadcast into dozens of individual, one-on-one sales conversations. It's the perfect tool for nurturing your existing database and reactivating cold leads." }
-        ],
-        cta: 'WhatsApp Campaign',
-    },
-    'keyword-planner': {
-        title: 'Dominate Search: The AI Keyword Planner for Google Ads',
-        intro: "Stop guessing what your customers are searching for. The AI Keyword Planner acts as your expert SEM strategist, generating a comprehensive, ready-to-use keyword plan for your Google Ads campaigns that will attract high-intent buyers.",
-        sections: [
-            { heading: "The Keyword Challenge", body: "A successful search campaign depends on targeting the right keywords. But finding the perfect balance of high-volume terms and niche, high-intent phrases is a complex art. Doing it wrong means wasted ad spend and low-quality leads." },
-            { heading: "Your Personal SEM Strategist", body: "This tool does the heavy lifting for you. Provide a topic, like 'luxury villas in Dubai Hills,' and a target location. The AI will generate a complete plan, broken down into logical ad groups (e.g., 'Location-Specific,' 'Branded Terms'). For each group, it provides a list of keywords with different match types, estimated search volumes, and competition levels." },
-            { heading: "Eliminate Wasted Spend", body: "Just as important as knowing what to target is knowing what *not* to target. The AI also provides a crucial list of negative keywords (like 'rent,' 'jobs,' 'cheap') to ensure your ads are only shown to users with genuine buying intent. It's a complete roadmap for a high-performance search campaign." }
-        ],
-        cta: 'Keyword Plan',
-    },
-    'deal-analyzer': {
-        title: 'The Instant Investment Analysis: AI Deal Analyzer',
-        intro: "Is it a good deal? The AI Deal Analyzer answers this crucial question in seconds. Input the property and financing details, and get a comprehensive financial breakdown with key investment metrics like cash flow, cap rate, and cash-on-cash ROI.",
-        sections: [
-            { heading: "The Problem: Analysis Paralysis", body: "Evaluating an investment property involves a lot of math. Calculating mortgage payments, expenses, and returns can be complex and time-consuming. It's easy to get bogged down in spreadsheets and miss the big picture." },
-            { heading: "Your On-Demand Financial Analyst", body: "This tool streamlines the entire process. Enter the property's purchase price, financing details, expected rent, and estimated expenses. The AI instantly performs all the necessary calculations and presents you with the most important investment metrics in a clear, easy-to-understand format." },
-            { heading: "Data-Driven Decisions", body: "Beyond just the numbers, the AI provides a narrative summary of the deal's viability, stating whether it looks promising, marginal, or risky, and explains why. This allows you to make fast, data-driven decisions and provide your investor clients with immediate, professional-grade analysis." }
-        ],
-        cta: 'Deal Analysis',
-    },
-    'discover-engine': {
-        title: "Your Second Brain: The AI Discovery Engine",
-        intro: "This is more than a search bar. It's an intelligent entry point to the entire Super Seller Suite. Ask for a tool, a project, or a market trend, and get smart, actionable results that understand your intent.",
-        sections: [
-            { heading: "The Problem with Traditional Search", body: "A standard search bar looks for keywords. If you don't know the exact name of the tool you need, you're out of luck. This creates friction and slows you down." },
-            { heading: "Intent-Based Discovery", body: "Our Discovery Engine uses an AI reasoning model to understand what you're trying to *accomplish*. If you search 'make an ad for Emaar,' it knows you need both the 'Insta Ads Designer' tool and the 'Emaar Beachfront' project data. It connects the dots for you." },
-            { heading: "Your Universal Command Center", body: "Use this as your central command line for the entire suite. Whether you're looking for a specific project in the Market Library, trying to find the right tool for a job, or wanting a quick snapshot of market prices, the Discovery Engine is the fastest way to get there. It's your intelligent co-pilot, ready for your next command." }
-        ],
-        cta: 'Search',
-    },
-    'projects-finder': {
-        title: 'Your Window to the Market: The Projects Finder',
-        intro: "Tap into our ever-expanding Market Library of verified projects. Search by developer, area, status, or keyword to find your next opportunity, or add your own off-market deals to your private library.",
-        sections: [
-            { heading: "The Public Market Library", body: "Our AI continuously scans developer websites, news portals, and listing sites to maintain a comprehensive database of projects. Use this tool to search that public library and find verified information on new launches, off-plan developments, and completed projects." },
-            { heading: "Your Private Library", body: "When you find a project you're interested in, add it to your personal library with a single click. This curated collection becomes the foundation for all the other AI tools in the suite. The AI will use these projects to generate ads, landing pages, and more." },
-            { heading: "Off-Market & Custom Projects", body: "Have a pocket listing or an off-market deal? You can add it as a custom project to your private library. This data remains exclusive to you and will never be shared, but it allows you to use the full power of the AI suite on your private deals." }
-        ],
-        cta: 'Project Search',
-    },
-};
+// This content is now derived from the detailed app data below.
+// The original structure is kept for potential future use, but the primary
+// source of truth for app page content is now `appDetails`.
+export const blogContent: { [key: string]: BlogContent[string] } = {};
 
-    
+
+export const appDetails = {
+  "apps": [
+    {
+      "name": "Meta Auto Pilot",
+      "hero": "Meta Auto Pilot — The single-click manager for your entire Meta suite.",
+      "full_description": "Meta Auto Pilot is an AI-driven command center that launches, optimizes, and reports on Facebook & Instagram campaigns with a single action. It collapses Ads Manager complexity into a guided, automated workflow that manages audience splitting, budget allocation, ad rotation, and reporting in real time.",
+      "level_of_knowledge_required": "Zero. Designed for users with no Ads Manager experience; the app provides smart defaults and plain-language guidance.",
+      "difference_vs_native": "Native Ads Manager requires manual setup, daily monitoring, and expertise. Meta Auto Pilot automates setup, continuous optimization and plain-language reporting, while still allowing advanced users to inspect and override.",
+      "flow": "Step 1: Audience Creator produces target segments. Step 2: Insta Ads Designer or Reel Ads produces creatives matched to each segment. Step 3: Meta Auto Pilot launches campaigns across Facebook & Instagram with one click, auto-allocates budget, and rotates creatives. Step 4: CRM Memory captures leads and tags the source. Step 5: WhatsApp Manager triggers follow-up journeys. Best chained with: Audience Creator → Insta Ads Designer / Reel Ads → Meta Auto Pilot → CRM Memory → WhatsApp Manager.",
+      "expected_results": "Standalone: 85–90% optimization (vs native manual: ~40–50%). Full flow (Audience + Designer + CRM): 95–98% efficiency with up to 2x–3x better ROI and significant reduction of wasted spend.",
+      "features": [
+        "One-click campaign creation across Facebook & Instagram",
+        "Auto-budget optimization and pacing",
+        "AI-driven targeting and audience refinement",
+        "Dynamic creative rotation",
+        "Plain-language reporting and alerts",
+        "Native CRM sync and tagging"
+      ],
+      "demo_placeholder": "Dashboard screenshot + one-click launch animation",
+      "use_cases": [
+        "Salesperson launching lead-gen campaigns with zero training",
+        "Marketer scaling multiple creatives and audiences",
+        "Agency managing many clients from one console"
+      ],
+      "faqs": [
+        { "q": "Do I need Ads Manager experience?", "a": "No. Meta Auto Pilot is built for zero-knowledge entrants while offering advanced controls for power users." },
+        { "q": "Can I still use Ads Manager?", "a": "Yes — you can import/export and inspect campaigns; Auto Pilot simply handles day-to-day optimization." },
+        { "q": "How quickly will I see results?", "a": "You’ll see initial performance within 24–72 hours; optimization improves over the first 7–14 days." }
+      ],
+      "integrations": [
+        "Meta Ads API",
+        "Audience Creator",
+        "Insta Ads Designer",
+        "Reel Ads",
+        "CRM Memory",
+        "WhatsApp Manager"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Campaign Builder",
+      "hero": "Campaign Builder — Your dedicated agent for Facebook & Instagram advertising.",
+      "full_description": "Campaign Builder is a guided, modular campaign creation tool that gives you full control over strategy while removing repetitive setup tasks. It provides templates for common objectives (leads, traffic, conversions), automates A/B structures, and generates field-accurate campaign specs for direct launch or handoff to Meta Auto Pilot.",
+      "level_of_knowledge_required": "Low. Basic marketing concepts are helpful but not required; templates and guided flows do most of the heavy lifting.",
+      "difference_vs_native": "Unlike native Ads Manager where you manually create each ad set and ad, Campaign Builder offers pre-configured blueprints, automated split-testing, and one-click export to Meta Auto Pilot or Ads Manager.",
+      "flow": "Step 1: Choose objective template (Lead, Awareness, Conversion). Step 2: Select audiences from Audience Creator or upload your own. Step 3: Assign creatives from Insta Ads Designer or Reel Ads. Step 4: Review automated split tests and budgets. Step 5: Export to Meta Auto Pilot or Meta Ads Manager. Best chained with: Audience Creator → Insta Ads Designer / Reel Ads → Campaign Builder → Meta Auto Pilot.",
+      "expected_results": "Using templates: 70–85% reduction in setup time and 20–40% performance improvement over manual ad setups. Chained with Meta Auto Pilot: aligns to 90%+ campaign efficiency.",
+      "features": [
+        "Objective-based templates",
+        "Automated A/B split-testing scaffolds",
+        "Audience import and segmentation",
+        "Creative assignment and preview",
+        "One-click export to launch"
+      ],
+      "demo_placeholder": "Template selection and A/B matrix preview",
+      "use_cases": [
+        "Marketing teams standardizing campaign rollouts",
+        "SMBs launching repeatable ad funnels",
+        "Agencies creating client-friendly blueprints"
+      ],
+      "faqs": [
+        { "q": "Can I customize templates?", "a": "Yes — templates are fully editable and saveable as custom blueprints." },
+        { "q": "Does it handle budgeting?", "a": "Yes — budgets can be auto-suggested or manually set across splits." }
+      ],
+      "integrations": [
+        "Audience Creator",
+        "Meta Auto Pilot",
+        "Insta Ads Designer",
+        "CRM Memory"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Audience Creator",
+      "hero": "Audience Creator — Find high-intent buyers before they search.",
+      "full_description": "Audience Creator uses first-party signals, lookalike modeling, and contextual intent markers to build high-probability buyer segments. It surfaces audiences that are likely to convert and provides clear explanations for why each segment matters.",
+      "level_of_knowledge_required": "Zero to Low. The interface explains each audience and recommended use; advanced users can tweak parameters.",
+      "difference_vs_native": "Native audience tools rely mainly on platform-provided signals. Audience Creator fuses platform signals with your CRM Memory and Market Library insights to create higher-intent segments.",
+      "flow": "Step 1: Import CRM Memory lists or provide seed customers. Step 2: Choose intent filters (behavioral, demographic, property type). Step 3: Build lookalikes and layered segments. Step 4: Export directly to Meta Auto Pilot or Campaign Builder. Best chained with: CRM Memory → Audience Creator → Campaign Builder / Meta Auto Pilot.",
+      "expected_results": "Standalone boosts CTR and CVR by 30–50% vs generic audiences. In full flow, reduces wasted impressions leading to 20–40% lower CPA.",
+      "features": [
+        "Seed-based lookalike creation",
+        "Intent-based filters and scoring",
+        "Cross-platform audience export",
+        "Audience quality scoring and rationale"
+      ],
+      "demo_placeholder": "Audience builder with seed upload and quality score chart",
+      "use_cases": [
+        "Agents targeting high-intent buyers for new launches",
+        "Teams personalizing creatives to audience segments",
+        "Agencies improving client ad efficiency"
+      ],
+      "faqs": [
+        { "q": "Do I need customer lists?", "a": "You can use seed customers for best results, but the tool can also create audiences from public signals." },
+        { "q": "Can I update audiences automatically?", "a": "Yes — audiences can auto-refresh from CRM Memory or data feeds." }
+      ],
+      "integrations": [
+        "CRM Memory",
+        "Meta Auto Pilot",
+        "Campaign Builder",
+        "Market Library"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Insta Ads Designer",
+      "hero": "Insta Ads Designer — Create perfect ads for Instagram Stories & Feed.",
+      "full_description": "Insta Ads Designer produces platform-optimized visuals and copy for Instagram Feed and Stories. The tool applies best-practice aspect ratios, text-to-image balance, animation presets, and split-tested copy variants to deliver creatives that convert.",
+      "level_of_knowledge_required": "Zero. Drag-and-drop templates, auto-copy suggestions, and smart layout protect you from common creative mistakes.",
+      "difference_vs_native": "Native creative tools give raw assets. Insta Ads Designer provides finished, ad-ready creatives tailored to Instagram’s formats and conversion behaviors.",
+      "flow": "Step 1: Select campaign objective and audience. Step 2: Choose templates and upload assets or generate visuals. Step 3: Auto-suggested copy and CTAs tuned to the audience. Step 4: Export as creative sets to Meta Auto Pilot or Campaign Builder. Best chained with: Audience Creator → Insta Ads Designer → Campaign Builder → Meta Auto Pilot.",
+      "expected_results": "Well-constructed creatives from this tool typically increase engagement 25–60% over unoptimized assets and lift conversion rates when matched to audience segments.",
+      "features": [
+        "Platform-optimized templates (Feed & Stories)",
+        "Auto-copy & CTA suggestions",
+        "Animation presets for Stories",
+        "Creative set export and naming conventions"
+      ],
+      "demo_placeholder": "Creative editor with template gallery and preview",
+      "use_cases": [
+        "SMBs needing quick, high-quality creatives",
+        "Marketers running multiple ad variants",
+        "Agencies producing white-label ad sets"
+      ],
+      "faqs": [
+        { "q": "Does it produce captions and hashtags?", "a": "Yes — copy generation includes captions and hashtag recommendations." },
+        { "q": "Can I preview creatives on Instagram mockups?", "a": "Yes — device previews for Feed and Stories are built in." }
+      ],
+      "integrations": [
+        "Campaign Builder",
+        "Meta Auto Pilot",
+        "Audience Creator",
+        "Reel Ads"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Reel Ads",
+      "hero": "Reel Ads — Generate engaging video ads for Instagram Reels.",
+      "full_description": "Reel Ads automates short-form video ad creation optimized for Reels' vertical, mobile-first format. It combines UGC-style templates, motion presets, and AI-driven storyboard suggestions to produce high-retention reels that drive action.",
+      "level_of_knowledge_required": "Zero. Choose a template, select assets or let the AI assemble them, then export to Meta Auto Pilot.",
+      "difference_vs_native": "Native video editors are general-purpose. Reel Ads focuses on Reels-specific engagement patterns, pacing, and creative hooks proven to perform.",
+      "flow": "Step 1: Select format and hook style. Step 2: Provide assets or script via UGC Script Writer. Step 3: Apply motion presets and brand kit from Brand Creator or Automated Rebranding. Step 4: Export to Campaign Builder or Meta Auto Pilot. Best chained with: UGC Script Writer → Reel Ads → Meta Auto Pilot → CRM Memory.",
+      "expected_results": "Reels made with best-practice hooks and pacing can increase view-through and conversion by 2x vs repurposed long-form video. Expect higher CTRs especially in discovery campaigns.",
+      "features": [
+        "UGC-style templates and pacing presets",
+        "Auto-subtitle generator",
+        "Storyboard & scene suggestions",
+        "Direct export to Meta Auto Pilot"
+      ],
+      "demo_placeholder": "Vertical reel storyboard preview with pacing timeline",
+      "use_cases": [
+        "Brands focused on awareness and discovery",
+        "Agencies creating scalable short-form video",
+        "Listings needing high-exposure video assets"
+      ],
+      "faqs": [
+        { "q": "Can I edit subtitles and captions?", "a": "Yes — subtitles are editable prior to export." },
+        { "q": "Are there size or length limits?", "a": "Reel Ads adheres to platform limits and auto-trims as needed." }
+      ],
+      "integrations": [
+        "UGC Script Writer",
+        "Brand Creator",
+        "Meta Auto Pilot",
+        "Campaign Builder"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Instagram Admin",
+      "hero": "Instagram Admin — Schedules posts and handles replies on Instagram.",
+      "full_description": "Instagram Admin centralizes content scheduling, comment management, DMs, and analytics. It provides queue management, approval flows, reply templates, sentiment tagging, and SLA automation for response times.",
+      "level_of_knowledge_required": "Zero. Scheduling and reply templates make it approachable for teams of any size.",
+      "difference_vs_native": "Native Creator Studio provides scheduling but limited team workflows. Instagram Admin adds multi-user approvals, reply automation, sentiment analysis, and campaign tagging tied to CRM Memory.",
+      "flow": "Step 1: Plan content in Story Planner or Landing Page Builder. Step 2: Schedule posts via Instagram Admin. Step 3: Monitor replies and route leads to CRM Memory. Step 4: Feed performance into Market Reports. Best chained with: Story Planner → Instagram Admin → CRM Memory → Market Reports.",
+      "expected_results": "Improved engagement response times (automated replies reduce response time by 60–90%) and increased consistency of posting which improves audience retention over time.",
+      "features": [
+        "Post scheduling and calendar",
+        "Team approval workflow",
+        "Auto-reply templates and sentiment routing",
+        "Native analytics and CRM tagging"
+      ],
+      "demo_placeholder": "Publishing calendar with approval workflow view",
+      "use_cases": [
+        "Social managers scheduling multi-format content",
+        "Agencies managing multiple brand accounts",
+        "Sales teams handling social lead routing"
+      ],
+      "faqs": [
+        { "q": "Does it support DMs and comments?", "a": "Yes — unified inbox for DMs and comments with tagging." },
+        { "q": "Can we set response SLAs?", "a": "Yes — set automated SLAs and escalation rules." }
+      ],
+      "integrations": [
+        "Story Planner",
+        "CRM Memory",
+        "Market Reports",
+        "WhatsApp Manager"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Story Planner",
+      "hero": "Story Planner — Plan and design animated Instagram stories.",
+      "full_description": "Story Planner is a storyboard-first tool for designing multi-frame, animated Instagram Stories with template-driven transitions, CTA frames, and auto-export-ready segments for Ads Manager or Instagram Admin.",
+      "level_of_knowledge_required": "Zero. Templates and smart animation presets remove the need for motion-design expertise.",
+      "difference_vs_native": "Native story creation on Instagram is manual and single-frame. Story Planner supports multi-frame story arcs, animation easing presets, and ad-ready export naming conventions.",
+      "flow": "Step 1: Choose story sequence template (teaser, walkthrough, listing). Step 2: Add frames, apply animation presets, and assign CTAs. Step 3: Export frames as ad sets to Insta Ads Designer or schedule via Instagram Admin. Best chained with: Insta Ads Designer → Story Planner → Instagram Admin / Meta Auto Pilot.",
+      "expected_results": "Story-driven ad sequences typically increase completion rates and higher intent interactions. Expect 20–50% higher swipe-up / CTA interaction when using story arcs vs static frames.",
+      "features": [
+        "Multi-frame storyboard editor",
+        "Animation and transition presets",
+        "CTA frame templates",
+        "Export for ads and organic posting"
+      ],
+      "demo_placeholder": "Story sequence timeline with animated preview",
+      "use_cases": [
+        "Real estate listings telling a visual narrative",
+        "Product launches using story arcs",
+        "Social campaigns requiring quick animated content"
+      ],
+      "faqs": [
+        { "q": "Can animations be exported as separate clips?", "a": "Yes — export each frame or a combined video for Reels or Ads." },
+        { "q": "Does it support music and voice-over?", "a": "Yes — add music tracks or voice-over files." }
+      ],
+      "integrations": [
+        "Insta Ads Designer",
+        "Instagram Admin",
+        "Reel Ads",
+        "Meta Auto Pilot"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "AI Video Presenter",
+      "hero": "AI Video Presenter — Create a lifelike AI presenter to deliver your project pitch.",
+      "full_description": "AI Video Presenter generates a realistic AI presenter that reads your script and presents your pitch with natural voice, gestures, and teleprompter-style delivery. Output is ready for landing pages, pitch decks, or social ads.",
+      "level_of_knowledge_required": "Zero. Provide a script and brand assets; the AI handles the rest.",
+      "difference_vs_native": "Recording a presenter requires studio time or in-person shoots. AI Video Presenter produces consistent, brand-compliant presentations at scale without equipment.",
+      "flow": "Step 1: Provide script or use UGC Script Writer to auto-generate. Step 2: Choose presenter style and brand kit from Brand Creator. Step 3: Generate video and edit with AI YouTube Video Editor if needed. Step 4: Publish on Landing Page Builder or social channels. Best chained with: UGC Script Writer → Brand Creator → AI Video Presenter → AI YouTube Video Editor → Landing Page Builder.",
+      "expected_results": "Faster production cycles (minutes vs days), consistent messaging, and improved viewer retention compared to text-only assets. Expect 2x better pitch clarity and higher lead conversion when used on landing pages.",
+      "features": [
+        "Lifelike presenter models and voice options",
+        "Script-to-voice sync and teleprompter timing",
+        "Brand kit integration for wardrobe and background",
+        "Export ready for social and web"
+      ],
+      "demo_placeholder": "Presenter selection and generated video preview",
+      "use_cases": [
+        "Project pitches without on-camera talent",
+        "Automated explainer videos for listings",
+        "Scalable agent introductions for lead capture"
+      ],
+      "faqs": [
+        { "q": "Is the presenter customizable?", "a": "Yes — voice, appearance, pacing and background are configurable." },
+        { "q": "Are generated voices licensed for commercial use?", "a": "Yes — commercial usage rights are included." }
+      ],
+      "integrations": [
+        "UGC Script Writer",
+        "Brand Creator",
+        "AI YouTube Video Editor",
+        "Landing Page Builder"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "UGC Script Writer",
+      "hero": "UGC Script Writer — Generate authentic, user-generated content style video ad scripts.",
+      "full_description": "UGC Script Writer generates short, conversational scripts that mimic authentic user testimonials and casual storytelling — the style proven to improve trust and ad performance on social platforms.",
+      "level_of_knowledge_required": "Zero. Input basic prompts (product, pain point, call-to-action) and receive multiple script variants optimized for different hooks.",
+      "difference_vs_native": "Writing scripts manually requires creative effort and testing. This tool provides tested UGC structures that align with best-practice hooks and durations for Reels, Stories, and Feed.",
+      "flow": "Step 1: Input product or listing details. Step 2: Choose tone and target audience. Step 3: Generate multiple short scripts. Step 4: Send scripts to Reel Ads or AI Video Presenter for production. Best chained with: UGC Script Writer → Reel Ads / AI Video Presenter → Meta Auto Pilot.",
+      "expected_results": "UGC-style scripts increase perceived authenticity, often improving CTR and CVR by 20–50% versus overly produced ad copy when targeted correctly.",
+      "features": [
+        "Multiple hook variations",
+        "Tone and length presets",
+        "Platform-optimized durations",
+        "A/B-ready script outputs"
+      ],
+      "demo_placeholder": "Script generator with variants and tone selector",
+      "use_cases": [
+        "Agents needing fast, relatable ad scripts",
+        "Brands scaling user-story campaigns",
+        "Agencies producing high-volume creative testing"
+      ],
+      "faqs": [
+        { "q": "Can I edit scripts?", "a": "Yes — generated scripts are fully editable and exportable." },
+        { "q": "Do you localize scripts?", "a": "Yes — pair with Brochure Translator or Market Library for localization." }
+      ],
+      "integrations": [
+        "Reel Ads",
+        "AI Video Presenter",
+        "Insta Ads Designer",
+        "Brochure Translator"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "AI YouTube Video Editor",
+      "hero": "AI YouTube Video Editor — Edit any video to be YouTube-ready.",
+      "full_description": "AI YouTube Video Editor automates editing tasks like trimming silence, creating chapters, generating titles and descriptions, adding optimized thumbnails, and repackaging long-form content into short-form clips.",
+      "level_of_knowledge_required": "Low. Basic familiarity with YouTube is helpful, but the editor automates most decisions.",
+      "difference_vs_native": "Native editors require manual trimming and optimization. This editor uses platform best-practices to prepare files for higher discoverability and retention.",
+      "flow": "Step 1: Upload raw footage (or AI Video Presenter output). Step 2: The editor auto-detects highlights, trims, and suggests chapters. Step 3: Export full video for YouTube and clips for Reels/TikTok. Step 4: Push metadata to Landing Page Builder and Market Reports. Best chained with: AI Video Presenter → AI YouTube Video Editor → Reel Ads → Landing Page Builder.",
+      "expected_results": "Improved view retention and search performance; repurposed clips boost discovery and bring traffic back to landing pages. Expect improved average view duration and higher impression-to-click rates.",
+      "features": [
+        "Auto-trim and highlight detection",
+        "Chapter and timestamp generation",
+        "Thumbnail and metadata suggestions",
+        "Short-form clip extraction"
+      ],
+      "demo_placeholder": "Editor timeline with auto-highlight markers",
+      "use_cases": [
+        "Content teams repurposing webinars",
+        "Agents creating listing walkthroughs",
+        "Marketers optimizing long-form content"
+      ],
+      "faqs": [
+        { "q": "Can it detect highlights automatically?", "a": "Yes — it detects speaking intensity, visual changes, and engagement markers." },
+        { "q": "Does it add captions?", "a": "Yes — auto-generated captions with editable transcripts." }
+      ],
+      "integrations": [
+        "AI Video Presenter",
+        "Reel Ads",
+        "Landing Page Builder",
+        "Market Reports"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Landing Page Builder",
+      "hero": "Landing Page Builder — Launch a high-converting page in minutes.",
+      "full_description": "Landing Page Builder creates conversion-optimized landing pages with tested templates, dynamic components (lead forms, price calculators), A/B variants, and one-click publishing. Pages are SEO-ready and integrate with CRM Memory for lead capture.",
+      "level_of_knowledge_required": "Zero. Pre-built blocks, templates and a WYSIWYG enable anyone to build a page quickly.",
+      "difference_vs_native": "Traditional web builders require design skill or developer time. This tool provides conversion-tested layouts, real estate-specific modules, and instant CRM connectivity.",
+      "flow": "Step 1: Choose template (listing, lead-gen, project). Step 2: Pull content from Listing Generator or Market Library. Step 3: Configure forms and CRM mappings to CRM Memory and WhatsApp Manager. Step 4: Publish and link to campaigns in Meta Auto Pilot. Best chained with: Listing Generator → Landing Page Builder → Meta Auto Pilot → CRM Memory.",
+      "expected_results": "Pages built here convert 20–60% better than generic landing pages thanks to proven layouts and direct campaign mappings. Expect faster lead capture and improved quality due to CRM sync.",
+      "features": [
+        "Conversion-focused templates",
+        "Dynamic listing & calculator blocks",
+        "A/B testing and analytics",
+        "One-click publish and tracking"
+      ],
+      "demo_placeholder": "Template editor with conversion analytics panel",
+      "use_cases": [
+        "Single-listing pages for agents",
+        "Project pre-launch registration pages",
+        "Campaign-specific landing pages for marketers"
+      ],
+      "faqs": [
+        { "q": "Can pages be published to my domain?", "a": "Yes — custom domains and subdomains supported." },
+        { "q": "Does it support forms and payment?", "a": "Yes — forms map to CRM Memory; payments are supported for deposits or reservations." }
+      ],
+      "integrations": [
+        "Listing Generator",
+        "CRM Memory",
+        "Meta Auto Pilot",
+        "Market Reports"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Automated Rebranding",
+      "hero": "Automated Rebranding — Apply your brand identity to any brochure with text-based commands.",
+      "full_description": "Automated Rebranding instantly applies brand colors, logos, typographic hierarchy, and tone of voice to brochures, social creatives, and videos using simple text commands or uploaded brand documents.",
+      "level_of_knowledge_required": "Zero. Upload brand assets or describe your brand and the tool applies a consistent design system.",
+      "difference_vs_native": "Manual rebranding is slow and prone to inconsistency. Automated Rebranding creates consistent, production-ready assets in minutes.",
+      "flow": "Step 1: Upload brand assets or analyze documents with Brand Creator. Step 2: Provide commands (e.g., 'apply brand to brochure'). Step 3: Export rebranded files to Brochure Translator, Insta Ads Designer, or Landing Page Builder. Best chained with: Brand Creator → Automated Rebranding → Insta Ads Designer / Landing Page Builder / Brochure Translator.",
+      "expected_results": "Consistency in brand application reduces manual design errors and speeds time-to-market by 70–90%. Expect better brand recall and professional-looking assets without a designer.",
+      "features": [
+        "Brand kit application engine",
+        "Text-based rebrand commands",
+        "Batch rebrand for multiple files",
+        "Export in multiple formats"
+      ],
+      "demo_placeholder": "Before/after brochure rebrand preview",
+      "use_cases": [
+        "Agencies producing white-label assets",
+        "Enterprises ensuring consistent brand materials",
+        "Agents customizing brochures per client"
+      ],
+      "faqs": [
+        { "q": "How accurate is automated design?", "a": "Very accurate for brand elements; typography/spacing follow production rules but can be manually tweaked." },
+        { "q": "Can I rebrand videos?", "a": "Yes — brand overlays and intros can be applied to video assets." }
+      ],
+      "integrations": [
+        "Brand Creator",
+        "Brochure Translator",
+        "Insta Ads Designer",
+        "Landing Page Builder"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Brochure Translator",
+      "hero": "Brochure Translator — Translate any brochure to multiple languages in seconds.",
+      "full_description": "Brochure Translator preserves layout while translating text into multiple target languages, adjusting typography and line breaks automatically to keep design integrity intact.",
+      "level_of_knowledge_required": "Zero. Upload a brochure PDF or source file and choose target languages.",
+      "difference_vs_native": "Manual translation requires design adjustments and time. This tool automates layout-adaptive translations while keeping brand tone consistent.",
+      "flow": "Step 1: Upload brochure or export from Automated Rebranding. Step 2: Choose target languages and localization tone. Step 3: Review and export localized PDFs. Best chained with: Automated Rebranding → Brochure Translator → Listing Generator / Landing Page Builder.",
+      "expected_results": "Reduces translation turnaround from days to minutes and preserves layout fidelity, improving multi-market go-to-market speed by orders of magnitude.",
+      "features": [
+        "Layout-aware translation",
+        "Multiple language exports",
+        "Tone customization and glossary support",
+        "Batch translation"
+      ],
+      "demo_placeholder": "PDF preview with language toggle and edit mode",
+      "use_cases": [
+        "Developers producing multilingual brochures",
+        "Agencies localizing marketing materials",
+        "Sales teams sending client-ready localized PDFs"
+      ],
+      "faqs": [
+        { "q": "Does it preserve fonts?", "a": "Yes — it adapts typography and fallbacks to preserve layout." },
+        { "q": "Is localization accurate for real-estate terms?", "a": "Yes — glossary and glossary enforcement ensures domain accuracy." }
+      ],
+      "integrations": [
+        "Automated Rebranding",
+        "Landing Page Builder",
+        "Listing Generator"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Visual PDF Editor (Deprecated)",
+      "hero": "Visual PDF Editor (Deprecated) — A legacy tool for simple PDF edits.",
+      "full_description": "Visual PDF Editor is the legacy editor for quick PDF text and image edits. It remains available in read-only or archived mode for legacy assets but is no longer receiving feature updates.",
+      "level_of_knowledge_required": "Low. Basic editing skills helpful for minor modifications.",
+      "difference_vs_native": "This tool is deprecated in favor of Automated Rebranding and Brochure Translator which offer layout-aware editing and translation.",
+      "flow": "Use only for legacy edits. For production workflows, migrate to Automated Rebranding and Brochure Translator.",
+      "expected_results": "Suitable for quick, low-risk edits; newer specialized tools provide better results and automation.",
+      "features": [
+        "Quick text edits",
+        "Image replacement",
+        "Simple annotations"
+      ],
+      "demo_placeholder": "Legacy editor screenshot (read-only badge)",
+      "use_cases": [
+        "Minor legacy document fixes",
+        "Accessing archived brochures that require minor edits"
+      ],
+      "faqs": [
+        { "q": "Is this being replaced?", "a": "Yes — use Automated Rebranding and Brochure Translator for modern workflows." },
+        { "q": "Will it be removed?", "a": "It is deprecated but retained for legacy access." }
+      ],
+      "integrations": [
+        "Automated Rebranding (recommended replacement)"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Aerial View Generator",
+      "hero": "Aerial View Generator — Create cinematic, aerial video tours of any property.",
+      "full_description": "Aerial View Generator synthesizes cinematic aerial video sequences for properties using available imagery, 3D models, or drone footage. It produces smooth flights, flyovers, and dynamic reveal shots ideal for listing videos and promotional content.",
+      "level_of_knowledge_required": "Low. Provide source imagery or select a template; advanced editing is optional.",
+      "difference_vs_native": "Hiring drone operators is expensive and requires scheduling. This app generates high-quality aerial sequences quickly and consistently for marketing use.",
+      "flow": "Step 1: Upload asset(s) or select property coordinates. Step 2: Choose shot sequence (approach, orbit, reveal). Step 3: Add music and titles. Step 4: Export to Landing Page Builder, AI YouTube Video Editor, or Reel Ads. Best chained with: Listing Generator → Aerial View Generator → AI YouTube Video Editor → Landing Page Builder.",
+      "expected_results": "High-impact visual content that improves listing engagement and time-on-page. Expect higher click-throughs on listings and better perceived listing quality.",
+      "features": [
+        "Cinematic flight presets",
+        "Auto-stabilization and color grading",
+        "Map-based coordinate capture",
+        "Export for multiple platforms"
+      ],
+      "demo_placeholder": "Aerial flight path editor with preview",
+      "use_cases": [
+        "Property listings with dramatic visuals",
+        "Developers showcasing master plans",
+        "Virtual tours for marketing collateral"
+      ],
+      "faqs": [
+        { "q": "Do I need drone footage?", "a": "You can upload drone footage, 3D models or rely on AI-synthesized aerials from imagery." },
+        { "q": "Is geolocation supported?", "a": "Yes — map-based inputs allow accurate flyovers." }
+      ],
+      "integrations": [
+        "Listing Generator",
+        "AI YouTube Video Editor",
+        "Landing Page Builder"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Listing Manager",
+      "hero": "Listing Manager — Your central hub to prepare and syndicate listings to major portals.",
+      "full_description": "Listing Manager standardizes listing data, enriches descriptions, batch-uploads images and videos, and syndicates listings to major portals (Property Finder, Bayut, etc.) with validation checks to ensure compliance.",
+      "level_of_knowledge_required": "Low. The tool guides you through required fields and validates common portal errors automatically.",
+      "difference_vs_native": "Portal dashboards require manual submission per listing. Listing Manager centralizes preparation and syndication across portals, saving time and reducing errors.",
+      "flow": "Step 1: Draft listing with Listing Generator or import from CRM Memory. Step 2: Enrich with media from Aerial View Generator and Insta Ads Designer. Step 3: Validate fields and publish to Property Finder, Bayut via Property Finder Pilot / Bayut Pilot. Step 4: Track distribution with Listing Performance. Best chained with: Listing Generator → Listing Manager → Property Finder Pilot / Bayut Pilot → Listing Performance.",
+      "expected_results": "Reduced publishing time by up to 80% and fewer portal rejections. Higher-quality listings lead to increased views and faster inquiries.",
+      "features": [
+        "Unified listing editor",
+        "Batch-syndication to portals",
+        "Field validation and compliance checks",
+        "Media management and tagging"
+      ],
+      "demo_placeholder": "Listing editor with portal destination toggles",
+      "use_cases": [
+        "Agencies managing multi-portal syndication",
+        "Developers listing large project inventories",
+        "Agents preparing polished listings quickly"
+      ],
+      "faqs": [
+        { "q": "Which portals are supported?", "a": "Property Finder, Bayut, and other major regional portals via dedicated pilots." },
+        { "q": "Can I schedule listing publication?", "a": "Yes — schedule across portals with time-zone controls." }
+      ],
+      "integrations": [
+        "Listing Generator",
+        "Aerial View Generator",
+        "Property Finder Pilot",
+        "Bayut Pilot",
+        "Listing Performance"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Listing Performance",
+      "hero": "Listing Performance — Track listing views and performance.",
+      "full_description": "Listing Performance consolidates analytics across all listings and portals, showing views, inquiries, conversion funnel metrics, and attribution to marketing campaigns.",
+      "level_of_knowledge_required": "Low. Metrics are explained in plain language with recommended actions.",
+      "difference_vs_native": "Portal analytics are siloed. Listing Performance provides cross-portal comparatives, trend analysis, and campaign attribution to optimize listing exposure.",
+      "flow": "Step 1: Pull metrics from portals and campaigns. Step 2: Map inquiries to CRM Memory. Step 3: Surface optimization suggestions (title tweaks, price signals). Best chained with: Listing Manager → Meta Auto Pilot / Campaign Builder → CRM Memory → Listing Performance.",
+      "expected_results": "Faster identification of underperforming listings and actionable optimization suggestions; improves click-to-inquiry rates and shortens time-to-offer.",
+      "features": [
+        "Cross-portal analytics dashboard",
+        "Attribution to campaigns",
+        "Actionable optimization recommendations",
+        "Historical trend comparisons"
+      ],
+      "demo_placeholder": "Performance dashboard with portal filters",
+      "use_cases": [
+        "Portfolio managers tracking multiple listings",
+        "Agents optimizing individual listing performance",
+        "Developers tracking project-level KPIs"
+      ],
+      "faqs": [
+        { "q": "Can I export reports?", "a": "Yes — export PDF or CSV reports for stakeholders." },
+        { "q": "Does it track inquiries back to campaigns?", "a": "Yes — CRO and attribution mapping available via CRM Memory integrations." }
+      ],
+      "integrations": [
+        "Listing Manager",
+        "Property Finder Pilot",
+        "Bayut Pilot",
+        "CRM Memory",
+        "Market Reports"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Listing Generator",
+      "hero": "Listing Generator — Craft perfect listings for portals like Property Finder & Bayut.",
+      "full_description": "Listing Generator produces high-quality listing copy, structured specifications, and media recommendations optimized for major portals. It enforces portal-specific rules and suggests SEO-friendly headlines.",
+      "level_of_knowledge_required": "Zero. Provide property details and photos, the tool generates a portal-optimized listing.",
+      "difference_vs_native": "Writing effective listing copy manually is time-consuming. This tool automates copy generation and enforces portal constraints to reduce rejections and boost exposure.",
+      "flow": "Step 1: Input property data or import from CRM Memory. Step 2: Generate descriptions and optimized titles. Step 3: Export to Listing Manager and Landing Page Builder. Best chained with: CRM Memory → Listing Generator → Listing Manager → Landing Page Builder.",
+      "expected_results": "Higher-quality listings that attract more views and inquiries; expect improved search ranking on portals and faster lead rates.",
+      "features": [
+        "Portal-specific templates",
+        "SEO-optimized headlines",
+        "Auto-suggested media set",
+        "Compliance checks"
+      ],
+      "demo_placeholder": "Generated listing preview with optimization score",
+      "use_cases": [
+        "Agents drafting listings quickly",
+        "Developers generating mass listing content",
+        "Marketing teams standardizing listing copy"
+      ],
+      "faqs": [
+        { "q": "Can I customize the tone?", "a": "Yes — choose formal, conversational, or luxury tones." },
+        { "q": "Does it follow portal rules?", "a": "Yes — it enforces field limits and required formats." }
+      ],
+      "integrations": [
+        "CRM Memory",
+        "Listing Manager",
+        "Landing Page Builder",
+        "Aerial View Generator"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Property Finder Pilot",
+      "hero": "Property Finder Pilot — The execution terminal for pushing listings to Property Finder.",
+      "full_description": "Property Finder Pilot automates validated uploads, handles API mapping, and manages listing lifecycle events (publish, update, expire) directly with Property Finder while providing error-handling and logging.",
+      "level_of_knowledge_required": "Low. The pilot handles API complexity; users manage listing approval and scheduling.",
+      "difference_vs_native": "Instead of manual portal uploads, this app automates the entire submission and lifecycle process with robust validation to avoid rejections.",
+      "flow": "Step 1: Prepare listing in Listing Manager. Step 2: Validate fields and media. Step 3: Publish via Property Finder Pilot and monitor with Listing Performance. Best chained with: Listing Manager → Property Finder Pilot → Listing Performance.",
+      "expected_results": "Faster publishing and fewer errors; reduces manual portal handling time dramatically and keeps listings live and updated reliably.",
+      "features": [
+        "API-based publishing",
+        "Validation and error handling",
+        "Lifecycle management",
+        "Publishing logs and rollbacks"
+      ],
+      "demo_placeholder": "Publishing log with success and error indicators",
+      "use_cases": [
+        "Agencies automating portal publishing",
+        "Developers with large inventories",
+        "Operations teams ensuring compliance"
+      ],
+      "faqs": [
+        { "q": "Does it require credentials?", "a": "Secure API keys are required; the pilot handles mapping." },
+        { "q": "Can it auto-update prices?", "a": "Yes — scheduled or triggered updates are supported." }
+      ],
+      "integrations": [
+        "Listing Manager",
+        "Listing Performance",
+        "CRM Memory"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Bayut Pilot",
+      "hero": "Bayut Pilot — The execution terminal for pushing listings to Bayut.",
+      "full_description": "Bayut Pilot provides the same automated publishing, validation, and lifecycle management for Bayut portal as Property Finder Pilot does for Property Finder.",
+      "level_of_knowledge_required": "Low. Designed to hide API complexity while providing publishing transparency.",
+      "difference_vs_native": "Automates Bayut-specific publishing rules and saves substantial manual effort compared to portal UIs.",
+      "flow": "Step 1: Draft in Listing Manager. Step 2: Validate and publish via Bayut Pilot. Step 3: Monitor with Listing Performance. Best chained with: Listing Manager → Bayut Pilot → Listing Performance.",
+      "expected_results": "Reduced publishing errors and faster time-to-live for listings. Increases portal visibility and reduces operational workload.",
+      "features": [
+        "Bayut API publishing",
+        "Field validations",
+        "Automated updates and rollback",
+        "Publishing audit logs"
+      ],
+      "demo_placeholder": "Bayut publishing dashboard with validation panel",
+      "use_cases": [
+        "Single agents publishing to Bayut",
+        "Agencies managing Bayut inventory",
+        "Operations teams automating portal rules"
+      ],
+      "faqs": [
+        { "q": "Are all Bayut fields supported?", "a": "Yes — the pilot maps all common fields and flags unsupported ones." },
+        { "q": "Can it manage auto-expiry?", "a": "Yes, scheduling and auto-expiry are supported." }
+      ],
+      "integrations": [
+        "Listing Manager",
+        "Listing Performance",
+        "CRM Memory"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "AI Price Estimator",
+      "hero": "AI Price Estimator — Get an AI-powered price estimate for any property.",
+      "full_description": "AI Price Estimator analyzes comparable sales, market trends, property attributes, and live feed data to produce an explainable price estimate with confidence intervals and factors affecting valuation.",
+      "level_of_knowledge_required": "Zero. Input basic property details and receive a transparent valuation breakdown.",
+      "difference_vs_native": "Manual valuation requires local expertise and time. This tool provides instant, data-backed estimates with reasoning and comparable references.",
+      "flow": "Step 1: Input property details or pull from Listing Generator. Step 2: Review estimate and contributing factors. Step 3: Push suggested price to Listing Generator and Landing Page Builder or use in Payment Planner and Investor Matching. Best chained with: Listing Generator → AI Price Estimator → Landing Page Builder / Payment Planner.",
+      "expected_results": "Faster pricing decisions with confidence intervals; reduces overpricing and underpricing mistakes, improving time-to-offer.",
+      "features": [
+        "Comparable analysis",
+        "Confidence intervals and factor breakdown",
+        "Market trend overlay",
+        "Exportable valuation reports"
+      ],
+      "demo_placeholder": "Valuation dashboard showing comparables and confidence band",
+      "use_cases": [
+        "Agents providing instant price guidance",
+        "Buyers assessing offer ranges",
+        "Developers pricing units in phases"
+      ],
+      "faqs": [
+        { "q": "Is the estimate legally binding?", "a": "No — it's a data-driven estimate for guidance; final pricing depends on inspection and agreements." },
+        { "q": "Does it use live market data?", "a": "Yes — market feeds and Market Library supplement the model." }
+      ],
+      "integrations": [
+        "Listing Generator",
+        "Market Library",
+        "Payment Planner",
+        "Listing Manager"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Commission Calculator",
+      "hero": "Commission Calculator — Instantly calculate your sales commission.",
+      "full_description": "Commission Calculator computes commissions across tiered structures, co-broker splits, incentives, and tax rules. It provides downloadable breakdowns for transparent settlements.",
+      "level_of_knowledge_required": "Zero. Enter sale price and commission rules; the tool handles the rest.",
+      "difference_vs_native": "Manual calculations are error-prone. This app standardizes commission logic, reducing accounting disputes.",
+      "flow": "Step 1: Input sale price and applicable commission rules. Step 2: Generate split scenarios and export settlement statements. Step 3: Sync with CRM Memory and Payment Planner. Best chained with: CRM Memory → Commission Calculator → Payment Planner.",
+      "expected_results": "Faster settlements and fewer disputes — team productivity increases and accounting accuracy improves significantly.",
+      "features": [
+        "Tiered commission logic",
+        "Co-broker splits and overrides",
+        "Exportable settlement statements",
+        "Tax and fee adjustments"
+      ],
+      "demo_placeholder": "Commission breakdown with split scenarios",
+      "use_cases": [
+        "Sales teams calculating payouts",
+        "Agencies automating settlements",
+        "Accounting teams validating commissions"
+      ],
+      "faqs": [
+        { "q": "Can I set custom commission tiers?", "a": "Yes — create and save custom commission schemes." },
+        { "q": "Does it handle cross-border taxes?", "a": "It supports local tax rules; consult your tax advisor for compliance." }
+      ],
+      "integrations": [
+        "CRM Memory",
+        "Payment Planner",
+        "Listing Manager"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Payment Planner",
+      "hero": "Payment Planner — Generate tailored payment plans for off-plan properties.",
+      "full_description": "Payment Planner creates schedule-driven payment plans, calculates installments, milestone payments, and produces client-facing schedules with legal-friendly formatting.",
+      "level_of_knowledge_required": "Low. Basic knowledge of sales terms is helpful but templates handle common scenarios.",
+      "difference_vs_native": "Manual payment schedules require spreadsheets and legal reviews. Payment Planner automates plans and generates client-ready documents.",
+      "flow": "Step 1: Input price, down payment and milestone rules. Step 2: Generate schedule and client documents. Step 3: Integrate with CRM Memory and Payment collection workflows. Best chained with: AI Price Estimator → Payment Planner → CRM Memory.",
+      "expected_results": "Faster negotiation cycles and clearer client expectations; reduces errors in payment scheduling and reporting.",
+      "features": [
+        "Milestone-driven scheduling",
+        "Installment calculations",
+        "Client-facing PDFs",
+        "Integration with payment gateways"
+      ],
+      "demo_placeholder": "Payment timeline with milestone edits",
+      "use_cases": [
+        "Developers creating buyer schedules",
+        "Sales teams offering flexible payment options",
+        "Clients reviewing payment terms clearly"
+      ],
+      "faqs": [
+        { "q": "Can I adjust milestones after generation?", "a": "Yes — schedules are editable and re-exportable." },
+        { "q": "Are payment reminders supported?", "a": "Yes — reminders integrate with WhatsApp Manager." }
+      ],
+      "integrations": [
+        "AI Price Estimator",
+        "CRM Memory",
+        "WhatsApp Manager"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Investor Matching",
+      "hero": "Investor Matching — Pair budgets with the right projects.",
+      "full_description": "Investor Matching uses investor profiles, budgets, preferences, and project parameters to match investors with suitable developments or listings, prioritizing fit and return profiles.",
+      "level_of_knowledge_required": "Low. Profiles and preferences can be managed by sales teams or investors themselves.",
+      "difference_vs_native": "Manual matchmaking is slow. Automated matching surfaces high-probability fits and accelerates introductions.",
+      "flow": "Step 1: Create investor profiles in CRM Memory. Step 2: Feed project inventory from Listing Manager. Step 3: Run match algorithms and create introduction lists. Best chained with: CRM Memory → Listing Manager → Investor Matching → Multi-Offer Builder.",
+      "expected_results": "Faster investor conversions and better fit; increases qualified introductions and shortens deal cycles.",
+      "features": [
+        "Profile-based matching algorithm",
+        "Budget & preference filters",
+        "Match confidence scoring",
+        "Exportable introductions list"
+      ],
+      "demo_placeholder": "Match result list with confidence scoring",
+      "use_cases": [
+        "Developers seeking strategic investors",
+        "Investment teams matching portfolios",
+        "Agents creating investor pipelines"
+      ],
+      "faqs": [
+        { "q": "How private is investor data?", "a": "Investor data is encrypted and access-controlled." },
+        { "q": "Can matches be scheduled automatically?", "a": "Yes — automated outreach workflows can be configured." }
+      ],
+      "integrations": [
+        "CRM Memory",
+        "Listing Manager",
+        "Multi-Offer Builder"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Multi-Offer Builder",
+      "hero": "Multi-Offer Builder — Compare property options side-by-side for clients.",
+      "full_description": "Multi-Offer Builder creates side-by-side comparisons of properties, financing options, payment plans, and projected returns, enabling clients to evaluate choices visually and quantitatively.",
+      "level_of_knowledge_required": "Low. The tool presents easy comparison views and suggested recommendations.",
+      "difference_vs_native": "Manual comparison using spreadsheets is time-consuming. This tool automates comparison creation and produces client-ready exportables.",
+      "flow": "Step 1: Select properties from Listing Manager. Step 2: Add payment plans from Payment Planner and price estimates from AI Price Estimator. Step 3: Generate comparison PDFs and interactive pages via Landing Page Builder. Best chained with: Listing Manager → AI Price Estimator → Payment Planner → Multi-Offer Builder → Landing Page Builder.",
+      "expected_results": "Improved client decision speed and clarity; reduces negotiation time and increases conversion rates.",
+      "features": [
+        "Side-by-side financial comparisons",
+        "Projected ROI and rental yield calculators",
+        "Exportable interactive PDFs",
+        "Client recommendation notes"
+      ],
+      "demo_placeholder": "Comparison grid with selectable criteria",
+      "use_cases": [
+        "Advisors presenting multiple investment options",
+        "Sales teams shortening decision cycles",
+        "Clients comparing affordability vs ROI"
+      ],
+      "faqs": [
+        { "q": "Can I share interactive comparisons?", "a": "Yes — shareable landing pages or PDFs are available." },
+        { "q": "Does it include financing scenarios?", "a": "Yes — includes mortgage or payment plan scenarios." }
+      ],
+      "integrations": [
+        "Listing Manager",
+        "AI Price Estimator",
+        "Payment Planner",
+        "Landing Page Builder"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "WhatsApp Manager",
+      "hero": "WhatsApp Manager — Send personalized broadcasts and drip campaigns.",
+      "full_description": "WhatsApp Manager enables compliant, personalized messaging, automated drip sequences, and CRM-triggered follow-ups with templates, scheduling, and delivery tracking.",
+      "level_of_knowledge_required": "Low. Templates and flows make campaign creation straightforward.",
+      "difference_vs_native": "Manual broadcasting is laborious and error-prone. This manager automates personalization at scale and ties messages to campaign attribution.",
+      "flow": "Step 1: Create audience or import from CRM Memory. Step 2: Select templates or craft messages. Step 3: Schedule broadcasts or set drip triggers based on CRM events. Best chained with: CRM Memory → WhatsApp Manager → Meta Auto Pilot / Campaign Builder for attribution.",
+      "expected_results": "Higher lead engagement and conversion; automated follow-ups reduce lead drop-off and increase contact rates significantly.",
+      "features": [
+        "Personalized broadcast templates",
+        "Drip campaign builder",
+        "Delivery and read receipts",
+        "Compliance and opt-out management"
+      ],
+      "demo_placeholder": "Campaign flow builder with personalization tokens",
+      "use_cases": [
+        "Follow-up sequences for inbound leads",
+        "Broadcasts for new listings or open houses",
+        "Transactional messages and reminders"
+      ],
+      "faqs": [
+        { "q": "Is WhatsApp Business API supported?", "a": "Yes — uses WhatsApp Business API with compliance features." },
+        { "q": "Can messages be personalized?", "a": "Yes — tokens and CRM fields enable deep personalization." }
+      ],
+      "integrations": [
+        "CRM Memory",
+        "Landing Page Builder",
+        "Meta Auto Pilot"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Lead Investigator AI",
+      "hero": "Lead Investigator AI — Find social profiles and professional history for any lead.",
+      "full_description": "Lead Investigator AI enriches leads with public social profiles, professional history, and inferred intent signals to give sales teams deeper context before outreach.",
+      "level_of_knowledge_required": "Zero. Enter a lead identifier and receive an enrichment profile.",
+      "difference_vs_native": "Manual research is slow. This tool automates enrichment, providing quick background checks and contact context.",
+      "flow": "Step 1: Input lead or import from CRM Memory. Step 2: Run enrichment to append profiles and scoring. Step 3: Route enriched leads to sales workflows or WhatsApp Manager. Best chained with: CRM Memory → Lead Investigator AI → WhatsApp Manager → CRM Memory.",
+      "expected_results": "Faster qualification and personalized outreach; increases response rates and reduces wasted outreach time.",
+      "features": [
+        "Profile enrichment",
+        "Intent scoring and lead priority",
+        "Source evidence & links",
+        "Exportable lead dossiers"
+      ],
+      "demo_placeholder": "Lead dossier with social snippets and score",
+      "use_cases": [
+        "Brokers qualifying inbound leads",
+        "Agencies preparing personalized pitches",
+        "Sales teams prioritizing outreach"
+      ],
+      "faqs": [
+        { "q": "Is this compliant with privacy rules?", "a": "Only public data is used; always follow local data protection laws." },
+        { "q": "Can enrichment be automated?", "a": "Yes — enable scheduled enrichment for incoming leads." }
+      ],
+      "integrations": [
+        "CRM Memory",
+        "WhatsApp Manager",
+        "Market Library"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Market Library",
+      "hero": "Market Library — Search our intelligent library for verified projects.",
+      "full_description": "Market Library is a verified repository of projects, historical pricing, and developer data. Searchable by coordinates, developer, project stage, or price band with trust signals.",
+      "level_of_knowledge_required": "Low. Search and filters are intuitive and return contextualized results.",
+      "difference_vs_native": "Scattered market data requires manual consolidation. Market Library centralizes verified project data and embeds trust signals for decision-making.",
+      "flow": "Step 1: Search or browse projects. Step 2: Pull data into Market Reports or AI Price Estimator. Step 3: Use verified details in Listing Generator or Investor Matching. Best chained with: Market Library → AI Price Estimator → Listing Generator → Market Reports.",
+      "expected_results": "Faster research cycles and more confident pricing and positioning decisions; reduces time spent validating developer claims.",
+      "features": [
+        "Verified project database",
+        "Search by multiple parameters",
+        "Developer trust scores",
+        "Exportable data packs"
+      ],
+      "demo_placeholder": "Project detail page with verification badges",
+      "use_cases": [
+        "Analysts validating projects",
+        "Agents referencing verified specs",
+        "Developers benchmarking competition"
+      ],
+      "faqs": [
+        { "q": "How is data verified?", "a": "Multiple sources and direct developer feeds where available; trust signals are shown per record." },
+        { "q": "Can I request additions?", "a": "Yes — submit projects for verification." }
+      ],
+      "integrations": [
+        "AI Price Estimator",
+        "Market Reports",
+        "Listing Generator"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Market Reports",
+      "hero": "Market Reports — Generate PDF reports on market trends, pricing, and sentiment.",
+      "full_description": "Market Reports creates exportable, branded PDF reports on market health, price movement, sentiment, and portfolio performance with charts and contextual narratives.",
+      "level_of_knowledge_required": "Low. Choose pre-built templates or customize sections and data sources.",
+      "difference_vs_native": "Manual reporting is slow and inconsistent. Market Reports automates report generation and embeds analytics from the Market Library and Listing Performance.",
+      "flow": "Step 1: Select region, timeframe and data sources. Step 2: Customize narrative sections and visuals. Step 3: Export PDF and distribute via CRM Memory workflows. Best chained with: Market Library → Listing Performance → Market Reports → CRM Memory.",
+      "expected_results": "Faster stakeholder reporting and clearer market insights for decision making. Cuts reporting time by 80% while improving clarity.",
+      "features": [
+        "Branded PDF exports",
+        "Customizable data sections",
+        "Charts and narrative generation",
+        "Automated distribution"
+      ],
+      "demo_placeholder": "Report builder with drag-drop sections and export button",
+      "use_cases": [
+        "Development teams producing investor updates",
+        "Agencies delivering market insights to clients",
+        "Internal strategy reports for leadership"
+      ],
+      "faqs": [
+        { "q": "Can reports be scheduled?", "a": "Yes — automate weekly or monthly distributions." },
+        { "q": "Can I include custom data?", "a": "Yes — import CSV or link to Listing Performance." }
+      ],
+      "integrations": [
+        "Market Library",
+        "Listing Performance",
+        "CRM Memory"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Market Trends Watcher",
+      "hero": "Market Trends Watcher — Identify emerging market trends before they become mainstream.",
+      "full_description": "Market Trends Watcher continuously monitors price movement, listing velocity, sentiment, and search behavior to surface early signals and alerts for emerging trends or cooling markets.",
+      "level_of_knowledge_required": "Low. Alerts and dashboards are presented with pragmatic advice.",
+      "difference_vs_native": "Manual trend spotting is retrospective. This tool provides early warnings and actionable triggers to adjust marketing or pricing strategy proactively.",
+      "flow": "Step 1: Configure regions and alert thresholds. Step 2: Receive periodic insights and alerts. Step 3: Feed signals into Campaign Builder, AI Price Estimator, or Market Reports. Best chained with: Market Trends Watcher → AI Price Estimator / Campaign Builder → Market Reports.",
+      "expected_results": "Earlier response to market shifts enabling better pricing and marketing decisions; reduces time-to-adjust and mitigates inventory stagnation.",
+      "features": [
+        "Real-time trend monitoring",
+        "Custom alerts and thresholds",
+        "Sentiment and search-volume signals",
+        "Actionable recommendations"
+      ],
+      "demo_placeholder": "Trend alert feed with heatmap visualization",
+      "use_cases": [
+        "Portfolio managers adjusting pricing",
+        "Marketers aligning campaigns to demand",
+        "Developers timing launch phases"
+      ],
+      "faqs": [
+        { "q": "How often are signals updated?", "a": "Continuous; alerts are pushed when thresholds are crossed." },
+        { "q": "Can I customize alert sensitivity?", "a": "Yes — adjust sensitivity per region or asset class." }
+      ],
+      "integrations": [
+        "Market Library",
+        "Market Reports",
+        "AI Price Estimator"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Brand Creator",
+      "hero": "Brand Creator — Configure your entire brand kit by analyzing uploaded documents.",
+      "full_description": "Brand Creator analyzes uploaded documents, logos, and tone of voice to produce a full brand kit including palettes, typography, logo usage rules, and writing tone guidelines.",
+      "level_of_knowledge_required": "Zero. Upload brand assets or raw documents and receive a complete brand kit.",
+      "difference_vs_native": "Manual brand creation requires designers and brand strategists. This tool rapidly produces a usable brand kit with guidelines for the rest of the suite to use.",
+      "flow": "Step 1: Upload brand files or documents. Step 2: Generate brand kit and usage rules. Step 3: Apply kit across Automated Rebranding, Insta Ads Designer, and Landing Page Builder. Best chained with: Brand Creator → Automated Rebranding → Insta Ads Designer / Landing Page Builder.",
+      "expected_results": "Faster brand enablement and consistent application across assets; reduces rework and preserves brand integrity across campaigns.",
+      "features": [
+        "Auto-extracted palettes and fonts",
+        "Logo usage rules and spacing",
+        "Tone-of-voice guidelines",
+        "Exportable brand kit package"
+      ],
+      "demo_placeholder": "Brand kit preview with color swatches and typography",
+      "use_cases": [
+        "New brands launching fast",
+        "Agencies producing white-label assets",
+        "Enterprises standardizing brand application"
+      ],
+      "faqs": [
+        { "q": "Does it produce vector logos?", "a": "It extracts logo variants and provides guidance; original vector files are recommended for best fidelity." },
+        { "q": "Can I edit the generated kit?", "a": "Yes — all fields are editable." }
+      ],
+      "integrations": [
+        "Automated Rebranding",
+        "Insta Ads Designer",
+        "Landing Page Builder"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "CRM Memory",
+      "hero": "CRM Memory — The core data store that remembers every client interaction.",
+      "full_description": "CRM Memory stores lead and client data, interaction history, deal stages, documents, and AI-annotated notes. It acts as the single source of truth for customer lifecycle and feeds other suite apps with contextual data.",
+      "level_of_knowledge_required": "Low. Basic CRM concepts apply; onboarding templates simplify setup.",
+      "difference_vs_native": "Unlike generic CRMs, CRM Memory is deeply integrated with the suite to supply enriched audiences, match investors, and power automated flows.",
+      "flow": "Step 1: Ingest leads from campaigns and listing inquiries. Step 2: Enrich with Lead Investigator AI and Market Library context. Step 3: Drive automations in WhatsApp Manager and Meta Auto Pilot. Best chained with: Meta Auto Pilot → Audience Creator → CRM Memory → WhatsApp Manager.",
+      "expected_results": "Cleaner data, better lead follow-up, and measurable increases in conversion due to context-rich interactions; reduces lead leakage and improves attribution.",
+      "features": [
+        "Full interaction timeline",
+        "AI annotations and scoring",
+        "Segment and lifecycle management",
+        "Secure export and permissions"
+      ],
+      "demo_placeholder": "Lead profile with timeline and AI-notes",
+      "use_cases": [
+        "Sales teams centralizing client records",
+        "Marketers using enriched data for targeting",
+        "Operations ensuring audit and compliance"
+      ],
+      "faqs": [
+        { "q": "Can I import existing CRM data?", "a": "Yes — bulk import and field mapping tools are provided." },
+        { "q": "Is data encrypted?", "a": "Yes — enterprise-grade encryption and access controls are used." }
+      ],
+      "integrations": [
+        "Meta Auto Pilot",
+        "Audience Creator",
+        "WhatsApp Manager",
+        "Listing Manager"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Assistant",
+      "hero": "Assistant — Your personal, trainable AI partner.",
+      "full_description": "Assistant is a trainable AI that learns from your CRM Memory, Market Library, and usage patterns to provide contextually-aware assistance: drafting messages, creating briefs, suggesting optimizations, and answering queries about your inventory and market.",
+      "level_of_knowledge_required": "Zero. Interact in natural language; the assistant learns and improves over time.",
+      "difference_vs_native": "Generic chatbots lack domain memory. Assistant uses suite context to provide accurate, actionable responses tied to real data.",
+      "flow": "Step 1: Grant read permissions to CRM Memory and Market Library (opt-in). Step 2: Ask natural language questions or request workflows. Step 3: Assistant executes or generates content, which can be pushed to other apps. Best chained with: CRM Memory → Assistant → Campaign Builder / Landing Page Builder / Market Reports.",
+      "expected_results": "Faster content generation, fewer back-and-forths, and more consistent operational decisions; reduces routine task time by up to 60–80%.",
+      "features": [
+        "Trainable on your data",
+        "Actionable recommendations",
+        "Draft generation and execution",
+        "Context-aware answers"
+      ],
+      "demo_placeholder": "Assistant chat with suggested actions and execution buttons",
+      "use_cases": [
+        "Drafting email and WhatsApp sequences",
+        "Generating campaign briefs",
+        "Answering market questions with live data"
+      ],
+      "faqs": [
+        { "q": "Can I control data access?", "a": "Yes — granular permission and opt-in controls are available." },
+        { "q": "Can it perform actions?", "a": "It can prepare actions for approval or execute them if permissions are granted." }
+      ],
+      "integrations": [
+        "CRM Memory",
+        "Market Library",
+        "Campaign Builder",
+        "Landing Page Builder"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Embeddable Site Assistant",
+      "hero": "Embeddable Site Assistant — Add a market-aware AI chatbot to any website.",
+      "full_description": "Embeddable Site Assistant is a lightweight chatbot that pulls market and listing data to answer visitor questions, capture leads, and recommend listings directly on any site.",
+      "level_of_knowledge_required": "Zero. Copy-paste embed script and configure data sources.",
+      "difference_vs_native": "Generic chat widgets respond generically. This assistant uses Market Library, Listing Manager and CRM Memory to provide accurate, commerce-ready answers.",
+      "flow": "Step 1: Install embed script on website. Step 2: Configure data sources and intents. Step 3: Capture leads into CRM Memory and hand off to WhatsApp Manager as needed. Best chained with: Listing Manager → Embeddable Site Assistant → CRM Memory → WhatsApp Manager.",
+      "expected_results": "Higher on-site engagement and more qualified lead captures; reduces bounce and increases conversion on landing pages.",
+      "features": [
+        "Easy embed script",
+        "Context-aware responses using suite data",
+        "Lead capture & routing",
+        "Customizable UI"
+      ],
+      "demo_placeholder": "Chat widget preview with example flows",
+      "use_cases": [
+        "On-site lead capture for listings",
+        "Customer support for project inquiries",
+        "Interactive market info on developer sites"
+      ],
+      "faqs": [
+        { "q": "Is the widget customizable?", "a": "Yes — style and behavior can be customized." },
+        { "q": "Does it store data in CRM?", "a": "Yes — leads flow to CRM Memory." }
+      ],
+      "integrations": [
+        "CRM Memory",
+        "Listing Manager",
+        "Market Library",
+        "WhatsApp Manager"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "VM Creator",
+      "hero": "VM Creator — A utility for developers to provision Google Cloud virtual machines.",
+      "full_description": "VM Creator simplifies provisioning repeatable Google Cloud VMs with security best-practices, preinstalled runtime stacks, and infrastructure as code templates for developers and ops.",
+      "level_of_knowledge_required": "Medium. Basic cloud or devops familiarity recommended for advanced configurations; presets make common setups trivial.",
+      "difference_vs_native": "Manually provisioning cloud VMs is error-prone. VM Creator automates secure, repeatable provisioning and environment setup.",
+      "flow": "Step 1: Choose preset (web app, worker, data pipeline). Step 2: Configure sizing and network. Step 3: Provision VM with startup scripts and monitoring. Best chained with: Creative Execution Terminal for heavy creative tasks requiring compute.",
+      "expected_results": "Faster environment provisioning and consistent developer environments which reduce configuration drift and deployment errors.",
+      "features": [
+        "Preset stacks and scripts",
+        "Secure defaults and firewall rules",
+        "SSH and monitoring setup",
+        "Infrastructure as code exports"
+      ],
+      "demo_placeholder": "Provision wizard with cost estimate",
+      "use_cases": [
+        "Developers provisioning test or production VMs",
+        "Ops teams automating environment creation",
+        "Creative tasks requiring dedicated compute"
+      ],
+      "faqs": [
+        { "q": "Which cloud is supported?", "a": "Google Cloud with exported IaC templates." },
+        { "q": "Does it estimate cost?", "a": "Yes — cost estimates are shown prior to provisioning." }
+      ],
+      "integrations": [
+        "Creative Execution Terminal"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Creative Execution Terminal",
+      "hero": "Creative Execution Terminal — The execution engine for complex creative tasks.",
+      "full_description": "Creative Execution Terminal orchestrates complex creative pipelines, batching tasks like video rendering, generative image sets, and large-file transformations using queued workers (VM Creator provisioned as needed).",
+      "level_of_knowledge_required": "Medium. Familiarity with creative workflows helps but templates are available for common pipelines.",
+      "difference_vs_native": "Local rendering or manual orchestration is slow and inconsistent. This terminal automates and scales creative workloads reliably.",
+      "flow": "Step 1: Define creative pipeline (e.g., generate 50 listing videos). Step 2: Assign presets and assets from Brand Creator and Aerial View Generator. Step 3: Execute on provisioned VMs and export to distribution channels. Best chained with: VM Creator → Creative Execution Terminal → AI YouTube Video Editor / Listing Manager.",
+      "expected_results": "Reliable large-batch creative production, faster throughput, and consistent output quality across large campaigns.",
+      "features": [
+        "Queue and worker orchestration",
+        "Batch render presets",
+        "Asset management and export",
+        "Monitoring and retries"
+      ],
+      "demo_placeholder": "Pipeline dashboard with worker status",
+      "use_cases": [
+        "Large-scale listing video production",
+        "Agency batch creative runs",
+        "Developers generating programmatic assets"
+      ],
+      "faqs": [
+        { "q": "Does it auto-scale?", "a": "Yes — workers can scale via VM Creator presets." },
+        { "q": "Can I monitor jobs?", "a": "Real-time job monitoring and logs are provided." }
+      ],
+      "integrations": [
+        "VM Creator",
+        "AI YouTube Video Editor",
+        "Aerial View Generator"
+      ],
+      "cta": "Explore App"
+    }
+  ]
+}

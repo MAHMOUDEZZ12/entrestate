@@ -1,79 +1,57 @@
 
+'use client';
 
-import { PublicToolPageLayout } from "@/components/public-tool-page-layout";
-import { tools } from "@/lib/tools-data";
-import { blogContent } from '@/lib/blog-content';
-import { notFound } from "next/navigation";
-import { Feature } from "@/lib/tools-client";
 import React from 'react';
-import { Upload, Sparkles, Download, Clock2, Wallet, BadgeCheck } from 'lucide-react';
+import { notFound, useParams } from 'next/navigation';
+import { tools } from '@/lib/tools-client';
+import { appDetails } from '@/lib/blog-content';
+import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
 
 
 // Function to merge data with details, now on the server
-const mergeToolData = (toolData: any): Feature => {
-    const detailsContent = blogContent[toolData.id];
+const mergeToolData = (toolId: string) => {
+    const toolData = tools.find(t => t.id === toolId);
+    if (!toolData) return null;
 
-    // Define a default details structure
-    const defaultDetails = {
-        steps: [
-            { icon: <Upload />, text: 'Provide your source content, like a brochure or project details.' },
-            { icon: <Sparkles />, text: 'The AI analyzes your input and generates the content.' },
-            { icon: <Download />, text: 'Review, refine, and use your new AI-generated asset.' },
-        ],
+    const detailsContent = appDetails.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === toolId);
+    
+    // Create a new details structure based on the new JSON
+    const newDetails = {
+        steps: detailsContent?.flow.split('Step ').slice(1).map((s, i) => ({ 
+            icon: <p className="font-bold text-lg">{i+1}</p>, 
+            text: s.trim() 
+        })) || [],
         aiVsManual: [
-            { metric: "Time to Complete", manual: "Hours to Days", ai: "Seconds to Minutes", icon: <Clock2 /> },
-            { metric: "Cost", manual: "$$$ - $$$$", ai: "$", icon: <Wallet /> },
-            { metric: "Quality & Consistency", manual: "Variable", ai: "Consistently High", icon: <BadgeCheck /> },
+            { metric: "Knowledge Required", manual: "High", ai: detailsContent?.level_of_knowledge_required || "Low", icon: <BrainCircuit /> },
+            { metric: "Efficiency", manual: detailsContent?.difference_vs_native.split('.')[0] || "Manual", ai: detailsContent?.difference_vs_native.split('.')[1] || "Automated", icon: <Clock2 /> },
+            { metric: "Expected Result", manual: "Variable", ai: detailsContent?.expected_results || "Consistent", icon: <CheckCircle /> },
         ],
-        synergy: [
-             { tool: "AI Assistant", benefit: "Use the assistant to run this tool via a simple text command for faster workflow." },
-             { tool: "Brand Kit", benefit: "Automatically applies your logos and colors to ensure all outputs are on-brand." },
-        ],
-        faqs: [
-            { question: "Is my data used to train the AI?", answer: "No. Your data is kept private and is only used to generate content for you. It is not used for training external models." },
-            { question: "Can I edit the generated content?", answer: "Yes, all generated content can be downloaded and edited in other tools, or you can use our built-in editors to refine the results." }
-        ]
+        synergy: detailsContent?.integrations.map(integration => ({
+            tool: integration,
+            benefit: `Integrates seamlessly with ${integration} to create powerful, automated workflows.`
+        })) || [],
+        faqs: detailsContent?.faqs.map(faq => ({
+            question: faq.q,
+            answer: faq.a
+        })) || []
     };
     
-    let finalDetails;
-    if (detailsContent) {
-        finalDetails = {
-            ...defaultDetails,
-            steps: detailsContent.sections.slice(0, 3).map((s: any, i: number) => ({
-                icon: i === 0 ? <Upload /> : i === 1 ? <Sparkles /> : <Download />,
-                text: s.body
-            })),
-        };
-    } else {
-        finalDetails = defaultDetails;
-    }
-
-    if (finalDetails.steps.length === 0) {
-        finalDetails.steps = defaultDetails.steps;
-    }
-
     return {
         ...(toolData as any),
-        longDescription: detailsContent?.intro || toolData.description,
-        details: finalDetails,
+        longDescription: detailsContent?.full_description || toolData.description,
+        details: newDetails,
     };
 };
 
-export default function ToolPage({ params }: { params: { toolId: string } }) {
-  const toolData = tools.find(t => t.id === params.toolId);
+export default function ToolPage() {
+  const params = useParams();
+  const toolId = params.toolId as string;
+  
+  const feature = React.useMemo(() => mergeToolData(toolId), [toolId]);
 
-  if (!toolData) {
+  if (!feature) {
     notFound();
   }
   
-  const feature = mergeToolData(toolData);
-
   return <PublicToolPageLayout feature={feature} />;
-}
-
-// Generate static pages for each tool for better SEO and performance
-export async function generateStaticParams() {
-    return tools.map((tool) => ({
-        toolId: tool.id,
-    }));
 }
