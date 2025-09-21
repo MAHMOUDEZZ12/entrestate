@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { ShinyButton } from './ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 
 interface PublicToolPageLayoutProps {
@@ -50,26 +51,6 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
         </div>
       </section>
 
-       {/* Visual Showcase */}
-      <section className="py-24 md:py-32">
-        <div className="container mx-auto px-4">
-            <Card className="w-full max-w-4xl mx-auto shadow-2xl shadow-primary/10 border-primary/20">
-                <CardContent className="p-4">
-                    <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                        <Image
-                            src={`https://picsum.photos/seed/${feature.id}/1280/720`}
-                            alt={`${feature.title} visual concept`}
-                            width={1280}
-                            height={720}
-                            className="w-full h-full object-cover"
-                            data-ai-hint={feature.title}
-                        />
-                    </div>
-                </CardContent>
-            </Card>
-        </div>
-      </section>
-
       {/* How it works */}
       <section className="py-24 md:py-32 bg-muted/30">
         <div className="container mx-auto px-4">
@@ -77,20 +58,48 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">A Radically Simple Workflow</h2>
                  <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, elegant process powered by AI.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-                {feature.details.steps.map((step, i) => (
-                    <Card key={i} className="bg-card/50 text-center border-transparent shadow-none">
-                        <CardHeader>
-                            <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
-                                {React.cloneElement(step.icon, { className: 'h-8 w-8' })}
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+                <div className="lg:sticky lg:top-24">
+                     <Card className="w-full shadow-2xl shadow-primary/10 border-primary/20">
+                        <CardContent className="p-4">
+                            <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+                                <Image
+                                    src={`https://picsum.photos/seed/${feature.id}/1280/720`}
+                                    alt={`${feature.title} visual concept`}
+                                    width={1280}
+                                    height={720}
+                                    className="w-full h-full object-cover"
+                                    data-ai-hint={feature.title}
+                                />
                             </div>
-                            <CardTitle>Step {i+1}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <p className="text-muted-foreground">{step.text}</p>
                         </CardContent>
                     </Card>
-                ))}
+                </div>
+                <div className="space-y-16">
+                     {feature.details.steps.map((step, i) => (
+                        <motion.div 
+                            key={i}
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: i * 0.1 }}
+                            viewport={{ once: true, amount: 0.5 }}
+                        >
+                            <div className="flex items-start gap-6">
+                                <div className="flex flex-col items-center gap-2">
+                                     <div className="p-3 bg-primary/10 text-primary rounded-full w-fit">
+                                        {React.cloneElement(step.icon, { className: 'h-6 w-6' })}
+                                    </div>
+                                    <div className="w-px h-full bg-border flex-grow"></div>
+                                </div>
+                                <div>
+                                    <h3 className="text-2xl font-bold font-heading mb-2">Step {i+1}</h3>
+                                    <p className="text-lg text-muted-foreground">{step.text}</p>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
         </div>
       </section>
