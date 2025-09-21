@@ -38,6 +38,9 @@ export default function PricingPage() {
   };
 
   const handleBundleSelection = (bundleName: string) => {
+    if (isProSelected) {
+      setSelectedApps([]);
+    }
     const bundle = bundles.find(b => b.name === bundleName);
     if (!bundle) return;
   
@@ -142,12 +145,10 @@ export default function PricingPage() {
           <Card>
             <CardHeader>
               <CardTitle className="text-2xl font-bold font-heading">Build Your Plan</CardTitle>
-              <CardDescription>Select a preset bundle or choose apps individually.</CardDescription>
+              <CardDescription>Select a preset bundle as a starting point, or choose apps individually.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div>
-                <h3 className="font-semibold mb-3">Start with a Bundle:</h3>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {bundles.map(bundle => {
                     const isSelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.length;
                     const savings = getBundleSavings(bundle);
@@ -169,14 +170,12 @@ export default function PricingPage() {
                           <p className="font-semibold text-foreground text-sm">{bundle.name}</p>
                            {savings > 0 && <p className="text-xs font-semibold text-primary ml-auto">Save ${savings.toFixed(2)}/mo</p>}
                         </div>
-                        <p className="text-xs text-muted-foreground text-left mt-1">{bundle.description}</p>
                       </button>
                     );
                   })}
                 </div>
-              </div>
               <div>
-                <h3 className="font-semibold mb-3">Or Select Apps Individually:</h3>
+                <h3 className="font-semibold mb-3">Included Apps:</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[40rem] overflow-y-auto pr-3 rounded-lg border bg-background/50 p-4">
                   {allApps.map(app => (
                     <div key={app.name} className="flex items-center space-x-3 bg-muted/30 p-3 rounded-md hover:bg-muted/50 transition-colors">
