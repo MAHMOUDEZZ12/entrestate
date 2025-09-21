@@ -41,18 +41,24 @@ export default function PricingPage() {
     const bundle = bundles.find(b => b.name === bundleName);
     if (!bundle) return;
   
-    const isCurrentlySelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.length;
+    // Check if all apps in the bundle are currently selected
+    const isBundleCurrentlySelected = bundle.apps.every(app => selectedApps.includes(app));
   
-    if (isCurrentlySelected) {
-       setSelectedApps([]);
+    if (isProSelected) {
+      // If PRO is selected, clicking a bundle deselects PRO and selects the bundle's apps
+      setSelectedApps(bundle.apps);
+    } else if (isBundleCurrentlySelected && bundle.apps.length === selectedApps.filter(sa => bundle.apps.includes(sa)).length) {
+      // If the bundle is fully selected, deselect its apps
+      setSelectedApps(prev => prev.filter(app => !bundle.apps.includes(app)));
     } else {
-       setSelectedApps(bundle.apps);
+      // Otherwise, add all apps from the bundle to the current selection, avoiding duplicates
+      setSelectedApps(prev => [...new Set([...prev, ...bundle.apps])]);
     }
   };
 
   const handleSelectPro = () => {
     if (!proPlan) return;
-    const isCurrentlyPro = allApps.length > 0 && allApps.every(app => selectedApps.includes(app.name));
+    const isCurrentlyPro = allApps.length > 0 && allApps.every(app => selectedApps.includes(app.name)) && selectedApps.length === allApps.length;
 
     if (isCurrentlyPro) {
       setSelectedApps([]);
@@ -127,7 +133,7 @@ export default function PricingPage() {
                     {isProSelected && <Check className="h-4 w-4 text-primary-foreground" />}
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground text-xl">{proPlan.name}</p>
+                    <p className="font-semibold text-foreground text-2xl">{proPlan.name}</p>
                     <p className="text-md text-muted-foreground text-left">{proPlan.description}</p>
                   </div>
                 </div>
