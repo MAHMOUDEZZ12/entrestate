@@ -93,10 +93,10 @@ export default function PricingPage() {
       />
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
         <div className="flex justify-center items-center gap-4 mb-12">
-            <span className={cn(isAnnual ? 'text-muted-foreground' : 'text-foreground', 'font-medium')}>Monthly</span>
+            <span className={cn(isAnnual ? 'text-muted-foreground' : 'text-foreground', 'font-medium')}>Pay Monthly</span>
             <Switch checked={isAnnual} onCheckedChange={setIsAnnual} aria-label="Toggle billing frequency" />
             <span className={cn(isAnnual ? 'text-foreground' : 'text-muted-foreground', 'font-medium')}>
-                Annually <span className="text-primary font-semibold">(-40%)</span>
+                Pay Annually <span className="text-primary font-semibold">(-40%)</span>
             </span>
         </div>
         
@@ -125,9 +125,35 @@ export default function PricingPage() {
                         </div>
                     </CardContent>
                 </Card>
-                 <div className="space-y-4">
-                    <h2 className="text-2xl font-bold font-heading text-center">Or Start with a Bundle</h2>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            </div>
+
+            <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-24">
+                <div className="space-y-4">
+                     {proPlan && (
+                        <button onClick={handleSelectPro} className={cn(
+                            "w-full p-6 rounded-lg border text-left transition-all relative overflow-hidden",
+                            isProSelected ? "bg-primary/20 border-primary ring-2 ring-primary shadow-2xl shadow-primary/20" : "bg-card/50 hover:bg-card"
+                        )}>
+                            <div className="absolute top-2 right-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-primary text-primary-foreground">
+                                Best Value
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center", isProSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
+                                {isProSelected && <Check className="h-3 w-3 text-primary-foreground" />}
+                                </div>
+                                <p className="font-semibold text-foreground text-lg">{proPlan.name}</p>
+                            </div>
+                            <p className="text-muted-foreground mt-2">{proPlan.description}</p>
+                            <div
+                                className={cn(
+                                "absolute -bottom-12 -right-12 w-24 h-24 bg-primary/10 rounded-full blur-2xl transition-opacity duration-500",
+                                isProSelected ? "opacity-100" : "opacity-0"
+                                )}
+                            />
+                        </button>
+                    )}
+                    <h2 className="text-xl font-bold font-heading text-center pt-4">Or Start with a Bundle</h2>
+                     <div className="grid grid-cols-1 gap-4">
                         {bundles.map(bundle => {
                             const isSelected = bundle.apps.length > 0 && selectedApps.length > 0 && bundle.apps.every(app => selectedApps.includes(app));
                             const savings = getBundleSavings(bundle);
@@ -151,32 +177,6 @@ export default function PricingPage() {
                         })}
                     </div>
                 </div>
-            </div>
-
-            <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-24 lg:-mt-8">
-                {proPlan && (
-                    <button onClick={handleSelectPro} className={cn(
-                        "w-full p-6 rounded-lg border text-left transition-all relative overflow-hidden",
-                        isProSelected ? "bg-primary/20 border-primary ring-2 ring-primary shadow-2xl shadow-primary/20" : "bg-card/50 hover:bg-card"
-                    )}>
-                        <div className="absolute top-2 right-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-primary text-primary-foreground">
-                            Best Value
-                        </div>
-                        <div className="flex items-center gap-3">
-                            <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center", isProSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
-                            {isProSelected && <Check className="h-3 w-3 text-primary-foreground" />}
-                            </div>
-                            <p className="font-semibold text-foreground text-lg">{proPlan.name}</p>
-                        </div>
-                        <p className="text-muted-foreground mt-2">{proPlan.description}</p>
-                        <div
-                            className={cn(
-                            "absolute -bottom-12 -right-12 w-24 h-24 bg-primary/10 rounded-full blur-2xl transition-opacity duration-500",
-                            isProSelected ? "opacity-100" : "opacity-0"
-                            )}
-                        />
-                    </button>
-                )}
                  <Card className="mt-4">
                     <CardHeader>
                         <CardTitle>Your Total</CardTitle>
@@ -184,15 +184,14 @@ export default function PricingPage() {
                     <CardContent className="text-center">
                         {discount > 0 && (
                             <p className="text-destructive line-through">
-                                ${isAnnual ? (individualAppsPrice * 12 * 0.6).toFixed(2) : individualAppsPrice.toFixed(2)}
-                                <span className="text-xs">/{isAnnual ? 'yr' : 'mo'}</span>
+                                ${isAnnual ? (individualAppsPrice * 0.6).toFixed(2) : individualAppsPrice.toFixed(2)}
+                                <span className="text-xs">/mo</span>
                             </p>
                         )}
                         <div className="flex items-baseline justify-center gap-2 mt-1">
-                           <span className="text-5xl font-bold text-primary">${(isAnnual ? (finalPrice * 12 * 0.6) : finalPrice).toFixed(2)}</span>
-                           <span className="text-muted-foreground">/ {isAnnual ? 'year' : 'month'}</span>
+                           <span className="text-5xl font-bold text-primary">${(isAnnual ? (finalPrice * 0.6) : finalPrice).toFixed(2)}</span>
+                           <span className="text-muted-foreground">/ month</span>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-4">which is ${((isAnnual ? (finalPrice * 12 * 0.6) : finalPrice) / (isAnnual ? 12 : 1)).toFixed(2)} / month</p>
                         {activeBundle && <p className="text-sm text-primary font-semibold">You're saving ${discount.toFixed(2)}/mo with the {activeBundle.name} bundle!</p>}
                          {isProSelected && proPlan && <p className="text-sm text-primary font-semibold">You're saving ${discount.toFixed(2)}/mo with the PRO plan!</p>}
                     </CardContent>
