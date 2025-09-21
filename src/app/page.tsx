@@ -147,9 +147,9 @@ const LlmSimulation = () => {
     return (
         <div className="h-full w-full bg-muted/50 rounded-xl p-4 overflow-hidden mask-gradient-vertical">
              <motion.div
-                animate={{ y: [0, -280] }}
+                animate={{ y: [0, -450] }}
                 transition={{
-                    duration: 10,
+                    duration: 12,
                     repeat: Infinity,
                     repeatType: 'loop',
                     ease: 'linear',
@@ -355,14 +355,14 @@ export default function HomePage() {
             {/* Product 1: 3XCHAT APP LITE */}
             <div id="product-3xchat" className="grid lg:grid-cols-2 gap-16 items-center relative">
                <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-500/10 to-transparent -z-10 blur-3xl"/>
-              <div className="space-y-8">
-                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
+              <div className="space-y-6">
+                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground [text-shadow:0_0_15px_hsl(var(--primary))]">
                   3XCHAT APP LITE
                 </h3>
                 <p className="text-xl text-foreground/70 leading-relaxed">
                   Transform customer interactions with an application engineered for immediate, impactful engagement. 3XCHAT APP LITE redefines responsiveness, ensuring every customer feels heard and valued, around the clock.
                 </p>
-                 <div className="space-y-4">
+                 <div className="space-y-4 pt-4">
                   <h4 className="font-semibold text-xl">Key Features:</h4>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">24/7 Availability:</span><br /><span className="text-muted-foreground">Provides uninterrupted support, capturing leads and answering queries globally.</span></div></li>
@@ -370,7 +370,7 @@ export default function HomePage() {
                      <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Contextual Recall:</span><br /><span className="text-muted-foreground">Retains conversation history for personalized, multi-turn dialogues.</span></div></li>
                   </ul>
                 </div>
-                 <Link href="/products/3xchat">
+                 <Link href="/products/3xchat" className="inline-block mt-6">
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
@@ -385,14 +385,14 @@ export default function HomePage() {
                <Card className="w-full min-h-[600px] max-h-[700px] mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-background/50 backdrop-blur-sm flex flex-col text-center p-2">
                     <SearchSimulation />
                </Card>
-              <div className="space-y-8 lg:order-1">
-                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
+              <div className="space-y-6 lg:order-1">
+                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground [text-shadow:0_0_15px_hsl(var(--primary))]">
                   PRO SEARCH ENG.x 3
                 </h3>
                 <p className="text-xl text-foreground/70 leading-relaxed">
                   Move beyond keyword matching. Our advanced search engine dives into the semantic fabric of information, revealing connections and insights that traditional systems miss.
                 </p>
-                 <div className="space-y-4">
+                 <div className="space-y-4 pt-4">
                   <h4 className="font-semibold text-xl">Key Features:</h4>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Hyper-Relevant Results:</span><br /><span className="text-muted-foreground">Drastically reduces time spent sifting through irrelevant information.</span></div></li>
@@ -400,7 +400,7 @@ export default function HomePage() {
                     <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Cross-Source Synthesis:</span><br /><span className="text-muted-foreground">Unifies information from disparate internal and external repositories.</span></div></li>
                   </ul>
                 </div>
-                 <Link href="/products/pro-search">
+                 <Link href="/products/pro-search" className="inline-block mt-6">
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
@@ -409,14 +409,14 @@ export default function HomePage() {
              {/* Product 3: LLM MODEL X3.5 */}
             <div id="product-llm-x35" className="grid lg:grid-cols-2 gap-16 items-center relative">
                <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500/10 to-transparent -z-10 blur-3xl"/>
-              <div className="space-y-8">
-                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
+              <div className="space-y-6">
+                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground [text-shadow:0_0_15px_hsl(var(--primary))]">
                   LLM MODEL X3.5
                 </h3>
                 <p className="text-xl text-foreground/70 leading-relaxed">
                   Harness the cutting edge of generative intelligence to craft contextually rich, persuasive, and perfectly tailored content that resonates with your audience, at scale.
                 </p>
-                 <div className="space-y-4">
+                 <div className="space-y-4 pt-4">
                   <h4 className="font-semibold text-xl">Key Features:</h4>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Hyper-Personalized Content:</span><br /><span className="text-muted-foreground">Generate unique messages for individual clients or market segments.</span></div></li>
@@ -424,7 +424,7 @@ export default function HomePage() {
                      <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Creative Ideation Engine:</span><br /><span className="text-muted-foreground">Generates innovative concepts, headlines, and narrative structures.</span></div></li>
                   </ul>
                 </div>
-                 <Link href="/products/llm-model">
+                 <Link href="/products/llm-model" className="inline-block mt-6">
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
@@ -439,14 +439,14 @@ export default function HomePage() {
                 <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-background/50 backdrop-blur-sm flex flex-col text-center p-2">
                     <AixaIntelSimulation />
                 </Card>
-                <div className="space-y-8 lg:order-1">
-                    <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
+                <div className="space-y-6 lg:order-1">
+                    <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground [text-shadow:0_0_15px_hsl(var(--primary))]">
                         AIXA INTEL RE5.2
                     </h3>
                     <p className="text-xl text-foreground/70 leading-relaxed">
                         Navigate the future with unparalleled clarity. AIXA INTEL RE5.2 processes vast streams of data to not just report, but to predict market movements and identify opportunities.
                     </p>
-                    <div className="space-y-4">
+                    <div className="space-y-4 pt-4">
                         <h4 className="font-semibold text-xl">Key Features:</h4>
                         <ul className="space-y-3">
                             <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Proactive Opportunity Identification:</span><br /><span className="text-muted-foreground">Discover untapped markets or emerging client needs.</span></div></li>
@@ -454,7 +454,7 @@ export default function HomePage() {
                             <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Risk Mitigation:</span><br /><span className="text-muted-foreground">Anticipate and prepare for potential market downturns or operational challenges.</span></div></li>
                         </ul>
                     </div>
-                     <Link href="/products/aixa-intel">
+                     <Link href="/products/aixa-intel" className="inline-block mt-6">
                         <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                      </Link>
                 </div>
@@ -463,14 +463,14 @@ export default function HomePage() {
             {/* Product 5: MEGA LISTING PRO 2 */}
             <div id="product-mega-listing" className="grid lg:grid-cols-2 gap-16 items-center relative">
               <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-500/10 to-transparent -z-10 blur-3xl"/>
-              <div className="space-y-8">
-                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
+              <div className="space-y-6">
+                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground [text-shadow:0_0_15px_hsl(var(--primary))]">
                   MEGA LISTING PRO 2
                 </h3>
                 <p className="text-xl text-foreground/70 leading-relaxed">
                   Streamline your property marketing across every channel, ensuring maximum exposure with minimal effort.
                 </p>
-                 <div className="space-y-4">
+                 <div className="space-y-4 pt-4">
                   <h4 className="font-semibold text-xl">Key Features:</h4>
                   <ul className="space-y-3">
                     <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Maximized Market Reach:</span><br /><span className="text-muted-foreground">Distribute listings to hundreds of platforms with a single click.</span></div></li>
@@ -478,7 +478,7 @@ export default function HomePage() {
                     <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Eliminated Manual Entry:</span><br /><span className="text-muted-foreground">Drastically reduce administrative burden and data entry errors.</span></div></li>
                   </ul>
                 </div>
-                 <Link href="/products/mega-listing">
+                 <Link href="/products/mega-listing" className="inline-block mt-6">
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
