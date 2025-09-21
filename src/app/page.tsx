@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -33,13 +32,13 @@ export default function HomePage() {
       <LandingHeader />
       <main className="flex-1 w-full">
         {/* New Hero Section */}
-        <section className="relative flex h-screen w-full items-center justify-center overflow-hidden border-b">
+        <section className="relative flex h-[calc(100vh-4rem)] w-full items-center justify-center overflow-hidden border-b">
           <div className="absolute inset-0 z-0 bg-gradient-to-br from-background via-primary/5 to-background">
              {/* Subtle background visuals can go here */}
           </div>
           <div className="relative z-10 container mx-auto px-4 text-center">
             <div className="flex flex-col items-center">
-              <h1 className="text-5xl md:text-8xl font-bold font-heading tracking-tighter leading-tight max-w-4xl">
+              <h1 className="text-5xl md:text-8xl font-bold font-heading tracking-tighter leading-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
                 The AI-Native Operating System for Real Estate
               </h1>
               <p className="mt-6 max-w-2xl text-xl md:text-2xl text-foreground/70">
@@ -68,8 +67,7 @@ export default function HomePage() {
           </div>
         </section>
         
-        {/* Placeholder for the rest of the landing page content */}
-        <section id="products" className="py-20 text-center">
+        <section id="products" className="py-20 text-center bg-muted/50">
             <h2 className="text-3xl font-bold">More Content Here</h2>
             <p className="text-muted-foreground">The rest of your landing page sections would follow.</p>
         </section>
