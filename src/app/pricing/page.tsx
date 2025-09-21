@@ -73,9 +73,16 @@ export default function PricingPage() {
     }
   };
 
-  const { finalPrice, discount, activeBundle, utilityDiscount, originalUtilityPrice } = useMemo(() => {
-    // Check for an exact bundle match first
-    const matchedBundle = [...bundles, proPlan].find(bundle => bundle && isBundleSelected(bundle.apps));
+  const { finalPrice, discount, activeBundle, utilityDiscount } = useMemo(() => {
+    
+    const checkIsBundleSelected = (bundleApps: string[]) => {
+        if (bundleApps.length === 0 || selectedApps.length === 0) return false;
+        if (bundleApps.length !== selectedApps.length) return false;
+        const selectedSet = new Set(selectedApps);
+        return bundleApps.every(app => selectedSet.has(app));
+    };
+    
+    const matchedBundle = [...bundles, proPlan].find(bundle => bundle && checkIsBundleSelected(bundle.apps));
 
     if (matchedBundle) {
         const individualPrice = matchedBundle.apps.reduce((total, appName) => {
@@ -87,7 +94,6 @@ export default function PricingPage() {
             discount: individualPrice - matchedBundle.monthly_price, 
             activeBundle: matchedBundle,
             utilityDiscount: 0,
-            originalUtilityPrice: 0 
         };
     }
     
@@ -124,7 +130,6 @@ export default function PricingPage() {
       discount: 0, 
       activeBundle: null,
       utilityDiscount: utilityDiscountValue,
-      originalUtilityPrice
     };
   }, [selectedApps, allApps, bundles, proPlan]);
 
