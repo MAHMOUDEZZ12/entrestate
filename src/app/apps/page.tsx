@@ -12,8 +12,8 @@ import { Feature, tools as features, FilterCategory } from '@/lib/tools-client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { PageHeader } from '@/components/ui/page-header';
-import { LandingHeader } from '../landing-header';
-import { LandingFooter } from '../landing-footer';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 const filterCategories: FilterCategory[] = [
     'All', 'Marketing', 'Lead Gen', 'Creative', 'Sales Tools', 'Social & Comms', 
