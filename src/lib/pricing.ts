@@ -219,21 +219,19 @@ export const pricingData = {
     },
     {
       "name": "AI Video Presenter",
-      "bundle": "ENTRESTATE CREATIVE SUITE",
       "description": "Create a lifelike AI presenter to deliver your project pitch.",
       "flow": "Provide a script and brand assets to generate a professional video.",
       "level_of_knowledge_required": "Zero",
       "expected_results": "Faster video production cycles and consistent messaging.",
-      "pricing": 9.30
+      "pricing": 30.00
     },
     {
       "name": "Aerial View Generator",
-      "bundle": "ENTRESTATE CREATIVE SUITE",
       "description": "Create cinematic, aerial video tours of any property.",
       "flow": "Generates smooth flight sequences for listings and promotional content.",
       "level_of_knowledge_required": "Low",
       "expected_results": "High-impact visual content that improves listing engagement.",
-      "pricing": 4.69
+      "pricing": 30.00
     },
     {
       "name": "Market Trends Watcher",
@@ -314,9 +312,7 @@ export const pricingData = {
         "Reel Ads",
         "PDF EDITOR AI",
         "Images HQ AI",
-        "Logo Creator AI",
-        "AI Video Presenter",
-        "Aerial View Generator"
+        "Logo Creator AI"
       ],
       "description": "Complete AI-powered marketing and content creation toolkit.",
       "monthly_price": 25
@@ -368,5 +364,3 @@ export const pricingData = {
     }
   ]
 }
-
-    
