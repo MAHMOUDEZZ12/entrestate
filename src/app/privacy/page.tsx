@@ -70,7 +70,7 @@ export default function PrivacyPage() {
               <p>
                 Entrestate by mtc<br />
                 Dubai, UAE<br />
-                <a href="mailto:privacy@entrestate.com">privacy@entrestate.com</a>
+                <a href="mailto:hello@entrestate.com">hello@entrestate.com</a>
               </p>
             </CardContent>
         </Card>
