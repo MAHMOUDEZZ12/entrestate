@@ -8,9 +8,7 @@ import { ArrowRight, CheckCircle, Plus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Feature } from '@/lib/tools-client';
 import Image from 'next/image';
-import { blogContent } from '@/lib/blog-content';
 import { ShinyButton } from './ui/shiny-button';
-import { imagePrompts } from '@/lib/image-prompts';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { cn } from '@/lib/utils';
 
@@ -20,8 +18,6 @@ interface PublicToolPageLayoutProps {
 }
 
 export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
-    const promptData = imagePrompts.find(p => p.name === feature.title);
-    const blogPost = blogContent[feature.id];
 
   return (
     <main className="flex-1 w-full bg-background">
@@ -66,7 +62,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                             width={1280}
                             height={720}
                             className="w-full h-full object-cover"
-                            data-ai-hint="abstract background"
+                            data-ai-hint={feature.title}
                         />
                     </div>
                 </CardContent>
@@ -79,26 +75,21 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
         <div className="container mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto mb-20">
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">A Radically Simple Workflow</h2>
-                 <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, three-step process powered by AI.</p>
+                 <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, elegant process powered by AI.</p>
             </div>
-            <div className="relative max-w-3xl mx-auto space-y-16">
-                 <div className="absolute left-1/2 top-0 bottom-0 w-px bg-border -translate-x-1/2 hidden md:block"></div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
                 {feature.details.steps.map((step, i) => (
-                    <div key={i} className={cn("relative flex items-center justify-between flex-col md:flex-row", i % 2 !== 0 && "md:flex-row-reverse")}>
-                        <div className="md:w-5/12">
-                             <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mb-4">
+                    <Card key={i} className="bg-card/50 text-center border-transparent shadow-none">
+                        <CardHeader>
+                            <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
                                 {React.cloneElement(step.icon, { className: 'h-8 w-8' })}
                             </div>
-                            <h3 className="text-sm font-semibold uppercase text-primary mb-2">Step {i+1}</h3>
-                            <p className="text-lg text-muted-foreground">{step.text}</p>
-                        </div>
-                        <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-                            <div className="h-4 w-4 rounded-full bg-primary ring-8 ring-background"></div>
-                        </div>
-                         <div className="w-full md:w-5/12 h-40 bg-card rounded-lg border mt-4 md:mt-0">
-                           {/* Placeholder for future step-specific image */}
-                        </div>
-                    </div>
+                            <CardTitle>Step {i+1}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">{step.text}</p>
+                        </CardContent>
+                    </Card>
                 ))}
             </div>
         </div>
@@ -185,35 +176,6 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             </Card>
         </div>
       </section>
-
-
-      {/* Related Blog Posts */}
-      {blogPost && (
-        <section className="py-24 md:py-32 bg-muted/30">
-            <div className="container mx-auto px-4">
-                <div className="text-center mb-12">
-                     <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">From the Handbook</h2>
-                    <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                        Learn more strategies and use cases for the {feature.title}.
-                    </p>
-                </div>
-                 <Card className="max-w-3xl mx-auto bg-card/80 backdrop-blur-lg">
-                    <CardHeader>
-                        <CardTitle>{blogPost.title}</CardTitle>
-                        <CardDescription>{blogPost.intro}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                         {blogPost.sections.map((section, index) => (
-                            <div key={index}>
-                                <h4 className="font-semibold">{section.heading}</h4>
-                                <p className="text-sm text-muted-foreground">{section.body}</p>
-                            </div>
-                        ))}
-                    </CardContent>
-                 </Card>
-            </div>
-        </section>
-      )}
 
     </main>
   );
