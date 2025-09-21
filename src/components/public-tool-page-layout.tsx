@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Plus } from 'lucide-react';
+import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Feature } from '@/lib/tools-client';
 import Image from 'next/image';
@@ -12,16 +12,60 @@ import { ShinyButton } from './ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 
 interface PublicToolPageLayoutProps {
   feature: Feature;
 }
 
-export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
-  // Create a hint from the feature title for the placeholder image
-  const imageHint = feature.title.toLowerCase().split(' ').slice(0, 2).join(' ');
 
+const ToolIoSimulation = ({ feature }: { feature: Feature }) => {
+    // Find first text/select input for the simulation
+    const firstInput = feature.creationFields.find(f => f.type === 'text' || f.type === 'select');
+    
+    return (
+        <div className="w-full space-y-4 font-sans">
+            {/* Input Card */}
+            <Card className="bg-background/80 backdrop-blur-sm">
+                <CardHeader>
+                    <CardTitle className="text-base font-semibold">Input</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                    <div className="space-y-1.5">
+                        <Label htmlFor="sim-input-1" className="text-xs">{firstInput?.name || 'Your Content'}</Label>
+                        <Input id="sim-input-1" placeholder={firstInput?.placeholder || 'e.g., Emaar Beachfront'} className="text-xs h-8" />
+                    </div>
+                    <Button size="sm" className="w-full text-xs">
+                        <Sparkles className="mr-2 h-3 w-3" />
+                        {feature.cta}
+                    </Button>
+                </CardContent>
+            </Card>
+
+            <div className="flex justify-center">
+                <ArrowRight className="h-6 w-6 text-muted-foreground animate-pulse" />
+            </div>
+
+            {/* Output Card */}
+            <Card className="bg-gradient-to-br from-primary/10 to-transparent">
+                 <CardHeader>
+                    <CardTitle className="text-base font-semibold text-primary">AI-Generated Output</CardTitle>
+                </CardHeader>
+                <CardContent>
+                   <div className="aspect-video bg-muted/50 rounded-md flex items-center justify-center p-2">
+                       <p className="text-xs text-muted-foreground text-center">
+                           A beautiful, production-ready asset appears here.
+                       </p>
+                   </div>
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
+
+
+export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   return (
     <main className="flex-1 w-full bg-background">
       {/* Hero Section */}
@@ -63,18 +107,9 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
                 <div className="lg:sticky lg:top-24">
-                     <Card className="w-full shadow-2xl shadow-primary/10 border-primary/20">
-                        <CardContent className="p-4">
-                            <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                                <Image
-                                    src={`https://picsum.photos/seed/${feature.id}/1280/720`}
-                                    alt={`${feature.title} visual concept`}
-                                    width={1280}
-                                    height={720}
-                                    className="w-full h-full object-cover"
-                                    data-ai-hint={imageHint}
-                                />
-                            </div>
+                     <Card className="w-full shadow-2xl shadow-primary/10 border-primary/20 bg-card/50">
+                        <CardContent className="p-4 md:p-6">
+                            <ToolIoSimulation feature={feature} />
                         </CardContent>
                     </Card>
                 </div>
