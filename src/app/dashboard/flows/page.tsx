@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { Workflow, Plus, Play, Sparkles, ArrowRight, CheckCircle, ExternalLink, Settings2, Save, Zap, GripVertical, MousePointerClick, GitBranch, AlertCircle, Sparkle, Mail, MessageSquare } from 'lucide-react';
+import { Workflow, Plus, Play, Sparkles, ArrowRight, CheckCircle, ExternalLink, Settings2, Save, Zap, GripVertical, MousePointerClick, GitBranch, AlertCircle, Sparkle, Mail, MessageSquare, Search } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { tools, Feature } from '@/lib/tools-client';
