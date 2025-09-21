@@ -23,7 +23,7 @@ import {
 import { useTheme } from './theme-switcher';
 import { CommandMenu } from './ui/command-menu';
 
-const AIXA_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/Aixa-logo.png?alt=media&token=16231f13-d6e3-489d-be1a-e1ecc38c2df6';
+const ENTRESTATE_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/Untitled-10.png?alt=media&token=70bcc257-e550-4840-9431-e3348e265622';
 
 export function LandingHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
@@ -45,7 +45,7 @@ export function LandingHeader() {
           <div className="mr-auto flex items-center gap-6">
               <Link href="/" className="flex items-center gap-2"> 
                 <Image 
-                  src={AIXA_LOGO_URL} 
+                  src={ENTRESTATE_LOGO_URL} 
                   alt="Entrestate Logo" 
                   width={32} 
                   height={32} 
@@ -93,7 +93,7 @@ export function LandingHeader() {
                        <div className="flex justify-between items-center mb-8">
                           <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
                             <Image 
-                              src={AIXA_LOGO_URL} 
+                              src={ENTRESTATE_LOGO_URL} 
                               alt="Entrestate Logo" 
                               width={32} 
                               height={32} 

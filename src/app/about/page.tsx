@@ -8,7 +8,6 @@ import { PageHeader } from '@/components/ui/page-header';
 import { Users2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
-import { visuals } from '@/lib/visuals';
 
 export default function AboutPage() {
   return (
@@ -22,7 +21,7 @@ export default function AboutPage() {
         <Card className="bg-card/80 backdrop-blur-lg">
             <CardContent className="p-8 md:p-12 prose prose-lg dark:prose-invert max-w-none">
                  <div className="flex justify-center mb-8">
-                    <Image src={"https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/Aixa-logo.png?alt=media&token=16231f13-d6e3-489d-be1a-e1ecc38c2df6"} alt="Entrestate Logo" width={80} height={80} />
+                    <Image src={"https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/Untitled-10.png?alt=media&token=70bcc257-e550-4840-9431-e3348e265622"} alt="Entrestate Logo" width={80} height={80} />
                 </div>
                 
                 <h2>A Note from the Creator</h2>
