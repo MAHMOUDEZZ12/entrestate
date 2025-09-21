@@ -12,6 +12,7 @@ import { blogContent } from '@/lib/blog-content';
 import { ShinyButton } from './ui/shiny-button';
 import { imagePrompts } from '@/lib/image-prompts';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
+import { cn } from '@/lib/utils';
 
 
 interface PublicToolPageLayoutProps {
@@ -70,6 +71,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                                 width={1280} 
                                 height={720} 
                                 className="w-full h-full object-cover"
+                                data-ai-hint="abstract background"
                             />
                         </div>
                     </CardContent>
@@ -81,24 +83,29 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       {/* How it works */}
       <section className="py-24 md:py-32 bg-muted/30">
         <div className="container mx-auto px-4">
-            <div className="text-center max-w-2xl mx-auto mb-16">
+            <div className="text-center max-w-2xl mx-auto mb-20">
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">A Radically Simple Workflow</h2>
                  <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, three-step process powered by AI.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {feature.details.steps.map((step, i) => (
-                <Card key={i} className="text-center bg-card/80">
-                    <CardHeader>
-                        <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
-                            {React.cloneElement(step.icon, { className: 'h-8 w-8' })}
+            <div className="relative max-w-3xl mx-auto space-y-16">
+                 <div className="absolute left-1/2 top-0 bottom-0 w-px bg-border -translate-x-1/2 hidden md:block"></div>
+                {feature.details.steps.map((step, i) => (
+                    <div key={i} className={cn("relative flex items-center justify-between flex-col md:flex-row", i % 2 !== 0 && "md:flex-row-reverse")}>
+                        <div className="md:w-5/12">
+                             <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mb-4">
+                                {React.cloneElement(step.icon, { className: 'h-8 w-8' })}
+                            </div>
+                            <h3 className="text-sm font-semibold uppercase text-primary mb-2">Step {i+1}</h3>
+                            <p className="text-lg text-muted-foreground">{step.text}</p>
                         </div>
-                        <CardTitle>Step {i + 1}</CardTitle>
-                    </CardHeader>
-                  <CardContent>
-                    <p className="text-muted-foreground">{step.text}</p>
-                  </CardContent>
-                </Card>
-              ))}
+                        <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                            <div className="h-4 w-4 rounded-full bg-primary ring-8 ring-background"></div>
+                        </div>
+                         <div className="w-full md:w-5/12 h-40 bg-card rounded-lg border mt-4 md:mt-0">
+                           {/* Placeholder for future step-specific image */}
+                        </div>
+                    </div>
+                ))}
             </div>
         </div>
       </section>
@@ -112,7 +119,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {feature.details.aiVsManual.map((item, index) => (
-                    <Card key={index} className="text-center">
+                    <Card key={index} className="text-center bg-card/80">
                         <CardHeader>
                             <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
                                 {React.cloneElement(item.icon, { className: 'h-8 w-8' })}
