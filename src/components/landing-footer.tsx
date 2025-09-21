@@ -4,7 +4,7 @@ import { Facebook, Twitter, Linkedin } from 'lucide-react';
 import Image from 'next/image';
 import { tools } from '@/lib/tools-data';
 
-const ENTRESTATE_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/Untitled-10%20(1).png?alt=media&token=11f71f7c-f311-4bdc-af51-9a9f0cb13d88';
+const ENTRESTATE_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/entrestate.com%20logo%20agaist-10.png?alt=media&token=4b4518d0-b757-423a-8321-7fae131db6c3';
 
 export function LandingFooter() {
   const currentYear = new Date().getFullYear();
