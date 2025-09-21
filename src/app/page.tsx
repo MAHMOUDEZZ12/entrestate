@@ -66,9 +66,9 @@ const ChatSimulation = () => {
 const SearchSimulation = () => {
     const features = ["Santorini - Blue & White theme", "Venice - Gondola Rides", "Costa Brava - Spanish Style", "Malta - Play & Learn Hub"];
     const layouts = [
-        { name: "3-Bed Townhouse", size: "2,012 sqft", image: "https://picsum.photos/seed/townhouse-interior/400/300", hint: "house interior" },
-        { name: "4-Bed Townhouse", size: "2,280 sqft", image: "https://picsum.photos/seed/living-room/400/300", hint: "living room" },
-        { name: "5-Bed Villa", size: "3,700 sqft", image: "https://picsum.photos/seed/luxury-villa/400/300", hint: "luxury villa" },
+        { name: "3-Bed Townhouse", size: "2,012 sqft", image: "https://placehold.co/400x300/e2e8f0/64748b?text=Layout+1", hint: "house interior" },
+        { name: "4-Bed Townhouse", size: "2,280 sqft", image: "https://placehold.co/400x300/e2e8f0/64748b?text=Layout+2", hint: "living room" },
+        { name: "5-Bed Villa", size: "3,700 sqft", image: "https://placehold.co/400x300/e2e8f0/64748b?text=Layout+3", hint: "luxury villa" },
     ];
 
     return (
@@ -357,3 +357,4 @@ export default function HomePage() {
     
 
     
+
