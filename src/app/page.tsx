@@ -66,9 +66,9 @@ const ChatSimulation = () => {
 const SearchSimulation = () => {
     const features = ["Santorini - Blue & White theme", "Venice - Gondola Rides", "Costa Brava - Spanish Style", "Malta - Play & Learn Hub"];
     const layouts = [
-        { name: "3-Bed Townhouse", size: "2,012 sqft", image: "https://picsum.photos/seed/th3/400/300" },
-        { name: "4-Bed Townhouse", size: "2,280 sqft", image: "https://picsum.photos/seed/th4/400/300" },
-        { name: "5-Bed Villa", size: "3,700 sqft", image: "https://picsum.photos/seed/v5/400/300" },
+        { name: "3-Bed Townhouse", size: "2,012 sqft", image: "https://picsum.photos/seed/townhouse-interior/400/300", hint: "house interior" },
+        { name: "4-Bed Townhouse", size: "2,280 sqft", image: "https://picsum.photos/seed/living-room/400/300", hint: "living room" },
+        { name: "5-Bed Villa", size: "3,700 sqft", image: "https://picsum.photos/seed/luxury-villa/400/300", hint: "luxury villa" },
     ];
 
     return (
@@ -107,7 +107,7 @@ const SearchSimulation = () => {
                                     {layouts.map((layout, index) => (
                                     <CarouselItem key={index}>
                                         <div className="p-1">
-                                             <Image src={layout.image} alt={layout.name} width={400} height={300} className="rounded-lg mb-2" data-ai-hint="house interior" />
+                                             <Image src={layout.image} alt={layout.name} width={400} height={300} className="rounded-lg mb-2" data-ai-hint={layout.hint} />
                                             <p className="font-semibold text-center">{layout.name} - <span className="text-muted-foreground">{layout.size}</span></p>
                                         </div>
                                     </CarouselItem>
@@ -131,7 +131,7 @@ const SearchSimulation = () => {
                             ))}
                         </CardContent>
                     </Card>
-                </motion.div>
+                 </motion.div>
 
                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.4 }}>
                     <Card className="bg-background/80">
@@ -349,6 +349,8 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
 
     
 
