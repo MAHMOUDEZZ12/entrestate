@@ -72,23 +72,22 @@ const MindMapNode = ({
 
 export default function SX3MindMapPage() {
     const modules = {
-        'Archy (Creative Marketing)': tools.filter(t => ['Creative', 'Web', 'Editing'].some(c => t.categories.includes(c))),
-        'Meta Pilot (Campaign Automation)': tools.filter(t => t.categories.includes('Ads')),
-        'Market Intelligence': tools.filter(t => t.categories.includes('Market Intelligence')),
-        'Listing & CRM Tools': tools.filter(t => t.categories.includes('CRM') || t.categories.includes('Sales Tools')),
+        'ENTRESTATE CREATIVE SUITE': tools.filter(t => ['Creative', 'Web', 'Editing'].some(c => t.categories.includes(c))),
+        'META ADS PILOT': tools.filter(t => t.categories.includes('Ads')),
+        'LISTING INTELLIGENCE': tools.filter(t => t.categories.includes('Market Intelligence') || t.categories.includes('CRM') || t.categories.includes('Sales Tools')),
     };
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <main className="flex-1 w-full">
         <PageHeader
-          title="The WhatsMAP Ecosystem"
+          title="The Entrestate Ecosystem"
           description="A visual atlas of our AI-native operating system for real estate. Discover how our tools and data layers connect to give you an unparalleled advantage."
           icon={<Share2 className="h-8 w-8" />}
         />
         <div className="container mx-auto px-4 py-24 text-center">
           <MindMapNode
-            title="WhatsMAP Core Vision"
+            title="Entrestate Core Vision"
             description="An AI-Native Ecosystem for Real Estate Professionals"
             icon={<BrainCircuit className="h-10 w-10" />}
             isRoot
