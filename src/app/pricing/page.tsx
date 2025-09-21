@@ -136,7 +136,7 @@ export default function PricingPage() {
                                     "w-full p-4 rounded-lg border text-left transition-all h-full",
                                     isSelected ? "bg-primary/10 border-primary/50 ring-2 ring-primary/50" : "bg-card/50 hover:bg-card"
                                 )}>
-                                    <div className="flex items-center justify-between mb-2">
+                                    <div className="flex items-start justify-between mb-2">
                                         <div className="flex items-center gap-3">
                                             <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center", isSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
                                             {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
@@ -192,7 +192,7 @@ export default function PricingPage() {
                            <span className="text-5xl font-bold text-primary">${(isAnnual ? (finalPrice * 12 * 0.6) : finalPrice).toFixed(2)}</span>
                            <span className="text-muted-foreground">/ {isAnnual ? 'year' : 'month'}</span>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-4">which is ${(isAnnual ? (finalPrice * 12 * 0.6 / 12) : finalPrice).toFixed(2)} / month</p>
+                        <p className="text-sm text-muted-foreground mb-4">which is ${((isAnnual ? (finalPrice * 12 * 0.6) : finalPrice) / (isAnnual ? 12 : 1)).toFixed(2)} / month</p>
                         {activeBundle && <p className="text-sm text-primary font-semibold">You're saving ${discount.toFixed(2)}/mo with the {activeBundle.name} bundle!</p>}
                          {isProSelected && proPlan && <p className="text-sm text-primary font-semibold">You're saving ${discount.toFixed(2)}/mo with the PRO plan!</p>}
                     </CardContent>
