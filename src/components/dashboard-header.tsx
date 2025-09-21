@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Search } from 'lucide-react';
+import { Menu, Search, Package2 } from 'lucide-react';
 import React from 'react';
 import { GlobalSearch } from '@/components/ui/global-search';
 import {
@@ -57,7 +57,7 @@ export function DashboardHeader() {
           <nav className="grid gap-6 text-lg font-medium">
             <Link href="/dashboard" className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base">
                 <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-                <span className="sr-only">WhatsMAP</span>
+                <span className="sr-only">Entrestate</span>
             </Link>
             <Link href="/dashboard" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">Home</Link>
             <Link href="/dashboard/marketing" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">Apps</Link>
