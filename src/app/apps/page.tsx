@@ -18,6 +18,7 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { pricingData } from '@/lib/pricing-data';
+import { PageHeader } from '@/components/ui/page-header';
 
 const filterCategories: FilterCategory[] = [
     'All', 'Marketing', 'Lead Gen', 'Creative', 'Sales Tools', 'Social & Comms', 
@@ -151,7 +152,7 @@ const FeatureModal = ({ feature, onClose }: { feature: Feature | null, onClose: 
                       ))}
                     </div>
                      <div className="space-y-4">
-                      <h3 className="text-2xl font-semibold font-heading text-center text-primary">WhatsMAP AI</h3>
+                      <h3 className="text-2xl font-semibold font-heading text-center text-primary">Entrestate AI</h3>
                        {feature.details.aiVsManual.map((item, index) => (
                         <div key={index} className="p-4 bg-muted/50 rounded-lg border border-primary/20 shadow-lg shadow-primary/5">
                            <div className="flex items-center gap-3 mb-2">
@@ -242,16 +243,13 @@ export default function AppsPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <main className="flex-1 w-full max-w-full px-4 md:px-6 lg:px-8 py-12 md:py-20">
-        <div className="text-center mb-24 max-w-5xl mx-auto">
-          <h1 className="text-4xl md:text-7xl font-bold font-heading tracking-tighter mb-4 text-foreground">
-            Your AI Tool Suite
-          </h1>
-          <p className="text-lg md:text-xl text-foreground/70">
-            The complete arsenal for the modern real estate professional. Explore the tools, train your assistant, and dominate your market.
-          </p>
-        </div>
+        <PageHeader
+          icon={<LayoutTemplate className="h-8 w-8" />}
+          title="The Entrestate App Store"
+          description="The complete arsenal for the modern real estate professional. Explore the tools, train your assistant, and dominate your market."
+        />
 
-        <div className="sticky top-16 z-10 bg-background/80 backdrop-blur-lg py-4 mb-8">
+        <div className="sticky top-16 z-10 bg-background/80 backdrop-blur-lg py-4 mb-8 mt-8">
             <div className="flex justify-center overflow-x-auto pb-4 no-scrollbar">
                 <div className="flex gap-2 md:gap-4 flex-nowrap">
                   {filterCategories.map(category => (

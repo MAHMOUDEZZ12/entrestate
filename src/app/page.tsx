@@ -8,7 +8,6 @@ import { ArrowRight, Check, Sparkles, Search, Building, BarChart, LayoutTemplate
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import Image from 'next/image';
-import { visuals } from '@/lib/visuals';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
@@ -22,6 +21,7 @@ import {
     YAxis,
     Tooltip,
 } from 'recharts';
+import { useRouter } from 'next/navigation';
 
 
 const ChatSimulation = () => {
@@ -306,13 +306,22 @@ const scrollToSection = (id: string) => {
 };
 
 export default function HomePage() {
+  const router = useRouter();
+  const [query, setQuery] = React.useState('');
+
+  const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!query.trim()) return;
+        router.push(`/discover/${encodeURIComponent(query.trim())}`);
+    };
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
       <main className="flex-1 w-full">
-        {/* New "iPhone-level" Hero Section */}
+        {/* New Hero Section */}
         <section className="relative flex h-[calc(100vh-64px)] w-full items-center justify-center overflow-hidden border-b">
           <div className="absolute inset-0 z-0 bg-gradient-to-br from-background via-primary/5 to-background">
-             {/* Placeholder for a subtle, dynamic background animation (e.g., glowing grid or particles) */}
+             {/* Subtle background visuals can go here */}
           </div>
           <div className="relative z-10 container mx-auto px-4 text-center">
             <motion.div
@@ -325,21 +334,26 @@ export default function HomePage() {
                 The AI-Native Operating System for Real Estate
               </h1>
               <p className="mt-6 max-w-2xl text-xl md:text-2xl text-foreground/70">
-                From intelligent public search to a complete suite of professional tools, WhatsMAP is the ecosystem that gives you an unparalleled advantage.
+                From intelligent public search to a complete suite of professional tools, Entrestate is the ecosystem that gives you an unparalleled advantage.
               </p>
-              <div className="mt-10 flex flex-col sm:flex-row items-center gap-4">
-                <p className="text-lg text-foreground/80">
-                  Press <kbd className="pointer-events-none inline-flex h-6 select-none items-center gap-1 rounded border bg-muted px-2 font-mono text-[12px] font-medium text-muted-foreground"><span className="text-sm">⌘</span>K</kbd> to discover what's possible.
-                </p>
-                <Button
-                  size="lg"
-                  className="group"
-                  onClick={() => scrollToSection('products')}
-                >
+               <div className="mt-10 w-full max-w-2xl">
+                     <div className="relative group">
+                         <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-full blur-lg opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-gradient-pulse"></div>
+                         <form onSubmit={handleSearch} className="relative z-10">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input 
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                placeholder='e.g., "create an ad for Emaar Beachfront"' 
+                                className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-lg"
+                            />
+                        </form>
+                     </div>
+                </div>
+                <Button variant="link" className="mt-6 text-muted-foreground group" onClick={() => scrollToSection('products')}>
                   Or Explore Our Platforms
-                  <ArrowRight className="ml-2 h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Button>
-              </div>
             </motion.div>
           </div>
         </section>

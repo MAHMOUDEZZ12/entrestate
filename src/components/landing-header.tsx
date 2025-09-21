@@ -24,17 +24,17 @@ import { useTheme } from './theme-switcher';
 import { CommandMenu } from './ui/command-menu';
 import { Logo } from './logo';
 
-const ENTRESTATE_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/entrestate.com%20logo%20agaist-10%20(4).png?alt=media&token=92958e4e-b603-4f3d-bf12-780e72362652';
 
 export function LandingHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const [isCommandMenuOpen, setIsCommandMenuOpen] = React.useState(false);
-  const { setTheme, themes } = useTheme();
+  const { setTheme } = useTheme();
 
   const navLinks = [
     { name: 'Solutions', href: '/solutions' },
     { name: 'Apps', href: '/apps' },
     { name: 'Pricing', href: '/pricing' },
+    { name: 'Resources', href: '/resources' },
     { name: 'Community', href: '/community' },
     { name: 'Blog', href: '/blog' },
   ];
@@ -116,3 +116,5 @@ export function LandingHeader() {
     </>
   );
 }
+
+    
