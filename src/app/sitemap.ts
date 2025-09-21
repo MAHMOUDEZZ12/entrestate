@@ -1,6 +1,6 @@
 
 import { MetadataRoute } from 'next';
-import { tools } from '@/lib/tools-data';
+import { tools } from '@/lib/tools-client';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = 'https://entrestate.com'; // Replace with your actual domain
@@ -22,7 +22,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/blog',
     '/market',
     '/resources',
-    '/community'
+    '/community',
+    '/discover'
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
