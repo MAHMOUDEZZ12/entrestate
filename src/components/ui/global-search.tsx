@@ -2,14 +2,19 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Search, X } from 'lucide-react';
-import { tools, FilterCategory } from '@/lib/tools-client';
-import Link from 'next/link';
-import { useTabManager } from '@/context/TabManagerContext';
 import { useRouter } from 'next/navigation';
-
+import {
+  CommandDialog,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+  CommandSeparator,
+} from '@/components/ui/command';
+import { tools, Feature } from '@/lib/tools-client';
+import { File, LayoutDashboard, Settings, User, Search, Bot, Sparkles } from 'lucide-react';
+import { useTabManager } from '@/context/TabManagerContext';
 
 interface GlobalSearchProps {
   isOpen: boolean;
@@ -18,106 +23,73 @@ interface GlobalSearchProps {
 
 const allTools = tools.filter(t => t.id !== 'superfreetime');
 
-const searchCategories: {title: string, category: FilterCategory | 'All'}[] = [
-    { title: 'Marketing', category: 'Marketing' },
-    { title: 'Market Library', category: 'Market Library' },
+const searchCategories: {title: string, category: string }[] = [
+    { title: 'Marketing & Ads', category: 'Marketing' },
     { title: 'Creative Suite', category: 'Creative' },
-    { title: 'Sales Enablement', category: 'Sales Tools' },
-    { title: 'Social & Comms', category: 'Social & Comms' },
-    { title: 'Web & Editing', category: 'Web' },
+    { title: 'Sales & CRM', category: 'Sales Tools' },
+    { title: 'Market Intelligence', category: 'Market Intelligence' },
 ];
 
 export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
   const [query, setQuery] = useState('');
-  const [filteredTools, setFilteredTools] = useState(allTools);
-  const { addTab } = useTabManager();
   const router = useRouter();
+  const { addTab } = useTabManager();
 
-  useEffect(() => {
-    if (query.trim() === '') {
-      setFilteredTools(allTools);
-      return;
-    }
-
-    const lowercasedQuery = query.toLowerCase();
-    const results = allTools.filter(tool =>
-      tool.title.toLowerCase().includes(lowercasedQuery) ||
-      tool.description.toLowerCase().includes(lowercasedQuery) ||
-      tool.categories.some(cat => cat.toLowerCase().includes(lowercasedQuery))
-    );
-    setFilteredTools(results);
-  }, [query]);
-  
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault()
-        setIsOpen(!isOpen)
-      }
-    }
-    document.addEventListener("keydown", down)
-    return () => document.removeEventListener("keydown", down)
-  }, [isOpen, setIsOpen])
-  
-  const handleSelect = (tool: typeof allTools[0]) => {
-    addTab({ href: tool.href, label: tool.title });
-    router.push(tool.href);
+  const handleSelect = (href: string, label: string) => {
+    addTab({ href, label });
+    router.push(href);
     setIsOpen(false);
+  };
+  
+  const handleToolSelect = (tool: Feature) => {
+    handleSelect(tool.href, tool.title);
   }
 
+  const filteredTools = query.trim() === ''
+    ? allTools
+    : allTools.filter(tool =>
+        tool.title.toLowerCase().includes(query.toLowerCase()) ||
+        tool.description.toLowerCase().includes(query.toLowerCase())
+      );
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="max-w-4xl p-0 gap-0">
-        <div className="flex items-center px-4 border-b">
-          <Search className="h-5 w-5 text-muted-foreground" />
-          <Input
-            type="text"
-            placeholder="Search for tools, projects, or actions..."
-            className="w-full h-12 border-none shadow-none focus-visible:ring-0"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-          />
-        </div>
-        <div className="p-6 max-h-[70vh] overflow-y-auto">
-          {filteredTools.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                 {searchCategories.map(cat => {
-                    const toolsInCategory = filteredTools.filter(tool => 
-                        tool.categories.includes(cat.category as any)
-                    );
-                    if (toolsInCategory.length === 0) return null;
-                    
-                    return (
-                        <div key={cat.title} className="space-y-3">
-                            <h3 className="font-semibold text-muted-foreground">{cat.title}</h3>
-                            <div className="space-y-2">
-                                {toolsInCategory.map(tool => (
-                                    <button key={tool.id} onClick={() => handleSelect(tool)} className="w-full text-left">
-                                        <div className="flex items-center gap-3 p-2 rounded-md hover:bg-muted cursor-pointer">
-                                            <div className="p-1.5 rounded-md text-white" style={{backgroundColor: tool.color}}>
-                                                {React.cloneElement(tool.icon, {className: 'h-5 w-5'})}
-                                            </div>
-                                            <span className="font-medium text-sm">{tool.title}</span>
-                                        </div>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    );
-                 })}
-            </div>
-          ) : (
-            <div className="text-center py-16 text-muted-foreground">
-              <p>No results found for &quot;{query}&quot;.</p>
-            </div>
-          )}
-        </div>
-        <div className="p-2 border-t bg-muted/50 text-center text-xs text-muted-foreground">
-          Press <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-background px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
-            <span className="text-xs">⌘</span>K
-          </kbd> to open/close.
-        </div>
-      </DialogContent>
-    </Dialog>
+    <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
+      <CommandInput 
+        placeholder="Search for tools, projects, or actions..."
+        value={query}
+        onValueChange={setQuery}
+      />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        
+        <CommandGroup heading="Tools">
+          {filteredTools.slice(0, 7).map((tool) => (
+            <CommandItem key={tool.id} onSelect={() => handleToolSelect(tool)} value={tool.title}>
+              <div className="p-1.5 rounded-md text-white mr-2" style={{backgroundColor: tool.color}}>
+                {React.cloneElement(tool.icon, { className: 'h-4 w-4' })}
+              </div>
+              <span>{tool.title}</span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+
+        <CommandSeparator />
+        
+        <CommandGroup heading="Navigation">
+           <CommandItem onSelect={() => handleSelect('/dashboard/settings', 'Settings')}>
+            <Settings className="mr-2 h-4 w-4" />
+            <span>Settings</span>
+          </CommandItem>
+          <CommandItem onSelect={() => handleSelect('/dashboard/brand', 'Brand & Assets')}>
+             <File className="mr-2 h-4 w-4" />
+             <span>Brand & Assets</span>
+           </CommandItem>
+            <CommandItem onSelect={() => handleSelect('/dashboard/assistant', 'AI Assistant')}>
+              <Bot className="mr-2 h-4 w-4" />
+              <span>AI Assistant</span>
+            </CommandItem>
+         </CommandGroup>
+      </CommandList>
+    </CommandDialog>
   );
 }
