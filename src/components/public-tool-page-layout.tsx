@@ -55,30 +55,24 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       </section>
 
        {/* Visual Showcase */}
-      {promptData && (
-        <section className="py-24 md:py-32">
-            <div className="container mx-auto px-4">
-                 <Card className="w-full max-w-4xl mx-auto shadow-2xl shadow-primary/10 border-primary/20">
-                    <CardHeader>
-                        <CardTitle>AI-Generated Visual Concept</CardTitle>
-                        <CardDescription className="text-xs font-mono p-2 bg-muted rounded-md border">{promptData.prompt}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="p-4">
-                        <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-                             <Image 
-                                src={`https://picsum.photos/seed/${feature.id}/1280/720`}
-                                alt={`${feature.title} visual concept`} 
-                                width={1280} 
-                                height={720} 
-                                className="w-full h-full object-cover"
-                                data-ai-hint="abstract background"
-                            />
-                        </div>
-                    </CardContent>
-                </Card>
-            </div>
-        </section>
-      )}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto px-4">
+            <Card className="w-full max-w-4xl mx-auto shadow-2xl shadow-primary/10 border-primary/20">
+                <CardContent className="p-4">
+                    <div className="aspect-video bg-muted rounded-lg overflow-hidden">
+                        <Image
+                            src={`https://picsum.photos/seed/${feature.id}/1280/720`}
+                            alt={`${feature.title} visual concept`}
+                            width={1280}
+                            height={720}
+                            className="w-full h-full object-cover"
+                            data-ai-hint="abstract background"
+                        />
+                    </div>
+                </CardContent>
+            </Card>
+        </div>
+      </section>
 
       {/* How it works */}
       <section className="py-24 md:py-32 bg-muted/30">
