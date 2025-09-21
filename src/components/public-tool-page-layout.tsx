@@ -8,27 +8,17 @@ import { ArrowRight, CheckCircle, Plus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Feature } from '@/lib/tools-client';
 import Image from 'next/image';
-import { visuals } from '@/lib/visuals';
 import { blogContent } from '@/lib/blog-content';
 import { ShinyButton } from './ui/shiny-button';
+import { imagePrompts } from '@/lib/image-prompts';
 
 interface PublicToolPageLayoutProps {
   feature: Feature;
 }
 
 export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
-  const getVisualKey = (id: string): keyof typeof visuals | undefined => {
-    const keyMap: { [key:string]: keyof typeof visuals } = {
-      'meta-auto-pilot': '3xchat',
-      'campaign-builder': 'pro-search',
-      'audience-creator': 'llm-model',
-      'insta-ads-designer': 'aixa-intel',
-      'reel-ads': 'mega-listing',
-    };
-    return keyMap[id];
-  }
-  const visualKey = getVisualKey(feature.id);
-  const blogPost = blogContent[feature.id];
+    const promptData = imagePrompts.find(p => p.name === feature.title);
+    const blogPost = blogContent[feature.id];
 
   return (
     <main className="flex-1 w-full bg-background">
@@ -62,15 +52,19 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       </section>
 
        {/* Visual Showcase */}
-      {visualKey && (
+      {promptData && (
         <section className="py-24 md:py-32">
             <div className="container mx-auto px-4">
                  <Card className="w-full max-w-4xl mx-auto shadow-2xl shadow-primary/10 border-primary/20">
+                    <CardHeader>
+                        <CardTitle>AI-Generated Visual Concept</CardTitle>
+                        <CardDescription className="text-xs font-mono p-2 bg-muted rounded-md border">{promptData.prompt}</CardDescription>
+                    </CardHeader>
                     <CardContent className="p-4">
                         <div className="aspect-video bg-muted rounded-lg overflow-hidden">
                              <Image 
-                                src={visuals[visualKey]} 
-                                alt={`${feature.title} visual`} 
+                                src={`https://picsum.photos/seed/${feature.id}/1280/720`}
+                                alt={`${feature.title} visual concept`} 
                                 width={1280} 
                                 height={720} 
                                 className="w-full h-full object-cover"
