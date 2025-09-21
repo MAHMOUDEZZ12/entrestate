@@ -8,6 +8,7 @@ import { CookieConsent } from '@/components/cookie-consent';
 import { ThemeProvider } from '@/components/theme-switcher';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
+import { AuthProvider } from '@/hooks/useAuth.tsx';
 
 const fontSans = PT_Sans({ 
   subsets: ['latin'],
@@ -43,20 +44,18 @@ export default function RootLayout({
         fontSans.variable,
         fontHeading.variable
       )}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <LandingHeader />
-          <main className="flex-1">
+        <AuthProvider>
+            <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+            >
             {children}
-          </main>
-          <LandingFooter />
-          <Toaster />
-          <CookieConsent />
-        </ThemeProvider>
+            <Toaster />
+            <CookieConsent />
+            </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

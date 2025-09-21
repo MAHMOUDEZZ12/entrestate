@@ -14,6 +14,8 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { Input } from './ui/input';
 import { Label } from './ui/label';
+import { LandingHeader } from './landing-header';
+import { LandingFooter } from './landing-footer';
 
 interface PublicToolPageLayoutProps {
   feature: Feature;
@@ -70,6 +72,8 @@ const ToolIoSimulation = ({ feature }: { feature: Feature }) => {
 
 export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   return (
+    <>
+    <LandingHeader />
     <main className="flex-1 w-full bg-background">
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 text-center border-b overflow-hidden">
@@ -140,8 +144,30 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
         </div>
       </section>
 
+      {/* Use Cases Section */}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Powered for Professionals</h2>
+            <p className="mt-4 text-lg text-muted-foreground">From individual agents to large brokerages, see how {feature.title} is a game-changer.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {(feature.details.use_cases || []).map((useCase, index) => (
+              <Card key={index} className="bg-card/80">
+                <CardHeader>
+                  <CardTitle className="flex items-start gap-3">
+                    <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                    <span>{useCase}</span>
+                  </CardTitle>
+                </CardHeader>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* AI vs Manual */}
-       <section className="py-24 md:py-32">
+       <section className="py-24 md:py-32 bg-muted/30">
         <div className="container mx-auto px-4">
            <div className="text-center max-w-2xl mx-auto mb-16">
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">The AI Advantage</h2>
@@ -149,7 +175,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {feature.details.aiVsManual.map((item, index) => (
-                    <Card key={index} className="text-center bg-card/80">
+                    <Card key={index} className="text-center bg-card">
                         <CardHeader>
                             <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
                                 {React.cloneElement(item.icon, { className: 'h-8 w-8' })}
@@ -162,7 +188,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                                 <p className="font-semibold text-lg">{item.manual}</p>
                             </div>
                              <div>
-                                <p className="text-sm text-primary">WITH WHATSMAP AI</p>
+                                <p className="text-sm text-primary">WITH ENTRESTATE AI</p>
                                 <p className="font-semibold text-lg text-primary">{item.ai}</p>
                             </div>
                         </CardContent>
@@ -174,15 +200,15 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
 
 
       {/* Synergy Section */}
-       <section className="py-24 md:py-32 bg-muted/30">
+       <section className="py-24 md:py-32">
         <div className="container mx-auto px-4 text-center">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Plays Well With Others</h2>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              {feature.title} is powerful alone, but transformative when combined with other tools in the WhatsMAP ecosystem.
+              {feature.title} is powerful alone, but transformative when combined with other tools in the Entrestate ecosystem.
             </p>
             <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {feature.details.synergy.slice(0, 3).map((s, index) => (
-                  <Card key={index} className="text-left bg-card">
+                  <Card key={index} className="text-left bg-card/80">
                     <CardContent className="p-6">
                       <div className="flex items-center gap-2 mb-3">
                         <div className="p-2 bg-primary/10 text-primary rounded-md">
@@ -202,13 +228,13 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       </section>
       
        {/* FAQ Section */}
-      <section className="py-24 md:py-32">
+      <section className="py-24 md:py-32 bg-muted/30">
         <div className="container mx-auto px-4">
              <div className="text-center max-w-2xl mx-auto mb-16">
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Good to Know</h2>
                  <p className="mt-4 text-lg text-muted-foreground">Answers to common questions.</p>
             </div>
-            <Card className="max-w-3xl mx-auto">
+            <Card className="max-w-3xl mx-auto bg-card">
                 <CardContent className="p-6">
                     <Accordion type="single" collapsible className="w-full">
                         {feature.details.faqs.map((faq, index) => (
@@ -224,5 +250,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       </section>
 
     </main>
+    <LandingFooter />
+    </>
   );
 }

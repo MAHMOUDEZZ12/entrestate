@@ -34,6 +34,7 @@ const mergeToolData = (toolId: string) => {
           ],
           synergy: [],
           faqs: [],
+          use_cases: []
         },
       };
     }
@@ -56,7 +57,8 @@ const mergeToolData = (toolId: string) => {
         faqs: detailsContent?.faqs.map(faq => ({
             question: faq.q,
             answer: faq.a
-        })) || []
+        })) || [],
+        use_cases: detailsContent?.use_cases || []
     };
     
     return {

@@ -13,6 +13,8 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { tools } from '@/lib/tools-client';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 const solutionCategories = [
     {
@@ -44,13 +46,14 @@ const solutionCategories = [
 
 export default function SolutionsPage() {
   return (
-    <div className="flex flex-col">
-      <PageHeader
-        title="An AI Co-pilot for Every Realtor"
-        description="Stop juggling a dozen apps. WhatsMAP is a unified ecosystem of intelligent tools designed to perfect your workflow, from listing to close."
-        icon={<Sparkles className="h-8 w-8" />}
-      />
+    <>
+      <LandingHeader />
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20 space-y-24">
+         <PageHeader
+            title="An AI Co-pilot for Every Realtor"
+            description="Stop juggling a dozen apps. Entrestate is a unified ecosystem of intelligent tools designed to perfect your workflow, from listing to close."
+            icon={<Sparkles className="h-8 w-8" />}
+          />
         {solutionCategories.map(category => (
             <section key={category.name}>
                 <div className="text-center max-w-2xl mx-auto">
@@ -120,8 +123,7 @@ export default function SolutionsPage() {
             </div>
         </div>
       </main>
-    </div>
+      <LandingFooter />
+    </>
   );
 }
-
-    

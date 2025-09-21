@@ -91,132 +91,6 @@ const FeatureCard = ({
 };
 
 
-const FeatureModal = ({ feature, onClose }: { feature: Feature | null, onClose: () => void }) => {
-  if (!feature) return null;
-
-  return (
-    <Dialog open={!!feature} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="bg-card/90 backdrop-blur-lg border-primary/20 text-foreground max-w-5xl w-[95vw] p-0 rounded-2xl">
-          <div className="relative">
-            <div className="p-8 rounded-t-2xl" style={{'background': `linear-gradient(to bottom right, ${feature.color}1A, transparent 95%)`}}>
-               <div className="flex items-start justify-between">
-                  <div className='flex items-center gap-4'>
-                    <div className="p-4 bg-primary/10 border border-primary/20 rounded-full w-fit">
-                      {React.cloneElement(feature.icon, { className: 'h-10 w-10 text-primary' })}
-                    </div>
-                    <div>
-                      <DialogTitle asChild>
-                        <h2 className="text-4xl font-bold font-heading text-foreground mb-1">{feature.title}</h2>
-                      </DialogTitle>
-                      <p className="text-lg text-foreground/80">{feature.longDescription}</p>
-                    </div>
-                  </div>
-               </div>
-            </div>
-            
-            <div className='p-8'>
-              <Tabs defaultValue="overview" className="w-full">
-                <TabsList className="grid w-full grid-cols-4 mb-6">
-                  <TabsTrigger value="overview">How to Use</TabsTrigger>
-                  <TabsTrigger value="comparison">AI vs. Manual</TabsTrigger>
-                  <TabsTrigger value="synergy">Synergy</TabsTrigger>
-                  <TabsTrigger value="faq">FAQs</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="overview" className="space-y-6 text-foreground/90">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                      {feature.details.steps.map((step, i) => (
-                        <div key={i} className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg border">
-                          <div className='p-3 bg-primary/10 rounded-full mb-3 text-primary'>
-                            {step.icon}
-                          </div>
-                          <p className="font-semibold text-foreground">Step {i+1}</p>
-                          <p className='text-sm text-muted-foreground'>{step.text}</p>
-                        </div>
-                      ))}
-                    </div>
-                </TabsContent>
-                
-                <TabsContent value="comparison" className="space-y-4 text-foreground/90">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    <div className="space-y-4">
-                      <h3 className="text-2xl font-semibold font-heading text-center text-foreground/80">Manual</h3>
-                       {feature.details.aiVsManual.map((item, index) => (
-                        <div key={index} className="p-4 bg-muted/50 rounded-lg border">
-                           <div className="flex items-center gap-3 mb-2">
-                            {React.cloneElement(item.icon, { className: "h-5 w-5 text-muted-foreground" })}
-                            <h4 className="font-semibold text-foreground">{item.metric}</h4>
-                          </div>
-                          <p className="text-foreground/80 pl-8">{item.manual}</p>
-                        </div>
-                      ))}
-                    </div>
-                     <div className="space-y-4">
-                      <h3 className="text-2xl font-semibold font-heading text-center text-primary">Entrestate AI</h3>
-                       {feature.details.aiVsManual.map((item, index) => (
-                        <div key={index} className="p-4 bg-muted/50 rounded-lg border border-primary/20 shadow-lg shadow-primary/5">
-                           <div className="flex items-center gap-3 mb-2">
-                             {React.cloneElement(item.icon, { className: "h-5 w-5 text-primary" })}
-                            <h4 className="font-semibold text-primary">{item.metric}</h4>
-                          </div>
-                          <p className="text-foreground/80 pl-8">{item.ai}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="synergy" className="space-y-4 text-foreground/90">
-                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                    {feature.details.synergy.map((s, index) => (
-                      <div key={index} className="bg-muted/50 p-6 rounded-lg border flex flex-col justify-center">
-                         <div className="flex items-center gap-2 mb-3">
-                            <div className="p-2 bg-primary/10 text-primary rounded-md">
-                                <h4 className="font-semibold text-sm">{feature.title}</h4>
-                            </div>
-                            <Plus className="h-5 w-5 text-muted-foreground shrink-0" />
-                            <div className="p-2 bg-secondary text-secondary-foreground rounded-md">
-                               <h4 className="font-semibold text-sm">{s.tool}</h4>
-                            </div>
-                        </div>
-                        <div className="text-sm text-foreground/80 pl-1">
-                          <p>{s.benefit}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="faq">
-                  <Accordion type="single" collapsible className="w-full">
-                    {feature.details.faqs.map((faq, index) => (
-                      <AccordionItem value={`item-${index}`} key={index}>
-                        <AccordionTrigger className='text-left'>{faq.question}</AccordionTrigger>
-                        <AccordionContent className="text-base text-foreground/80">{faq.answer}</AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                </TabsContent>
-              </Tabs>
-            </div>
-
-            <Separator />
-
-            <DialogFooter className="p-6 bg-muted/50 rounded-b-2xl flex justify-between items-center w-full">
-                <div className="text-xl font-bold text-primary">{anyAppPlan?.price_display}</div>
-                <Link href={`/dashboard/tool/${feature.id}`}>
-                    <Button size="lg" className='text-base'>
-                      {feature.cta}
-                    </Button>
-                </Link>
-            </DialogFooter>
-          </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
-
-
 export default function AppsPage() {
   const [selectedFeature, setSelectedFeature] = React.useState<Feature | null>(null);
   const [activeFilter, setActiveFilter] = React.useState<FilterCategory>('All');
@@ -226,10 +100,6 @@ export default function AppsPage() {
     const randomIndex = Math.floor(Math.random() * announcements.length);
     setCurrentAnnouncement(announcements[randomIndex]);
   }, []);
-
-  const handleCardClick = (feature: Feature) => {
-    setSelectedFeature(feature);
-  };
 
   const getCategoryCount = (category: FilterCategory) => {
     if (category === 'All') return features.length;
@@ -277,17 +147,15 @@ export default function AppsPage() {
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 lg:gap-12 max-w-[120rem] mx-auto"
         >
           {filteredFeatures.map((feature) => (
-            <FeatureCard 
-                key={feature.id} 
-                feature={feature} 
-                onClick={handleCardClick}
-            />
+             <Link href={`/apps/${feature.id}`} key={feature.id}>
+                <FeatureCard 
+                    feature={feature} 
+                    onClick={() => {}}
+                />
+            </Link>
           ))}
         </div>
       </main>
-      <FeatureModal feature={selectedFeature} onClose={() => setSelectedFeature(null)} />
     </div>
   );
 }
-
-    

@@ -22,6 +22,8 @@ import {
     Tooltip,
 } from 'recharts';
 import { useRouter } from 'next/navigation';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 
 const ChatSimulation = () => {
@@ -316,7 +318,8 @@ export default function HomePage() {
     };
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <>
+      <LandingHeader />
       <main className="flex-1 w-full">
         {/* New Hero Section */}
         <section className="relative flex h-[calc(100vh-64px)] w-full items-center justify-center overflow-hidden border-b">
@@ -500,8 +503,7 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-    </div>
+      <LandingFooter />
+    </>
   );
 }
-
-    
