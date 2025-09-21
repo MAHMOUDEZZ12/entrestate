@@ -17,7 +17,7 @@ const suggestedFlows = [
   {
     name: 'Full Listing Syndication',
     description: 'Generate a new listing description and push it to both Property Finder and Bayut automatically.',
-    apps: ['listing-generator', 'property-finder-sync', 'bayut-sync'],
+    apps: ['listing-generator', 'propertyfinder-sync', 'bayut-sync'],
   },
   {
     name: 'Lead Gen Campaign',
@@ -27,7 +27,7 @@ const suggestedFlows = [
     {
     name: 'Rebrand & Distribute',
     description: 'Rebrand an existing brochure with your brand kit, then generate a landing page for it.',
-    apps: ['rebranding', 'landing-pages'],
+    apps: ['rebranding', 'landing-pages', 'email-creator'],
   },
    {
     name: 'Content Repurposing',

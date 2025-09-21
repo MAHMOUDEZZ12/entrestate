@@ -9,7 +9,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building2, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson
+    FileCheck, Palette, Map, LandPlot, Building2, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image
 } from 'lucide-react';
 import { toast as sonnerToast } from "sonner";
 import { Copy, Download, Trash2, Eye } from 'lucide-react';
