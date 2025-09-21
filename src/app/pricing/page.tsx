@@ -43,6 +43,7 @@ export default function PricingPage() {
   };
 
   const handleSelectPro = () => {
+    if (!proPlan) return;
     const isCurrentlyPro = allApps.length === selectedApps.length && allApps.every(app => selectedApps.includes(app.name));
     if (isCurrentlyPro) {
         setSelectedApps([]);
@@ -67,12 +68,21 @@ export default function PricingPage() {
   }, [selectedApps, bundles]);
   
   const isProSelected = useMemo(() => {
+    if (!proPlan) return false;
     return allApps.length === selectedApps.length && allApps.every(app => selectedApps.includes(app.name));
-  }, [selectedApps, allApps]);
+  }, [selectedApps, allApps, proPlan]);
 
 
   const finalPrice = isProSelected && proPlan ? proPlan.monthly_price : activeBundle ? activeBundle.monthly_price : individualAppsPrice;
   const discount = activeBundle ? individualAppsPrice - activeBundle.monthly_price : isProSelected && proPlan ? individualAppsPrice - proPlan.monthly_price : 0;
+
+  const getBundleSavings = (bundle: typeof bundles[0]) => {
+      const bundleAppsPrice = bundle.apps.reduce((total, appName) => {
+          const app = allApps.find(a => a.name === appName);
+          return total + (app?.pricing || 0);
+      }, 0);
+      return bundleAppsPrice - bundle.monthly_price;
+  }
 
   return (
     <div className="flex flex-col">
@@ -120,16 +130,20 @@ export default function PricingPage() {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {bundles.map(bundle => {
                             const isSelected = bundle.apps.length > 0 && selectedApps.length > 0 && bundle.apps.every(app => selectedApps.includes(app));
+                            const savings = getBundleSavings(bundle);
                             return (
                                 <button key={bundle.name} onClick={() => handleBundleSelection(bundle.name)} className={cn(
                                     "w-full p-4 rounded-lg border text-left transition-all h-full",
                                     isSelected ? "bg-primary/10 border-primary/50 ring-2 ring-primary/50" : "bg-card/50 hover:bg-card"
                                 )}>
-                                    <div className="flex items-center gap-3 mb-2">
-                                        <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center", isSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
-                                        {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
+                                    <div className="flex items-center justify-between mb-2">
+                                        <div className="flex items-center gap-3">
+                                            <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center", isSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
+                                            {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
+                                            </div>
+                                            <p className="font-semibold text-foreground">{bundle.name}</p>
                                         </div>
-                                        <p className="font-semibold text-foreground">{bundle.name}</p>
+                                        {savings > 0 && <span className="text-xs font-semibold text-primary">Save ${savings.toFixed(2)}</span>}
                                     </div>
                                     <p className="text-xs text-muted-foreground">{bundle.description}</p>
                                 </button>
