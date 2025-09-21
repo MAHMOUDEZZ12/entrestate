@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Check, Sparkles, Search, Building, BarChart, LayoutTemplate, Star, Wallet, AreaChart } from 'lucide-react';
+import { ArrowRight, Check, Sparkles, Search, Building, BarChart, LayoutTemplate, Star, Wallet, AreaChart, TrendingUp, AlertTriangle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import Image from 'next/image';
@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { ResponsiveContainer, XAxis, YAxis, Tooltip, Area } from 'recharts';
 
 
 const ChatSimulation = () => {
@@ -66,7 +67,6 @@ const ChatSimulation = () => {
 }
 
 const SearchSimulation = () => {
-    const features = ["Santorini - Blue & White theme", "Venice - Gondola Rides", "Costa Brava - Spanish Style", "Malta - Play & Learn Hub"];
     const units = [
         { name: "3-Bed Townhouse (TH-L)", size: "2,012 sqft", status: "Sold Out" },
         { name: "4-Bed Townhouse (TH-M)", size: "2,280 sqft", status: "Available" },
@@ -93,7 +93,7 @@ const SearchSimulation = () => {
                             <CardTitle className="text-2xl">Project Overview: Damac Lagoons</CardTitle>
                             <CardDescription>Developer: DAMAC Properties</CardDescription>
                         </CardHeader>
-                        <CardContent className="text-base text-foreground/80 leading-relaxed">
+                        <CardContent className="text-lg text-foreground/80 leading-relaxed">
                             <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
                         </CardContent>
                     </Card>
@@ -126,27 +126,12 @@ const SearchSimulation = () => {
                         </CardContent>
                     </Card>
                  </motion.div>
-                
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.3 }}>
-                     <Card className="bg-background/80">
-                        <CardHeader><CardTitle>Key Features</CardTitle></CardHeader>
-                        <CardContent className="grid grid-cols-2 gap-2 text-sm">
-                            {features.map((feature, i) => (
-                                <div key={i} className="flex items-center gap-2">
-                                    <Check className="h-4 w-4 text-primary" />
-                                    <span>{feature}</span>
-                                </div>
-                            ))}
-                        </CardContent>
-                    </Card>
-                 </motion.div>
             </div>
         </div>
     )
 }
 
 const LlmSimulation = () => {
-    const features = ["Santorini - Blue & White theme", "Venice - Gondola Rides", "Costa Brava - Spanish Style", "Malta - Play & Learn Hub"];
     const units = [
         { name: "3-Bed Townhouse (TH-L)", size: "2,012 sqft", status: "Sold Out" },
         { name: "4-Bed Townhouse (TH-M)", size: "2,280 sqft", status: "Available" },
@@ -218,6 +203,51 @@ const LlmSimulation = () => {
     )
 }
 
+const mockChartData = [
+  { name: 'Jan', value: 2.1 },
+  { name: 'Feb', value: 2.3 },
+  { name: 'Mar', value: 2.2 },
+  { name: 'Apr', value: 2.5 },
+  { name: 'May', value: 2.4 },
+  { name: 'Jun', value: 2.6 },
+  { name: 'Jul', value: 2.8 },
+];
+
+const AixaIntelSimulation = () => {
+    return (
+        <div className="w-full h-full flex flex-col bg-muted/50 rounded-xl p-4 gap-4">
+            <h3 className="text-lg font-bold font-heading text-center">AIXA Market Intelligence</h3>
+            <div className="flex-grow">
+                 <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={mockChartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                         <defs>
+                            <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
+                                <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
+                            </linearGradient>
+                        </defs>
+                        <XAxis dataKey="name" fontSize={12} tickLine={false} axisLine={false} />
+                        <YAxis fontSize={12} tickLine={false} axisLine={false} domain={['dataMin - 0.2', 'dataMax + 0.2']} />
+                        <Tooltip
+                            contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))', borderRadius: '0.5rem' }}
+                            labelStyle={{ fontWeight: 'bold' }}
+                            formatter={(value: number) => [`${value}M AED`, 'Avg. Price']}
+                        />
+                        <Area type="monotone" dataKey="value" stroke="hsl(var(--primary))" fill="url(#colorUv)" />
+                    </AreaChart>
+                </ResponsiveContainer>
+            </div>
+             <Card className="bg-background/80 flex-shrink-0">
+                <CardContent className="p-3">
+                    <p className="text-sm font-semibold text-center flex items-center justify-center gap-2">
+                        <AlertTriangle className="h-4 w-4 text-amber-500" />
+                        Market Expectation: Correction Expected
+                    </p>
+                </CardContent>
+             </Card>
+        </div>
+    )
+}
 
 // Helper for smooth scrolling
 const scrollToSection = (id: string) => {
@@ -350,11 +380,8 @@ export default function HomePage() {
 
             {/* Product 4: AIXA INTEL RE5.2 */}
             <div id="product-aixa" className="grid lg:grid-cols-2 gap-16 items-center">
-                <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-red-500/10 to-orange-500/10 flex flex-col items-center justify-center text-center p-8">
-                    <h3 className="text-4xl font-bold font-heading">AIXA INTEL RE5.2</h3>
-                     <Link href="/products/aixa-intel" className="mt-4">
-                        <Button variant="outline">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
-                    </Link>
+                <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-red-500/10 to-orange-500/10 flex flex-col text-center p-2">
+                    <AixaIntelSimulation />
                 </Card>
                 <div className="space-y-8 lg:order-1">
                     <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
@@ -412,3 +439,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
