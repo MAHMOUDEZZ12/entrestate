@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Wallet, Check, Sparkles, ArrowRight, Package } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -10,11 +10,32 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import Link from 'next/link';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Label } from '@/components/ui/label';
 
 export default function PricingPage() {
   const [isAnnual, setIsAnnual] = useState(true);
+  const [selectedApps, setSelectedApps] = useState<string[]>([]);
+  
   const proPlan = pricingData.bundles.find(b => b.name === 'ENTRESTATE PRO');
   const otherBundles = pricingData.bundles.filter(b => b.name !== 'ENTRESTATE PRO');
+  const allApps = pricingData.apps;
+
+  const handleAppSelection = (appName: string) => {
+    setSelectedApps(prev => 
+      prev.includes(appName)
+        ? prev.filter(name => name !== appName)
+        : [...prev, appName]
+    );
+  };
+  
+  const customBundlePrice = useMemo(() => {
+    return allApps
+      .filter(app => selectedApps.includes(app.name))
+      .reduce((total, app) => total + app.pricing, 0);
+  }, [selectedApps, allApps]);
+
+  const customAnnualPrice = customBundlePrice * 12 * 0.6; // 40% discount
 
   return (
     <div className="flex flex-col">
@@ -32,11 +53,11 @@ export default function PricingPage() {
             </span>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8 items-stretch">
             {otherBundles.map(bundle => {
               const annualPrice = bundle.monthly_price * 12 * 0.6; // 40% discount
               return (
-                <Card key={bundle.name} className="flex flex-col">
+                <Card key={bundle.name} className="flex flex-col bg-card/80 backdrop-blur-lg">
                     <CardHeader>
                         <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-4">
                             <Package className="h-6 w-6" />
@@ -51,12 +72,13 @@ export default function PricingPage() {
                         </div>
                         <p className="font-semibold text-sm text-foreground">INCLUDES:</p>
                         <ul className="space-y-2 text-sm text-muted-foreground">
-                            {bundle.apps.map(app => (
+                            {bundle.apps.slice(0, 5).map(app => (
                                 <li key={app} className="flex items-center gap-2">
                                     <Check className="h-4 w-4 text-primary" />
                                     <span>{app}</span>
                                 </li>
                             ))}
+                            {bundle.apps.length > 5 && <li className="text-xs font-medium">...and {bundle.apps.length - 5} more!</li>}
                         </ul>
                     </CardContent>
                     <CardFooter>
@@ -65,6 +87,44 @@ export default function PricingPage() {
                 </Card>
             )})}
         </div>
+        
+        <Card className="mt-16 bg-gradient-to-br from-blue-500/10 via-transparent to-transparent border-blue-500/20 shadow-2xl shadow-blue-500/10">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-8 items-start">
+                <div className="lg:col-span-1">
+                    <h2 className="text-3xl font-bold font-heading">Build Your Own Bundle</h2>
+                    <p className="text-lg text-muted-foreground mt-2">Only pay for what you need. Select any combination of apps to create your perfect toolkit.</p>
+                     <div className="mt-6 bg-background/50 rounded-xl p-6 border text-center">
+                        <p className="text-muted-foreground">Your Custom Price</p>
+                        <div className="flex items-baseline justify-center gap-2 mt-2">
+                           <span className="text-5xl font-bold text-primary">${isAnnual ? (customAnnualPrice / 12).toFixed(2) : customBundlePrice.toFixed(2)}</span>
+                           <span className="text-muted-foreground">/ month</span>
+                        </div>
+                         <Button size="lg" className="w-full mt-4" disabled={selectedApps.length === 0}>
+                            Get Started with {selectedApps.length} App{selectedApps.length !== 1 && 's'}
+                        </Button>
+                    </div>
+                </div>
+                <div className="lg:col-span-2">
+                    <h3 className="font-semibold text-lg text-foreground mb-4">Select apps to add to your bundle:</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4 max-h-96 overflow-y-auto pr-3">
+                        {allApps.map(app => (
+                            <div key={app.name} className="flex items-center space-x-3 bg-muted/30 p-3 rounded-md">
+                                <Checkbox 
+                                    id={app.name} 
+                                    checked={selectedApps.includes(app.name)}
+                                    onCheckedChange={() => handleAppSelection(app.name)}
+                                />
+                                <Label htmlFor={app.name} className="flex flex-col cursor-pointer">
+                                    <span className="font-semibold text-foreground">{app.name}</span>
+                                    <span className="text-xs text-muted-foreground">${app.pricing.toFixed(2)}/mo</span>
+                                </Label>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </Card>
+
 
         {proPlan && (
             <Card className="mt-16 bg-gradient-to-br from-primary/10 to-transparent border-primary/20 shadow-2xl shadow-primary/10">
@@ -76,7 +136,7 @@ export default function PricingPage() {
                         <h2 className="text-3xl font-bold font-heading">{proPlan.name}</h2>
                         <p className="text-lg text-muted-foreground mt-2">{proPlan.description}</p>
                          <div className="flex items-baseline gap-2 mt-6">
-                           <span className="text-5xl font-bold">${isAnnual ? ((proPlan.monthly_price * 12 * 0.6) / 12).toFixed(2) : proPlan.monthly_price.toFixed(2)}</span>
+                           <span className="text-5xl font-bold">${isAnnual ? proPlan.annual_price.toFixed(2) : proPlan.monthly_price.toFixed(2)}</span>
                            <span className="text-muted-foreground">/ month</span>
                         </div>
                          <Link href="/signup">
