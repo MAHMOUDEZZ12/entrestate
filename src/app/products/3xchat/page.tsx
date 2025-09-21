@@ -14,7 +14,7 @@ export default function ProductPage() {
                         3XCHAT APP LITE
                     </h1>
                     <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-foreground/70">
-                        Transform every customer interaction into an opportunity. 3XCHAT is an AI-powered conversational platform engineered for immediate, impactful engagement that captures leads and delights users, 24/7.
+                       Transform every customer interaction into an opportunity. 3XCHAT is an AI-powered conversational platform engineered for immediate, impactful engagement that captures leads and delights users, 24/7.
                     </p>
                     <div className="mt-8">
                         <Link href="/signup">
