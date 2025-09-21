@@ -140,21 +140,6 @@ const SearchSimulation = () => {
                         </CardContent>
                     </Card>
                  </motion.div>
-
-                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.4 }}>
-                    <Card className="bg-background/80">
-                         <CardHeader><CardTitle>Investment Study</CardTitle></CardHeader>
-                        <CardContent className="flex items-center justify-between text-sm">
-                           <div>
-                             <p>Est. ROI: <span className="font-bold text-primary">8-10%</span></p>
-                             <p>Type: <span className="font-bold">High Growth / Rental</span></p>
-                           </div>
-                           <Link href="/dashboard/tool/deal-analyzer">
-                               <Button variant="outline" size="sm">Run Full Analysis <ArrowRight /></Button>
-                           </Link>
-                        </CardContent>
-                    </Card>
-                 </motion.div>
             </div>
         </div>
     )
