@@ -198,7 +198,7 @@ export default function PricingPage() {
                                                      <p className="text-xs text-muted-foreground text-left">{bundle.description}</p>
                                                 </div>
                                             </div>
-                                            {savings > 0 && <span className="text-xs font-semibold text-primary">Save ${savings.toFixed(2)}</span>}
+                                            {savings > 0 && <span className="text-xs font-semibold text-primary ml-2">Save ${savings.toFixed(2)}</span>}
                                         </div>
                                     </AccordionTrigger>
                                      <AccordionContent className="p-4 bg-muted/30 rounded-b-lg border border-t-0">
