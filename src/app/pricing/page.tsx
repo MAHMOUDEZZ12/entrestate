@@ -30,10 +30,15 @@ const utilityApps = [
     'Listing Performance',
 ];
 
+// Mock user's current subscriptions for demonstration
+const MOCK_USER_SUBSCRIPTIONS = [
+    // { appName: 'Meta Auto Pilot', daysSubscribed: 15 } // Example: subscribed 15 days ago
+];
+
 export default function PricingPage() {
   const [isAnnual, setIsAnnual] = useState(true);
   const [selectedApps, setSelectedApps] = useState<string[]>([]);
-
+  
   const allApps = pricingData.apps;
   const bundles = pricingData.bundles.filter(b => b.name !== 'ENTRESTATE PRO');
   const proPlan = pricingData.bundles.find(b => b.name === 'ENTRESTATE PRO');
@@ -54,9 +59,7 @@ export default function PricingPage() {
   }
 
   const handleBundleSelection = (bundle: typeof bundles[0]) => {
-    const isCurrentlySelected = isBundleSelected(bundle.apps);
-
-    if (isCurrentlySelected) {
+    if (isBundleSelected(bundle.apps)) {
       setSelectedApps([]);
     } else {
       setSelectedApps(bundle.apps);
@@ -65,47 +68,68 @@ export default function PricingPage() {
 
   const handleSelectPro = () => {
     if (!proPlan) return;
-    const isCurrentlyPro = isBundleSelected(proPlan.apps);
-     if (isCurrentlyPro) {
+    if (isBundleSelected(proPlan.apps)) {
       setSelectedApps([]);
     } else {
       setSelectedApps(proPlan.apps);
     }
   };
 
-  const { finalPrice, discount, activeBundle, utilityDiscount } = useMemo(() => {
-    
-    const checkIsBundleSelected = (bundleApps: string[]) => {
-        if (bundleApps.length === 0 || selectedApps.length === 0) return false;
-        if (bundleApps.length !== selectedApps.length) return false;
-        const selectedSet = new Set(selectedApps);
-        return bundleApps.every(app => selectedSet.has(app));
+  const { finalPrice, discount, activeBundle, utilityDiscount, prorationCredit } = useMemo(() => {
+    const checkIsBundleSelected = (bundleApps: string[]): boolean => {
+      if (!bundleApps || bundleApps.length === 0 || selectedApps.length === 0) return false;
+      const selectedSet = new Set(selectedApps);
+      if (bundleApps.length !== selectedSet.size) return false;
+      return bundleApps.every(app => selectedSet.has(app));
     };
+
+    const matchedBundle = [...bundles, proPlan].find(bundle => bundle && checkIsBundleSelected(bundle.apps)) || null;
+
+    let prorationCredit = 0;
+    let creditReason = '';
     
-    const matchedBundle = [...bundles, proPlan].find(bundle => bundle && checkIsBundleSelected(bundle.apps));
+    // Calculate prorated credit if upgrading
+    if (matchedBundle && MOCK_USER_SUBSCRIPTIONS.length > 0) {
+        MOCK_USER_SUBSCRIPTIONS.forEach(sub => {
+            const isSubInBundle = matchedBundle.apps.includes(sub.appName);
+            if (isSubInBundle) {
+                const appDetails = allApps.find(a => a.name === sub.appName);
+                if (appDetails) {
+                    const dailyRate = appDetails.pricing / 30;
+                    const remainingDays = 30 - sub.daysSubscribed;
+                    prorationCredit += dailyRate * remainingDays;
+                    creditReason = `Credit for existing '${sub.appName}' subscription.`;
+                }
+            }
+        });
+    }
+
 
     if (matchedBundle) {
         const individualPrice = matchedBundle.apps.reduce((total, appName) => {
             const app = allApps.find(a => a.name === appName);
             return total + (app?.pricing || 0);
         }, 0);
+        
+        const finalBundlePrice = matchedBundle.monthly_price - prorationCredit;
+
         return { 
-            finalPrice: matchedBundle.monthly_price, 
+            finalPrice: finalBundlePrice < 0 ? 0 : finalBundlePrice,
             discount: individualPrice - matchedBundle.monthly_price, 
             activeBundle: matchedBundle,
             utilityDiscount: 0,
+            prorationCredit: { amount: prorationCredit, reason: creditReason }
         };
     }
     
-    // If no bundle is matched, calculate individual app pricing with utility discounts
     const selectedUtilityApps = selectedApps.filter(appName => utilityApps.includes(appName));
     const utilityAppCount = selectedUtilityApps.length;
 
     let utilityDiscountRate = 0;
     if (utilityAppCount >= 5) {
-      utilityDiscountRate = 0.50; // 50%
+      utilityDiscountRate = 0.50;
     } else if (utilityAppCount >= 3) {
-      utilityDiscountRate = 0.25; // 25%
+      utilityDiscountRate = 0.25;
     }
 
     const originalUtilityPrice = selectedUtilityApps.reduce((total, appName) => {
@@ -130,6 +154,7 @@ export default function PricingPage() {
       discount: 0, 
       activeBundle: null,
       utilityDiscount: utilityDiscountValue,
+      prorationCredit: { amount: 0, reason: '' }
     };
   }, [selectedApps, allApps, bundles, proPlan]);
 
@@ -201,7 +226,7 @@ export default function PricingPage() {
                     return (
                       <Card
                         key={bundle.name}
-                        onClick={() => handleBundleSelection(bundle)}
+                        onClick={() => !isProSelected && handleBundleSelection(bundle)}
                         className={cn(
                           "cursor-pointer transition-all relative",
                           isSelected ? "bg-primary/10 border-primary/50 ring-2 ring-primary/30" : "bg-muted/30 hover:bg-muted/70",
@@ -278,8 +303,9 @@ export default function PricingPage() {
                 </div>
                 {isAnnual && <p className="text-xs text-muted-foreground mt-2">(Billed annually)</p>}
 
-                {activeBundle && <p className="text-sm text-primary font-semibold mt-2">You're saving ${getBundleSavings(activeBundle).toFixed(2)}/mo with the {activeBundle.name} bundle!</p>}
+                {activeBundle && discount > 0 && <p className="text-sm text-primary font-semibold mt-2">You're saving ${getBundleSavings(activeBundle).toFixed(2)}/mo with the {activeBundle.name} bundle!</p>}
                 {utilityDiscount > 0 && !activeBundle && <p className="text-sm text-primary font-semibold mt-2">You're saving ${utilityDiscount.toFixed(2)}/mo with the utility app discount!</p>}
+                {prorationCredit.amount > 0 && <p className="text-sm text-green-600 font-semibold mt-2">You're getting a ${prorationCredit.amount.toFixed(2)} credit for your existing subscriptions!</p>}
               </div>
             </CardContent>
             <CardFooter>
