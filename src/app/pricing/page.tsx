@@ -136,7 +136,7 @@ export default function PricingPage() {
                         <h2 className="text-3xl font-bold font-heading">{proPlan.name}</h2>
                         <p className="text-lg text-muted-foreground mt-2">{proPlan.description}</p>
                          <div className="flex items-baseline gap-2 mt-6">
-                           <span className="text-5xl font-bold">${isAnnual ? proPlan.annual_price.toFixed(2) : proPlan.monthly_price.toFixed(2)}</span>
+                           <span className="text-5xl font-bold">${isAnnual ? (proPlan.monthly_price * 12 * 0.6 / 12).toFixed(2) : proPlan.monthly_price.toFixed(2)}</span>
                            <span className="text-muted-foreground">/ month</span>
                         </div>
                          <Link href="/signup">
