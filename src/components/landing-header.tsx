@@ -23,7 +23,7 @@ import {
 import { useTheme } from './theme-switcher';
 import { CommandMenu } from './ui/command-menu';
 
-const ENTRESTATE_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/entrestate.com%20logo-10%20(1).png?alt=media&token=3fda1757-c752-4fae-a7b3-c50e8435b17a';
+const ENTRESTATE_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/entrestate.com%20logo%20agaist-10%20(4).png?alt=media&token=92958e4e-b603-4f3d-bf12-780e72362652';
 
 export function LandingHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);

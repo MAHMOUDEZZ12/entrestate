@@ -21,7 +21,7 @@ export default function AboutPage() {
         <Card className="bg-card/80 backdrop-blur-lg">
             <CardContent className="p-8 md:p-12 prose prose-lg dark:prose-invert max-w-none">
                  <div className="flex justify-center mb-8">
-                    <Image src={"https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/Untitled-10%20(1).png?alt=media&token=11f71f7c-f311-4bdc-af51-9a9f0cb13d88"} alt="Entrestate Logo" width={80} height={80} />
+                    <Image src={"https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/entrestate.com%20logo%20agaist-10%20(4).png?alt=media&token=92958e4e-b603-4f3d-bf12-780e72362652"} alt="Entrestate Logo" width={80} height={80} />
                 </div>
                 
                 <h2>A Note from the Creator</h2>
