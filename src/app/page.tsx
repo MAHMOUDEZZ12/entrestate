@@ -9,6 +9,57 @@ import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { visuals } from '@/lib/visuals';
+import { cn } from '@/lib/utils';
+
+
+const ChatSimulation = () => {
+    const messages = [
+        { from: 'ai', text: "Hello! How can I help you with our projects today?" },
+        { from: 'user', text: "I'm interested in a 3-bedroom with a sea view." },
+        { from: 'ai', text: "Excellent choice. We have several stunning options. Do you have a preferred location, like Emaar Beachfront or Palm Jumeirah?" },
+        { from: 'user', text: "Emaar Beachfront sounds interesting. What's available?" },
+        { from: 'ai', text: "We have a beautiful 3-bedroom apartment on the 25th floor of 'Azure Tower' with panoramic views of the Palm. Would you like me to send you the brochure?" },
+        { from: 'user', text: "Yes please!" },
+    ];
+
+    return (
+        <div className="h-full w-full bg-muted/50 rounded-xl p-4 overflow-hidden mask-gradient-vertical">
+             <motion.div
+                animate={{ y: [0, -100] }}
+                transition={{
+                    duration: 8,
+                    repeat: Infinity,
+                    repeatType: 'loop',
+                    ease: 'linear',
+                }}
+                className="space-y-3"
+            >
+                {/* Duplicate messages for seamless loop */}
+                {[...messages, ...messages].map((msg, index) => (
+                    <div
+                        key={index}
+                        className={cn(
+                            "flex items-end gap-2",
+                            msg.from === 'user' ? 'justify-end' : 'justify-start'
+                        )}
+                    >
+                         {msg.from === 'ai' && <div className="h-6 w-6 rounded-full bg-primary/20 flex-shrink-0" />}
+                        <div
+                            className={cn(
+                                "max-w-[80%] rounded-lg p-2 px-3 text-sm",
+                                msg.from === 'user'
+                                    ? 'bg-primary text-primary-foreground'
+                                    : 'bg-background border'
+                            )}
+                        >
+                            {msg.text}
+                        </div>
+                    </div>
+                ))}
+            </motion.div>
+        </div>
+    )
+}
 
 // Helper for smooth scrolling
 const scrollToSection = (id: string) => {
@@ -78,12 +129,12 @@ export default function HomePage() {
                      <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Contextual Recall:</span><br /><span className="text-muted-foreground">Retains conversation history for personalized, multi-turn dialogues.</span></div></li>
                   </ul>
                 </div>
+                 <Link href="/products/3xchat">
+                    <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                 </Link>
               </div>
-              <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex flex-col items-center justify-center text-center p-8">
-                  <h3 className="text-4xl font-bold font-heading">3XCHAT APP LITE</h3>
-                  <Link href="/products/3xchat" className="mt-4">
-                      <Button variant="outline">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
-                  </Link>
+               <Card className="w-full aspect-square mx-auto shadow-2xl group relative bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex flex-col items-center justify-center p-2">
+                 <ChatSimulation />
               </Card>
             </div>
 
@@ -110,6 +161,9 @@ export default function HomePage() {
                     <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Cross-Source Synthesis:</span><br /><span className="text-muted-foreground">Unifies information from disparate internal and external repositories.</span></div></li>
                   </ul>
                 </div>
+                 <Link href="/products/pro-search">
+                    <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                 </Link>
               </div>
             </div>
 
@@ -130,6 +184,9 @@ export default function HomePage() {
                      <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Creative Ideation Engine:</span><br /><span className="text-muted-foreground">Generates innovative concepts, headlines, and narrative structures.</span></div></li>
                   </ul>
                 </div>
+                 <Link href="/products/llm-model">
+                    <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                 </Link>
               </div>
                <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-green-500/10 to-teal-500/10 flex flex-col items-center justify-center text-center p-8">
                   <h3 className="text-4xl font-bold font-heading">LLM MODEL X3.5</h3>
@@ -162,6 +219,9 @@ export default function HomePage() {
                             <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Risk Mitigation:</span><br /><span className="text-muted-foreground">Anticipate and prepare for potential market downturns or operational challenges.</span></div></li>
                         </ul>
                     </div>
+                     <Link href="/products/aixa-intel">
+                        <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                    </Link>
                 </div>
             </div>
 
@@ -182,6 +242,9 @@ export default function HomePage() {
                     <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Eliminated Manual Entry:</span><br /><span className="text-muted-foreground">Drastically reduce administrative burden and data entry errors.</span></div></li>
                   </ul>
                 </div>
+                 <Link href="/products/mega-listing">
+                    <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                 </Link>
               </div>
               <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-purple-500/10 to-pink-500/10 flex flex-col items-center justify-center text-center p-8">
                 <h3 className="text-4xl font-bold font-heading">MEGA LISTING PRO 2</h3>
