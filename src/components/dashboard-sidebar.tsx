@@ -22,6 +22,7 @@ import {
   Bot,
   Database,
   HeartPulse,
+  Workflow,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
@@ -29,6 +30,7 @@ import { Logo } from './logo';
 const mainNavLinks = [
   { href: '/dashboard', icon: <Home className="h-5 w-5" />, label: 'Home' },
   { href: '/dashboard/marketing', icon: <LayoutGrid className="h-5 w-5" />, label: 'Apps' },
+  { href: '/dashboard/flows', icon: <Workflow className="h-5 w-5" />, label: 'Flows' },
   { href: '/dashboard/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },
   { href: '/dashboard/assistant', icon: <Bot className="h-5 w-5" />, label: 'AI Assistant' },
   { href: '/dashboard/data-importer', icon: <Database className="h-5 w-5" />, label: 'Data Importer' },
@@ -43,7 +45,7 @@ export function DashboardSidebar() {
   const pathname = usePathname();
 
   const renderLink = (link: { href: string; icon: React.ReactNode; label: string; }) => {
-    const isActive = pathname === link.href;
+    const isActive = pathname.startsWith(link.href) && (link.href !== '/dashboard' || pathname === '/dashboard');
     return (
       <TooltipProvider key={link.href}>
         <Tooltip>
@@ -66,7 +68,7 @@ export function DashboardSidebar() {
   }
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-14 flex-col border-r bg-background sm:flex">
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
         <Link
           href="/dashboard"

@@ -1,221 +1,63 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from '@/components/ui/badge';
-import { ArrowRight, Target, Palette, LineChart, Briefcase, Bot, Home, Building, Megaphone, Users, PlusCircle, MoreHorizontal, Loader2, BookOpen, GanttChartSquare } from 'lucide-react';
+import React, from 'react';
 import Link from 'next/link';
+import { ArrowRight, PlusCircle, GanttChartSquare, LayoutGrid } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
-import { tools } from '@/lib/tools-client';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import type { Project } from '@/types';
-import { useAuth } from '@/hooks/useAuth.tsx';
-import { useToast } from '@/hooks/use-toast';
+import { tools, Feature } from '@/lib/tools-client';
+import { Button } from '@/components/ui/button';
+import { useTabManager } from '@/context/TabManagerContext';
+import { useRouter } from 'next/navigation';
 
-
-const topTools = tools.filter(t => ['meta-ads-copilot', 'audience-creator', 'rebranding', 'instagram-content-creator'].includes(t.id));
-
-const statusVariant: { [key: string]: "default" | "secondary" | "destructive" | "outline" } = {
-  'Active': 'default',
-  'Planning': 'secondary',
-  'Completed': 'outline',
-  'On Hold': 'destructive',
-};
-
-
-const MyProjectsWidget = () => {
-    const { toast } = useToast();
-    const { user } = useAuth();
-    const [userProjects, setUserProjects] = useState<Project[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    const fetchProjects = async () => {
-        if (!user) {
-            setIsLoading(false);
-            return;
-        };
-        setIsLoading(true);
-        try {
-            const idToken = await user.getIdToken();
-            const response = await fetch('/api/user/projects', {
-                headers: { 'Authorization': `Bearer ${idToken}` }
-            });
-            const data = await response.json();
-            if (data.ok) {
-                setUserProjects(data.data);
-            } else {
-                throw new Error(data.error);
-            }
-        } catch (e: any) {
-            console.error("Failed to load projects", e);
-            toast({ title: "Error", description: `Could not load projects: ${e.message}`, variant: "destructive" });
-            setUserProjects([]);
-        } finally {
-            setIsLoading(false);
-        }
-    };
-    
-    useEffect(() => {
-        if (user) {
-            fetchProjects();
-        } else {
-            setIsLoading(false);
-        }
-    }, [user]);
-
-    const handleDeleteProject = async (projectId: string) => {
-        if (!user) return;
-        const originalProjects = [...userProjects];
-        const updatedProjects = userProjects.filter(p => p.id !== projectId);
-        setUserProjects(updatedProjects);
-
-        try {
-            const idToken = await user.getIdToken();
-            const response = await fetch(`/api/user/projects?projectId=${projectId}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${idToken}` }
-            });
-            const data = await response.json();
-            if (!data.ok) throw new Error(data.error);
-            toast({ title: "Project Deleted", description: "The project has been removed from your library." });
-            // Re-fetch to be sure
-            await fetchProjects();
-        } catch (error: any) {
-            toast({ title: "Error", description: `Could not delete project: ${error.message}`, variant: "destructive" });
-            setUserProjects(originalProjects); // Revert on error
-        }
-    };
-
+const AppIcon = ({ tool, onOpen }: { tool: Feature, onOpen: (tool: Feature) => void }) => {
     return (
-        <Card>
-            <CardHeader>
-                <CardTitle>My Projects</CardTitle>
-                <CardDescription>Your active project library.</CardDescription>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-3">
-                    {isLoading ? (
-                        <div className="flex items-center justify-center h-24">
-                           <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                        </div>
-                    ) : userProjects.length > 0 ? (
-                        userProjects.slice(0, 3).map(project => (
-                            <div key={project.id} className="flex items-center justify-between p-2 bg-muted/50 rounded-md">
-                                <div>
-                                    <p className="font-semibold">{project.name}</p>
-                                    <p className="text-sm text-muted-foreground">{project.area}</p>
-                                </div>
-                                <Badge variant={statusVariant[project.status || 'Active'] || 'secondary'}>{project.status}</Badge>
-                            </div>
-                        ))
-                    ) : (
-                        <div className="text-center py-4 text-muted-foreground">
-                            <p className="text-sm mb-3">No projects in your library yet.</p>
-                            <Link href="/dashboard/tool/projects-finder">
-                                <Button variant="outline" size="sm">
-                                    <PlusCircle className="mr-2 h-4 w-4" />
-                                    Add from Market Library
-                                </Button>
-                            </Link>
-                        </div>
-                    )}
-                </div>
-            </CardContent>
-            <CardFooter className="justify-between">
-                 <Link href="/dashboard/tool/projects-finder">
-                    <Button variant="outline">
-                        <PlusCircle className="mr-2 h-4 w-4" />
-                        Add New Project
-                    </Button>
-                </Link>
-                <Dialog>
-                    <DialogTrigger asChild>
-                        <Button variant="default" disabled={isLoading || userProjects.length === 0}>View All</Button>
-                    </DialogTrigger>
-                    <DialogContent className="max-w-4xl">
-                        <DialogHeader>
-                            <DialogTitle>My Projects Library</DialogTitle>
-                            <DialogDescription>
-                                All projects you have saved to your personal library.
-                            </DialogDescription>
-                        </DialogHeader>
-                        <div className="max-h-[60vh] overflow-y-auto">
-                          <Table>
-                            <TableHeader>
-                                <TableRow>
-                                <TableHead>Project Name</TableHead>
-                                <TableHead>Location</TableHead>
-                                <TableHead>Status</TableHead>
-                                <TableHead className="text-right">Actions</TableHead>
-                                </TableRow>
-                            </TableHeader>
-                            <TableBody>
-                                {userProjects.map((project) => (
-                                <TableRow key={project.id}>
-                                    <TableCell className="font-medium">{project.name}</TableCell>
-                                    <TableCell>{project.area}</TableCell>
-                                    <TableCell>
-                                    <Badge variant={statusVariant[project.status || 'Active'] || 'secondary'}>{project.status}</Badge>
-                                    </TableCell>
-                                    <TableCell className="text-right">
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                        <Button aria-haspopup="true" size="icon" variant="ghost">
-                                            <MoreHorizontal className="h-4 w-4" />
-                                            <span className="sr-only">Toggle menu</span>
-                                        </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                                        <DropdownMenuItem onClick={() => handleDeleteProject(project.id)}>Delete</DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
-                                    </TableCell>
-                                </TableRow>
-                                ))}
-                            </TableBody>
-                            </Table>
-                        </div>
-                    </DialogContent>
-                </Dialog>
-            </CardFooter>
-        </Card>
-    );
-};
+        <button 
+            onClick={() => onOpen(tool)}
+            className="flex flex-col items-center justify-center text-center gap-2 group"
+            aria-label={`Open ${tool.title}`}
+        >
+            <div 
+                className="w-20 h-20 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-hover:shadow-xl transition-all duration-200" 
+                style={{ backgroundColor: tool.color }}
+            >
+                {React.cloneElement(tool.icon, { className: 'h-10 w-10' })}
+            </div>
+            <p className="text-sm font-medium text-foreground truncate w-24">{tool.title}</p>
+        </button>
+    )
+}
 
 export default function DashboardPage() {
-  const hasActiveCampaigns = true; 
+  const [addedApps, setAddedApps] = React.useState<string[]>([]);
+  const [isClient, setIsClient] = React.useState(false);
+  const router = useRouter();
+  const { addTab } = useTabManager();
+
+  React.useEffect(() => {
+    // This component uses localStorage, so we need to ensure it only runs on the client.
+    setIsClient(true);
+    const savedState = localStorage.getItem('addedApps');
+    if (savedState) {
+        setAddedApps(JSON.parse(savedState));
+    }
+  }, []);
+  
+  const handleOpenApp = (tool: Feature) => {
+    addTab({ href: tool.href, label: tool.title });
+    router.push(tool.href);
+  }
+
+  const myApps = React.useMemo(() => {
+    if (!isClient) return [];
+    return tools.filter(tool => addedApps.includes(tool.id));
+  }, [addedApps, isClient]);
 
   return (
     <div className="p-4 md:p-10 space-y-8">
        <PageHeader
-        title="Welcome Back"
-        description="Here's a snapshot of your sales universe today."
+        title="Home"
+        description="Your workspace. Launch apps, run flows, and manage your real estate universe."
       >
         <Link href="/dashboard/dev-admin">
             <Button variant="outline">
@@ -224,110 +66,32 @@ export default function DashboardPage() {
             </Button>
         </Link>
       </PageHeader>
-
-        {hasActiveCampaigns ? (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
-                        <Target className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">3</div>
-                        <p className="text-xs text-muted-foreground">+2 since last week</p>
-                    </CardContent>
-                </Card>
-                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Leads Generated</CardTitle>
-                        <Users className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">+235</div>
-                        <p className="text-xs text-muted-foreground">+180.1% from last month</p>
-                    </CardContent>
-                </Card>
-                 <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Total Ad Spend</CardTitle>
-                        <LineChart className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">$1,234.00</div>
-                        <p className="text-xs text-muted-foreground">This month</p>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                        <CardTitle className="text-sm font-medium">Opportunities</CardTitle>
-                        <Briefcase className="h-4 w-4 text-muted-foreground" />
-                    </CardHeader>
-                    <CardContent>
-                        <div className="text-2xl font-bold">5</div>
-                        <p className="text-xs text-muted-foreground">New off-market projects found</p>
-                    </CardContent>
-                </Card>
-            </div>
-        ) : (
-            <Card className="text-center p-8 border-dashed">
-                <CardContent className="max-w-md mx-auto">
-                    <div className="mx-auto w-fit p-3 bg-primary/10 rounded-full mb-4">
-                        <Home className="h-8 w-8 text-primary" />
-                    </div>
-                    <h3 className="text-xl font-bold">Your Dashboard is Ready</h3>
-                    <p className="text-muted-foreground mt-2 mb-6">As you use the tools, your key metrics and active tasks will appear here. Let's get your first campaign started.</p>
-                     <Link href="/dashboard/marketing">
-                        <Button>Go to Apps <ArrowRight /></Button>
-                    </Link>
-                </CardContent>
-            </Card>
-        )}
-
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-8">
-            <Card>
-                <CardHeader>
-                    <CardTitle>Top Tools For You</CardTitle>
-                    <CardDescription>Based on your activity, here are some tools you might find useful.</CardDescription>
-                </CardHeader>
-                <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {topTools.map(tool => (
-                        <Link href={`/dashboard/tool/${tool.id}`} key={tool.id} className="group">
-                             <div className="flex items-center gap-4 p-4 rounded-lg border bg-background hover:bg-muted/50 transition-colors">
-                                <div className="p-2 rounded-md text-white" style={{backgroundColor: tool.color}}>
-                                    {React.cloneElement(tool.icon, {className: "h-6 w-6"})}
-                                </div>
-                                <div>
-                                    <h4 className="font-semibold">{tool.title}</h4>
-                                    <p className="text-sm text-muted-foreground">{tool.description.substring(0, 40)}...</p>
-                                </div>
-                                <ArrowRight className="h-5 w-5 ml-auto text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </div>
-                        </Link>
-                    ))}
-                </CardContent>
-            </Card>
-             <Link href="/blog" className="block">
-                <Card className="group hover:bg-muted/50 transition-colors">
-                    <CardContent className="p-6 flex items-center gap-6">
-                        <div className="p-3 bg-primary/10 text-primary rounded-lg">
-                           <BookOpen className="h-8 w-8" />
-                        </div>
-                        <div>
-                           <h3 className="font-semibold text-lg text-foreground">Explore the Handbook</h3>
-                           <p className="text-muted-foreground">Discover expert guides and hacks to get the most out of every tool.</p>
-                        </div>
-                        <ArrowRight className="h-5 w-5 ml-auto text-muted-foreground opacity-50 group-hover:opacity-100 transition-opacity" />
-                    </CardContent>
-                </Card>
+        
+       <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 xl:grid-cols-12 gap-x-4 gap-y-8">
+            {isClient && myApps.map(tool => (
+                <AppIcon key={tool.id} tool={tool} onOpen={handleOpenApp} />
+            ))}
+             <Link href="/dashboard/marketing" className="flex flex-col items-center justify-center text-center gap-2 group">
+                 <div className="w-20 h-20 rounded-2xl flex items-center justify-center bg-muted/50 border-2 border-dashed group-hover:border-primary group-hover:bg-primary/10 transition-colors">
+                    <PlusCircle className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" />
+                </div>
+                <p className="text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors truncate w-24">Add Apps</p>
+            </Link>
+       </div>
+       
+       {isClient && myApps.length === 0 && (
+         <div className="text-center py-16 border-2 border-dashed rounded-lg">
+             <LayoutGrid className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+            <h3 className="text-xl font-bold">Your Workspace is Empty</h3>
+            <p className="text-muted-foreground mt-2 mb-6">Add apps from the App Store to get started.</p>
+             <Link href="/dashboard/marketing">
+                <Button>
+                    Go to App Store
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
             </Link>
         </div>
-         <div className="lg:col-span-1">
-            <MyProjectsWidget />
-        </div>
-      </div>
+       )}
     </div>
   );
 }
-
-    
