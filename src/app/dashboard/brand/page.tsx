@@ -91,15 +91,15 @@ export default function BrandPage() {
       setIsTraining(true);
       toast({
           title: "AI Training Started",
-          description: `The assistant is analyzing ${selectedFiles.length} file(s) to populate your brand kit.`,
+          description: `The assistant is now analyzing ${selectedFiles.length} file(s). This may take a moment.`,
       });
 
-      // Simulate API call to Genkit flow
-      await new Promise(resolve => setTimeout(resolve, 3000));
+      // In a real application, you would send these files to be indexed in a vector database.
+      await new Promise(resolve => setTimeout(resolve, 3000 + selectedFiles.length * 500));
 
       toast({
           title: "AI Training Complete!",
-          description: "The AI has analyzed your documents. Your Brand Kit has been updated with the extracted information.",
+          description: "The AI's knowledge base has been updated. You can now ask it questions about the content of your files.",
       });
       setIsTraining(false);
   }
@@ -177,5 +177,3 @@ export default function BrandPage() {
     </main>
   );
 }
-
-    

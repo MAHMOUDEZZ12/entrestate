@@ -33,6 +33,7 @@ export function AssistantChat() {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [chatHistory, setChatHistory] = useState<any[]>([]);
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -44,28 +45,39 @@ export function AssistantChat() {
     }
   }, [messages, isOpen]);
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = { from: 'user', text: input };
     setMessages(prev => [...prev, userMessage]);
+    const currentInput = input;
     setInput('');
     setIsLoading(true);
 
-    setTimeout(() => {
-        const foundCode = secretCodes.find(c => input.toUpperCase().includes(c.code));
-        let aiResponse: Message;
+    try {
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text: currentInput, history: chatHistory }),
+        });
 
-        if (foundCode) {
-            aiResponse = { from: 'ai', text: `Excellent! The code ${foundCode.code} is valid. \n\n**Reward Unlocked**: ${foundCode.reward} \n\nI can now perform this action for you. What property or project should I start with?` };
-        } else {
-            aiResponse = { from: 'ai', text: "I've received your message. While I'm still in training for full conversational abilities, I've logged your request. You can use the tools in the sidebar to get started right away!" };
+        if (!response.ok) {
+            throw new Error("The AI is experiencing some turbulence. Please try again.");
         }
+
+        const data = await response.json();
+        const aiResponse: Message = { from: 'ai', text: data.text };
         
         setMessages(prev => [...prev, aiResponse]);
+        // Update chat history for the next turn
+        setChatHistory(prev => [...prev, { role: 'user', content: [{ text: currentInput }] }, { role: 'model', content: [{ text: data.text }] }]);
+    } catch(err: any) {
+        const errorResponse: Message = { from: 'ai', text: err.message };
+        setMessages(prev => [...prev, errorResponse]);
+    } finally {
         setIsLoading(false);
-    }, 1200);
+    }
   };
 
   if (!isOpen) {
