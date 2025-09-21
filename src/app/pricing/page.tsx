@@ -90,14 +90,38 @@ export default function PricingPage() {
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            <div className="lg:col-span-2">
+                 <Card className="bg-gradient-to-br from-blue-500/10 via-transparent to-transparent border-blue-500/20 shadow-2xl shadow-blue-500/10">
+                     <CardHeader>
+                        <CardTitle className="text-2xl font-bold font-heading">Build Your Plan</CardTitle>
+                        <CardDescription>Select apps from the list below, or choose a preset bundle to get started.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[40rem] overflow-y-auto pr-3 rounded-lg border bg-background/50 p-4">
+                             {allApps.map(app => (
+                                <div key={app.name} className="flex items-center space-x-3 bg-muted/30 p-3 rounded-md hover:bg-muted/50 transition-colors">
+                                    <Checkbox 
+                                        id={app.name} 
+                                        checked={selectedApps.includes(app.name)}
+                                        onCheckedChange={() => handleAppSelection(app.name)}
+                                    />
+                                    <Label htmlFor={app.name} className="flex flex-col cursor-pointer w-full">
+                                        <span className="font-semibold text-foreground">{app.name}</span>
+                                        <span className="text-xs text-muted-foreground">${app.pricing.toFixed(2)}/mo</span>
+                                    </Label>
+                                </div>
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
             <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-24">
-                 <h2 className="text-3xl font-bold font-heading">Build Your Own Bundle</h2>
-                 <p className="text-lg text-muted-foreground">Select one of our curated bundles to start, or hand-pick the apps you need.</p>
+                 <h2 className="text-2xl font-bold font-heading">Our Bundles</h2>
                  
                  {/* Preset Bundle Selectors */}
-                <div className="space-y-3 pt-4">
+                <div className="space-y-3">
                      {bundles.map(bundle => {
-                        const isSelected = bundle.apps.every(app => selectedApps.includes(app));
+                        const isSelected = bundle.apps.length > 0 && bundle.apps.every(app => selectedApps.includes(app));
                         return (
                             <button key={bundle.name} onClick={() => handleBundleSelection(bundle.name)} className={cn(
                                 "w-full p-4 rounded-lg border text-left transition-all",
@@ -141,43 +165,26 @@ export default function PricingPage() {
                         </button>
                      )}
                 </div>
-            </div>
-            <div className="lg:col-span-2">
-                <Card className="bg-gradient-to-br from-blue-500/10 via-transparent to-transparent border-blue-500/20 shadow-2xl shadow-blue-500/10 sticky top-24">
-                     <CardHeader>
-                        <CardTitle className="text-2xl font-bold font-heading">Your Custom Plan</CardTitle>
-                        <CardDescription>Select apps from the list below to create your perfect suite.</CardDescription>
+                 <Card className="mt-4">
+                    <CardHeader>
+                        <CardTitle>Your Total</CardTitle>
                     </CardHeader>
-                    <CardContent>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 max-h-[30rem] overflow-y-auto pr-3 rounded-lg border bg-background/50 p-4">
-                             {allApps.map(app => (
-                                <div key={app.name} className="flex items-center space-x-3 bg-muted/30 p-3 rounded-md hover:bg-muted/50 transition-colors">
-                                    <Checkbox 
-                                        id={app.name} 
-                                        checked={selectedApps.includes(app.name)}
-                                        onCheckedChange={() => handleAppSelection(app.name)}
-                                    />
-                                    <Label htmlFor={app.name} className="flex flex-col cursor-pointer w-full">
-                                        <span className="font-semibold text-foreground">{app.name}</span>
-                                        <span className="text-xs text-muted-foreground">${app.pricing.toFixed(2)}/mo</span>
-                                    </Label>
-                                </div>
-                            ))}
-                        </div>
-                    </CardContent>
-                    <CardFooter className="mt-6 border-t pt-6 text-center flex-col items-center justify-center">
+                    <CardContent className="text-center">
                         {discount > 0 && (
                             <p className="text-destructive line-through">
-                                ${isAnnual ? (individualAppsPrice * 12 * 0.6).toFixed(2) + '/yr' : individualAppsPrice.toFixed(2) + '/mo'}
+                                ${isAnnual ? (individualAppsPrice * 12 * 0.6).toFixed(2) : individualAppsPrice.toFixed(2)}/{isAnnual ? 'yr' : 'mo'}
                             </p>
                         )}
                         <div className="flex items-baseline justify-center gap-2 mt-1">
-                           <span className="text-5xl font-bold text-primary">${isAnnual ? (finalPrice * 12 * 0.6).toFixed(2)}</span>
-                           <span className="text-muted-foreground">/ year</span>
+                           <span className="text-5xl font-bold text-primary">${isAnnual ? (finalPrice * 12 * 0.6).toFixed(2) : finalPrice.toFixed(2)}</span>
+                           <span className="text-muted-foreground">/ {isAnnual ? 'year' : 'month'}</span>
                         </div>
                         <p className="text-sm text-muted-foreground mb-4">which is ${(isAnnual ? (finalPrice * 12 * 0.6 / 12) : finalPrice).toFixed(2)} / month</p>
                         {activeBundle && <p className="text-sm text-primary font-semibold">You're saving ${discount.toFixed(2)}/mo with the {activeBundle.name} bundle!</p>}
-                         <Button size="lg" className="w-full mt-4" disabled={selectedApps.length === 0}>
+                        
+                    </CardContent>
+                    <CardFooter>
+                         <Button size="lg" className="w-full" disabled={selectedApps.length === 0}>
                             Get Started with {selectedApps.length} App{selectedApps.length !== 1 && 's'}
                         </Button>
                     </CardFooter>
