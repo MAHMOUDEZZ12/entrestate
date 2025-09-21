@@ -27,44 +27,44 @@ const mockChartData = [
 ];
 
 const ResultComponents = {
-    Tool: ({ tool }: { tool: any }) => (
-        <Card className="h-full hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all col-span-1 md:col-span-1 flex flex-col">
-            <CardHeader className="flex-row items-center gap-4">
-                <div className="p-3 bg-primary/10 text-primary rounded-lg">
-                    {React.cloneElement(tool.icon, { className: 'h-6 w-6' })}
-                </div>
-                <div>
-                    <CardTitle>{tool.title}</CardTitle>
-                    <CardDescription>{tool.description}</CardDescription>
-                </div>
-            </CardHeader>
-            <CardFooter className="mt-auto">
-                 <Link href={`/dashboard/tool/${tool.id}`} className="w-full">
-                    <Button variant="outline" className="w-full">
-                        Go to Tool <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                </Link>
-            </CardFooter>
-        </Card>
-    ),
-    Project: ({ project }: { project: any }) => (
+    Tool: ({ result }: { result: any }) => {
+        const tool = tools.find(t => t.id === result.toolId);
+        if (!tool) return null;
+        return (
+            <Card className="h-full hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all col-span-1 md:col-span-1 flex flex-col">
+                <CardHeader className="flex-row items-center gap-4">
+                    <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                        {React.cloneElement(tool.icon, { className: 'h-6 w-6' })}
+                    </div>
+                    <div>
+                        <CardTitle>{tool.title}</CardTitle>
+                        <CardDescription>{result.reasoning}</CardDescription>
+                    </div>
+                </CardHeader>
+                <CardFooter className="mt-auto">
+                    <Link href={`/dashboard/tool/${tool.id}`} className="w-full">
+                        <Button variant="outline" className="w-full">
+                            Go to Tool <ArrowRight className="ml-2 h-4 w-4" />
+                        </Button>
+                    </Link>
+                </CardFooter>
+            </Card>
+        )
+    },
+    Project: ({ result }: { result: any }) => (
         <Card className="h-full hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all col-span-1 md:col-span-1 flex flex-col">
              <CardHeader className="flex-row items-center gap-4">
                 <div className="p-3 bg-primary/10 text-primary rounded-lg">
                     <Building className="h-6 w-6" />
                 </div>
                 <div>
-                    <CardTitle>Project: {project.name}</CardTitle>
-                    <CardDescription>{project.developer} - {project.area}</CardDescription>
+                    <CardTitle>Project: {result.projectId.replace(/-/g, ' ')}</CardTitle>
+                    <CardDescription>{result.reasoning}</CardDescription>
                 </div>
             </CardHeader>
-            <CardContent>
-                <p className="text-sm">Status: <span className="font-semibold">{project.status}</span></p>
-                <p className="text-sm">Price From: <span className="font-semibold">{project.priceFrom}</span></p>
-            </CardContent>
             <CardFooter className="mt-auto grid grid-cols-2 gap-2">
-                 <Link href="/dashboard/tool/landing-pages">
-                    <Button variant="outline" className="w-full text-xs h-auto py-2">Generate Landing Page</Button>
+                 <Link href={`/dashboard/tool/projects-finder?q=${result.projectId}`}>
+                    <Button variant="outline" className="w-full text-xs h-auto py-2">View in Library</Button>
                  </Link>
                  <Link href="/dashboard/tool/meta-ads-copilot">
                     <Button variant="outline" className="w-full text-xs h-auto py-2">Create Ad Campaign</Button>
@@ -72,11 +72,11 @@ const ResultComponents = {
             </CardFooter>
         </Card>
     ),
-    Market: ({ query }: { query: string }) => (
+    Market: ({ result }: { result: any }) => (
         <Card className="h-full col-span-1 md:col-span-2 flex flex-col">
             <CardHeader>
-                <CardTitle>Market Trend: {decodeURIComponent(query)}</CardTitle>
-                <CardDescription>Live price index trend for properties in this area.</CardDescription>
+                <CardTitle>Market Trend Analysis</CardTitle>
+                <CardDescription>{result.reasoning}</CardDescription>
             </CardHeader>
             <CardContent className="flex-grow">
                  <ResponsiveContainer width="100%" height={200}>
@@ -95,12 +95,27 @@ const ResultComponents = {
                 </ResponsiveContainer>
             </CardContent>
             <CardFooter className="mt-auto grid grid-cols-2 gap-2">
-                 <Link href="/dashboard/tool/market-reports">
+                 <Link href={`/dashboard/tool/market-reports?location=${result.query}`}>
                     <Button variant="outline" className="w-full text-xs h-auto py-2">Generate Full Report (PDF)</Button>
                  </Link>
-                 <Link href="/dashboard/tool/instagram-content-creator">
+                 <Link href={`/dashboard/tool/instagram-content-creator?topic=${result.query}`}>
                     <Button variant="outline" className="w-full text-xs h-auto py-2">Create Social Post about this Trend</Button>
                  </Link>
+            </CardFooter>
+        </Card>
+    ),
+    Creative: ({ result }: { result: any }) => (
+        <Card className="h-full col-span-1 md:col-span-2 flex flex-col">
+            <CardHeader>
+                 <CardTitle>Creative Task</CardTitle>
+                <CardDescription>{result.reasoning}</CardDescription>
+            </CardHeader>
+             <CardFooter className="mt-auto">
+                 <Link href={`/dashboard/tool/${result.toolId}`}>
+                    <Button className="w-full">
+                        Go to {tools.find(t => t.id === result.toolId)?.title || 'Tool'} <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                </Link>
             </CardFooter>
         </Card>
     ),
@@ -169,15 +184,7 @@ export default function DiscoverResultsPage() {
                     throw new Error(data.error || "Search failed");
                 }
                 
-                const processedResults = (data.results || []).map((res: any) => {
-                    if (res.type === 'Tool' && res.toolId) {
-                        const tool = tools.find(t => t.id === res.toolId);
-                        return tool ? { type: 'Tool', tool } : null;
-                    }
-                    return res;
-                }).filter(Boolean);
-
-                setResults(processedResults);
+                setResults(data.results || []);
 
             } catch (error) {
                 console.error("Search failed:", error);
@@ -232,7 +239,7 @@ export default function DiscoverResultsPage() {
                             >
                                 <div className="flex items-center gap-3 text-muted-foreground">
                                     <Loader2 className="h-5 w-5 animate-spin" />
-                                    <p className="font-semibold">The AI is searching the market...</p>
+                                    <p className="font-semibold">The AI is analyzing your query...</p>
                                 </div>
                                 <LoadingSkeleton />
                             </motion.div>
@@ -251,7 +258,7 @@ export default function DiscoverResultsPage() {
                                     const Component = ResultComponents[res.type as keyof typeof ResultComponents];
                                     return (
                                        <motion.div key={index} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-                                          {Component ? <Component {...res} /> : null}
+                                          {Component ? <Component result={res} /> : <p>Unknown result type</p>}
                                        </motion.div>
                                     );
                                 })}

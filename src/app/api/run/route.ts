@@ -34,7 +34,7 @@ import { editYoutubeVideo } from '@/ai/flows/archy/edit-youtube-video';
 import { investigateLead } from '@/ai/flows/listing-crm/investigate-lead';
 import { generateKeywordPlan } from '@/ai/flows/market-intelligence/generate-keyword-plan';
 import { generateVideoPresenter } from '@/ai/flows/archy/generate-video-presenter';
-import { discoverEngineFlow } from '@/ai/flows/market-intelligence/discover-engine';
+import { discoverEngine } from '@/ai/flows/market-intelligence/discover-engine';
 import { dealAnalyzer } from '@/ai/flows/market-intelligence/deal-analyzer';
 import { ugcScriptWriter } from '@/ai/flows/archy/ugc-script-writer';
 
@@ -83,7 +83,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'keyword-planner': generateKeywordPlan,
     'market-chat-assistant': marketChatAssistantFlow,
     'ai-video-presenter': generateVideoPresenter,
-    'discover-engine': discoverEngineFlow,
+    'discover-engine': discoverEngine,
     'deal-analyzer': dealAnalyzer,
     'ugc-script-writer': ugcScriptWriter,
 };
