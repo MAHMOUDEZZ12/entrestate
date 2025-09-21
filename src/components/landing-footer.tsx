@@ -4,7 +4,7 @@ import { Facebook, Twitter, Linkedin } from 'lucide-react';
 import Image from 'next/image';
 import { tools } from '@/lib/tools-data';
 
-const ENTRESTATE_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/entrestate.com%20logo%20agaist-10.png?alt=media&token=4b4518d0-b757-423a-8321-7fae131db6c3';
+const ENTRESTATE_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/entrestate.com%20logo%20agaist-10%20(1).png?alt=media&token=ad5bd531-f26d-4927-b486-361f11daebb1';
 
 export function LandingFooter() {
   const currentYear = new Date().getFullYear();
@@ -15,8 +15,7 @@ export function LandingFooter() {
           
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2">
-              <Image src={ENTRESTATE_LOGO_URL} alt="Entrestate Logo" width={32} height={32} />
-              <span className="text-2xl font-bold font-heading text-primary">Entrestate</span>
+              <Image src={ENTRESTATE_LOGO_URL} alt="Entrestate Logo" width={140} height={32} />
             </Link>
             <p className="mt-4 text-sm text-foreground/70">
               The AI-Native Operating System for Real Estate.

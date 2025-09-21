@@ -47,7 +47,7 @@ export function LandingHeader() {
                 <Image 
                   src={ENTRESTATE_LOGO_URL} 
                   alt="Entrestate Logo" 
-                  width={32} 
+                  width={140} 
                   height={32} 
                   className="w-auto h-8 object-contain"
                   priority
@@ -69,7 +69,7 @@ export function LandingHeader() {
               >
                 <Search className="h-4 w-4" />
                 <span>Search...</span>
-                <kbd className="pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100">
+                <kbd className="pointer-events-none ml-auto hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 sm:flex">
                   <span className="text-xs">⌘</span>K
                 </kbd>
               </Button>
@@ -95,7 +95,7 @@ export function LandingHeader() {
                             <Image 
                               src={ENTRESTATE_LOGO_URL} 
                               alt="Entrestate Logo" 
-                              width={32} 
+                              width={140} 
                               height={32} 
                               className="w-auto h-8 object-contain"
                               priority
