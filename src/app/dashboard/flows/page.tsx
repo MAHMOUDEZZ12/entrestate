@@ -124,8 +124,8 @@ export default function FlowsPage() {
   return (
     <div className="flex flex-col">
       <PageHeader
-        title="Flow Builder (Zapier Mode)"
-        description="Create powerful, automated Zaps by connecting your apps. Your flows run in the background, 24/7."
+        title="Flow Builder"
+        description="Create powerful, automated workflows by connecting your apps. Your flows run in the background, 24/7."
         icon={<Workflow className="h-6 w-6" />}
       >
         <div className="flex gap-2">
