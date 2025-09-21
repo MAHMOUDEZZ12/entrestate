@@ -63,51 +63,14 @@ const getIconForType = (type: StepType) => {
     }
 }
 
-const initialFlow: FlowStep[] = [
-    {
-        id: 'trigger-1',
-        type: 'trigger',
-        appId: 'crm-assistant',
-        appName: 'New Lead Added',
-        appDescription: 'When a new lead is created in your CRM.',
-        appIcon: <Plus className="h-6 w-6" />,
-        appColor: '#4B5563'
-    },
-    {
-        id: 'action-1',
-        type: 'action',
-        appId: 'lead-investigator',
-        appName: 'Investigate Lead',
-        appDescription: 'Run open-source intelligence checks.',
-        appIcon: <Search className="h-6 w-6" />,
-        appColor: '#3B82F6'
-    },
-     {
-        id: 'condition-1',
-        type: 'condition',
-        appId: null,
-        appName: 'If... Then...',
-        appDescription: 'Branch the flow based on data.',
-        appIcon: <GitBranch className="h-6 w-6" />,
-        appColor: '#8B5CF6'
-    },
-    {
-        id: 'action-2',
-        type: 'action',
-        appId: 'whatsapp-manager',
-        appName: 'Send WhatsApp Message',
-        appDescription: 'Send a personalized welcome message.',
-        appIcon: <MessageSquare className="h-6 w-6" />,
-        appColor: '#10B981'
-    }
-];
-
 
 export default function FlowsPage() {
   const [installedApps, setInstalledApps] = useState<Feature[]>([]);
   const [isClient, setIsClient] = useState(false);
-  const [currentFlow, setCurrentFlow] = useState<FlowStep[]>(initialFlow);
+  const [currentFlow, setCurrentFlow] = useState<FlowStep[]>([]);
   const { toast } = useToast();
+  const [stepToUpdate, setStepToUpdate] = useState<string | null>(null);
+
 
   useEffect(() => {
     setIsClient(true);
@@ -118,18 +81,23 @@ export default function FlowsPage() {
 
   const handleAddStep = (type: StepType) => {
       const newStep: FlowStep = {
-          id: `step-${Date.now()}`,
+          id: `${type}-${Date.now()}`,
           type,
           appId: null,
           appName: `Select ${type}`,
           appDescription: `Choose an app to perform this ${type}.`,
+          appIcon: getIconForType(type),
+          appColor: 'hsl(var(--muted))',
       };
+      
       if (type === 'trigger' && currentFlow.some(s => s.type === 'trigger')) {
-          toast({ title: "Trigger already exists", description: "A flow can only have one trigger.", variant: "destructive" });
+          toast({ title: "Trigger already exists", description: "A flow can only have one trigger. Replace the existing one by clicking on it.", variant: "destructive" });
           return;
       }
+      
       const newFlow = type === 'trigger' ? [newStep, ...currentFlow.filter(s => s.type !== 'trigger')] : [...currentFlow, newStep];
       setCurrentFlow(newFlow);
+      setStepToUpdate(newStep.id);
   }
 
   const handleSelectAppForStep = (stepId: string, app: Feature) => {
@@ -138,11 +106,12 @@ export default function FlowsPage() {
           ? { ...step, appId: app.id, appName: app.title, appDescription: app.description, appIcon: app.icon, appColor: app.color }
           : step
       ));
+      setStepToUpdate(null);
   }
   
   const handleRunFlow = () => {
-    if (currentFlow.some(step => !step.appId)) {
-        toast({ title: "Incomplete Flow", description: "Please select an app for every trigger and action in the flow.", variant: "destructive"});
+    if (currentFlow.length === 0 || currentFlow.some(step => !step.appId)) {
+        toast({ title: "Incomplete Flow", description: "Please add at least one trigger and select an app for every step.", variant: "destructive"});
         return;
     }
     toast({ title: "Flow Activated!", description: "This automation is now live and will run when the trigger occurs." });
@@ -169,57 +138,85 @@ export default function FlowsPage() {
             <CardContent className="p-6 md:p-10">
                 <div className="flex flex-col items-center gap-0">
                     
-                    <Reorder.Group axis="y" values={currentFlow} onReorder={setCurrentFlow} className="w-full max-w-md space-y-0">
-                        {currentFlow.map((step, index) => (
-                           <React.Fragment key={step.id}>
-                            <Reorder.Item value={step}>
-                                <Dialog>
-                                    <DialogTrigger asChild>
-                                        <div className="w-full text-left group cursor-pointer">
-                                            <Card 
-                                                className={cn("hover:border-primary/50 hover:shadow-lg transition-all relative z-10")}
-                                                style={{borderColor: step.appId ? step.appColor : undefined}}
-                                            >
-                                                <CardHeader>
-                                                    <CardTitle className="flex items-center gap-4">
-                                                        <GripVertical className="h-5 w-5 text-muted-foreground absolute left-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity" />
-                                                        <div 
-                                                            className="p-3 rounded-lg text-white" 
-                                                            style={{ backgroundColor: step.appColor || 'hsl(var(--muted))' }}
-                                                        >
-                                                          {getIconForType(step.type)}
-                                                        </div>
-                                                        <div className="flex-1">
-                                                            <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{step.type}</p>
-                                                            <p className="text-xl font-semibold">{step.appName}</p>
-                                                            <p className="text-xs text-muted-foreground">{step.appDescription}</p>
-                                                        </div>
-                                                    </CardTitle>
-                                                </CardHeader>
-                                            </Card>
-                                        </div>
-                                    </DialogTrigger>
-                                    <AppSelectionModal installedApps={installedApps} onSelectApp={(app) => handleSelectAppForStep(step.id, app)} />
-                                </Dialog>
-                            </Reorder.Item>
-                            {index < currentFlow.length - 1 && (
-                                <div className="h-8 w-px bg-border my-1 self-center" />
-                            )}
-                           </React.Fragment>
-                        ))}
-                    </Reorder.Group>
+                     {currentFlow.length === 0 ? (
+                        <div className="text-center py-16">
+                            <h3 className="text-lg font-semibold">Start building your automation</h3>
+                            <p className="text-muted-foreground mb-4">Choose a trigger to kick things off.</p>
+                             <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button onClick={() => setStepToUpdate('new-trigger')}>
+                                        <Plus className="mr-2 h-4 w-4" /> Add a Trigger
+                                    </Button>
+                                </DialogTrigger>
+                                <AppSelectionModal installedApps={installedApps} onSelectApp={(app) => {
+                                    const newStep: FlowStep = {
+                                        id: `trigger-${Date.now()}`, type: 'trigger',
+                                        appId: app.id, appName: app.title, appDescription: app.description, appIcon: app.icon, appColor: app.color
+                                    };
+                                    setCurrentFlow([newStep]);
+                                }} />
+                            </Dialog>
+                        </div>
+                    ) : (
+                        <Reorder.Group axis="y" values={currentFlow} onReorder={setCurrentFlow} className="w-full max-w-md space-y-0">
+                            {currentFlow.map((step, index) => (
+                               <React.Fragment key={step.id}>
+                                <Reorder.Item value={step}>
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                            <div className="w-full text-left group cursor-pointer" onClick={() => setStepToUpdate(step.id)}>
+                                                <Card 
+                                                    className={cn("hover:border-primary/50 hover:shadow-lg transition-all relative z-10")}
+                                                    style={{borderColor: step.appId ? step.appColor : undefined}}
+                                                >
+                                                    <CardHeader>
+                                                        <CardTitle className="flex items-center gap-4">
+                                                            <GripVertical className="h-5 w-5 text-muted-foreground absolute left-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                                            <div 
+                                                                className="p-3 rounded-lg text-white" 
+                                                                style={{ backgroundColor: step.appColor || 'hsl(var(--muted))' }}
+                                                            >
+                                                              {getIconForType(step.type)}
+                                                            </div>
+                                                            <div className="flex-1">
+                                                                <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{step.type}</p>
+                                                                <p className="text-xl font-semibold">{step.appName}</p>
+                                                                <p className="text-xs text-muted-foreground">{step.appDescription}</p>
+                                                            </div>
+                                                        </CardTitle>
+                                                    </CardHeader>
+                                                </Card>
+                                            </div>
+                                        </DialogTrigger>
+                                        {stepToUpdate === step.id && <AppSelectionModal installedApps={installedApps} onSelectApp={(app) => handleSelectAppForStep(step.id, app)} />}
+                                    </Dialog>
+                                </Reorder.Item>
+                                {index < currentFlow.length && (
+                                    <div className="h-8 w-px bg-border my-1 self-center" />
+                                )}
+                               </React.Fragment>
+                            ))}
+                        </Reorder.Group>
+                    )}
 
-                    <div className="mt-8 w-full max-w-md">
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button variant="outline" className="w-full border-dashed">
-                                    <Plus className="mr-2 h-4 w-4"/> Add Step
-                                </Button>
-                            </DialogTrigger>
-                            <AppSelectionModal installedApps={installedApps} onSelectApp={(app) => handleSelectAppForStep('new-step', app)} />
-                        </Dialog>
-                    </div>
-
+                    {currentFlow.length > 0 && (
+                        <div className="mt-4 w-full max-w-md">
+                            <Dialog>
+                                <DialogTrigger asChild>
+                                    <Button variant="outline" className="w-full border-dashed" onClick={() => setStepToUpdate('new-action')}>
+                                        <Plus className="mr-2 h-4 w-4"/> Add a step
+                                    </Button>
+                                </DialogTrigger>
+                                <AppSelectionModal installedApps={installedApps} onSelectApp={(app) => {
+                                     const newStep: FlowStep = {
+                                        id: `action-${Date.now()}`, type: 'action',
+                                        appId: app.id, appName: app.title, appDescription: app.description, appIcon: app.icon, appColor: app.color
+                                    };
+                                    setCurrentFlow(prev => [...prev, newStep]);
+                                }} />
+                            </Dialog>
+                        </div>
+                    )}
                 </div>
             </CardContent>
         </Card>
