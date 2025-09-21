@@ -26,7 +26,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Designed for users with no Ads Manager experience; the app provides smart defaults and plain-language guidance.",
       "difference_vs_native": "Native Ads Manager requires manual setup, daily monitoring, and expertise. Meta Auto Pilot automates setup, continuous optimization and plain-language reporting, while still allowing advanced users to inspect and override.",
       "flow": "Audience Creator produces target segments. Then, Insta Ads Designer or Reel Ads produces creatives matched to each segment. Next, Meta Auto Pilot launches campaigns across Facebook & Instagram with one click, auto-allocates budget, and rotates creatives. CRM Memory captures leads and tags the source. Finally, WhatsApp Manager triggers follow-up journeys.",
-      "chain": "Audience Creator → Insta Ads Designer / Reel Ads → Meta Auto Pilot → CRM Memory → WhatsApp Manager.",
+      "chain": "Audience Creator → Insta Ads Designer → Meta Auto Pilot → CRM Memory",
       "expected_results": "Standalone: 85–90% optimization (vs native manual: ~40–50%). Full flow (Audience + Designer + CRM): 95–98% efficiency with up to 2x–3x better ROI and significant reduction of wasted spend.",
       "features": [
         "One-click campaign creation across Facebook & Instagram",
@@ -64,7 +64,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Basic marketing concepts are helpful but not required; templates and guided flows do most of the heavy lifting.",
       "difference_vs_native": "Unlike native Ads Manager where you manually create each ad set and ad, Campaign Builder offers pre-configured blueprints, automated split-testing, and one-click export to Meta Auto Pilot or Ads Manager.",
       "flow": "Choose objective template (Lead, Awareness, Conversion). Select audiences from Audience Creator or upload your own. Assign creatives from Insta Ads Designer or Reel Ads. Review automated split tests and budgets. Export to Meta Auto Pilot or Meta Ads Manager.",
-      "chain": "Audience Creator → Insta Ads Designer / Reel Ads → Campaign Builder → Meta Auto Pilot.",
+      "chain": "Audience Creator → Insta Ads Designer → Campaign Builder → Meta Auto Pilot",
       "expected_results": "Using templates: 70–85% reduction in setup time and 20–40% performance improvement over manual ad setups. Chained with Meta Auto Pilot: aligns to 90%+ campaign efficiency.",
       "features": [
         "Objective-based templates",
@@ -98,7 +98,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero to Low. The interface explains each audience and recommended use; advanced users can tweak parameters.",
       "difference_vs_native": "Native audience tools rely mainly on platform-provided signals. Audience Creator fuses platform signals with your CRM Memory and Market Library insights to create higher-intent segments.",
       "flow": "Import CRM Memory lists or provide seed customers. Choose intent filters (behavioral, demographic, property type). Build lookalikes and layered segments. Export directly to Meta Auto Pilot or Campaign Builder.",
-      "chain": "CRM Memory → Audience Creator → Campaign Builder / Meta Auto Pilot.",
+      "chain": "CRM Memory → Audience Creator → Campaign Builder",
       "expected_results": "Standalone boosts CTR and CVR by 30–50% vs generic audiences. In full flow, reduces wasted impressions leading to 20–40% lower CPA.",
       "features": [
         "Seed-based lookalike creation",
@@ -131,7 +131,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Drag-and-drop templates, auto-copy suggestions, and smart layout protect you from common creative mistakes.",
       "difference_vs_native": "Native creative tools give raw assets. Insta Ads Designer provides finished, ad-ready creatives tailored to Instagram’s formats and conversion behaviors.",
       "flow": "Select campaign objective and audience. Choose templates and upload assets or generate visuals. Use auto-suggested copy and CTAs tuned to the audience. Export as creative sets to Meta Auto Pilot or Campaign Builder.",
-      "chain": "Audience Creator → Insta Ads Designer → Campaign Builder → Meta Auto Pilot.",
+      "chain": "Audience Creator → Insta Ads Designer → Campaign Builder",
       "expected_results": "Well-constructed creatives from this tool typically increase engagement 25–60% over unoptimized assets and lift conversion rates when matched to audience segments.",
       "features": [
         "Platform-optimized templates (Feed & Stories)",
@@ -164,7 +164,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Choose a template, select assets or let the AI assemble them, then export to Meta Auto Pilot.",
       "difference_vs_native": "Native video editors are general-purpose. Reel Ads focuses on Reels-specific engagement patterns, pacing, and creative hooks proven to perform.",
       "flow": "Select format and hook style. Provide assets or script via UGC Script Writer. Apply motion presets and brand kit from Brand Creator or Automated Rebranding. Export to Campaign Builder or Meta Auto Pilot.",
-      "chain": "UGC Script Writer → Reel Ads → Meta Auto Pilot → CRM Memory.",
+      "chain": "UGC Script Writer → Reel Ads → Meta Auto Pilot",
       "expected_results": "Reels made with best-practice hooks and pacing can increase view-through and conversion by 2x vs repurposed long-form video. Expect higher CTRs especially in discovery campaigns.",
       "features": [
         "UGC-style templates and pacing presets",
@@ -197,7 +197,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Scheduling and reply templates make it approachable for teams of any size.",
       "difference_vs_native": "Native Creator Studio provides scheduling but limited team workflows. Instagram Admin adds multi-user approvals, reply automation, sentiment analysis, and campaign tagging tied to CRM Memory.",
       "flow": "Plan content in Story Planner or Landing Page Builder. Schedule posts via Instagram Admin. Monitor replies and route leads to CRM Memory. Feed performance into Market Reports.",
-      "chain": "Story Planner → Instagram Admin → CRM Memory → Market Reports.",
+      "chain": "Story Planner → Instagram Admin → CRM Memory",
       "expected_results": "Improved engagement response times (automated replies reduce response time by 60–90%) and increased consistency of posting which improves audience retention over time.",
       "features": [
         "Post scheduling and calendar",
@@ -230,7 +230,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Templates and smart animation presets remove the need for motion-design expertise.",
       "difference_vs_native": "Native story creation on Instagram is manual and single-frame. Story Planner supports multi-frame story arcs, animation easing presets, and ad-ready export naming conventions.",
       "flow": "Choose story sequence template (teaser, walkthrough, listing). Add frames, apply animation presets, and assign CTAs. Export frames as ad sets to Insta Ads Designer or schedule via Instagram Admin.",
-      "chain": "Insta Ads Designer → Story Planner → Instagram Admin / Meta Auto Pilot.",
+      "chain": "Insta Ads Designer → Story Planner → Instagram Admin",
       "expected_results": "Story-driven ad sequences typically increase completion rates and higher intent interactions. Expect 20–50% higher swipe-up / CTA interaction when using story arcs vs static frames.",
       "features": [
         "Multi-frame storyboard editor",
@@ -263,7 +263,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Provide a script and brand assets; the AI handles the rest.",
       "difference_vs_native": "Recording a presenter requires studio time or in-person shoots. AI Video Presenter produces consistent, brand-compliant presentations at scale without equipment.",
       "flow": "Provide script or use UGC Script Writer to auto-generate. Choose presenter style and brand kit from Brand Creator. Generate video and edit with AI YouTube Video Editor if needed. Publish on Landing Page Builder or social channels.",
-      "chain": "UGC Script Writer → Brand Creator → AI Video Presenter → AI YouTube Video Editor → Landing Page Builder.",
+      "chain": "UGC Script Writer → AI Video Presenter → AI YouTube Video Editor",
       "expected_results": "Faster production cycles (minutes vs days), consistent messaging, and improved viewer retention compared to text-only assets. Expect 2x better pitch clarity and higher lead conversion when used on landing pages.",
       "features": [
         "Lifelike presenter models and voice options",
@@ -296,7 +296,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Input basic prompts (product, pain point, call-to-action) and receive multiple script variants optimized for different hooks.",
       "difference_vs_native": "Writing scripts manually requires creative effort and testing. This tool provides tested UGC structures that align with best-practice hooks and durations for Reels, Stories, and Feed.",
       "flow": "Input product or listing details. Choose tone and target audience. Generate multiple short scripts. Send scripts to Reel Ads or AI Video Presenter for production.",
-      "chain": "UGC Script Writer → Reel Ads / AI Video Presenter → Meta Auto Pilot.",
+      "chain": "UGC Script Writer → Reel Ads → Meta Auto Pilot",
       "expected_results": "UGC-style scripts increase perceived authenticity, often improving CTR and CVR by 20–50% versus overly produced ad copy when targeted correctly.",
       "features": [
         "Multiple hook variations",
@@ -329,7 +329,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Basic familiarity with YouTube is helpful, but the editor automates most decisions.",
       "difference_vs_native": "Native editors require manual trimming and optimization. This editor uses platform best-practices to prepare files for higher discoverability and retention.",
       "flow": "Upload raw footage (or AI Video Presenter output). The editor auto-detects highlights, trims, and suggests chapters. Export full video for YouTube and clips for Reels/TikTok. Push metadata to Landing Page Builder and Market Reports.",
-      "chain": "AI Video Presenter → AI YouTube Video Editor → Reel Ads → Landing Page Builder.",
+      "chain": "AI Video Presenter → AI YouTube Video Editor → Reel Ads",
       "expected_results": "Improved view retention and search performance; repurposed clips boost discovery and bring traffic back to landing pages. Expect improved average view duration and higher impression-to-click rates.",
       "features": [
         "Auto-trim and highlight detection",
@@ -362,7 +362,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Pre-built blocks, templates and a WYSIWYG enable anyone to build a page quickly.",
       "difference_vs_native": "Traditional web builders require design skill or developer time. This tool provides conversion-tested layouts, real estate-specific modules, and instant CRM connectivity.",
       "flow": "Choose template (listing, lead-gen, project). Pull content from Listing Generator or Market Library. Configure forms and CRM mappings to CRM Memory and WhatsApp Manager. Publish and link to campaigns in Meta Auto Pilot.",
-      "chain": "Listing Generator → Landing Page Builder → Meta Auto Pilot → CRM Memory.",
+      "chain": "Listing Generator → Landing Page Builder → CRM Memory",
       "expected_results": "Pages built here convert 20–60% better than generic landing pages thanks to proven layouts and direct campaign mappings. Expect faster lead capture and improved quality due to CRM sync.",
       "features": [
         "Conversion-focused templates",
@@ -395,7 +395,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Upload brand assets or describe your brand and the tool applies a consistent design system.",
       "difference_vs_native": "Manual rebranding is slow and prone to inconsistency. Automated Rebranding creates consistent, production-ready assets in minutes.",
       "flow": "Upload brand assets or analyze documents with Brand Creator. Provide commands (e.g., 'apply brand to brochure'). Export rebranded files to Brochure Translator, Insta Ads Designer, or Landing Page Builder.",
-      "chain": "Brand Creator → Automated Rebranding → Insta Ads Designer / Landing Page Builder / Brochure Translator.",
+      "chain": "Brand Creator → Automated Rebranding → Insta Ads Designer",
       "expected_results": "Consistency in brand application reduces manual design errors and speeds time-to-market by 70–90%. Expect better brand recall and professional-looking assets without a designer.",
       "features": [
         "Brand kit application engine",
@@ -428,7 +428,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Upload a brochure PDF or source file and choose target languages.",
       "difference_vs_native": "Manual translation requires design adjustments and time. This tool automates layout-adaptive translations while keeping brand tone consistent.",
       "flow": "Upload brochure or export from Automated Rebranding. Choose target languages and localization tone. Review and export localized PDFs.",
-      "chain": "Automated Rebranding → Brochure Translator → Listing Generator / Landing Page Builder.",
+      "chain": "Automated Rebranding → Brochure Translator → Listing Generator",
       "expected_results": "Reduces translation turnaround from days to minutes and preserves layout fidelity, improving multi-market go-to-market speed by orders of magnitude.",
       "features": [
         "Layout-aware translation",
@@ -460,7 +460,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Basic editing skills helpful for minor modifications.",
       "difference_vs_native": "This tool is deprecated in favor of Automated Rebranding and Brochure Translator which offer layout-aware editing and translation.",
       "flow": "Use only for legacy edits. For production workflows, migrate to Automated Rebranding and Brochure Translator.",
-      "chain": "N/A (Deprecated).",
+      "chain": "Visual PDF Editor (Deprecated) → Automated Rebranding",
       "expected_results": "Suitable for quick, low-risk edits; newer specialized tools provide better results and automation.",
       "features": [
         "Quick text edits",
@@ -488,7 +488,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Just describe the changes you want to make.",
       "difference_vs_native": "Traditional PDF editors require manual selection and manipulation of elements. PDF EDITOR AI understands your intent and executes the changes for you.",
       "flow": "Upload a PDF, provide a list of instructions, and the AI generates a new, edited PDF.",
-      "chain": "Brand Creator -> PDF EDITOR AI -> Automated Rebranding",
+      "chain": "Brand Creator → PDF EDITOR AI → Automated Rebranding",
       "expected_results": "Dramatically faster PDF edits, especially for batch changes or complex documents. Ensures brand consistency when used with Brand Creator.",
       "features": [
         "Natural language editing",
@@ -520,7 +520,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. If you can describe it, you can create it.",
       "difference_vs_native": "Stock photo sites offer limited, generic options. Images HQ AI provides unique, custom-tailored images that perfectly match your brand and listing.",
       "flow": "Write a descriptive prompt (e.g., 'A modern living room with a view of the Dubai skyline at sunset'). The AI generates image options. Select and download the one you like.",
-      "chain": "Images HQ AI -> Insta Ads Designer -> Landing Page Builder",
+      "chain": "Images HQ AI → Insta Ads Designer → Landing Page Builder",
       "expected_results": "Unique, eye-catching visuals that increase engagement and make your listings stand out. Eliminates the cost and hassle of stock photography.",
       "features": [
         "Text-to-image generation",
@@ -552,7 +552,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. No design skills needed.",
       "difference_vs_native": "Hiring a designer is expensive and time-consuming. Logo Creator AI delivers professional results instantly, at a fraction of the cost.",
       "flow": "Enter your company name, industry, and style preferences (e.g., 'modern, minimalist, luxury'). The AI generates logos. Pick your favorite and download it.",
-      "chain": "Logo Creator AI -> Brand Creator -> Automated Rebranding",
+      "chain": "Logo Creator AI → Brand Creator → Automated Rebranding",
       "expected_results": "A professional and unique logo that establishes your brand identity. Saves significant time and money compared to traditional design processes.",
       "features": [
         "AI-powered logo design",
@@ -584,7 +584,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Provide source imagery or select a template; advanced editing is optional.",
       "difference_vs_native": "Hiring drone operators is expensive and requires scheduling. This app generates high-quality aerial sequences quickly and consistently for marketing use.",
       "flow": "Upload asset(s) or select property coordinates. Choose shot sequence (approach, orbit, reveal). Add music and titles. Export to Landing Page Builder, AI YouTube Video Editor, or Reel Ads.",
-      "chain": "Listing Generator → Aerial View Generator → AI YouTube Video Editor → Landing Page Builder.",
+      "chain": "Listing Generator → Aerial View Generator → AI YouTube Video Editor",
       "expected_results": "High-impact visual content that improves listing engagement and time-on-page. Expect higher click-throughs on listings and better perceived listing quality.",
       "features": [
         "Cinematic flight presets",
@@ -616,7 +616,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. The tool guides you through required fields and validates common portal errors automatically.",
       "difference_vs_native": "Portal dashboards require manual submission per listing. Listing Manager centralizes preparation and syndication across portals, saving time and reducing errors.",
       "flow": "Draft listing with Listing Generator or import from CRM Memory. Enrich with media from Aerial View Generator and Insta Ads Designer. Validate fields and publish to Property Finder, Bayut via Property Finder Pilot / Bayut Pilot. Track distribution with Listing Performance.",
-      "chain": "Listing Generator → Listing Manager → Property Finder Pilot / Bayut Pilot → Listing Performance.",
+      "chain": "Listing Generator → Listing Manager → Property Finder Pilot",
       "expected_results": "Reduced publishing time by up to 80% and fewer portal rejections. Higher-quality listings lead to increased views and faster inquiries.",
       "features": [
         "Unified listing editor",
@@ -650,7 +650,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Metrics are explained in plain language with recommended actions.",
       "difference_vs_native": "Portal analytics are siloed. Listing Performance provides cross-portal comparatives, trend analysis, and campaign attribution to optimize listing exposure.",
       "flow": "Pull metrics from portals and campaigns. Map inquiries to CRM Memory. Surface optimization suggestions (title tweaks, price signals).",
-      "chain": "Listing Manager → Meta Auto Pilot / Campaign Builder → CRM Memory → Listing Performance.",
+      "chain": "Listing Manager → Meta Auto Pilot → CRM Memory",
       "expected_results": "Faster identification of underperforming listings and actionable optimization suggestions; improves click-to-inquiry rates and shortens time-to-offer.",
       "features": [
         "Cross-portal analytics dashboard",
@@ -684,7 +684,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Provide property details and photos, the tool generates a portal-optimized listing.",
       "difference_vs_native": "Writing effective listing copy manually is time-consuming. This tool automates copy generation and enforces portal constraints to reduce rejections and boost exposure.",
       "flow": "Input property data or import from CRM Memory. Generate descriptions and optimized titles. Export to Listing Manager and Landing Page Builder.",
-      "chain": "CRM Memory → Listing Generator → Listing Manager → Landing Page Builder.",
+      "chain": "CRM Memory → Listing Generator → Listing Manager",
       "expected_results": "Higher-quality listings that attract more views and inquiries; expect improved search ranking on portals and faster lead rates.",
       "features": [
         "Portal-specific templates",
@@ -717,7 +717,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. The pilot handles API complexity; users manage listing approval and scheduling.",
       "difference_vs_native": "Instead of manual portal uploads, this app automates the entire submission and lifecycle process with robust validation to avoid rejections.",
       "flow": "Prepare listing in Listing Manager. Validate fields and media. Publish via Property Finder Pilot and monitor with Listing Performance.",
-      "chain": "Listing Manager → Property Finder Pilot → Listing Performance.",
+      "chain": "Listing Manager → Property Finder Pilot → Listing Performance",
       "expected_results": "Faster publishing and fewer errors; reduces manual portal handling time dramatically and keeps listings live and updated reliably.",
       "features": [
         "API-based publishing",
@@ -749,7 +749,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Designed to hide API complexity while providing publishing transparency.",
       "difference_vs_native": "Automates Bayut-specific publishing rules and saves substantial manual effort compared to portal UIs.",
       "flow": "Draft in Listing Manager. Validate and publish via Bayut Pilot. Monitor with Listing Performance.",
-      "chain": "Listing Manager → Bayut Pilot → Listing Performance.",
+      "chain": "Listing Manager → Bayut Pilot → Listing Performance",
       "expected_results": "Reduced publishing errors and faster time-to-live for listings. Increases portal visibility and reduces operational workload.",
       "features": [
         "Bayut API publishing",
@@ -781,7 +781,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Input basic property details and receive a transparent valuation breakdown.",
       "difference_vs_native": "Manual valuation requires local expertise and time. This tool provides instant, data-backed estimates with reasoning and comparable references.",
       "flow": "Input property details or pull from Listing Generator. Review estimate and contributing factors. Push suggested price to Listing Generator and Landing Page Builder or use in Payment Planner and Investor Matching.",
-      "chain": "Listing Generator → AI Price Estimator → Landing Page Builder / Payment Planner.",
+      "chain": "Listing Generator → AI Price Estimator → Payment Planner",
       "expected_results": "Faster pricing decisions with confidence intervals; reduces overpricing and underpricing mistakes, improving time-to-offer.",
       "features": [
         "Comparable analysis",
@@ -814,7 +814,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Enter sale price and commission rules; the tool handles the rest.",
       "difference_vs_native": "Manual calculations are error-prone. This app standardizes commission logic, reducing accounting disputes.",
       "flow": "Input sale price and applicable commission rules. Generate split scenarios and export settlement statements. Sync with CRM Memory and Payment Planner.",
-      "chain": "CRM Memory → Commission Calculator → Payment Planner.",
+      "chain": "CRM Memory → Commission Calculator → Payment Planner",
       "expected_results": "Faster settlements and fewer disputes — team productivity increases and accounting accuracy improves significantly.",
       "features": [
         "Tiered commission logic",
@@ -846,7 +846,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Basic knowledge of sales terms is helpful but templates handle common scenarios.",
       "difference_vs_native": "Manual payment schedules require spreadsheets and legal reviews. Payment Planner automates plans and generates client-ready documents.",
       "flow": "Input price, down payment and milestone rules. Generate schedule and client documents. Integrate with CRM Memory and Payment collection workflows.",
-      "chain": "AI Price Estimator → Payment Planner → CRM Memory.",
+      "chain": "AI Price Estimator → Payment Planner → CRM Memory",
       "expected_results": "Faster negotiation cycles and clearer client expectations; reduces errors in payment scheduling and reporting.",
       "features": [
         "Milestone-driven scheduling",
@@ -878,7 +878,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Profiles and preferences can be managed by sales teams or investors themselves.",
       "difference_vs_native": "Manual matchmaking is slow. Automated matching surfaces high-probability fits and accelerates introductions.",
       "flow": "Create investor profiles in CRM Memory. Feed project inventory from Listing Manager. Run match algorithms and create introduction lists.",
-      "chain": "CRM Memory → Listing Manager → Investor Matching → Multi-Offer Builder.",
+      "chain": "CRM Memory → Listing Manager → Investor Matching",
       "expected_results": "Faster investor conversions and better fit; increases qualified introductions and shortens deal cycles.",
       "features": [
         "Profile-based matching algorithm",
@@ -910,7 +910,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. The tool presents easy comparison views and suggested recommendations.",
       "difference_vs_native": "Manual comparison using spreadsheets is time-consuming. This tool automates comparison creation and produces client-ready exportables.",
       "flow": "Select properties from Listing Manager. Add payment plans from Payment Planner and price estimates from AI Price Estimator. Generate comparison PDFs and interactive pages via Landing Page Builder.",
-      "chain": "Listing Manager → AI Price Estimator → Payment Planner → Multi-Offer Builder → Landing Page Builder.",
+      "chain": "Listing Manager → AI Price Estimator → Multi-Offer Builder",
       "expected_results": "Improved client decision speed and clarity; reduces negotiation time and increases conversion rates.",
       "features": [
         "Side-by-side financial comparisons",
@@ -943,7 +943,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Templates and flows make campaign creation straightforward.",
       "difference_vs_native": "Manual broadcasting is laborious and error-prone. This manager automates personalization at scale and ties messages to campaign attribution.",
       "flow": "Create audience or import from CRM Memory. Select templates or craft messages. Schedule broadcasts or set drip triggers based on CRM events.",
-      "chain": "CRM Memory → WhatsApp Manager → Meta Auto Pilot / Campaign Builder for attribution.",
+      "chain": "CRM Memory → WhatsApp Manager → Meta Auto Pilot",
       "expected_results": "Higher lead engagement and conversion; automated follow-ups reduce lead drop-off and increase contact rates significantly.",
       "features": [
         "Personalized broadcast templates",
@@ -975,7 +975,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Enter a lead identifier and receive an enrichment profile.",
       "difference_vs_native": "Manual research is slow. This tool automates enrichment, providing quick background checks and contact context.",
       "flow": "Input lead or import from CRM Memory. Run enrichment to append profiles and scoring. Route enriched leads to sales workflows or WhatsApp Manager.",
-      "chain": "CRM Memory → Lead Investigator AI → WhatsApp Manager → CRM Memory.",
+      "chain": "CRM Memory → Lead Investigator AI → WhatsApp Manager",
       "expected_results": "Faster qualification and personalized outreach; increases response rates and reduces wasted outreach time.",
       "features": [
         "Profile enrichment",
@@ -1007,7 +1007,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Search and filters are intuitive and return contextualized results.",
       "difference_vs_native": "Scattered market data requires manual consolidation. Market Library centralizes verified project data and embeds trust signals for decision-making.",
       "flow": "Search or browse projects. Pull data into Market Reports or AI Price Estimator. Use verified details in Listing Generator or Investor Matching.",
-      "chain": "Market Library → AI Price Estimator → Listing Generator → Market Reports.",
+      "chain": "Market Library → AI Price Estimator → Market Reports",
       "expected_results": "Faster research cycles and more confident pricing and positioning decisions; reduces time spent validating developer claims.",
       "features": [
         "Verified project database",
@@ -1039,7 +1039,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Choose pre-built templates or customize sections and data sources.",
       "difference_vs_native": "Manual reporting is slow and inconsistent. Market Reports automates report generation and embeds analytics from the Market Library and Listing Performance.",
       "flow": "Select region, timeframe and data sources. Customize narrative sections and visuals. Export PDF and distribute via CRM Memory workflows.",
-      "chain": "Market Library → Listing Performance → Market Reports → CRM Memory.",
+      "chain": "Market Library → Listing Performance → Market Reports",
       "expected_results": "Faster stakeholder reporting and clearer market insights for decision making. Cuts reporting time by 80% while improving clarity.",
       "features": [
         "Branded PDF exports",
@@ -1071,7 +1071,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Alerts and dashboards are presented with pragmatic advice.",
       "difference_vs_native": "Manual trend spotting is retrospective. This tool provides early warnings and actionable triggers to adjust marketing or pricing strategy proactively.",
       "flow": "Configure regions and alert thresholds. Receive periodic insights and alerts. Feed signals into Campaign Builder, AI Price Estimator, or Market Reports.",
-      "chain": "Market Trends Watcher → AI Price Estimator / Campaign Builder → Market Reports.",
+      "chain": "Market Trends Watcher → AI Price Estimator → Market Reports",
       "expected_results": "Earlier response to market shifts enabling better pricing and marketing decisions; reduces time-to-adjust and mitigates inventory stagnation.",
       "features": [
         "Real-time trend monitoring",
@@ -1103,7 +1103,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Upload brand assets or raw documents and receive a complete brand kit.",
       "difference_vs_native": "Manual brand creation requires designers and brand strategists. This tool rapidly produces a usable brand kit with guidelines for the rest of the suite to use.",
       "flow": "Upload brand files or documents. Generate brand kit and usage rules. Apply kit across Automated Rebranding, Insta Ads Designer, and Landing Page Builder.",
-      "chain": "Brand Creator → Automated Rebranding → Insta Ads Designer / Landing Page Builder.",
+      "chain": "Brand Creator → Automated Rebranding → Insta Ads Designer",
       "expected_results": "Faster brand enablement and consistent application across assets; reduces rework and preserves brand integrity across campaigns.",
       "features": [
         "Auto-extracted palettes and fonts",
@@ -1135,7 +1135,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Low. Basic CRM concepts apply; onboarding templates simplify setup.",
       "difference_vs_native": "Unlike generic CRMs, CRM Memory is deeply integrated with the suite to supply enriched audiences, match investors, and power automated flows.",
       "flow": "Ingest leads from campaigns and listing inquiries. Enrich with Lead Investigator AI and Market Library context. Drive automations in WhatsApp Manager and Meta Auto Pilot.",
-      "chain": "Meta Auto Pilot → Audience Creator → CRM Memory → WhatsApp Manager.",
+      "chain": "Meta Auto Pilot → CRM Memory → WhatsApp Manager",
       "expected_results": "Cleaner data, better lead follow-up, and measurable increases in conversion due to context-rich interactions; reduces lead leakage and improves attribution.",
       "features": [
         "Full interaction timeline",
@@ -1168,7 +1168,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Interact in natural language; the assistant learns and improves over time.",
       "difference_vs_native": "Generic chatbots lack domain memory. Assistant uses suite context to provide accurate, actionable responses tied to real data.",
       "flow": "Grant read permissions to CRM Memory and Market Library (opt-in). Ask natural language questions or request workflows. Assistant executes or generates content, which can be pushed to other apps.",
-      "chain": "CRM Memory → Assistant → Campaign Builder / Landing Page Builder / Market Reports.",
+      "chain": "CRM Memory → Assistant → Campaign Builder",
       "expected_results": "Faster content generation, fewer back-and-forths, and more consistent operational decisions; reduces routine task time by up to 60–80%.",
       "features": [
         "Trainable on your data",
@@ -1201,7 +1201,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Copy-paste embed script and configure data sources.",
       "difference_vs_native": "Generic chat widgets respond generically. This assistant uses Market Library, Listing Manager and CRM Memory to provide accurate, commerce-ready answers.",
       "flow": "Install embed script on website. Configure data sources and intents. Capture leads into CRM Memory and hand off to WhatsApp Manager as needed.",
-      "chain": "Listing Manager → Embeddable Site Assistant → CRM Memory → WhatsApp Manager.",
+      "chain": "Listing Manager → Embeddable Site Assistant → CRM Memory",
       "expected_results": "Higher on-site engagement and more qualified lead captures; reduces bounce and increases conversion on landing pages.",
       "features": [
         "Easy embed script",
@@ -1234,7 +1234,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Medium. Basic cloud or devops familiarity recommended for advanced configurations; presets make common setups trivial.",
       "difference_vs_native": "Manually provisioning cloud VMs is error-prone. VM Creator automates secure, repeatable provisioning and environment setup.",
       "flow": "Choose preset (web app, worker, data pipeline). Configure sizing and network. Provision VM with startup scripts and monitoring.",
-      "chain": "Creative Execution Terminal for heavy creative tasks requiring compute.",
+      "chain": "VM Creator → Creative Execution Terminal → AI YouTube Video Editor",
       "expected_results": "Faster environment provisioning and consistent developer environments which reduce configuration drift and deployment errors.",
       "features": [
         "Preset stacks and scripts",
@@ -1264,7 +1264,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Medium. Familiarity with creative workflows helps but templates are available for common pipelines.",
       "difference_vs_native": "Local rendering or manual orchestration is slow and inconsistent. This terminal automates and scales creative workloads reliably.",
       "flow": "Define creative pipeline (e.g., generate 50 listing videos). Assign presets and assets from Brand Creator and Aerial View Generator. Execute on provisioned VMs and export to distribution channels.",
-      "chain": "VM Creator → Creative Execution Terminal → AI YouTube Video Editor / Listing Manager.",
+      "chain": "VM Creator → Creative Execution Terminal → AI YouTube Video Editor",
       "expected_results": "Reliable large-batch creative production, faster throughput, and consistent output quality across large campaigns.",
       "features": [
         "Queue and worker orchestration",
