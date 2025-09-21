@@ -21,6 +21,7 @@ import {
   LayoutGrid,
   Bot,
   Database,
+  HeartPulse,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
@@ -34,6 +35,7 @@ const mainNavLinks = [
 ];
 
 const secondaryNavLinks = [
+    { href: '/dashboard/system-health', icon: <HeartPulse className="h-5 w-5" />, label: 'System Health' },
     { href: '/dashboard/settings', icon: <Settings className="h-5 w-5" />, label: 'Settings' }
 ];
 
