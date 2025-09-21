@@ -6,20 +6,42 @@ import { notFound, useParams } from 'next/navigation';
 import { tools } from '@/lib/tools-client';
 import { appDetails } from '@/lib/blog-content';
 import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
-import { BrainCircuit, Clock2, CheckCircle } from 'lucide-react';
+import { BrainCircuit, Clock2, CheckCircle, Upload, Sparkles, Download } from 'lucide-react';
 
 
-// Function to merge data with details, now on the server
+// Function to merge data with details
 const mergeToolData = (toolId: string) => {
     const toolData = tools.find(t => t.id === toolId);
     if (!toolData) return null;
 
-    const detailsContent = appDetails.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === toolId);
+    const detailsContent = appDetails.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === toolId.toLowerCase());
     
+    if (!detailsContent) {
+      // Fallback if no specific details are found
+      return {
+        ...(toolData as any),
+        longDescription: toolData.description,
+        details: {
+          steps: [
+            { icon: <Upload />, text: 'Provide your source content or instructions.' },
+            { icon: <Sparkles />, text: 'The AI analyzes your input and generates the content.' },
+            { icon: <Download />, text: 'Review, refine, and use your new AI-generated asset.' },
+          ],
+          aiVsManual: [
+            { metric: "Knowledge Required", manual: "High", ai: "Low", icon: <BrainCircuit /> },
+            { metric: "Efficiency", manual: "Manual", ai: "Automated", icon: <Clock2 /> },
+            { metric: "Expected Result", manual: "Variable", ai: "Consistent", icon: <CheckCircle /> },
+          ],
+          synergy: [],
+          faqs: [],
+        },
+      };
+    }
+
     // Create a new details structure based on the new JSON
     const newDetails = {
-        steps: detailsContent?.flow.split('Step ').slice(1).map((s, i) => ({ 
-            icon: <p className="font-bold text-lg">{i+1}</p>, 
+        steps: detailsContent?.flow.split('. ').filter(s => s.trim()).map((s, i) => ({ 
+            icon: i === 0 ? <Upload /> : i === 1 ? <Sparkles /> : <Download />, 
             text: s.trim() 
         })) || [],
         aiVsManual: [
