@@ -226,11 +226,14 @@ export const tools: Feature[] = mergeToolData().map(tool => {
             ];
             tool.renderResult = (result, toast) => (
                 <div className="space-y-4">
-                    <Alert>
-                        <Sparkles className="h-4 w-4" />
-                        <AlertTitle>AI Summary</AlertTitle>
-                        <AlertDescription>{result.summary}</AlertDescription>
-                    </Alert>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>AI Summary</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p>{result.summary}</p>
+                        </CardContent>
+                    </Card>
                     {result.brandInfo && (
                         <Card>
                             <CardHeader><CardTitle>Extracted Brand Info</CardTitle></CardHeader>
@@ -284,6 +287,22 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                  { id: 'vibe', name: 'Vibe', type: 'select', options: ['Exciting & Upbeat', 'Authentic & Relatable', 'Luxurious & Exclusive', 'Informative & Educational'] },
                  { id: 'hookStyle', name: 'Hook Style', type: 'select', options: ['Question-based', 'Problem/Solution', 'Surprising Stat', 'Direct & Bold'] },
             ];
+            tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                    {result.scripts.map((script: any, index: number) => (
+                        <Card key={index}>
+                            <CardHeader>
+                                <CardTitle>Script Variation {index + 1}</CardTitle>
+                            </CardHeader>
+                            <CardContent className="space-y-3 text-sm">
+                                <p><strong>Hook:</strong> {script.hook}</p>
+                                <p><strong>Body:</strong> {script.body}</p>
+                                <p><strong>CTA:</strong> {script.callToAction}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            );
             break;
         case 'insta-ads-designer':
             tool.creationFields = [
