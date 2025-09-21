@@ -27,7 +27,7 @@ export default function PricingPage() {
 
   const allApps = pricingData.apps;
   const bundles = pricingData.bundles.filter(b => b.name !== 'ENTRESTATE PRO');
-  const proPlan = pricingData.bundles.find(b => b.name === 'ENTRESTATE PRO');
+  const proPlan = pricingData.bundles.find(b => b.name === 'ENTRESTATE PROT');
 
   const handleAppSelection = (appName: string) => {
     setSelectedApps(prev =>
@@ -41,15 +41,16 @@ export default function PricingPage() {
     const bundle = bundles.find(b => b.name === bundleName);
     if (!bundle) return;
 
-    const isBundleCurrentlySelected =
+    // Check if this exact bundle is already selected
+    const isCurrentlySelected =
       bundle.apps.length === selectedApps.length &&
       bundle.apps.every(app => selectedApps.includes(app));
 
-    if (isProSelected) {
-      setSelectedApps(bundle.apps);
-    } else if (isBundleCurrentlySelected) {
+    if (isCurrentlySelected) {
+      // If the clicked bundle is already selected, deselect it
       setSelectedApps([]);
     } else {
+      // Otherwise, select the apps of the clicked bundle (this also handles switching from PRO)
       setSelectedApps(bundle.apps);
     }
   };
@@ -76,16 +77,14 @@ export default function PricingPage() {
   }, [selectedApps, allApps]);
 
   const activeBundle = useMemo(() => {
-    if (!proPlan || !allApps.every(app => selectedApps.includes(app.name))) {
-      const foundBundle = bundles.find(bundle =>
-        bundle.apps.length > 0 &&
+    if (isProSelected) return null; // Don't show a bundle if PRO is selected
+    
+    const foundBundle = bundles.find(bundle =>
         bundle.apps.length === selectedApps.length &&
         bundle.apps.every(app => selectedApps.includes(app))
       );
-      return foundBundle;
-    }
-    return null;
-  }, [selectedApps, bundles, proPlan, allApps]);
+    return foundBundle;
+  }, [selectedApps, bundles, isProSelected]);
 
 
   const finalPrice = isProSelected && proPlan ? proPlan.monthly_price : activeBundle ? activeBundle.monthly_price : individualAppsPrice;
@@ -167,9 +166,6 @@ export default function PricingPage() {
                       >
                          <Badge variant={isSelected ? "default" : "secondary"} className="absolute -top-2 -right-2">Bundle</Badge>
                         <div className="flex items-center gap-3">
-                           <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center flex-shrink-0", isSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
-                            {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
-                          </div>
                           <p className="font-semibold text-foreground">{bundle.name}</p>
                         </div>
                         {savings > 0 && <p className="text-xs font-semibold text-primary mt-2">Save ${savings.toFixed(2)}/mo</p>}
