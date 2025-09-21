@@ -13,6 +13,10 @@ import { Button } from '@/components/ui/button';
 import { Feature, tools as features, FilterCategory } from '@/lib/tools-client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 const filterCategories: FilterCategory[] = [
     'All', 'Marketing', 'Lead Gen', 'Creative', 'Sales Tools', 'Social & Comms', 
@@ -25,58 +29,190 @@ const announcements = [
     "The Investor Matching tool now supports commercial properties.",
 ];
 
-const FeatureCard = ({ feature }: { feature: Feature }) => {
+const FeatureCard = ({
+  feature,
+  onClick,
+}: {
+  feature: Feature;
+  onClick: (feature: Feature) => void;
+}) => {
   return (
-    <Link href={`/apps/${feature.id}`} className="group flex flex-col h-full">
-        <Card 
-            className="flex flex-col flex-grow bg-card/80 backdrop-blur-lg border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 h-full"
-        >
-          <CardContent className="flex flex-col flex-grow p-6">
-            <div className='flex items-center justify-between mb-4'>
-                <div 
-                  className="p-3 rounded-lg w-fit text-white"
-                  style={{ backgroundColor: feature.color }}
-                >
-                    {React.cloneElement(feature.icon, { className: 'h-8 w-8' })}
-                </div>
-                 {(feature.badge) && (
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger>
-                         <span className={cn(
-                            `px-2 py-0.5 text-xs font-semibold text-white rounded-full transition-all duration-200`,
-                             feature.badge === 'NEW' ? 'bg-blue-500' : 
-                             feature.badge === 'AUTO' ? 'bg-orange-500' : 'bg-gray-500'
-                         )}>
-                            {feature.badge}
-                        </span>
-                      </TooltipTrigger>
-                      <TooltipContent side="top">
-                        <p>{
-                            feature.badge === 'NEW' ? 'This is a brand new feature!' : 
-                            feature.badge === 'AUTO' ? 'This is an automated workflow pilot.' : 
-                            'This feature is deprecated.'
-                        }</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                )}
+    <Card 
+        className="group flex flex-col h-full bg-card/80 backdrop-blur-lg border-border hover:border-primary/30 transition-all duration-300 cursor-pointer hover:-translate-y-1"
+        onClick={() => onClick(feature)}
+    >
+      <CardContent className="flex flex-col flex-grow p-6">
+        <div className='flex items-center justify-between mb-4'>
+            <div 
+              className="p-3 rounded-lg w-fit text-white"
+              style={{ backgroundColor: feature.color }}
+            >
+                {React.cloneElement(feature.icon, { className: 'h-8 w-8' })}
             </div>
-            <h2 className="text-2xl font-bold font-heading text-foreground mb-2">{feature.title}</h2>
-            <p className="text-lg text-foreground/70 flex-grow">{feature.description}</p>
-             <div className="mt-6">
-                <Button variant="link" className="p-0 text-base text-primary">
-                    Explore App
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </Button>
-             </div>
-          </CardContent>
-        </Card>
-    </Link>
+             {(feature.badge) && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger>
+                     <span className={cn(
+                        `px-2 py-0.5 text-xs font-semibold text-white rounded-full transition-all duration-200`,
+                         feature.badge === 'NEW' ? 'bg-blue-500' : 
+                         feature.badge === 'AUTO' ? 'bg-orange-500' : 'bg-gray-500'
+                     )}>
+                        {feature.badge}
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent side="top">
+                    <p>{
+                        feature.badge === 'NEW' ? 'This is a brand new feature!' : 
+                        feature.badge === 'AUTO' ? 'This is an automated workflow pilot.' : 
+                        'This feature is deprecated.'
+                    }</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+        </div>
+        <h2 className="text-2xl font-bold font-heading text-foreground mb-2">{feature.title}</h2>
+        <p className="text-lg text-foreground/70 flex-grow">{feature.description}</p>
+         <div className="mt-6">
+            <Button variant="link" className="p-0 text-base text-primary">
+                Explore App
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+            </Button>
+         </div>
+      </CardContent>
+    </Card>
   );
 };
 
+
+const FeatureModal = ({ feature, onClose }: { feature: Feature | null, onClose: () => void }) => {
+  if (!feature) return null;
+
+  return (
+    <Dialog open={!!feature} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="bg-card/90 backdrop-blur-lg border-primary/20 text-foreground max-w-5xl w-[95vw] p-0 rounded-2xl">
+          <div className="relative">
+            <div className="p-8 rounded-t-2xl" style={{'background': `linear-gradient(to bottom right, ${feature.color}1A, transparent 95%)`}}>
+               <div className="flex items-start justify-between">
+                  <div className='flex items-center gap-4'>
+                    <div className="p-4 bg-primary/10 border border-primary/20 rounded-full w-fit">
+                      {React.cloneElement(feature.icon, { className: 'h-10 w-10 text-primary' })}
+                    </div>
+                    <div>
+                      <DialogTitle asChild>
+                        <h2 className="text-4xl font-bold font-heading text-foreground mb-1">{feature.title}</h2>
+                      </DialogTitle>
+                      <p className="text-lg text-foreground/80">{feature.longDescription}</p>
+                    </div>
+                  </div>
+               </div>
+            </div>
+            
+            <div className='p-8'>
+              <Tabs defaultValue="overview" className="w-full">
+                <TabsList className="grid w-full grid-cols-4 mb-6">
+                  <TabsTrigger value="overview">How to Use</TabsTrigger>
+                  <TabsTrigger value="comparison">AI vs. Manual</TabsTrigger>
+                  <TabsTrigger value="synergy">Synergy</TabsTrigger>
+                  <TabsTrigger value="faq">FAQs</TabsTrigger>
+                </TabsList>
+                
+                <TabsContent value="overview" className="space-y-6 text-foreground/90">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                      {feature.details.steps.map((step, i) => (
+                        <div key={i} className="flex flex-col items-center text-center p-4 bg-muted/50 rounded-lg border">
+                          <div className='p-3 bg-primary/10 rounded-full mb-3 text-primary'>
+                            {step.icon}
+                          </div>
+                          <p className="font-semibold text-foreground">Step {i+1}</p>
+                          <p className='text-sm text-muted-foreground'>{step.text}</p>
+                        </div>
+                      ))}
+                    </div>
+                </TabsContent>
+                
+                <TabsContent value="comparison" className="space-y-4 text-foreground/90">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+                    <div className="space-y-4">
+                      <h3 className="text-2xl font-semibold font-heading text-center text-foreground/80">Manual</h3>
+                       {feature.details.aiVsManual.map((item, index) => (
+                        <div key={index} className="p-4 bg-muted/50 rounded-lg border">
+                           <div className="flex items-center gap-3 mb-2">
+                            {React.cloneElement(item.icon, { className: "h-5 w-5 text-muted-foreground" })}
+                            <h4 className="font-semibold text-foreground">{item.metric}</h4>
+                          </div>
+                          <p className="text-foreground/80 pl-8">{item.manual}</p>
+                        </div>
+                      ))}
+                    </div>
+                     <div className="space-y-4">
+                      <h3 className="text-2xl font-semibold font-heading text-center text-primary">WhatsMAP AI</h3>
+                       {feature.details.aiVsManual.map((item, index) => (
+                        <div key={index} className="p-4 bg-muted/50 rounded-lg border border-primary/20 shadow-lg shadow-primary/5">
+                           <div className="flex items-center gap-3 mb-2">
+                             {React.cloneElement(item.icon, { className: "h-5 w-5 text-primary" })}
+                            <h4 className="font-semibold text-primary">{item.metric}</h4>
+                          </div>
+                          <p className="text-foreground/80 pl-8">{item.ai}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="synergy" className="space-y-4 text-foreground/90">
+                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {feature.details.synergy.map((s, index) => (
+                      <div key={index} className="bg-muted/50 p-6 rounded-lg border flex flex-col justify-center">
+                         <div className="flex items-center gap-2 mb-3">
+                            <div className="p-2 bg-primary/10 text-primary rounded-md">
+                                <h4 className="font-semibold text-sm">{feature.title}</h4>
+                            </div>
+                            <Plus className="h-5 w-5 text-muted-foreground shrink-0" />
+                            <div className="p-2 bg-secondary text-secondary-foreground rounded-md">
+                               <h4 className="font-semibold text-sm">{s.tool}</h4>
+                            </div>
+                        </div>
+                        <div className="text-sm text-foreground/80 pl-1">
+                          <p>{s.benefit}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="faq">
+                  <Accordion type="single" collapsible className="w-full">
+                    {feature.details.faqs.map((faq, index) => (
+                      <AccordionItem value={`item-${index}`} key={index}>
+                        <AccordionTrigger className='text-left'>{faq.question}</AccordionTrigger>
+                        <AccordionContent className="text-base text-foreground/80">{faq.answer}</AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </TabsContent>
+              </Tabs>
+            </div>
+
+            <Separator />
+
+            <DialogFooter className="p-6 bg-muted/50 rounded-b-2xl">
+                <Link href={`/dashboard/tool/${feature.id}`}>
+                    <Button size="lg" className='text-base'>
+                      {feature.cta}
+                    </Button>
+                </Link>
+            </DialogFooter>
+          </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+
 export default function AppsPage() {
+  const [selectedFeature, setSelectedFeature] = React.useState<Feature | null>(null);
   const [activeFilter, setActiveFilter] = React.useState<FilterCategory>('All');
   const [currentAnnouncement, setCurrentAnnouncement] = React.useState(announcements[0]);
 
@@ -84,6 +220,10 @@ export default function AppsPage() {
     const randomIndex = Math.floor(Math.random() * announcements.length);
     setCurrentAnnouncement(announcements[randomIndex]);
   }, []);
+
+  const handleCardClick = (feature: Feature) => {
+    setSelectedFeature(feature);
+  };
 
   const getCategoryCount = (category: FilterCategory) => {
     if (category === 'All') return features.length;
@@ -137,10 +277,12 @@ export default function AppsPage() {
             <FeatureCard 
                 key={feature.id} 
                 feature={feature} 
+                onClick={handleCardClick}
             />
           ))}
         </div>
       </main>
+      <FeatureModal feature={selectedFeature} onClose={() => setSelectedFeature(null)} />
     </div>
   );
 }
