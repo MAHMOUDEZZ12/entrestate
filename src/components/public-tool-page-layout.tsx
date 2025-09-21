@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Plus } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { Feature } from '@/lib/tools-client';
 import Image from 'next/image';
 import { visuals } from '@/lib/visuals';
@@ -176,5 +175,3 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
     </main>
   );
 }
-
-    
