@@ -95,7 +95,7 @@ const appsThatNeedConnection: { [key: string]: string } = {
     'insta-ads-designer': 'Instagram',
     'instagram-admin-ai': 'Instagram',
     'email-creator': 'Gmail / Outlook',
-    'whatsapp-campaigns': 'WhatsApp Business',
+    'whatsapp-manager': 'WhatsApp Business',
     'facebook-ads-ai': 'Facebook',
     'reel-ads-ai': 'Instagram',
     'story-planner-ai': 'Instagram'

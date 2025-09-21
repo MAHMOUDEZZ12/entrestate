@@ -95,8 +95,8 @@ export default function MarketingDashboardPage() {
                 tool={feature}
                 isAdded={addedApps.includes(feature.id)}
                 setIsAdded={(isAdded) => handleSetIsAdded(feature.id, isAdded)}
-                connectionRequired={feature.id === 'meta-ads-copilot' ? 'Facebook' : undefined}
-                paymentRequired={feature.categories.includes('Market Intelligence')}
+                connectionRequired={appsThatNeedConnection[feature.id]}
+                paymentRequired={appsThatNeedPayment.includes(feature.id)}
             />
           ))}
         </div>
@@ -104,3 +104,24 @@ export default function MarketingDashboardPage() {
     </div>
   );
 }
+
+const appsThatNeedConnection: { [key: string]: string } = {
+    'meta-ads-copilot': 'Facebook',
+    'audience-creator': 'Facebook',
+    'insta-ads-designer': 'Instagram',
+    'instagram-admin-ai': 'Instagram',
+    'email-creator': 'Gmail / Outlook',
+    'whatsapp-manager': 'WhatsApp Business',
+    'facebook-ads-ai': 'Facebook',
+    'reel-ads-ai': 'Instagram',
+    'story-planner-ai': 'Instagram'
+};
+
+const appsThatNeedPayment: string[] = [
+    'rebranding',
+    'pdf-editor',
+    'landing-pages',
+    'investor-matching',
+    'market-reports',
+    'market-trends'
+];
