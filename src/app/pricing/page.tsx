@@ -60,6 +60,7 @@ export default function PricingPage() {
 
   const activeBundle = useMemo(() => {
      return bundles.find(bundle => 
+        bundle.apps.length > 0 &&
         bundle.apps.length === selectedApps.length &&
         bundle.apps.every(app => selectedApps.includes(app))
     );
@@ -138,7 +139,7 @@ export default function PricingPage() {
                 </div>
             </div>
 
-            <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-24">
+            <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-24 lg:-mt-8">
                 {proPlan && (
                     <button onClick={handleSelectPro} className={cn(
                         "w-full p-6 rounded-lg border text-left transition-all relative overflow-hidden",
@@ -174,15 +175,16 @@ export default function PricingPage() {
                             </p>
                         )}
                         <div className="flex items-baseline justify-center gap-2 mt-1">
-                           <span className="text-5xl font-bold text-primary">${isAnnual ? (finalPrice * 12 * 0.6).toFixed(2) : finalPrice.toFixed(2)}</span>
+                           <span className="text-5xl font-bold text-primary">${(isAnnual ? (finalPrice * 12 * 0.6) : finalPrice).toFixed(2)}</span>
                            <span className="text-muted-foreground">/ {isAnnual ? 'year' : 'month'}</span>
                         </div>
-                        <p className="text-sm text-muted-foreground mb-4">which is ${isAnnual ? ((finalPrice * 12 * 0.6) / 12).toFixed(2) : finalPrice.toFixed(2)} / month</p>
+                        <p className="text-sm text-muted-foreground mb-4">which is ${(isAnnual ? (finalPrice * 12 * 0.6 / 12) : finalPrice).toFixed(2)} / month</p>
                         {activeBundle && <p className="text-sm text-primary font-semibold">You're saving ${discount.toFixed(2)}/mo with the {activeBundle.name} bundle!</p>}
+                         {isProSelected && proPlan && <p className="text-sm text-primary font-semibold">You're saving ${discount.toFixed(2)}/mo with the PRO plan!</p>}
                     </CardContent>
                     <CardFooter>
                          <Button size="lg" className="w-full" disabled={selectedApps.length === 0}>
-                            Get Started
+                            {isProSelected ? "Get Full Access To All The APPS" : "Get Started"}
                         </Button>
                     </CardFooter>
                 </Card>
