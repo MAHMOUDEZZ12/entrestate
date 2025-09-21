@@ -40,19 +40,17 @@ export default function PricingPage() {
   const handleBundleSelection = (bundleName: string) => {
     const bundle = bundles.find(b => b.name === bundleName);
     if (!bundle) return;
-  
-    // Check if all apps in the bundle are currently selected
-    const isBundleCurrentlySelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.filter(sa => bundle.apps.includes(sa)).length;
-  
+
+    const isBundleCurrentlySelected =
+      bundle.apps.length === selectedApps.length &&
+      bundle.apps.every(app => selectedApps.includes(app));
+
     if (isProSelected) {
-      // If PRO is selected, clicking a bundle deselects PRO and selects the bundle's apps
       setSelectedApps(bundle.apps);
     } else if (isBundleCurrentlySelected) {
-      // If the bundle is fully selected, deselect its apps
-      setSelectedApps(prev => prev.filter(app => !bundle.apps.includes(app)));
+      setSelectedApps([]);
     } else {
-      // Otherwise, add all apps from the bundle to the current selection, avoiding duplicates
-      setSelectedApps(prev => [...new Set([...prev, ...bundle.apps])]);
+      setSelectedApps(bundle.apps);
     }
   };
 
@@ -154,7 +152,7 @@ export default function PricingPage() {
             <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {bundles.map(bundle => {
-                    const isSelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.filter(sa => bundle.apps.includes(sa)).length;
+                    const isSelected = bundle.apps.length === selectedApps.length && bundle.apps.every(app => selectedApps.includes(app));
                     const savings = getBundleSavings(bundle);
                     return (
                       <button
