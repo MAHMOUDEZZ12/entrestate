@@ -42,12 +42,12 @@ export default function PricingPage() {
     if (!bundle) return;
   
     // Check if all apps in the bundle are currently selected
-    const isBundleCurrentlySelected = bundle.apps.every(app => selectedApps.includes(app));
+    const isBundleCurrentlySelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.filter(sa => bundle.apps.includes(sa)).length;
   
     if (isProSelected) {
       // If PRO is selected, clicking a bundle deselects PRO and selects the bundle's apps
       setSelectedApps(bundle.apps);
-    } else if (isBundleCurrentlySelected && bundle.apps.length === selectedApps.filter(sa => bundle.apps.includes(sa)).length) {
+    } else if (isBundleCurrentlySelected) {
       // If the bundle is fully selected, deselect its apps
       setSelectedApps(prev => prev.filter(app => !bundle.apps.includes(app)));
     } else {
@@ -58,7 +58,7 @@ export default function PricingPage() {
 
   const handleSelectPro = () => {
     if (!proPlan) return;
-    const isCurrentlyPro = allApps.length > 0 && allApps.every(app => selectedApps.includes(app.name)) && selectedApps.length === allApps.length;
+    const isCurrentlyPro = allApps.length > 0 && allApps.every(app => selectedApps.includes(app)) && selectedApps.length === allApps.length;
 
     if (isCurrentlyPro) {
       setSelectedApps([]);
@@ -133,7 +133,7 @@ export default function PricingPage() {
                     {isProSelected && <Check className="h-4 w-4 text-primary-foreground" />}
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground text-2xl">{proPlan.name}</p>
+                    <p className="font-semibold text-foreground text-2xl md:text-3xl">{proPlan.name}</p>
                     <p className="text-md text-muted-foreground text-left">{proPlan.description}</p>
                   </div>
                 </div>
@@ -155,26 +155,27 @@ export default function PricingPage() {
             <CardContent className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {bundles.map(bundle => {
-                    const isSelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.length;
+                    const isSelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.filter(sa => bundle.apps.includes(sa)).length;
                     const savings = getBundleSavings(bundle);
                     return (
                       <button
                         key={bundle.name}
                         onClick={() => handleBundleSelection(bundle.name)}
                         className={cn(
-                          "p-4 rounded-lg border text-left transition-all",
+                          "p-4 rounded-lg border text-left transition-all relative",
                           isSelected ? "bg-primary/10 border-primary/50" : "bg-muted/30 hover:bg-muted/70",
                           isProSelected && "opacity-50 cursor-not-allowed"
                         )}
                         disabled={isProSelected}
                       >
-                        <div className="flex items-center gap-2">
-                           <div className={cn("h-4 w-4 rounded-full border-2 flex items-center justify-center", isSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
+                         <Badge variant={isSelected ? "default" : "secondary"} className="absolute -top-2 -right-2">Bundle</Badge>
+                        <div className="flex items-center gap-3">
+                           <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center flex-shrink-0", isSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
                             {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
                           </div>
-                          <p className="font-semibold text-foreground text-sm">{bundle.name}</p>
-                           {savings > 0 && <p className="text-xs font-semibold text-primary ml-auto">Save ${savings.toFixed(2)}/mo</p>}
+                          <p className="font-semibold text-foreground">{bundle.name}</p>
                         </div>
+                        {savings > 0 && <p className="text-xs font-semibold text-primary mt-2">Save ${savings.toFixed(2)}/mo</p>}
                       </button>
                     );
                   })}
@@ -239,9 +240,11 @@ export default function PricingPage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Button size="lg" className="w-full" disabled={selectedApps.length === 0}>
-                {isProSelected ? 'Get Full Access To All The APPS' : `Get ${selectedApps.length > 0 ? selectedApps.length : ''} App(s)`}
-              </Button>
+              <Link href="/signup" className="w-full">
+                <Button size="lg" className="w-full" disabled={selectedApps.length === 0}>
+                  {isProSelected ? 'Get Full Access To All The APPS' : `Get ${selectedApps.length > 0 ? selectedApps.length : ''} App(s)`}
+                </Button>
+              </Link>
             </CardFooter>
           </Card>
         </div>
