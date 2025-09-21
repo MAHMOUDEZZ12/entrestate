@@ -236,7 +236,7 @@ export const pricingData = {
       "name": "ENTRESTATE CREATIVE SUITE",
       "apps": ["UGC Script Writer","AI YouTube Video Editor","Landing Page Builder","Automated Rebranding","Brochure Translator","Story Planner","Insta Ads Designer","Reel Ads"],
       "description": "Complete AI-powered marketing and content creation toolkit.",
-      "monthly_price": 25
+      "monthly_price": 25,
     },
     {
       "name": "ENTRESTATE PRO",
@@ -270,7 +270,6 @@ export const pricingData = {
         "Brand Creator",
         "CRM Memory",
         "Assistant AI",
-        "Embeddable Site Assistant",
         "VM Creator",
         "Creative Execution Terminal"
       ],
