@@ -23,7 +23,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/market',
     '/resources',
     '/community',
-    '/discover'
+    '/discover',
+    '/technology'
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
