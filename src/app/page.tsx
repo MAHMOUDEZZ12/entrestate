@@ -4,13 +4,14 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Check, Sparkles, Search, Building, BarChart, LayoutTemplate } from 'lucide-react';
+import { ArrowRight, Check, Sparkles, Search, Building, BarChart, LayoutTemplate, Star, Wallet, AreaChart } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import Image from 'next/image';
 import { visuals } from '@/lib/visuals';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 
 const ChatSimulation = () => {
@@ -63,10 +64,11 @@ const ChatSimulation = () => {
 }
 
 const SearchSimulation = () => {
-    const results = [
-        { type: 'Project', icon: <Building />, title: "Project: Emaar Beachfront", description: "Verified project data, floor plans, and pricing." },
-        { type: 'Tool', icon: <LayoutTemplate />, title: "Tool: Landing Page Builder", description: "Create a dedicated landing page for this project." },
-        { type: 'Market', icon: <BarChart />, title: "Trend: Dubai Marina Prices", description: "Price index is up 3.2% QoQ in this area." },
+    const features = ["Santorini - Blue & White theme", "Venice - Gondola Rides", "Costa Brava - Spanish Style", "Malta - Play & Learn Hub"];
+    const layouts = [
+        { name: "3-Bed Townhouse", size: "2,012 sqft", image: "https://picsum.photos/seed/th3/400/300" },
+        { name: "4-Bed Townhouse", size: "2,280 sqft", image: "https://picsum.photos/seed/th4/400/300" },
+        { name: "5-Bed Villa", size: "3,700 sqft", image: "https://picsum.photos/seed/v5/400/300" },
     ];
 
     return (
@@ -77,35 +79,79 @@ const SearchSimulation = () => {
                     type="text"
                     placeholder="Search..."
                     className="w-full pl-10 h-10 bg-background"
-                    defaultValue="Emaar Beachfront"
+                    defaultValue="Damac Lagoons"
                     disabled
                 />
             </div>
-            <div className="space-y-2">
-                {results.map((item, index) => (
-                    <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: 0.2 * index }}
-                    >
-                        <Card className="bg-background/80">
-                            <CardContent className="p-3 flex items-center gap-3">
-                                <div className="p-2 bg-primary/10 text-primary rounded-md">
-                                    {item.icon}
+            <div className="space-y-3">
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
+                    <Card className="bg-background/80">
+                        <CardHeader>
+                            <CardTitle>Project Overview: Damac Lagoons</CardTitle>
+                            <CardDescription>Developer: DAMAC Properties</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-sm">A Mediterranean-inspired community of villas and townhouses centered around a swimmable crystal lagoon.</p>
+                        </CardContent>
+                    </Card>
+                </motion.div>
+
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}>
+                    <Card className="bg-background/80">
+                        <CardHeader>
+                            <CardTitle>Layouts</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <Carousel opts={{ loop: true }} className="w-full max-w-sm mx-auto">
+                                <CarouselContent>
+                                    {layouts.map((layout, index) => (
+                                    <CarouselItem key={index}>
+                                        <div className="p-1">
+                                             <Image src={layout.image} alt={layout.name} width={400} height={300} className="rounded-lg mb-2" data-ai-hint="house interior" />
+                                            <p className="font-semibold text-center">{layout.name} - <span className="text-muted-foreground">{layout.size}</span></p>
+                                        </div>
+                                    </CarouselItem>
+                                    ))}
+                                </CarouselContent>
+                                <CarouselPrevious className="-left-4" /><CarouselNext className="-right-4" />
+                            </Carousel>
+                        </CardContent>
+                    </Card>
+                </motion.div>
+                
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.3 }}>
+                     <Card className="bg-background/80">
+                        <CardHeader><CardTitle>Key Features</CardTitle></CardHeader>
+                        <CardContent className="grid grid-cols-2 gap-2 text-sm">
+                            {features.map((feature, i) => (
+                                <div key={i} className="flex items-center gap-2">
+                                    <Check className="h-4 w-4 text-primary" />
+                                    <span>{feature}</span>
                                 </div>
-                                <div>
-                                    <p className="font-semibold text-sm">{item.title}</p>
-                                    <p className="text-xs text-muted-foreground">{item.description}</p>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    </motion.div>
-                ))}
+                            ))}
+                        </CardContent>
+                    </Card>
+                </motion.div>
+
+                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.4 }}>
+                    <Card className="bg-background/80">
+                         <CardHeader><CardTitle>Investment Study</CardTitle></CardHeader>
+                        <CardContent className="flex items-center justify-between text-sm">
+                           <div>
+                             <p>Est. ROI: <span className="font-bold text-primary">8-10%</span></p>
+                             <p>Type: <span className="font-bold">High Growth / Rental</span></p>
+                           </div>
+                           <Link href="/dashboard/tool/deal-analyzer">
+                               <Button variant="outline" size="sm">Run Full Analysis <ArrowRight /></Button>
+                           </Link>
+                        </CardContent>
+                    </Card>
+                 </motion.div>
             </div>
         </div>
     )
 }
+
 
 // Helper for smooth scrolling
 const scrollToSection = (id: string) => {
@@ -179,14 +225,14 @@ export default function HomePage() {
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
-               <Card className="w-full aspect-square mx-auto shadow-2xl group relative bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex flex-col items-center justify-center p-2">
+               <Card className="w-full h-[500px] mx-auto shadow-2xl group relative bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex flex-col items-center justify-center p-2">
                  <ChatSimulation />
               </Card>
             </div>
 
             {/* Product 2: PRO SEARCH ENG.x 3 */}
             <div id="product-pro-search" className="grid lg:grid-cols-2 gap-16 items-center">
-               <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col items-center justify-center text-center p-2">
+               <Card className="w-full h-[600px] mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col items-center justify-center text-center p-2">
                     <SearchSimulation />
                </Card>
               <div className="space-y-8 lg:order-1">
@@ -303,5 +349,7 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
 
     
