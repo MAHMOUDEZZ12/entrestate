@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React from 'react';
@@ -21,42 +22,45 @@ interface PublicToolPageLayoutProps {
 
 
 const ToolIoSimulation = ({ feature }: { feature: Feature }) => {
-    // Find first text/select input for the simulation
     const firstInput = feature.creationFields.find(f => f.type === 'text' || f.type === 'select');
     
     return (
         <div className="w-full space-y-4 font-sans">
-            {/* Input Card */}
+            {/* Example "Done" Input */}
             <Card className="bg-background/80 backdrop-blur-sm">
                 <CardHeader>
-                    <CardTitle className="text-base font-semibold">Input</CardTitle>
+                    <CardTitle className="text-base font-semibold">Example Input</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                     <div className="space-y-1.5">
-                        <Label htmlFor="sim-input-1" className="text-xs">{firstInput?.name || 'Your Content'}</Label>
-                        <Input id="sim-input-1" placeholder={firstInput?.placeholder || 'e.g., Emaar Beachfront'} className="text-xs h-8" />
+                        <Label htmlFor="sim-input-1" className="text-xs font-normal text-muted-foreground">{firstInput?.name || 'Your Content'}</Label>
+                        <div className="w-full h-8 px-3 py-2 text-sm rounded-md border border-input bg-muted/50">
+                           {firstInput?.placeholder || 'Emaar Beachfront'}
+                        </div>
                     </div>
-                    <Button size="sm" className="w-full text-xs">
-                        <Sparkles className="mr-2 h-3 w-3" />
-                        {feature.cta}
-                    </Button>
+                     <div className="flex items-center justify-center pt-2">
+                        <div className="h-8 w-px bg-border"></div>
+                    </div>
                 </CardContent>
             </Card>
 
-            <div className="flex justify-center">
-                <ArrowRight className="h-6 w-6 text-muted-foreground animate-pulse" />
+            <div className="flex justify-center -my-2">
+                <div className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg z-10">
+                    <Sparkles className="h-5 w-5" />
+                </div>
             </div>
 
-            {/* Output Card */}
-            <Card className="bg-gradient-to-br from-primary/10 to-transparent">
+            {/* Example "Done" Output */}
+            <Card className="bg-gradient-to-br from-primary/10 to-transparent border-primary/20">
                  <CardHeader>
                     <CardTitle className="text-base font-semibold text-primary">AI-Generated Output</CardTitle>
                 </CardHeader>
                 <CardContent>
-                   <div className="aspect-video bg-muted/50 rounded-md flex items-center justify-center p-2">
-                       <p className="text-xs text-muted-foreground text-center">
-                           A beautiful, production-ready asset appears here.
-                       </p>
+                   <div className="aspect-video bg-muted/50 rounded-md flex items-center justify-center p-4">
+                       <div className="text-center">
+                           <h4 className="font-bold text-lg">"Invest in Paradise: Emaar Beachfront"</h4>
+                           <p className="text-sm text-muted-foreground mt-1">Stunning sea views, private beach access. Your exclusive waterfront lifestyle awaits.</p>
+                       </div>
                    </div>
                 </CardContent>
             </Card>
@@ -96,50 +100,47 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
           </div>
         </div>
       </section>
-
-      {/* How it works */}
-      <section className="py-24 md:py-32 bg-muted/30">
+      
+       {/* How it works section */}
+       <section className="py-24 md:py-32 bg-muted/30">
         <div className="container mx-auto px-4">
-            <div className="text-center max-w-2xl mx-auto mb-20">
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">A Radically Simple Workflow</h2>
-                 <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, elegant process powered by AI.</p>
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">A Radically Simple Workflow</h2>
+            <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, elegant process powered by AI.</p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div className="lg:sticky lg:top-24">
+                <ToolIoSimulation feature={feature} />
             </div>
             
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-                <div className="lg:sticky lg:top-24">
-                     <Card className="w-full shadow-2xl shadow-primary/10 border-primary/20 bg-card/50">
-                        <CardContent className="p-4 md:p-6">
-                            <ToolIoSimulation feature={feature} />
-                        </CardContent>
-                    </Card>
-                </div>
-                <div className="space-y-16">
-                     {feature.details.steps.map((step, i) => (
-                        <motion.div 
-                            key={i}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: i * 0.1 }}
-                            viewport={{ once: true, amount: 0.5 }}
-                        >
-                            <div className="flex items-start gap-6">
-                                <div className="flex flex-col items-center gap-2">
-                                     <div className="p-3 bg-primary/10 text-primary rounded-full w-fit">
-                                        {React.cloneElement(step.icon, { className: 'h-6 w-6' })}
-                                    </div>
-                                </div>
-                                <div>
-                                    <h3 className="text-2xl font-bold font-heading mb-2">Step {i+1}</h3>
-                                    <p className="text-lg text-muted-foreground">{step.text}</p>
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+            <div className="space-y-16">
+              {feature.details.steps.map((step, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  viewport={{ once: true, amount: 0.5 }}
+                >
+                  <div className="flex items-start gap-6">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="p-3 bg-primary/10 text-primary rounded-full w-fit">
+                        {React.cloneElement(step.icon, { className: 'h-6 w-6' })}
+                      </div>
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-bold font-heading mb-2">Step {i + 1}</h3>
+                      <p className="text-lg text-muted-foreground">{step.text}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
+          </div>
         </div>
       </section>
-      
+
       {/* AI vs Manual */}
        <section className="py-24 md:py-32">
         <div className="container mx-auto px-4">
