@@ -8,10 +8,6 @@
  * behaviors, and keywords, to help optimize ad campaigns for real estate projects.
  *
  * @module AI/Flows/SuggestTargetingOptions
- *
- * @export {function} suggestTargetingOptions - The main function to suggest targeting options.
- * @export {type} SuggestTargetingOptionsInput - The Zod schema for the input of the suggestTargetingOptions flow.
- * @export {type} SuggestTargetingOptionsOutput - The Zod schema for the output of the suggestTargetingOptions flow.
  */
 
 import {ai} from '@/ai/genkit';

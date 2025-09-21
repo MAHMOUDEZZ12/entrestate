@@ -11,7 +11,7 @@ import {
     FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube
 } from 'lucide-react';
 import { toast as sonnerToast } from "sonner";
-import { Copy, Download, Trash2, Eye } from 'lucide-react';
+import { Copy, Download, Trash2, Eye, Link as LinkIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -23,6 +23,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import Link from 'next/link';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertCircle } from 'lucide-react';
 
 export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
 export type BadgeType = 'NEW' | 'AUTO' | 'DEPRECATED';
@@ -643,6 +646,57 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                     <Button onClick={() => copyToClipboard(JSON.stringify(result, null, 2), toast)}><FileJson className="mr-2"/> Copy Full Plan (JSON)</Button>
                 </div>
             );
+            break;
+        case 'lead-investigator':
+            tool.creationFields = [
+                {id: 'name', name: 'Full Name', type: 'text', placeholder: 'e.g., John Smith'},
+                {id: 'company', name: 'Company (Optional)', type: 'text', placeholder: 'e.g., ACME Inc.'},
+                {id: 'email', name: 'Email (Optional)', type: 'text', placeholder: 'e.g., john.smith@acme.com'},
+                {id: 'location', name: 'Location (Optional)', type: 'text', placeholder: 'e.g., Dubai, UAE'},
+            ];
+            tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                     <Alert>
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>Overall Summary</AlertTitle>
+                        <AlertDescription>{result.overallSummary}</AlertDescription>
+                    </Alert>
+
+                    <h3 className="font-semibold text-lg pt-2">Potential Matches Found:</h3>
+
+                    {result.matches.length > 0 ? (
+                        result.matches.map((match: any, index: number) => (
+                            <Card key={index}>
+                                <CardHeader>
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <CardTitle className="flex items-center gap-2">
+                                                <User className="h-5 w-5"/>
+                                                {match.name}
+                                            </CardTitle>
+                                            <CardDescription>
+                                                Source: <Badge variant="secondary">{match.source}</Badge>
+                                            </CardDescription>
+                                        </div>
+                                        <Badge>Confidence: {(match.matchConfidence * 100).toFixed(0)}%</Badge>
+                                    </div>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-sm mb-3">{match.summary}</p>
+                                    <a href={match.profileUrl} target="_blank" rel="noopener noreferrer">
+                                        <Button variant="outline" size="sm">
+                                            <LinkIcon className="mr-2 h-4 w-4" />
+                                            View Profile
+                                        </Button>
+                                    </a>
+                                </CardContent>
+                            </Card>
+                        ))
+                    ) : (
+                        <p className="text-muted-foreground">No strong matches found based on the provided information.</p>
+                    )}
+                </div>
+            )
             break;
         default:
             // Generic placeholder for tools without specific implementation yet

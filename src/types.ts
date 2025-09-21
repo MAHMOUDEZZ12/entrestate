@@ -57,7 +57,7 @@ export interface AppEvent {
   ts?: any; // serverTimestamp()
 }
 
-// Schemas for Audience Creator AI
+// Schemas for Audience Creator AI (`suggest-targeting-options`)
 export const SuggestTargetingOptionsInputSchema = z.object({
   projectId: z.string().describe('The project ID to generate targeting for.'),
 });
@@ -74,14 +74,13 @@ export type SuggestTargetingOptionsInput = z.infer<typeof SuggestTargetingOption
 export type SuggestTargetingOptionsOutput = z.infer<typeof SuggestTargetingOptionsOutputSchema>;
 
 
-// Schemas for Meta Ads Co-Pilot
+// Schemas for Meta Ads Co-Pilot (`create-meta-campaign`)
 export const CreateMetaCampaignInputSchema = z.object({
   campaignGoal: z.string().describe("The user's primary objective for the campaign. e.g. 'Lead Generation to Landing Page'"),
   projectBrochureDataUri: z.string().describe("The project brochure as a data URI."),
   budget: z.number().describe("The total ad spend budget."),
   durationDays: z.number().describe("The campaign duration in days."),
 });
-
 export const CreateMetaCampaignOutputSchema = z.object({
     publishedCampaignId: z.string().describe("A dummy ID confirming the plan is ready. Always 'campaign-not-published'."),
     campaignName: z.string().describe("The AI-generated name for the campaign."),
@@ -100,12 +99,11 @@ export const CreateMetaCampaignOutputSchema = z.object({
     })).describe("A list of ad creative variations to test."),
     optimizationAdvice: z.string().describe("A key piece of advice for running the campaign."),
 });
-
 export type CreateMetaCampaignInput = z.infer<typeof CreateMetaCampaignInputSchema>;
 export type CreateMetaCampaignOutput = z.infer<typeof CreateMetaCampaignOutputSchema>;
 
 
-// Schemas for Lead Investigator AI
+// Schemas for Lead Investigator AI (`investigate-lead`)
 export const InvestigateLeadInputSchema = z.object({
   name: z.string().describe('The full name of the lead.'),
   company: z.string().optional().describe('The company the lead works for.'),
@@ -113,8 +111,6 @@ export const InvestigateLeadInputSchema = z.object({
   location: z.string().optional().describe('The city or country of the lead.'),
   role: z.string().optional().describe('The job title or role of the lead.'),
 });
-export type InvestigateLeadInput = z.infer<typeof InvestigateLeadInputSchema>;
-
 const LeadMatchSchema = z.object({
   name: z.string().describe('The name of the matched person.'),
   source: z.string().describe('The platform where the match was found (e.g., LinkedIn, Facebook, Company Website).'),
@@ -122,24 +118,22 @@ const LeadMatchSchema = z.object({
   summary: z.string().describe('A brief summary of why this might be the lead (e.g., "CEO at ACME Inc, based in Dubai").'),
   matchConfidence: z.number().min(0).max(1).describe('The AI\'s confidence that this is the correct person (0 to 1).'),
 });
-
 export const InvestigateLeadOutputSchema = z.object({
   matches: z.array(LeadMatchSchema).describe('A list of potential matches found for the lead.'),
   overallSummary: z.string().describe('A high-level summary of the investigation findings.'),
 });
+export type InvestigateLeadInput = z.infer<typeof InvestigateLeadInputSchema>;
 export type InvestigateLeadOutput = z.infer<typeof InvestigateLeadOutputSchema>;
 
-// Schemas for AI Video Presenter
+// Schemas for AI Video Presenter (`generate-video-presenter`)
 export const GenerateVideoPresenterInputSchema = z.object({
   characterImageUri: z.string().optional().describe("A data URI of the user's photo to create a digital twin. This is the primary input for the presenter's appearance."),
   characterDescription: z.string().optional().describe("A text description to generate a new character image if no photo is uploaded."),
   script: z.string().describe("The script for the presenter to speak."),
 });
-export type GenerateVideoPresenterInput = z.infer<typeof GenerateVideoPresenterInputSchema>;
-
-
 export const GenerateVideoPresenterOutputSchema = z.object({
   videoUrl: z.string().describe("A data URI of the generated presenter video."),
   audioDataUri: z.string().describe("A data URI of the generated speech audio in WAV format."),
 });
+export type GenerateVideoPresenterInput = z.infer<typeof GenerateVideoPresenterInputSchema>;
 export type GenerateVideoPresenterOutput = z.infer<typeof GenerateVideoPresenterOutputSchema>;
