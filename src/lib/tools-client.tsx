@@ -82,7 +82,7 @@ export const filesToDataUris = (files: FileList): Promise<string[]> => {
 // Function to merge data with details
 const mergeToolData = (): Feature[] => {
     return toolsData.map(tool => {
-        const details = blogContent[tool.id] || { sections: [], title: '', intro: '', cta: '' };
+        const detailsContent = blogContent[tool.id];
 
         // Define a default details structure
         const defaultDetails = {
@@ -96,16 +96,6 @@ const mergeToolData = (): Feature[] => {
                 { metric: "Cost", manual: "$$$ - $$$$", ai: "$", icon: <Wallet /> },
                 { metric: "Quality & Consistency", manual: "Variable", ai: "Consistently High", icon: <BadgeCheck /> },
             ],
-            synergy: [],
-            faqs: []
-        };
-        
-        let toolDetails = {
-            steps: details.sections.slice(0, 3).map((s: any, i: number) => ({
-                icon: i === 0 ? <Upload /> : i === 1 ? <Sparkles /> : <Download />,
-                text: s.body
-            })),
-             aiVsManual: defaultDetails.aiVsManual, // Keep default for now
             synergy: [
                  { tool: "AI Assistant", benefit: "Use the assistant to run this tool via a simple text command for faster workflow." },
                  { tool: "Brand Kit", benefit: "Automatically applies your logos and colors to ensure all outputs are on-brand." },
@@ -115,14 +105,29 @@ const mergeToolData = (): Feature[] => {
                 { question: "Can I edit the generated content?", answer: "Yes, all generated content can be downloaded and edited in other tools, or you can use our built-in editors to refine the results." }
             ]
         };
-
-        if (toolDetails.steps.length === 0) {
-            toolDetails.steps = defaultDetails.steps;
+        
+        let finalDetails;
+        if (detailsContent) {
+            finalDetails = {
+                ...defaultDetails, // Start with defaults
+                steps: detailsContent.sections.slice(0, 3).map((s: any, i: number) => ({
+                    icon: i === 0 ? <Upload /> : i === 1 ? <Sparkles /> : <Download />,
+                    text: s.body
+                })),
+                // You can override other details properties here if they exist in blogContent
+            };
+        } else {
+            finalDetails = defaultDetails;
         }
+
+        if (finalDetails.steps.length === 0) {
+            finalDetails.steps = defaultDetails.steps;
+        }
+
 
         return {
             ...(tool as any),
-            longDescription: details.intro || tool.description,
+            longDescription: detailsContent?.intro || tool.description,
             isPage: false,
             href: `/apps/${tool.id}`,
             guideHref: `/apps/${tool.id}`,
@@ -131,7 +136,7 @@ const mergeToolData = (): Feature[] => {
                              tool.categories.includes('Market Intelligence') ? 'Market Intelligence' :
                              tool.categories.includes('CRM') || tool.categories.includes('Sales Tools') ? 'Listing & CRM Tools' : 'Core Platform',
             creationFields: [], // This will be populated below based on ID
-            details: toolDetails,
+            details: finalDetails,
         };
     });
 };
