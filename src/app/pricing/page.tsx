@@ -35,11 +35,15 @@ export default function PricingPage() {
     if (!bundle) return;
     
     const allAppsInBundleSelected = bundle.apps.every(app => selectedApps.includes(app));
+    const isProCurrentlySelected = proPlan ? selectedApps.length === proPlan.apps.length : false;
 
-    if (allAppsInBundleSelected) {
+
+    if (allAppsInBundleSelected && !isProCurrentlySelected) {
+      // If all apps in bundle are selected (and it's not the PRO plan), deselect them
       setSelectedApps(prev => prev.filter(app => !bundle.apps.includes(app)));
     } else {
-      setSelectedApps(prev => [...new Set([...prev, ...bundle.apps])]);
+      // Otherwise, select all apps in this bundle, replacing any other selection
+      setSelectedApps(bundle.apps);
     }
   };
 
@@ -49,7 +53,7 @@ export default function PricingPage() {
     if (isCurrentlyPro) {
         setSelectedApps([]);
     } else {
-        setSelectedApps(allApps.map(app => app.name));
+        setSelectedApps(proPlan.apps);
     }
   };
   
@@ -61,17 +65,20 @@ export default function PricingPage() {
 
 
   const activeBundle = useMemo(() => {
-     return bundles.find(bundle => 
-        bundle.apps.length > 0 &&
-        bundle.apps.length === selectedApps.length &&
-        bundle.apps.every(app => selectedApps.includes(app))
-    );
-  }, [selectedApps, bundles]);
+     if (!proPlan || selectedApps.length !== proPlan.apps.length) {
+        return bundles.find(bundle => 
+            bundle.apps.length > 0 &&
+            bundle.apps.length === selectedApps.length &&
+            bundle.apps.every(app => selectedApps.includes(app))
+        );
+     }
+     return null;
+  }, [selectedApps, bundles, proPlan]);
   
   const isProSelected = useMemo(() => {
     if (!proPlan) return false;
-    return allApps.length === selectedApps.length && allApps.every(app => selectedApps.includes(app.name));
-  }, [selectedApps, allApps, proPlan]);
+    return proPlan.apps.length === selectedApps.length && proPlan.apps.every(app => selectedApps.includes(app));
+  }, [selectedApps, proPlan]);
 
 
   const finalPrice = isProSelected && proPlan ? proPlan.monthly_price : activeBundle ? activeBundle.monthly_price : individualAppsPrice;
@@ -89,20 +96,27 @@ export default function PricingPage() {
     <Card>
         <CardHeader>
             <CardTitle>Your Custom Plan</CardTitle>
+            <CardDescription>
+                {isProSelected ? "Full access to the entire Entrestate ecosystem." : 
+                 activeBundle ? `The complete "${activeBundle.name}" bundle.` :
+                 selectedApps.length > 0 ? `${selectedApps.length} app(s) selected.` : 
+                 "Select apps or a bundle to see pricing."}
+            </CardDescription>
         </CardHeader>
         <CardContent className="text-center">
             {discount > 0 && (
                 <p className="text-muted-foreground line-through">
-                    ${(isAnnual ? (individualAppsPrice * 0.6) : individualAppsPrice).toFixed(2)}/mo
+                    ${(isAnnual ? individualAppsPrice * 0.6 : individualAppsPrice).toFixed(2)}/mo
                 </p>
             )}
             <div className="flex items-baseline justify-center gap-2 mt-1">
-               <span className="text-5xl font-bold text-primary">${(isAnnual ? (finalPrice * 0.6) : finalPrice).toFixed(2)}</span>
+               <span className="text-5xl font-bold text-primary">${(isAnnual ? finalPrice * 0.6 : finalPrice).toFixed(2)}</span>
                <span className="text-muted-foreground">/ month</span>
             </div>
-            {activeBundle && <p className="text-sm text-primary font-semibold">You're saving ${discount.toFixed(2)}/mo with the {activeBundle.name} bundle!</p>}
-            {isProSelected && proPlan && <p className="text-sm text-primary font-semibold">You're saving ${discount.toFixed(2)}/mo with the PRO plan!</p>}
-             {isAnnual && <p className="text-xs text-muted-foreground mt-2">(Billed annually)</p>}
+            {isAnnual && <p className="text-xs text-muted-foreground mt-2">(Billed annually)</p>}
+            
+            {activeBundle && <p className="text-sm text-primary font-semibold mt-2">You're saving ${discount.toFixed(2)}/mo with the {activeBundle.name} bundle!</p>}
+            {isProSelected && proPlan && <p className="text-sm text-primary font-semibold mt-2">You're saving ${discount.toFixed(2)}/mo with the PRO plan!</p>}
         </CardContent>
         <CardFooter>
              <Button size="lg" className="w-full" disabled={selectedApps.length === 0}>
@@ -130,10 +144,71 @@ export default function PricingPage() {
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             <div className="lg:col-span-2 space-y-8">
+                 {proPlan && (
+                    <div className="relative -mt-2">
+                        <button onClick={handleSelectPro} className={cn(
+                            "w-full p-6 rounded-lg border text-left transition-all relative overflow-hidden",
+                            isProSelected ? "bg-primary/20 border-primary ring-2 ring-primary shadow-2xl shadow-primary/20" : "bg-card/50 hover:bg-card"
+                        )}>
+                            <div className="absolute top-2 right-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-primary text-primary-foreground">
+                                Best Value
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center", isProSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
+                                {isProSelected && <Check className="h-3 w-3 text-primary-foreground" />}
+                                </div>
+                                <div>
+                                    <p className="font-semibold text-foreground text-lg">{proPlan.name}</p>
+                                    <p className="text-sm text-muted-foreground text-left">{proPlan.description}</p>
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                )}
+                
+                <Accordion type="single" collapsible className="w-full space-y-4">
+                    <h2 className="text-xl font-bold font-heading text-center pt-4">Or Start with a Bundle</h2>
+                    {bundles.map(bundle => {
+                        const isSelected = bundle.apps.length > 0 && selectedApps.length > 0 && bundle.apps.every(app => selectedApps.includes(app));
+                        const savings = getBundleSavings(bundle);
+                        return (
+                            <AccordionItem value={bundle.name} key={bundle.name} className="border-b-0">
+                                <AccordionTrigger 
+                                    onClick={() => handleBundleSelection(bundle.name)} 
+                                    className={cn(
+                                        "w-full p-4 rounded-lg border text-left transition-all hover:no-underline",
+                                        isSelected ? "bg-primary/10 border-primary/50 ring-2 ring-primary/50" : "bg-card/50 hover:bg-card"
+                                    )}
+                                >
+                                    <div className="flex items-start justify-between w-full pr-2">
+                                        <div className="flex items-center gap-3">
+                                             <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center", isSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
+                                                {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
+                                            </div>
+                                            <div>
+                                                <p className="font-semibold text-foreground">{bundle.name}</p>
+                                                 <p className="text-xs text-muted-foreground text-left">{bundle.description}</p>
+                                            </div>
+                                        </div>
+                                        {savings > 0 && <span className="text-xs font-semibold text-primary ml-2 whitespace-nowrap">Save ${savings.toFixed(2)}</span>}
+                                    </div>
+                                </AccordionTrigger>
+                                 <AccordionContent className="p-4 bg-muted/30 rounded-b-lg border border-t-0">
+                                    <p className="text-sm font-semibold mb-2">Apps Included:</p>
+                                    <ul className="list-disc list-inside text-sm text-muted-foreground columns-2">
+                                        {bundle.apps.map(app => <li key={app}>{app}</li>)}
+                                    </ul>
+                                </AccordionContent>
+                            </AccordionItem>
+                        )
+                    })}
+                </Accordion>
+
+
                  <Card className="bg-gradient-to-br from-blue-500/10 via-transparent to-transparent border-blue-500/20 shadow-2xl shadow-blue-500/10">
                      <CardHeader>
                         <CardTitle className="text-2xl font-bold font-heading">Build Your Plan</CardTitle>
-                        <CardDescription>Select apps individually, or choose a preset bundle to get started.</CardDescription>
+                        <CardDescription>Select apps individually to create a custom plan.</CardDescription>
                     </CardHeader>
                     <CardContent>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-4 max-h-[40rem] overflow-y-auto pr-3 rounded-lg border bg-background/50 p-4">
@@ -156,63 +231,7 @@ export default function PricingPage() {
             </div>
 
             <div className="lg:col-span-1 space-y-4 lg:sticky lg:top-24">
-                <div className="space-y-4">
-                     {proPlan && (
-                        <button onClick={handleSelectPro} className={cn(
-                            "w-full p-6 rounded-lg border text-left transition-all relative overflow-hidden -mt-2",
-                            isProSelected ? "bg-primary/20 border-primary ring-2 ring-primary shadow-2xl shadow-primary/20" : "bg-card/50 hover:bg-card"
-                        )}>
-                            <div className="absolute top-2 right-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-primary text-primary-foreground">
-                                Best Value
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center", isProSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
-                                {isProSelected && <Check className="h-3 w-3 text-primary-foreground" />}
-                                </div>
-                                <p className="font-semibold text-foreground text-lg">{proPlan.name}</p>
-                            </div>
-                            <p className="text-muted-foreground mt-2">{proPlan.description}</p>
-                        </button>
-                    )}
-                    <h2 className="text-xl font-bold font-heading text-center pt-4">Or Start with a Bundle</h2>
-                     <Accordion type="single" collapsible className="w-full space-y-4">
-                        {bundles.map(bundle => {
-                            const isSelected = bundle.apps.length > 0 && selectedApps.length > 0 && bundle.apps.every(app => selectedApps.includes(app));
-                            const savings = getBundleSavings(bundle);
-                            return (
-                                <AccordionItem value={bundle.name} key={bundle.name} className="border-b-0">
-                                    <AccordionTrigger 
-                                        onClick={() => handleBundleSelection(bundle.name)} 
-                                        className={cn(
-                                            "w-full p-4 rounded-lg border text-left transition-all hover:no-underline",
-                                            isSelected ? "bg-primary/10 border-primary/50 ring-2 ring-primary/50" : "bg-card/50 hover:bg-card"
-                                        )}
-                                    >
-                                        <div className="flex items-start justify-between w-full pr-2">
-                                            <div className="flex items-center gap-3">
-                                                 <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center", isSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
-                                                    {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
-                                                </div>
-                                                <div>
-                                                    <p className="font-semibold text-foreground">{bundle.name}</p>
-                                                     <p className="text-xs text-muted-foreground text-left">{bundle.description}</p>
-                                                </div>
-                                            </div>
-                                            {savings > 0 && <span className="text-xs font-semibold text-primary ml-2">Save ${savings.toFixed(2)}</span>}
-                                        </div>
-                                    </AccordionTrigger>
-                                     <AccordionContent className="p-4 bg-muted/30 rounded-b-lg border border-t-0">
-                                        <p className="text-sm font-semibold mb-2">Apps Included:</p>
-                                        <ul className="list-disc list-inside text-sm text-muted-foreground">
-                                            {bundle.apps.map(app => <li key={app}>{app}</li>)}
-                                        </ul>
-                                    </AccordionContent>
-                                </AccordionItem>
-                            )
-                        })}
-                    </Accordion>
-                </div>
-                 {selectedApps.length > 0 && <DynamicPricingCard />}
+                {selectedApps.length > 0 && <DynamicPricingCard />}
             </div>
         </div>
       </main>
