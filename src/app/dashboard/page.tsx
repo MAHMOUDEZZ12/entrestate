@@ -80,7 +80,11 @@ const MyProjectsWidget = () => {
     };
     
     useEffect(() => {
-        fetchProjects();
+        if (user) {
+            fetchProjects();
+        } else {
+            setIsLoading(false);
+        }
     }, [user]);
 
     const handleDeleteProject = async (projectId: string) => {
@@ -98,6 +102,8 @@ const MyProjectsWidget = () => {
             const data = await response.json();
             if (!data.ok) throw new Error(data.error);
             toast({ title: "Project Deleted", description: "The project has been removed from your library." });
+            // Re-fetch to be sure
+            await fetchProjects();
         } catch (error: any) {
             toast({ title: "Error", description: `Could not delete project: ${error.message}`, variant: "destructive" });
             setUserProjects(originalProjects); // Revert on error
@@ -117,7 +123,7 @@ const MyProjectsWidget = () => {
                            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                         </div>
                     ) : userProjects.length > 0 ? (
-                        userProjects.slice(0, 2).map(project => (
+                        userProjects.slice(0, 3).map(project => (
                             <div key={project.id} className="flex items-center justify-between p-2 bg-muted/50 rounded-md">
                                 <div>
                                     <p className="font-semibold">{project.name}</p>
@@ -127,7 +133,15 @@ const MyProjectsWidget = () => {
                             </div>
                         ))
                     ) : (
-                        <p className="text-sm text-muted-foreground text-center py-4">No projects in your library yet.</p>
+                        <div className="text-center py-4 text-muted-foreground">
+                            <p className="text-sm mb-3">No projects in your library yet.</p>
+                            <Link href="/dashboard/tool/projects-finder">
+                                <Button variant="outline" size="sm">
+                                    <PlusCircle className="mr-2 h-4 w-4" />
+                                    Add from Market Library
+                                </Button>
+                            </Link>
+                        </div>
                     )}
                 </div>
             </CardContent>
@@ -156,7 +170,7 @@ const MyProjectsWidget = () => {
                                 <TableHead>Project Name</TableHead>
                                 <TableHead>Location</TableHead>
                                 <TableHead>Status</TableHead>
-                                <TableHead><span className="sr-only">Actions</span></TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -167,7 +181,7 @@ const MyProjectsWidget = () => {
                                     <TableCell>
                                     <Badge variant={statusVariant[project.status || 'Active'] || 'secondary'}>{project.status}</Badge>
                                     </TableCell>
-                                    <TableCell>
+                                    <TableCell className="text-right">
                                     <DropdownMenu>
                                         <DropdownMenuTrigger asChild>
                                         <Button aria-haspopup="true" size="icon" variant="ghost">

@@ -43,7 +43,7 @@ export default function ProjectsPage() {
     <main className="p-4 md:p-10 space-y-8">
       <PageHeader
         title="My Projects"
-        description="This page is deprecated. Please use the 'My Projects' widget on the dashboard."
+        description="This page is deprecated. Please use the 'My Projects' widget on the main dashboard."
         icon={<PlusCircle className="h-8 w-8" />}
       >
          <Link href="/dashboard/tool/projects-finder">
@@ -108,5 +108,3 @@ export default function ProjectsPage() {
     </main>
   );
 }
-
-    
