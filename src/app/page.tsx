@@ -350,6 +350,7 @@ export default function HomePage() {
                                 placeholder='e.g., "create an ad for Emaar Beachfront"' 
                                 className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-lg"
                             />
+                             <button type="submit" className="hidden" aria-hidden="true">Submit</button>
                         </form>
                      </div>
                 </div>
