@@ -36,6 +36,7 @@ import { generateKeywordPlan } from '@/ai/flows/market-intelligence/generate-key
 import { generateVideoPresenter } from '@/ai/flows/archy/generate-video-presenter';
 import { discoverEngineFlow } from '@/ai/flows/market-intelligence/discover-engine';
 import { dealAnalyzer } from '@/ai/flows/market-intelligence/deal-analyzer';
+import { ugcScriptWriter } from '@/ai/flows/archy/ugc-script-writer';
 
 const runToolSchema = z.object({
   toolId: z.string(),
@@ -84,6 +85,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'ai-video-presenter': generateVideoPresenter,
     'discover-engine': discoverEngineFlow,
     'deal-analyzer': dealAnalyzer,
+    'ugc-script-writer': ugcScriptWriter,
 };
 
 export async function POST(req: NextRequest) {

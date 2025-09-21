@@ -131,16 +131,15 @@ export type InvestigateLeadOutput = z.infer<typeof InvestigateLeadOutputSchema>;
 
 // Schemas for AI Video Presenter
 export const GenerateVideoPresenterInputSchema = z.object({
-  characterImageUri: z.string().optional().describe("A data URI of a pre-existing character image. If not provided, a new character will be generated based on the description."),
-  characterDescription: z.string().optional().describe("A text description to generate a new character image if no image URI is provided."),
+  characterImageUri: z.string().optional().describe("A data URI of the user's photo to create a digital twin. If not provided, a character will be generated from the description."),
+  characterDescription: z.string().optional().describe("A text description to generate a new character image if no photo is uploaded."),
   script: z.string().describe("The script for the presenter to speak."),
-  projectId: z.string().optional().describe("An optional project ID to provide context for the speech."),
 });
 export type GenerateVideoPresenterInput = z.infer<typeof GenerateVideoPresenterInputSchema>;
 
 
 export const GenerateVideoPresenterOutputSchema = z.object({
-  videoUrl: z.string().describe("The URL of the generated presenter video."),
+  videoUrl: z.string().describe("A data URI of the generated presenter video."),
   audioDataUri: z.string().describe("A data URI of the generated speech audio in WAV format."),
 });
 export type GenerateVideoPresenterOutput = z.infer<typeof GenerateVideoPresenterOutputSchema>;
