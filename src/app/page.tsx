@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Check, Sparkles, Search, Building, BarChart, LayoutTemplate, Star, Wallet, AreaChart as AreaChartIcon, TrendingUp, AlertTriangle } from 'lucide-react';
+import { ArrowRight, Check, Sparkles, Search, Building, BarChart, LayoutTemplate, Star, Wallet, AreaChart as AreaChartIcon, TrendingUp, AlertTriangle, Send } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import Image from 'next/image';
@@ -156,16 +156,14 @@ const LlmSimulation = () => {
     const units = [
         { name: "3-Bed Townhouse (TH-L)", size: "2,012 sqft", status: "Sold Out" },
         { name: "4-Bed Townhouse (TH-M)", size: "2,280 sqft", status: "Available" },
-        { name: "5-Bed Villa (V-5)", size: "3,700 sqft", status: "Available" },
-        { name: "6-Bed Villa (V-6)", size: "4,550 sqft", status: "Sold Out" },
     ];
     
     return (
         <div className="h-full w-full bg-muted/50 rounded-xl p-4 overflow-hidden mask-gradient-vertical">
              <motion.div
-                animate={{ y: [0, -450] }}
+                animate={{ y: [0, -280] }}
                 transition={{
-                    duration: 15,
+                    duration: 10,
                     repeat: Infinity,
                     repeatType: 'loop',
                     ease: 'linear',
@@ -200,7 +198,7 @@ const LlmSimulation = () => {
                                                 <TableRow><TableHead className="h-8">Unit</TableHead><TableHead className="h-8 text-right">Status</TableHead></TableRow>
                                             </TableHeader>
                                             <TableBody>
-                                                {units.slice(0, 2).map((unit, index) => (
+                                                {units.map((unit, index) => (
                                                 <TableRow key={index}>
                                                     <TableCell className="font-medium text-xs py-1">{unit.name}</TableCell>
                                                     <TableCell className="text-right py-1">
@@ -212,9 +210,6 @@ const LlmSimulation = () => {
                                         </Table>
                                     </CardContent>
                                 </Card>
-                                 <div className="rounded-lg p-3 text-sm bg-background border">
-                                    <p className="font-semibold">Recommendation: A strong 'Buy', particularly for townhouses aimed at the long-term rental market.</p>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -269,6 +264,56 @@ const AixaIntelSimulation = () => {
         </div>
     )
 }
+
+const MegaListingSimulation = () => {
+    const portals = [
+        { name: "Property Finder", status: "Synced" },
+        { name: "Bayut", status: "Synced" },
+        { name: "Dubizzle", status: "Synced" },
+        { name: "RealEstate.com", status: "Queued" },
+        { name: "Zillow", status: "Error" },
+    ];
+
+    return (
+        <div className="w-full h-full flex flex-col items-center justify-center bg-muted/50 rounded-xl p-4 gap-4">
+            <h3 className="text-lg font-bold font-heading text-center">Syndication Flow</h3>
+            <Card className="w-full max-w-sm bg-background/80">
+                <CardHeader className="text-center">
+                    <Building className="h-8 w-8 mx-auto text-primary" />
+                    <CardTitle>Emaar Beachfront</CardTitle>
+                    <CardDescription>Master Listing</CardDescription>
+                </CardHeader>
+                <CardFooter>
+                    <Button className="w-full" disabled>
+                        <Send className="mr-2 h-4 w-4" />
+                        Syndicating...
+                    </Button>
+                </CardFooter>
+            </Card>
+
+            <div className="flex justify-center w-full my-2">
+                <div className="h-12 w-px bg-border-dashed" />
+            </div>
+
+            <div className="w-full max-w-sm grid grid-cols-3 gap-2">
+                {portals.map((portal) => (
+                    <div key={portal.name} className="flex flex-col items-center gap-1 text-center">
+                        <div className={cn(
+                            "h-10 w-10 rounded-full flex items-center justify-center border-2",
+                            portal.status === 'Synced' && 'bg-green-500/20 border-green-500',
+                            portal.status === 'Queued' && 'bg-amber-500/20 border-amber-500 animate-pulse',
+                            portal.status === 'Error' && 'bg-red-500/20 border-red-500'
+                        )}>
+                            <Check className={cn("h-5 w-5", portal.status !== 'Synced' && 'hidden')} />
+                        </div>
+                        <p className="text-xs text-muted-foreground">{portal.name}</p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    )
+}
+
 
 // Helper for smooth scrolling
 const scrollToSection = (id: string) => {
@@ -446,11 +491,8 @@ export default function HomePage() {
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
-              <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-purple-500/10 to-pink-500/10 flex flex-col items-center justify-center text-center p-8">
-                <h3 className="text-4xl font-bold font-heading">MEGA LISTING PRO 2</h3>
-                 <Link href="/products/mega-listing" className="mt-4">
-                    <Button variant="outline">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
-                </Link>
+              <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-purple-500/10 to-pink-500/10 flex flex-col items-center justify-center text-center p-2">
+                 <MegaListingSimulation />
               </Card>
             </div>
             
