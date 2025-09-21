@@ -17,7 +17,7 @@ import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/component
 import Image from 'next/image';
 import { track } from '@/lib/events';
 import type { Project } from '@/types';
-import { useAuth } from '@/hooks/useAuth.tsx';
+import { useAuth } from '@/hooks/useAuth';
 
 const MOCK_DEVELOPERS = ['Emaar', 'Damac', 'Sobha', 'Nakheel', 'Meraas', 'Aldar'];
 
@@ -63,7 +63,7 @@ function OnboardingComponent() {
 
     // Fetch broader scan when user is on step 4 or has selected developers
     useEffect(() => {
-        if (step === 4 && scannedProjects.length === 0) {
+        if (step === 4 && scannedProjects.length === 0 && user) {
             setIsLoading(true);
             const devQuery = draft.devFocus.length > 0 ? `q=${draft.devFocus.join(',')}` : 'q=emaar,damac,sobha,nakheel,meraas,aldar';
             fetch(`/api/projects/scan?${devQuery}&limit=12`)
@@ -74,7 +74,7 @@ function OnboardingComponent() {
                 .catch(err => console.error("Failed to fetch scan", err))
                 .finally(() => setIsLoading(false));
         }
-    }, [step, draft.devFocus, scannedProjects.length]);
+    }, [step, draft.devFocus, scannedProjects.length, user]);
 
     const updateDraft = (data: Partial<typeof draft>) => {
         setDraft(prev => ({ ...prev, ...data, progress: { step, ts: Date.now() } }));

@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import { appDetails as blogContent } from './blog-content';
@@ -201,7 +200,7 @@ const mergeToolData = (): Feature[] => {
         return {
             ...(tool as any),
             longDescription: detailsContent?.full_description || tool.description,
-            isPage: ['bayut-sync', 'property-finder-sync', 'listing-manager', 'listing-performance', 'market-trends', 'youtube-video-editor', 'pdf-editor', 'chatbot-creator', 'keyword-planner', 'projects-finder', 'market-reports', 'deal-analyzer'].includes(tool.id),
+            isPage: ['bayut-sync', 'property-finder-sync', 'listing-manager', 'listing-performance', 'market-trends', 'youtube-video-editor', 'pdf-editor', 'chatbot-creator', 'keyword-planner', 'projects-finder', 'market-reports', 'deal-analyzer', 'ugc-script-writer', 'ai-video-presenter'].includes(tool.id),
             href: `/dashboard/tool/${tool.id}`,
             guideHref: `/apps/${tool.id}`,
             mindMapCategory: tool.categories.includes('Ads') ? 'Meta Pilot (Campaign Automation)' :
