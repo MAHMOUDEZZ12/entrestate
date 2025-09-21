@@ -3,7 +3,7 @@ export const pricingData = {
   "apps": [
     {
       "name": "Meta Auto Pilot",
-      "bundle": "META ADS PILOT",
+      "bundle": "META ADS MANAGER PILOT",
       "description": "Single-click manager for Facebook & Instagram campaigns. Automates ad creation, targeting, and optimization.",
       "flow": "Pulls listing data from Listing Intelligence. Launches campaigns automatically using AI recommendations.",
       "level_of_knowledge_required": "Zero",
@@ -12,7 +12,7 @@ export const pricingData = {
     },
     {
       "name": "Campaign Builder",
-      "bundle": "META ADS PILOT",
+      "bundle": "META ADS MANAGER PILOT",
       "description": "Dedicated agent for creating high-performing Facebook & Instagram ad campaigns.",
       "flow": "Works with Meta Auto Pilot and Audience Creator for optimized campaigns.",
       "level_of_knowledge_required": "Zero",
@@ -21,7 +21,7 @@ export const pricingData = {
     },
     {
       "name": "Audience Creator",
-      "bundle": "META ADS PILOT",
+      "bundle": "META ADS MANAGER PILOT",
       "description": "Find high-intent buyers before they search.",
       "flow": "Integrates with Campaign Builder and Meta Auto Pilot to target the right audience.",
       "level_of_knowledge_required": "Zero",
@@ -30,7 +30,7 @@ export const pricingData = {
     },
     {
       "name": "Insta Ads Designer",
-      "bundle": "META ADS PILOT",
+      "bundle": "META ADS MANAGER PILOT",
       "description": "Create perfect ads for Instagram Stories & Feed.",
       "flow": "Connects to Campaign Builder and Reel Ads for full creative workflow.",
       "level_of_knowledge_required": "Zero",
@@ -39,7 +39,7 @@ export const pricingData = {
     },
     {
       "name": "Reel Ads",
-      "bundle": "META ADS PILOT",
+      "bundle": "META ADS MANAGER PILOT",
       "description": "Generate engaging video ads for Instagram Reels.",
       "flow": "Works with Insta Ads Designer to create full creative campaigns.",
       "level_of_knowledge_required": "Zero",
@@ -48,7 +48,7 @@ export const pricingData = {
     },
     {
       "name": "Listing Manager",
-      "bundle": "LISTING INTELLIGENCE",
+      "bundle": "LISTING PORTALS INTELLIGENCE",
       "description": "Prepare and syndicate listings to major portals.",
       "flow": "Feeds data into Creative Suite and Meta Ads Pilot.",
       "level_of_knowledge_required": "Zero",
@@ -57,7 +57,7 @@ export const pricingData = {
     },
     {
       "name": "Listing Generator",
-      "bundle": "LISTING INTELLIGENCE",
+      "bundle": "LISTING PORTALS INTELLIGENCE",
       "description": "Craft perfect listings for Property Finder & Bayut.",
       "flow": "Automatically formats listings for syndication.",
       "level_of_knowledge_required": "Zero",
@@ -66,7 +66,7 @@ export const pricingData = {
     },
     {
       "name": "Property Finder Pilot",
-      "bundle": "LISTING INTELLIGENCE",
+      "bundle": "LISTING PORTALS INTELLIGENCE",
       "description": "Execution terminal for pushing listings to Property Finder.",
       "flow": "Works with Listing Manager to automate syndication.",
       "level_of_knowledge_required": "Zero",
@@ -75,7 +75,7 @@ export const pricingData = {
     },
     {
       "name": "Bayut Pilot",
-      "bundle": "LISTING INTELLIGENCE",
+      "bundle": "LISTING PORTALS INTELLIGENCE",
       "description": "Execution terminal for pushing listings to Bayut.",
       "flow": "Works with Listing Manager to automate syndication.",
       "level_of_knowledge_required": "Zero",
@@ -84,7 +84,7 @@ export const pricingData = {
     },
     {
       "name": "Listing Performance",
-      "bundle": "LISTING INTELLIGENCE",
+      "bundle": "LISTING PORTALS INTELLIGENCE",
       "description": "Track listing views and performance metrics.",
       "flow": "Feeds analytics into Meta Ads Pilot for optimized campaigns.",
       "level_of_knowledge_required": "Zero",
@@ -93,7 +93,7 @@ export const pricingData = {
     },
     {
       "name": "AI Price Estimator",
-      "bundle": "LISTING INTELLIGENCE",
+      "bundle": "LISTING PORTALS INTELLIGENCE",
       "description": "Get AI-powered price estimates for any property.",
       "flow": "Supports listing creation and investor matching.",
       "level_of_knowledge_required": "Zero",
@@ -102,7 +102,7 @@ export const pricingData = {
     },
     {
       "name": "Commission Calculator",
-      "bundle": "LISTING INTELLIGENCE",
+      "bundle": "LISTING PORTALS INTELLIGENCE",
       "description": "Instantly calculate your sales commission.",
       "flow": "Works alongside payment plans and listings.",
       "level_of_knowledge_required": "Zero",
@@ -111,7 +111,7 @@ export const pricingData = {
     },
     {
       "name": "Payment Planner",
-      "bundle": "LISTING INTELLIGENCE",
+      "bundle": "LISTING PORTALS INTELLIGENCE",
       "description": "Generate tailored payment plans for off-plan properties.",
       "flow": "Integrates with listings and investor matching.",
       "level_of_knowledge_required": "Zero",
@@ -120,7 +120,7 @@ export const pricingData = {
     },
     {
       "name": "Investor Matching",
-      "bundle": "LISTING INTELLIGENCE",
+      "bundle": "LISTING PORTALS INTELLIGENCE",
       "description": "Pair budgets with the right projects.",
       "flow": "Feeds matched leads into Meta Ads Pilot or Creative Suite.",
       "level_of_knowledge_required": "Zero",
@@ -129,7 +129,7 @@ export const pricingData = {
     },
     {
       "name": "Multi-Offer Builder",
-      "bundle": "LISTING INTELLIGENCE",
+      "bundle": "LISTING PORTALS INTELLIGENCE",
       "description": "Compare property options side-by-side for clients.",
       "flow": "Integrates with listings and investor data.",
       "level_of_knowledge_required": "Zero",
@@ -253,7 +253,7 @@ export const pricingData = {
     },
     {
       "name": "Keyword Planner",
-      "bundle": "META ADS PILOT",
+      "bundle": "META ADS MANAGER PILOT",
       "description": "Generate strategic keyword plans for Google Ads.",
       "flow": "Creates comprehensive ad groups and keyword variations to capture high-intent leads.",
       "level_of_knowledge_required": "Zero",
@@ -263,7 +263,7 @@ export const pricingData = {
   ],
   "bundles": [
     {
-      "name": "META ADS PILOT",
+      "name": "META ADS MANAGER PILOT",
       "apps": [
         "Meta Auto Pilot",
         "Campaign Builder",
@@ -280,7 +280,7 @@ export const pricingData = {
       "monthly_price": 45
     },
     {
-      "name": "LISTING INTELLIGENCE",
+      "name": "LISTING PORTALS INTELLIGENCE",
       "apps": [
         "Listing Manager",
         "Listing Generator",
