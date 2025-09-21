@@ -64,9 +64,9 @@ const ChatSimulation = () => {
 
 const SearchSimulation = () => {
     const results = [
-        { icon: <Building />, title: "Project: Emaar Beachfront", description: "Verified project data, floor plans, and pricing." },
-        { icon: <BarChart />, title: "Trend: Dubai Marina Prices", description: "Price index is up 3.2% QoQ in this area." },
-        { icon: <LayoutTemplate />, title: "Tool: Landing Page Builder", description: "Create a dedicated landing page for this project." }
+        { type: 'Project', icon: <Building />, title: "Project: Emaar Beachfront", description: "Verified project data, floor plans, and pricing." },
+        { type: 'Tool', icon: <LayoutTemplate />, title: "Tool: Landing Page Builder", description: "Create a dedicated landing page for this project." },
+        { type: 'Market', icon: <BarChart />, title: "Trend: Dubai Marina Prices", description: "Price index is up 3.2% QoQ in this area." },
     ];
 
     return (
