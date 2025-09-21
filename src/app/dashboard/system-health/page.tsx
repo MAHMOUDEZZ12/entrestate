@@ -164,7 +164,7 @@ export default function SystemHealthPage() {
                     <AccordionItem value={service.id} key={service.id}>
                          <AccordionTrigger>
                             <div className="flex items-center gap-4">
-                               <Badge className={statusConfig[service.status].color.replace('border-', 'bg-').replace('/10', '/80')}>
+                               <Badge className={`${statusConfig[service.status].color.replace('border-', 'bg-').replace('/10', '/80')} text-black`}>
                                     {service.status}
                                 </Badge>
                                <span className="font-semibold text-base">{service.title}</span>
