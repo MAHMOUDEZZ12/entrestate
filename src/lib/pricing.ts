@@ -257,7 +257,7 @@ export const pricingData = {
         "Market Reports"
       ],
       "description": "Central hub for property management and market intelligence.",
-      "monthly_price": 50
+      "monthly_price": 40
     },
     {
       "name": "ENTRESTATE CREATIVE SUITE",
@@ -310,7 +310,10 @@ export const pricingData = {
         "CRM Memory",
         "Assistant AI",
         "VM Creator",
-        "Creative Execution Terminal"
+        "Creative Execution Terminal",
+        "PDF EDITOR AI",
+        "Images HQ AI",
+        "Logo Creator AI"
       ],
       "description": "Ultimate full-suite experience — all apps, full automation, unlimited AI tools.",
       "monthly_price": 140
