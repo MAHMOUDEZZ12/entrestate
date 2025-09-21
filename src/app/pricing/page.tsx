@@ -76,7 +76,11 @@ export default function PricingPage() {
 
   const activeBundle = useMemo(() => {
     if (isProSelected) return null;
-    return bundles.find(bundle => isBundleSelected(bundle.apps));
+    return bundles.find(bundle => {
+        if (bundle.apps.length !== selectedApps.length) return false;
+        const selectedSet = new Set(selectedApps);
+        return bundle.apps.every(app => selectedSet.has(app));
+    });
   }, [selectedApps, bundles, isProSelected]);
 
 
@@ -147,22 +151,22 @@ export default function PricingPage() {
                     const isSelected = isBundleSelected(bundle.apps);
                     const savings = getBundleSavings(bundle);
                     return (
-                      <button
+                      <Card
                         key={bundle.name}
                         onClick={() => handleBundleSelection(bundle)}
                         className={cn(
-                          "p-4 rounded-lg border text-left transition-all relative",
-                          isSelected ? "bg-primary/10 border-primary/50" : "bg-muted/30 hover:bg-muted/70",
+                          "cursor-pointer transition-all relative",
+                          isSelected ? "bg-primary/10 border-primary/50 ring-2 ring-primary/30" : "bg-muted/30 hover:bg-muted/70",
                           isProSelected && "opacity-50 cursor-not-allowed"
                         )}
-                        disabled={isProSelected}
+                        aria-disabled={isProSelected}
                       >
-                         <Badge variant={isSelected ? "default" : "secondary"} className="absolute -top-2 -right-2">Bundle</Badge>
-                        <div className="flex items-center gap-3">
-                          <p className="font-semibold text-foreground">{bundle.name}</p>
-                        </div>
-                        {savings > 0 && <p className="text-xs font-semibold text-primary mt-2">Save ${savings.toFixed(2)}/mo</p>}
-                      </button>
+                         <CardHeader>
+                            <Badge variant={isSelected ? "default" : "secondary"} className="absolute -top-2 -right-2">Bundle</Badge>
+                            <CardTitle className="text-lg">{bundle.name}</CardTitle>
+                            {savings > 0 && <CardDescription className="text-primary font-semibold">Save ${savings.toFixed(2)}/mo</CardDescription>}
+                         </CardHeader>
+                      </Card>
                     );
                   })}
                 </div>
