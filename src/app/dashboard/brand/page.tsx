@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -17,10 +17,11 @@ import { cn } from '@/lib/utils';
 import { PageHeader } from '@/components/ui/page-header';
 import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
+import { useAuth } from '@/hooks/useAuth';
 
 const brandSchema = z.object({
   companyName: z.string().min(2, 'Company name is required.'),
-  logo: z.any().optional(),
+  logoUrl: z.any().optional(),
   primaryColor: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'Must be a valid hex color.'),
   secondaryColor: z.string().regex(/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/, 'Must be a valid hex color.'),
   contactInfo: z.string().min(10, 'Contact info is required.'),
@@ -37,6 +38,7 @@ const initialMockFiles: MockFile[] = [
 
 export default function BrandPage() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [logoPreview, setLogoPreview] = React.useState<string | null>(null);
   const [isTraining, setIsTraining] = useState(false);
   const [files, setFiles] = useState<MockFile[]>(initialMockFiles);
@@ -47,37 +49,96 @@ export default function BrandPage() {
     control,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<BrandFormValues>({
     resolver: zodResolver(brandSchema),
     defaultValues: {
-      companyName: 'My Real Estate Agency',
+      companyName: '',
       primaryColor: '#008080',
       secondaryColor: '#CC6633',
-      contactInfo: 'Jane Doe\n+971 50 123 4567\njane.doe@agency.com',
+      contactInfo: '',
     },
   });
 
-  const onSubmit = (data: BrandFormValues) => {
-    console.log(data);
-    return new Promise(resolve => {
-        setTimeout(() => {
-            toast({
-              title: 'Brand Saved!',
-              description: 'Your brand assets have been updated successfully.',
-            });
-            resolve(true);
-        }, 1000)
-    });
+  useEffect(() => {
+    // Load user profile/brand data when user is available
+    if (user) {
+      // Mock fetching data. In a real app, this would be an API call.
+      const mockUserData = {
+        companyName: 'My Real Estate Agency',
+        logoUrl: null,
+        primaryColor: '#008080',
+        secondaryColor: '#CC6633',
+        contactInfo: 'Jane Doe\n+971 50 123 4567\njane.doe@agency.com',
+      };
+      reset(mockUserData);
+      if (mockUserData.logoUrl) {
+          setLogoPreview(mockUserData.logoUrl);
+      }
+    }
+  }, [user, reset]);
+
+
+  const onSubmit = async (data: BrandFormValues) => {
+    if (!user) {
+        toast({ title: "Not Authenticated", description: "You must be logged in to save your brand.", variant: "destructive" });
+        return;
+    }
+    try {
+        const idToken = await user.getIdToken();
+        const payload = {
+            companyName: data.companyName,
+            brandKit: {
+                logoUrl: logoPreview,
+                colors: {
+                    primary: data.primaryColor,
+                    accent: data.secondaryColor,
+                },
+                contact: {
+                    // This is a simplified parsing. A real app might have separate fields.
+                    name: data.contactInfo.split('\n')[0],
+                    phone: data.contactInfo.split('\n')[1],
+                    email: data.contactInfo.split('\n')[2],
+                }
+            }
+        };
+
+        const response = await fetch('/api/user/profile', {
+            method: 'POST',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${idToken}`
+             },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to save brand kit.');
+        }
+
+        toast({
+          title: 'Brand Saved!',
+          description: 'Your brand assets have been updated successfully.',
+        });
+
+    } catch (error: any) {
+        toast({
+          title: 'Error Saving Brand',
+          description: error.message,
+          variant: 'destructive',
+        });
+    }
   };
   
   const handleLogoFileChange = (files: FileList | null) => {
     const file = files?.[0];
     if (file) {
-      setValue("logo", file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setLogoPreview(reader.result as string);
+        setValue("logoUrl", reader.result as string);
       };
       reader.readAsDataURL(file);
     }
@@ -177,3 +238,5 @@ export default function BrandPage() {
     </main>
   );
 }
+
+    

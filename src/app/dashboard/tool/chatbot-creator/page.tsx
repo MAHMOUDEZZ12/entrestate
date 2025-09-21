@@ -3,15 +3,17 @@
 
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Sparkles, Loader2, Bot, BrainCircuit, Wand2 } from 'lucide-react';
+import { Sparkles, Loader2, Bot, BrainCircuit, Wand2, Code, Copy } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import Link from 'next/link';
+import { useToast } from '@/hooks/use-toast';
+import { CodeBlock } from '@/components/code-block';
 
 export default function ChatbotCreatorPage() {
   const [botName, setBotName] = useState('');
@@ -20,6 +22,8 @@ export default function ChatbotCreatorPage() {
   const [model, setModel] = useState('gemini-1.5-pro');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [result, setResult] = useState<any | null>(null);
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -29,30 +33,46 @@ export default function ChatbotCreatorPage() {
     }
     setIsLoading(true);
     setError(null);
+    setResult(null);
 
     // Simulate API call to Genkit flow
     await new Promise(resolve => setTimeout(resolve, 2000));
     
+    setResult({
+        botId: `bot_${Date.now()}`,
+        embedCode: `<script src="https://entrestate.com/embed.js" data-bot-id="bot_${Date.now()}" async defer></script>`
+    });
+    
     setIsLoading(false);
-    // Handle success (e.g., show a success toast, navigate to the new bot's page)
+    toast({
+        title: "Chatbot Created!",
+        description: "Your new AI assistant is ready to be embedded on your site."
+    });
   };
+  
+  const copyCode = () => {
+    if (result?.embedCode) {
+        navigator.clipboard.writeText(result.embedCode);
+        toast({ title: "Copied to clipboard!" });
+    }
+  }
 
   return (
-    <div className="flex flex-col">
+    <main className="p-4 md:p-10 space-y-8">
       <PageHeader
         title="Chatbot Creator"
         description="Build and train a custom AI chatbot for your website or app."
-        icon={<Bot className="h-6 w-6" />}
+        icon={<Bot className="h-8 w-8" />}
       />
-      <div className="p-4 md:p-6 grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
         <div className="lg:col-span-2">
-          <Card className="bg-card/80 backdrop-blur-lg">
+          <Card>
             <CardHeader>
               <CardTitle>Chatbot Configuration</CardTitle>
               <CardDescription>Define the core identity and knowledge of your new AI assistant.</CardDescription>
             </CardHeader>
-            <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit}>
+            <CardContent className="space-y-6">
                 <div className="space-y-2">
                   <Label htmlFor="bot-name">Chatbot Name</Label>
                   <Input 
@@ -87,18 +107,20 @@ export default function ChatbotCreatorPage() {
                     </Select>
                 </div>
                 
-                <Button type="submit" className="w-full" disabled={isLoading}>
+                {error && <p className="text-destructive text-sm mt-4">{error}</p>}
+            </CardContent>
+            <CardFooter>
+                 <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
                   Create Chatbot
                 </Button>
-              </form>
-              {error && <p className="text-destructive text-sm mt-4">{error}</p>}
-            </CardContent>
+            </CardFooter>
+            </form>
           </Card>
         </div>
 
         <div className="lg:col-span-1 space-y-8 sticky top-24">
-           <Card className="bg-card/80 backdrop-blur-lg">
+           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <BrainCircuit className="h-5 w-5 text-primary" />
@@ -128,6 +150,19 @@ export default function ChatbotCreatorPage() {
           </Card>
         </div>
       </div>
-    </div>
+      {result && (
+        <Card className="mt-8">
+            <CardHeader>
+                <CardTitle>Your Chatbot is Ready!</CardTitle>
+                <CardDescription>Copy the code below and paste it just before the closing `&lt;/body&gt;` tag on your website.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <CodeBlock>{result.embedCode}</CodeBlock>
+            </CardContent>
+        </Card>
+      )}
+    </main>
   );
 }
+
+    
