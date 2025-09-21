@@ -62,8 +62,8 @@ const discoverMarketFlow = ai.defineFlow(
 
     // IMPORTANT: Replace these with your actual Vertex AI Search project details.
     const projectId = process.env.GOOGLE_CLOUD_PROJECT || 'YOUR_GOOGLE_CLOUD_PROJECT_ID';
-    const location = process.env.VERTEX_AI_LOCATION || 'global'; // e.g., 'us' or 'eu'
-    const datastoreId = process.env.VERTEX_AI_DATASTORE_ID || 'YOUR_DATASTORE_ID';
+    const location = 'global'; // e.g., 'us' or 'eu'
+    const datastoreId = 'entrestate_1758455640723';
 
     const servingConfig = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${datastoreId}/servingConfigs/default_serving_config`;
 
