@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useMemo, useState } from 'react';
@@ -73,38 +74,24 @@ export default function PricingPage() {
   };
 
   const { finalPrice, discount, activeBundle, utilityDiscount, originalUtilityPrice } = useMemo(() => {
-    const isPro = proPlan && isBundleSelected(proPlan.apps);
+    // Check for an exact bundle match first
+    const matchedBundle = [...bundles, proPlan].find(bundle => bundle && isBundleSelected(bundle.apps));
 
-    if (isPro && proPlan) {
-      const individualPrice = proPlan.apps.reduce((total, appName) => {
-        const app = allApps.find(a => a.name === appName);
-        return total + (app?.pricing || 0);
-      }, 0);
-      return { 
-        finalPrice: proPlan.monthly_price, 
-        discount: individualPrice - proPlan.monthly_price, 
-        activeBundle: proPlan, 
-        utilityDiscount: 0,
-        originalUtilityPrice: 0 
-      };
-    }
-
-    const matchedBundle = bundles.find(bundle => isBundleSelected(bundle.apps));
     if (matchedBundle) {
-      const individualPrice = matchedBundle.apps.reduce((total, appName) => {
-        const app = allApps.find(a => a.name === appName);
-        return total + (app?.pricing || 0);
-      }, 0);
-      return { 
-        finalPrice: matchedBundle.monthly_price, 
-        discount: individualPrice - matchedBundle.monthly_price, 
-        activeBundle: matchedBundle,
-        utilityDiscount: 0,
-        originalUtilityPrice: 0 
-      };
+        const individualPrice = matchedBundle.apps.reduce((total, appName) => {
+            const app = allApps.find(a => a.name === appName);
+            return total + (app?.pricing || 0);
+        }, 0);
+        return { 
+            finalPrice: matchedBundle.monthly_price, 
+            discount: individualPrice - matchedBundle.monthly_price, 
+            activeBundle: matchedBundle,
+            utilityDiscount: 0,
+            originalUtilityPrice: 0 
+        };
     }
     
-    // Individual app calculation with utility discount
+    // If no bundle is matched, calculate individual app pricing with utility discounts
     const selectedUtilityApps = selectedApps.filter(appName => utilityApps.includes(appName));
     const utilityAppCount = selectedUtilityApps.length;
 
@@ -135,17 +122,11 @@ export default function PricingPage() {
     return { 
       finalPrice: totalIndividualPrice, 
       discount: 0, 
-      activeBundle: null, 
+      activeBundle: null,
       utilityDiscount: utilityDiscountValue,
-      originalUtilityPrice: originalUtilityPrice
+      originalUtilityPrice
     };
   }, [selectedApps, allApps, bundles, proPlan]);
-
-  const activeBundle = useMemo(() => {
-    if (!proPlan) return null;
-    if (isBundleSelected(proPlan.apps)) return proPlan;
-    return bundles.find(bundle => isBundleSelected(bundle.apps)) || null;
-  }, [selectedApps, bundles, proPlan]);
 
   const isProSelected = activeBundle?.name === 'ENTRESTATE PRO';
 
@@ -188,7 +169,7 @@ export default function PricingPage() {
                     {isProSelected && <Check className="h-4 w-4 text-primary-foreground" />}
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground text-2xl md:text-3xl">{proPlan.name}</p>
+                    <p className="font-semibold text-foreground text-3xl md:text-4xl">{proPlan.name}</p>
                     <p className="text-md text-muted-foreground text-left">{proPlan.description}</p>
                   </div>
                 </div>
