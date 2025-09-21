@@ -38,24 +38,22 @@ export default function PricingPage() {
   };
 
   const handleBundleSelection = (bundleName: string) => {
-    if (isProSelected) {
-      setSelectedApps([]);
-    }
     const bundle = bundles.find(b => b.name === bundleName);
     if (!bundle) return;
   
     const isCurrentlySelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.length;
   
     if (isCurrentlySelected) {
-      setSelectedApps([]);
+       setSelectedApps([]);
     } else {
-      setSelectedApps(bundle.apps);
+       setSelectedApps(bundle.apps);
     }
   };
 
   const handleSelectPro = () => {
     if (!proPlan) return;
-    const isCurrentlyPro = allApps.length === selectedApps.length && allApps.every(app => selectedApps.includes(app.name));
+    const isCurrentlyPro = allApps.length > 0 && allApps.every(app => selectedApps.includes(app.name));
+
     if (isCurrentlyPro) {
       setSelectedApps([]);
     } else {
@@ -70,7 +68,7 @@ export default function PricingPage() {
   }, [selectedApps, allApps]);
 
   const activeBundle = useMemo(() => {
-    if (!proPlan || selectedApps.length !== proPlan.apps.length) {
+    if (!proPlan || !allApps.every(app => selectedApps.includes(app.name))) {
       const foundBundle = bundles.find(bundle =>
         bundle.apps.length > 0 &&
         bundle.apps.length === selectedApps.length &&
@@ -79,12 +77,13 @@ export default function PricingPage() {
       return foundBundle;
     }
     return null;
-  }, [selectedApps, bundles, proPlan]);
+  }, [selectedApps, bundles, proPlan, allApps]);
 
   const isProSelected = useMemo(() => {
     if (!proPlan) return false;
-    return proPlan.apps.length > 0 && selectedApps.length >= proPlan.apps.length && proPlan.apps.every(app => selectedApps.includes(app.name));
-  }, [selectedApps, proPlan]);
+    return allApps.length > 0 && allApps.every(app => selectedApps.includes(app.name));
+  }, [selectedApps, proPlan, allApps]);
+
 
   const finalPrice = isProSelected && proPlan ? proPlan.monthly_price : activeBundle ? activeBundle.monthly_price : individualAppsPrice;
   const discount = activeBundle ? individualAppsPrice - activeBundle.monthly_price : isProSelected && proPlan ? individualAppsPrice - proPlan.monthly_price : 0;
@@ -123,13 +122,13 @@ export default function PricingPage() {
                 <div className="absolute top-2 right-2 px-2 py-0.5 text-xs font-semibold rounded-full bg-primary text-primary-foreground">
                   Best Value
                 </div>
-                <div className="flex items-center gap-3">
-                  <div className={cn("h-5 w-5 rounded-full border-2 flex items-center justify-center", isProSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
-                    {isProSelected && <Check className="h-3 w-3 text-primary-foreground" />}
+                <div className="flex items-center gap-4">
+                  <div className={cn("h-6 w-6 rounded-full border-2 flex items-center justify-center flex-shrink-0", isProSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
+                    {isProSelected && <Check className="h-4 w-4 text-primary-foreground" />}
                   </div>
                   <div>
-                    <p className="font-semibold text-foreground text-lg">{proPlan.name}</p>
-                    <p className="text-sm text-muted-foreground text-left">{proPlan.description}</p>
+                    <p className="font-semibold text-foreground text-xl">{proPlan.name}</p>
+                    <p className="text-md text-muted-foreground text-left">{proPlan.description}</p>
                   </div>
                 </div>
               </button>
@@ -148,7 +147,7 @@ export default function PricingPage() {
               <CardDescription>Select a preset bundle as a starting point, or choose apps individually.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   {bundles.map(bundle => {
                     const isSelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.length;
                     const savings = getBundleSavings(bundle);
@@ -199,24 +198,23 @@ export default function PricingPage() {
           <Card className="sticky bottom-4 z-10 shadow-2xl backdrop-blur-lg bg-card/80">
             <CardHeader>
               <CardTitle>Your Custom Plan</CardTitle>
-              <CardDescription>
-                {isProSelected ? "Full access to the entire Entrestate ecosystem." :
-                  activeBundle ? `The complete "${activeBundle.name}" bundle.` :
-                    selectedApps.length > 0 ? `${selectedApps.length} app(s) selected.` :
-                      "Select apps or a bundle to see pricing."}
-              </CardDescription>
             </CardHeader>
             <CardContent>
-              {selectedApps.length > 0 && (
-                <div className="mb-4">
-                    <p className="font-semibold text-sm mb-2">Selected Apps:</p>
-                    <div className="flex flex-wrap gap-2">
-                        {selectedApps.map(appName => (
-                            <Badge key={appName} variant="secondary">{appName}</Badge>
-                        ))}
+                {selectedApps.length > 0 && (
+                    <div className="mb-4">
+                        <p className="font-semibold text-sm mb-2">
+                           {isProSelected ? "ENTRESTATE PRO includes all apps." :
+                            activeBundle ? `Bundle: "${activeBundle.name}"` :
+                            `${selectedApps.length} app(s) selected.`
+                           }
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                            {selectedApps.map(appName => (
+                                <Badge key={appName} variant="secondary">{appName}</Badge>
+                            ))}
+                        </div>
                     </div>
-                </div>
-              )}
+                )}
               <div className="text-center">
                 {discount > 0 && (
                   <p className="text-muted-foreground line-through">
