@@ -22,7 +22,7 @@ import {
     Tooltip,
 } from 'recharts';
 import { useRouter } from 'next/navigation';
-import { LandingHeader } from '@/components/landing-header';
+import { ResourcesHeader } from '@/components/resources-header';
 import { LandingFooter } from '@/components/landing-footer';
 
 
@@ -319,7 +319,7 @@ export default function HomePage() {
 
   return (
     <>
-      <LandingHeader />
+      <ResourcesHeader />
       <main className="flex-1 w-full">
         {/* New Hero Section */}
         <section className="relative flex h-[calc(100vh-64px)] w-full items-center justify-center overflow-hidden border-b">

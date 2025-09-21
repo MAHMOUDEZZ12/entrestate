@@ -4,13 +4,13 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
 import { Shield } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { LandingHeader } from '@/components/landing-header';
+import { ResourcesHeader } from '@/components/resources-header';
 import { LandingFooter } from '@/components/landing-footer';
 
 export default function PrivacyPage() {
   return (
     <>
-      <LandingHeader />
+      <ResourcesHeader />
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
         <PageHeader 
             icon={<Shield className="h-8 w-8" />}
@@ -69,7 +69,7 @@ export default function PrivacyPage() {
               </ul>
 
               <h2>Contact Us</h2>
-              <p>If you have questions or comments about this Privacy Policy, please contact us at:</p>
+              <p>If you have any questions or comments about this Privacy Policy, please contact us at:</p>
               <p>
                 Entrestate by mtc<br />
                 Dubai, UAE<br />
