@@ -159,6 +159,72 @@ export const tools: Feature[] = mergeToolData().map(tool => {
     // This switch populates the `creationFields` for each tool,
     // effectively defining the form for each tool's dashboard page.
     switch (tool.id) {
+        case 'ai-brand-creator':
+            tool.creationFields = [
+                { id: 'command', name: 'Command', type: 'text', placeholder: 'e.g., "Set up my brand from the uploaded files."' },
+                { id: 'documents', name: 'Documents', type: 'file', multiple: true, description: "Upload PDFs, text files, etc." },
+            ];
+            tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                    <Alert>
+                        <Sparkles className="h-4 w-4" />
+                        <AlertTitle>AI Summary</AlertTitle>
+                        <AlertDescription>{result.summary}</AlertDescription>
+                    </Alert>
+                    {result.brandInfo && (
+                        <Card>
+                            <CardHeader><CardTitle>Extracted Brand Info</CardTitle></CardHeader>
+                            <CardContent>
+                                {result.brandInfo.companyName && <p><strong>Company:</strong> {result.brandInfo.companyName}</p>}
+                                {result.brandInfo.primaryColor && <p><strong>Primary Color:</strong> <span style={{color: result.brandInfo.primaryColor}}>{result.brandInfo.primaryColor}</span></p>}
+                                {result.brandInfo.contact?.email && <p><strong>Email:</strong> {result.brandInfo.contact.email}</p>}
+                            </CardContent>
+                        </Card>
+                    )}
+                     {result.projects && result.projects.length > 0 && (
+                        <Card>
+                            <CardHeader><CardTitle>Extracted Projects</CardTitle></CardHeader>
+                            <CardContent>
+                                <ul>
+                                    {result.projects.map((p: any, i: number) => <li key={i}>{p.name} - {p.location}</li>)}
+                                </ul>
+                            </CardContent>
+                        </Card>
+                    )}
+                </div>
+            );
+            break;
+        case 'commission-calculator':
+            tool.creationFields = [
+                { id: 'salePrice', name: 'Sale Price (AED)', type: 'number', placeholder: 'e.g., 2500000' },
+                { id: 'commissionRate', name: 'Commission Rate (%)', type: 'number', placeholder: 'e.g., 2' },
+                { id: 'agentSplit', name: 'Your Split (%)', type: 'number', placeholder: 'e.g., 50', value: '50' },
+            ];
+            tool.renderResult = (result, toast) => {
+                const salePrice = parseFloat(result.salePrice);
+                const commissionRate = parseFloat(result.commissionRate);
+                const agentSplit = parseFloat(result.agentSplit);
+                const totalCommission = salePrice * (commissionRate / 100);
+                const yourShare = totalCommission * (agentSplit / 100);
+                return (
+                <div className="space-y-4">
+                    <Card>
+                        <CardHeader><CardTitle>Commission Breakdown</CardTitle></CardHeader>
+                        <CardContent className="space-y-2">
+                             <p><strong>Total Commission:</strong> AED {totalCommission.toLocaleString()}</p>
+                             <p><strong>Your Share:</strong> AED {yourShare.toLocaleString()}</p>
+                        </CardContent>
+                    </Card>
+                </div>
+            )};
+            break;
+         case 'ugc-script-writer':
+            tool.creationFields = [
+                 { id: 'projectId', name: 'Project', type: 'select', options: ['emaar-beachfront', 'damac-hills-2', 'sobha-hartland'], placeholder: 'Select a project to write a script for' },
+                 { id: 'vibe', name: 'Vibe', type: 'select', options: ['Exciting & Upbeat', 'Authentic & Relatable', 'Luxurious & Exclusive'] },
+                 { id: 'hook', name: 'Hook Style', type: 'select', options: ['Question-based', 'Problem/Solution', 'Surprising Stat'] },
+            ];
+            break;
         case 'insta-ads-designer':
             tool.creationFields = [
                 { id: 'projectId', name: 'Project', type: 'select', placeholder: 'Select a project from your library', options: ['emaar-beachfront', 'damac-hills-2', 'sobha-hartland', 'Add New Project...'], description: "Select a project you've saved to your library to use its assets." },
@@ -500,6 +566,7 @@ export const tools: Feature[] = mergeToolData().map(tool => {
             );
             break;
         default:
+            // Generic placeholder for tools without specific implementation yet
             tool.creationFields = [
                 { id: 'input', name: 'Input', type: 'text', placeholder: 'Enter your input...' },
             ];
@@ -510,5 +577,3 @@ export const tools: Feature[] = mergeToolData().map(tool => {
     }
     return tool;
 });
-
-    
