@@ -10,8 +10,8 @@ export const Logo = ({ className }: { className?: string }) => (
     <Image 
         src={LOGO_URL}
         alt="Entrestate Logo"
-        width={240}
-        height={55}
+        width={140}
+        height={32}
         className="object-contain"
         priority
     />
