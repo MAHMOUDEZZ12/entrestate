@@ -310,7 +310,7 @@ export default function HomePage() {
                     </div>
                      <Link href="/products/aixa-intel">
                         <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
-                    </Link>
+                     </Link>
                 </div>
             </div>
 
@@ -349,6 +349,8 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
 
     
 
