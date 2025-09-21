@@ -27,7 +27,7 @@ const solutionCategories = [
         name: "Lead Gen Apps",
         icon: <Target className="h-8 w-8 text-primary" />,
         description: "Go beyond basic ads. Find high-intent buyers and sellers with AI-powered targeting and creative generation.",
-        apps: tools.filter(t => ['audience-creator', 'meta-ads-copilot', 'insta-ads-designer', 'landing-pages'].includes(t.id))
+        apps: tools.filter(t => ['audience-creator', 'meta-auto-pilot', 'insta-ads-designer', 'landing-pages'].includes(t.id))
     },
     {
         name: "Sales Pro Apps",
@@ -39,7 +39,7 @@ const solutionCategories = [
         name: "Lead Management Apps",
         icon: <Filter className="h-8 w-8 text-primary" />,
         description: "Nurture your leads with intelligent, automated tools that transform your database into a deal-making engine.",
-        apps: tools.filter(t => ['investor-matching', 'lead-investigator', 'whatsapp-campaigns', 'crm-assistant'].includes(t.id))
+        apps: tools.filter(t => ['investor-matching', 'lead-investigator', 'whatsapp-manager', 'crm-assistant'].includes(t.id))
     }
 ];
 

@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -13,6 +14,7 @@ import {
 } from '@/components/ui/command';
 import { tools, Feature } from '@/lib/tools-client';
 import { File, LayoutDashboard, Settings, User, Search, Bot, Sparkles } from 'lucide-react';
+import { LandingFooter } from '../landing-footer';
 
 interface CommandMenuProps {
   open: boolean;

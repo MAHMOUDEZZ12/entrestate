@@ -15,6 +15,7 @@ import {
 import { tools, Feature } from '@/lib/tools-client';
 import { File, LayoutDashboard, Settings, User, Search, Bot, Sparkles } from 'lucide-react';
 import { useTabManager } from '@/context/TabManagerContext';
+import { LandingFooter } from '../landing-footer';
 
 interface GlobalSearchProps {
   isOpen: boolean;

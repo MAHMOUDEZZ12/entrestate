@@ -4,15 +4,18 @@ import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
 import { Cookie } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { LandingHeader } from '../landing-header';
+import { LandingFooter } from '../landing-footer';
 
 export default function CookiesPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
+      <LandingHeader />
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
          <PageHeader 
             icon={<Cookie className="h-8 w-8" />}
             title="Cookie Policy"
-            description="Last updated: July 26, 2024"
+            description="Last updated: July 29, 2024"
         />
         <Card className="mt-8 bg-card/50">
             <CardContent className="p-8 prose prose-lg dark:prose-invert max-w-none">
@@ -24,11 +27,6 @@ export default function CookiesPage() {
               <p>
                 A cookie is a small data file that is placed on your device. We use cookies to operate and personalize your experience, to analyze our site traffic, and for security purposes.
               </p>
-
-              <h2>Why do we use cookies?</h2>
-              <p>
-                We use first-party cookies for several reasons. Some cookies are required for technical reasons in order for our website to operate, and we refer to these as "essential" or "strictly necessary" cookies. For example, we use cookies to remember your cookie consent preferences.
-              </p>
               
                <h2>How can I control cookies?</h2>
               <p>
@@ -39,13 +37,13 @@ export default function CookiesPage() {
               <p>If you have questions or comments about this Cookie Policy, please contact us at:</p>
               <p>
                 Entrestate<br />
-                123 AI Lane<br />
-                Innovation City, 12345<br />
+                Dubai, UAE<br />
                 <a href="mailto:privacy@entrestate.com">privacy@entrestate.com</a>
               </p>
             </CardContent>
         </Card>
       </main>
+      <LandingFooter />
     </div>
   );
 }

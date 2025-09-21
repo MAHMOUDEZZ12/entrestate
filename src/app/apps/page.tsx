@@ -4,21 +4,16 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  ArrowRight, Bot, BrainCircuit, CheckCircle, Plus, Sparkles, Upload, Megaphone,
-  User, ShieldQuestion, Search, MessageCircle, PenTool, Clock2, Wallet, BadgeCheck,
-  ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate
+  ArrowRight, Sparkles, LayoutTemplate
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Feature, tools as features, FilterCategory } from '@/lib/tools-client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { pricingData } from '@/lib/pricing-data';
 import { PageHeader } from '@/components/ui/page-header';
+import { LandingHeader } from '../landing-header';
+import { LandingFooter } from '../landing-footer';
 
 const filterCategories: FilterCategory[] = [
     'All', 'Marketing', 'Lead Gen', 'Creative', 'Sales Tools', 'Social & Comms', 
@@ -31,19 +26,14 @@ const announcements = [
     "The Investor Matching tool now supports commercial properties.",
 ];
 
-const anyAppPlan = pricingData.pricing_plans.find(p => p.plan_id === 'any_app_monthly');
-
 const FeatureCard = ({
   feature,
-  onClick,
 }: {
   feature: Feature;
-  onClick: (feature: Feature) => void;
 }) => {
   return (
     <Card 
-        className="group flex flex-col h-full bg-card/80 backdrop-blur-lg border-border hover:border-primary/30 transition-all duration-300 cursor-pointer hover:-translate-y-1"
-        onClick={() => onClick(feature)}
+        className="group flex flex-col h-full bg-card/80 backdrop-blur-lg border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
     >
       <CardContent className="flex flex-col flex-grow p-6">
         <div className='flex items-center justify-between mb-4'>
@@ -78,8 +68,7 @@ const FeatureCard = ({
         </div>
         <h2 className="text-2xl font-bold font-heading text-foreground mb-2">{feature.title}</h2>
         <p className="text-lg text-foreground/70 flex-grow">{feature.description}</p>
-         <div className="mt-6 flex justify-between items-center">
-            <div className="text-lg font-bold text-primary">{anyAppPlan?.price_display}</div>
+         <div className="mt-6 flex justify-end items-center">
             <Button variant="link" className="p-0 text-base text-primary">
                 Explore App
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -92,7 +81,6 @@ const FeatureCard = ({
 
 
 export default function AppsPage() {
-  const [selectedFeature, setSelectedFeature] = React.useState<Feature | null>(null);
   const [activeFilter, setActiveFilter] = React.useState<FilterCategory>('All');
   const [currentAnnouncement, setCurrentAnnouncement] = React.useState(announcements[0]);
 
@@ -112,50 +100,55 @@ export default function AppsPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <main className="flex-1 w-full max-w-full px-4 md:px-6 lg:px-8 py-12 md:py-20">
+      <LandingHeader />
+      <main className="flex-1 w-full max-w-full">
         <PageHeader
           icon={<LayoutTemplate className="h-8 w-8" />}
           title="The Entrestate App Store"
           description="The complete arsenal for the modern real estate professional. Explore the tools, train your assistant, and dominate your market."
         />
 
-        <div className="sticky top-16 z-10 bg-background/80 backdrop-blur-lg py-4 mb-8 mt-8">
-            <div className="flex justify-center overflow-x-auto pb-4 no-scrollbar">
-                <div className="flex gap-2 md:gap-4 flex-nowrap">
-                  {filterCategories.map(category => (
-                    <Button
-                      key={category}
-                      variant={activeFilter === category ? 'default' : 'outline'}
-                      onClick={() => setActiveFilter(category)}
-                      className={cn(
-                        'rounded-full px-4 py-2 text-sm md:text-base transition-all duration-200 shrink-0',
-                        activeFilter === category && 'shadow-lg shadow-primary/20'
-                      )}
-                    >
-                      {category} <span className="hidden md:inline-block ml-1">({getCategoryCount(category)})</span>
-                    </Button>
-                  ))}
+        <div className="sticky top-16 z-10 bg-background/80 backdrop-blur-lg py-4 mb-8">
+            <div className="container mx-auto px-4">
+                <div className="flex justify-center overflow-x-auto pb-4 -mx-4 px-4 no-scrollbar">
+                    <div className="flex gap-2 md:gap-4 flex-nowrap">
+                      {filterCategories.map(category => (
+                        <Button
+                          key={category}
+                          variant={activeFilter === category ? 'default' : 'outline'}
+                          onClick={() => setActiveFilter(category)}
+                          className={cn(
+                            'rounded-full px-4 py-2 text-sm md:text-base transition-all duration-200 shrink-0',
+                            activeFilter === category && 'shadow-lg shadow-primary/20'
+                          )}
+                        >
+                          {category} <span className="hidden md:inline-block ml-1 opacity-70">({getCategoryCount(category)})</span>
+                        </Button>
+                      ))}
+                    </div>
                 </div>
-            </div>
-            <div className="text-center text-sm text-muted-foreground mt-2 flex items-center justify-center gap-2">
-                <Sparkles className="h-4 w-4 text-primary" />
-                <span className="font-semibold text-primary">What's New?</span> {currentAnnouncement}
+                <div className="text-center text-sm text-muted-foreground mt-2 flex items-center justify-center gap-2">
+                    <Sparkles className="h-4 w-4 text-primary" />
+                    <span className="font-semibold text-primary">What's New?</span> {currentAnnouncement}
+                </div>
             </div>
         </div>
 
-        <div 
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8 lg:gap-12 max-w-[120rem] mx-auto"
-        >
-          {filteredFeatures.map((feature) => (
-             <Link href={`/apps/${feature.id}`} key={feature.id}>
-                <FeatureCard 
-                    feature={feature} 
-                    onClick={() => {}}
-                />
-            </Link>
-          ))}
+        <div className="container mx-auto px-4 md:px-6 lg:px-8 pb-12 md:pb-20">
+            <div 
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8"
+            >
+              {filteredFeatures.map((feature) => (
+                 <Link href={`/apps/${feature.id}`} key={feature.id}>
+                    <FeatureCard 
+                        feature={feature} 
+                    />
+                </Link>
+              ))}
+            </div>
         </div>
       </main>
+      <LandingFooter />
     </div>
   );
 }

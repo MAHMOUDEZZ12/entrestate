@@ -20,6 +20,8 @@ import Link from 'next/link';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 const utilityApps = [
     'AI Price Estimator',
@@ -169,14 +171,15 @@ export default function PricingPage() {
   }
 
   return (
-    <div className="flex flex-col">
-      <PageHeader
-        title="Plans & Pricing"
-        description="Choose the perfect toolkit for your real estate ambitions. From individual apps to the full AI-powered ecosystem."
-        icon={<Wallet className="h-8 w-8" />}
-      />
+    <div className="flex flex-col min-h-screen">
+      <LandingHeader />
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-20">
-        <div className="flex justify-center items-center gap-4 mb-12">
+        <PageHeader
+          title="Plans & Pricing"
+          description="Choose the perfect toolkit for your real estate ambitions. From individual apps to the full AI-powered ecosystem."
+          icon={<Wallet className="h-8 w-8" />}
+        />
+        <div className="flex justify-center items-center gap-4 my-12">
           <span className={cn(isAnnual ? 'text-muted-foreground' : 'text-foreground', 'font-medium')}>Pay Monthly</span>
           <Switch checked={isAnnual} onCheckedChange={setIsAnnual} aria-label="Toggle billing frequency" />
           <span className={cn(isAnnual ? 'text-foreground' : 'text-muted-foreground', 'font-medium')}>
@@ -318,8 +321,7 @@ export default function PricingPage() {
           </Card>
         </div>
       </main>
+      <LandingFooter />
     </div>
   );
 }
-
-    

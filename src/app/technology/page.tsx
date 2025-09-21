@@ -5,7 +5,7 @@ import React from 'react';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { BrainCircuit, Check, Cpu, Globe, Instagram, MessageCircle, Network, Bot, Send, Loader2, Sparkles, Upload, ArrowRight, Share2, FileText, Link as LinkIcon, File, Plus, Video, Phone, Users2, Facebook, ClipboardList, PenTool, Mic } from 'lucide-react';
+import { Check, Video, Mic, PenTool } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { ShinyButton } from '@/components/ui/shiny-button';
@@ -111,7 +111,7 @@ export default function AIHostPage() {
                     <div className="p-4 bg-muted rounded-2xl">
                          <Card className="w-full max-w-sm mx-auto overflow-hidden shadow-2xl">
                             <div className="aspect-video bg-background flex items-center justify-center relative">
-                                <Image src="https://picsum.photos/seed/presenter-card/400/225" alt="AI Presenter speaking" layout="fill" objectFit="cover" data-ai-hint="professional woman smiling" />
+                                <Image src="https://picsum.photos/seed/presenter-card/400/225" alt="AI Presenter speaking" fill objectFit="cover" data-ai-hint="professional woman smiling" />
                             </div>
                             <div className="p-4 bg-card">
                                 <h3 className="font-bold">Weekly Market Update: Dubai Marina</h3>

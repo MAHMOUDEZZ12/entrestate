@@ -4,9 +4,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Check, Sparkles, ArrowRight, Share2, Upload, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 export default function ProductPage() {
     return (
+        <div className="flex flex-col min-h-screen">
+        <LandingHeader />
         <main className="flex-1 w-full">
             <section className="relative py-20 md:py-32 text-center border-b overflow-hidden bg-gradient-to-br from-purple-500/10 to-pink-500/10">
                 <div className="container mx-auto px-4 relative z-10">
@@ -120,7 +124,7 @@ export default function ProductPage() {
                 </div>
             </section>
         </main>
+        <LandingFooter />
+        </div>
     );
 }
-
-    

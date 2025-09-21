@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/pricing',
     '/sx3-mindmap',
     '/login',
+    '/signup',
     '/privacy',
     '/terms',
     '/status',
@@ -24,12 +25,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/resources',
     '/community',
     '/discover',
+    '/solutions',
     '/technology'
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: route === '/' ? 1.0 : 0.8,
+  }));
+
+  const productRoutes = [
+      '/products/3xchat',
+      '/products/aixa-intel',
+      '/products/llm-model',
+      '/products/mega-listing',
+      '/products/pro-search',
+  ].map(route => ({
+      url: `${siteUrl}${route}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.9,
   }));
 
   const toolRoutes = tools.map((tool) => ({
@@ -47,5 +62,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
 
-  return [...staticRoutes, ...toolRoutes, ...appRoutes];
+  return [...staticRoutes, ...productRoutes, ...toolRoutes, ...appRoutes];
 }
