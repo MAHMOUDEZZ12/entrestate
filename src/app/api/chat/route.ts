@@ -3,34 +3,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-// 1. Define a schema for our knowledge base tool.
-const lookupKnowledgeTool = ai.defineTool(
-  {
-    name: 'lookupKnowledge',
-    description: 'Looks up information in the user\'s private knowledge base (uploaded documents, brochures, etc.). Use this to answer specific questions about projects, brand guidelines, or any other information the user has provided.',
-    inputSchema: z.object({
-      query: z.string().describe("The user's question or topic to search for."),
-    }),
-    outputSchema: z.string().describe("A summary of the relevant information found, or a message indicating no information was found."),
-  },
-  async ({ query }) => {
-    // 2. In a real application, this would query a vector database (e.g., Firestore Vector Search)
-    // containing the indexed content of the user's uploaded documents.
-    // For this prototype, we'll simulate a lookup.
-    console.log(`Simulating knowledge base lookup for query: "${query}"`);
-    
-    // Simulate finding a relevant document
-    if (query.toLowerCase().includes('emaar beachfront')) {
-      return "Found document: Emaar_Beachfront_Brochure.pdf. Key details: Luxury 1-4 bedroom apartments, private beach access, stunning views of the Palm Jumeirah. Price from AED 2.5M.";
-    }
-    if (query.toLowerCase().includes('brand')) {
-        return "Found document: Brand_Guide.pdf. Primary color: #003366 (Navy Blue), Secondary color: #FFD700 (Gold). Logo is a stylized falcon.";
-    }
-
-    return `No specific information found for "${query}". You can try asking about broader topics or upload relevant documents to the knowledge base.`;
-  }
-);
-
 export async function POST(req: NextRequest) {
   try {
     const { text, history } = await req.json();
@@ -39,11 +11,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'No text provided' }, { status: 400 });
     }
 
-    // 3. Use the generate function with the new tool and a system prompt.
+    // Use the modern, unified ai.generate() function.
+    // The system prompt guides the model to act as a real estate assistant.
+    // The model is smart enough to use its general knowledge and the context
+    // from the chat history without needing a manually defined 'lookup' tool.
     const response = await ai.generate({
-      model: 'gemini-1.5-pro-preview', // A model that supports tool use
-      tools: [lookupKnowledgeTool],
-      system: "You are a helpful real estate assistant. Use your knowledge base to answer questions whenever possible. If you use the knowledge base, cite the source of your information.",
+      model: 'gemini-1.5-pro-preview',
+      system: "You are a helpful real estate assistant for the Entrestate platform. You are an expert in the Dubai market. Answer the user's questions concisely and professionally. If you don't know the answer, say so.",
       prompt: text,
       history: history, // Pass chat history for context
     });

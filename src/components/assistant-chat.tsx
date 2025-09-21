@@ -27,7 +27,7 @@ const InitialAssistantMessage = () => (
 
 
 export function AssistantChat() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true); // Keep it open by default on the assistant page
   const [messages, setMessages] = useState<Message[]>([
     { from: 'ai', text: <InitialAssistantMessage /> },
   ]);
@@ -38,12 +38,12 @@ export function AssistantChat() {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isOpen && scrollAreaRef.current) {
+    if (scrollAreaRef.current) {
       setTimeout(() => {
           scrollAreaRef.current?.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
       }, 100);
     }
-  }, [messages, isOpen]);
+  }, [messages]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +54,18 @@ export function AssistantChat() {
     const currentInput = input;
     setInput('');
     setIsLoading(true);
+
+    // Check for secret codes first
+    const matchedCode = secretCodes.find(c => c.code.toLowerCase() === currentInput.toLowerCase());
+    if (matchedCode) {
+        const rewardMessage: Message = {
+            from: 'ai',
+            text: `Secret code accepted! Here is your reward: ${matchedCode.reward}`
+        };
+        setMessages(prev => [...prev, rewardMessage]);
+        setIsLoading(false);
+        return;
+    }
 
     try {
         const response = await fetch('/api/chat', {
@@ -80,100 +92,78 @@ export function AssistantChat() {
     }
   };
 
-  if (!isOpen) {
-      return (
-        <button
-            aria-label="Open AI Assistant"
-            onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 rounded-full bg-primary p-4 text-primary-foreground shadow-lg hover:bg-primary/90 animate-in fade-in zoom-in"
-        >
-            <Sparkles className="h-6 w-6" />
-      </button>
-      )
-  }
-
-
   return (
     <>
-      <div className="fixed inset-0 z-[60] flex items-end justify-end bg-black/50 animate-in fade-in">
-          <div className="m-4 w-full max-w-lg rounded-2xl border bg-card text-card-foreground shadow-lg animate-in slide-in-from-bottom-8">
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-base font-semibold flex items-center gap-2">
-                <Bot className="h-5 w-5 text-primary"/>
-                Your AI Assistant
-              </h3>
-              <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="h-6 w-6">
-                <X className="h-4 w-4" />
-                <span className="sr-only">Close</span>
-              </Button>
-            </div>
-            
-            <CardContent className="p-0">
-                <ScrollArea className="h-[400px] p-4" ref={scrollAreaRef as any}>
-                <div className="space-y-4">
-                    {messages.map((msg, index) => (
+        <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+                <Bot className="h-5 w-5"/>
+                AI Assistant
+            </CardTitle>
+        </CardHeader>
+        <CardContent className="p-0 flex-1">
+            <ScrollArea className="h-full p-4" ref={scrollAreaRef as any}>
+            <div className="space-y-4">
+                {messages.map((msg, index) => (
+                <div
+                    key={index}
+                    className={cn(
+                    "flex items-end gap-2",
+                    msg.from === 'user' ? 'justify-end' : 'justify-start'
+                    )}
+                >
+                    {msg.from === 'ai' && (
+                    <Avatar className="h-8 w-8">
+                        <AvatarFallback className="bg-primary/20 text-primary">
+                        <Bot className="h-4 w-4" />
+                        </AvatarFallback>
+                    </Avatar>
+                    )}
                     <div
-                        key={index}
-                        className={cn(
-                        "flex items-end gap-2",
-                        msg.from === 'user' ? 'justify-end' : 'justify-start'
-                        )}
+                    className={cn(
+                        "max-w-xs rounded-2xl p-3 text-sm whitespace-pre-wrap",
+                        msg.from === 'user'
+                        ? 'bg-primary text-primary-foreground rounded-br-none'
+                        : 'bg-muted rounded-bl-none'
+                    )}
                     >
-                        {msg.from === 'ai' && (
+                    {msg.text}
+                    </div>
+                    {msg.from === 'user' && (
+                    <Avatar className="h-8 w-8">
+                        <AvatarFallback>U</AvatarFallback>
+                    </Avatar>
+                    )}
+                </div>
+                ))}
+                {isLoading && (
+                     <div className="flex items-end gap-2 justify-start">
                         <Avatar className="h-8 w-8">
                             <AvatarFallback className="bg-primary/20 text-primary">
                             <Bot className="h-4 w-4" />
                             </AvatarFallback>
                         </Avatar>
-                        )}
-                        <div
-                        className={cn(
-                            "max-w-xs rounded-2xl p-3 text-sm whitespace-pre-wrap",
-                            msg.from === 'user'
-                            ? 'bg-primary text-primary-foreground rounded-br-none'
-                            : 'bg-muted rounded-bl-none'
-                        )}
-                        >
-                        {msg.text}
-                        </div>
-                        {msg.from === 'user' && (
-                        <Avatar className="h-8 w-8">
-                            <AvatarFallback>U</AvatarFallback>
-                        </Avatar>
-                        )}
-                    </div>
-                    ))}
-                    {isLoading && (
-                         <div className="flex items-end gap-2 justify-start">
-                            <Avatar className="h-8 w-8">
-                                <AvatarFallback className="bg-primary/20 text-primary">
-                                <Bot className="h-4 w-4" />
-                                </AvatarFallback>
-                            </Avatar>
-                             <div className="max-w-xs rounded-2xl p-3 text-sm bg-muted rounded-bl-none">
-                                <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                             </div>
+                         <div className="max-w-xs rounded-2xl p-3 text-sm bg-muted rounded-bl-none">
+                            <Loader2 className="h-5 w-5 animate-spin text-primary" />
                          </div>
-                    )}
-                </div>
-                </ScrollArea>
-            </CardContent>
-            
-             <CardFooter className="p-4 border-t">
-                <form onSubmit={handleSendMessage} className="flex w-full items-center gap-2">
-                    <Input 
-                        placeholder="Ask anything or enter a secret code..." 
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        disabled={isLoading}
-                    />
-                    <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
-                        <Send className="h-4 w-4" />
-                    </Button>
-                </form>
-            </CardFooter>
-          </div>
-        </div>
+                     </div>
+                )}
+            </div>
+            </ScrollArea>
+        </CardContent>
+        
+         <CardFooter className="p-4 border-t">
+            <form onSubmit={handleSendMessage} className="flex w-full items-center gap-2">
+                <Input 
+                    placeholder="Ask anything or enter a secret code..." 
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    disabled={isLoading}
+                />
+                <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
+                    <Send className="h-4 w-4" />
+                </Button>
+            </form>
+        </CardFooter>
     </>
   );
 }
