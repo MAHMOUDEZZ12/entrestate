@@ -12,6 +12,8 @@ import { visuals } from '@/lib/visuals';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
 
 
 const ChatSimulation = () => {
@@ -65,14 +67,15 @@ const ChatSimulation = () => {
 
 const SearchSimulation = () => {
     const features = ["Santorini - Blue & White theme", "Venice - Gondola Rides", "Costa Brava - Spanish Style", "Malta - Play & Learn Hub"];
-    const layouts = [
-        { name: "3-Bed Townhouse", size: "2,012 sqft", image: "https://placehold.co/400x300/e2e8f0/64748b?text=Layout+1", hint: "house interior" },
-        { name: "4-Bed Townhouse", size: "2,280 sqft", image: "https://placehold.co/400x300/e2e8f0/64748b?text=Layout+2", hint: "living room" },
-        { name: "5-Bed Villa", size: "3,700 sqft", image: "https://placehold.co/400x300/e2e8f0/64748b?text=Layout+3", hint: "luxury villa" },
+    const units = [
+        { name: "3-Bed Townhouse (TH-L)", size: "2,012 sqft", status: "Sold Out" },
+        { name: "4-Bed Townhouse (TH-M)", size: "2,280 sqft", status: "Available" },
+        { name: "5-Bed Villa (V-5)", size: "3,700 sqft", status: "Available" },
+        { name: "6-Bed Villa (V-6)", size: "4,550 sqft", status: "Sold Out" },
     ];
 
     return (
-        <div className="w-full h-full bg-muted/50 rounded-xl p-4 flex flex-col gap-3">
+        <div className="w-full h-full bg-muted/50 rounded-xl p-4 flex flex-col gap-4">
              <div className="relative">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -83,41 +86,46 @@ const SearchSimulation = () => {
                     disabled
                 />
             </div>
-            <div className="space-y-3">
+            <div className="space-y-4">
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
                     <Card className="bg-background/80">
                         <CardHeader>
-                            <CardTitle>Project Overview: Damac Lagoons</CardTitle>
+                            <CardTitle className="text-2xl">Project Overview: Damac Lagoons</CardTitle>
                             <CardDescription>Developer: DAMAC Properties</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-sm">A Mediterranean-inspired community of villas and townhouses centered around a swimmable crystal lagoon.</p>
+                            <p className="text-base text-foreground/80">A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
                         </CardContent>
                     </Card>
                 </motion.div>
 
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}>
                     <Card className="bg-background/80">
-                        <CardHeader>
-                            <CardTitle>Layouts</CardTitle>
-                        </CardHeader>
+                         <CardHeader><CardTitle>Units & Availability</CardTitle></CardHeader>
                         <CardContent>
-                            <Carousel opts={{ loop: true }} className="w-full max-w-sm mx-auto">
-                                <CarouselContent>
-                                    {layouts.map((layout, index) => (
-                                    <CarouselItem key={index}>
-                                        <div className="p-1">
-                                             <Image src={layout.image} alt={layout.name} width={400} height={300} className="rounded-lg mb-2" data-ai-hint={layout.hint} />
-                                            <p className="font-semibold text-center">{layout.name} - <span className="text-muted-foreground">{layout.size}</span></p>
-                                        </div>
-                                    </CarouselItem>
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead>Unit Type</TableHead>
+                                        <TableHead>Size</TableHead>
+                                        <TableHead className="text-right">Status</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {units.map((unit, index) => (
+                                    <TableRow key={index}>
+                                        <TableCell className="font-medium">{unit.name}</TableCell>
+                                        <TableCell>{unit.size}</TableCell>
+                                        <TableCell className="text-right">
+                                             <Badge variant={unit.status === 'Sold Out' ? 'destructive' : 'default'}>{unit.status}</Badge>
+                                        </TableCell>
+                                    </TableRow>
                                     ))}
-                                </CarouselContent>
-                                <CarouselPrevious className="-left-4" /><CarouselNext className="-right-4" />
-                            </Carousel>
+                                </TableBody>
+                            </Table>
                         </CardContent>
                     </Card>
-                </motion.div>
+                 </motion.div>
                 
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.3 }}>
                      <Card className="bg-background/80">
@@ -232,7 +240,7 @@ export default function HomePage() {
 
             {/* Product 2: PRO SEARCH ENG.x 3 */}
             <div id="product-pro-search" className="grid lg:grid-cols-2 gap-16 items-center">
-               <Card className="w-full h-[600px] mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col items-center justify-center text-center p-2">
+               <Card className="w-full min-h-[600px] mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col items-center justify-center text-center p-2">
                     <SearchSimulation />
                </Card>
               <div className="space-y-8 lg:order-1">
@@ -349,12 +357,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    
-
-    
-
-    
-
-    
-
