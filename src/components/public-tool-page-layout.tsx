@@ -11,6 +11,8 @@ import Image from 'next/image';
 import { blogContent } from '@/lib/blog-content';
 import { ShinyButton } from './ui/shiny-button';
 import { imagePrompts } from '@/lib/image-prompts';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
+
 
 interface PublicToolPageLayoutProps {
   feature: Feature;
@@ -101,33 +103,34 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
         </div>
       </section>
       
-      {/* AI vs Manual & FAQs */}
+      {/* AI vs Manual */}
       <section className="py-24 md:py-32">
-        <div className="container mx-auto px-4 grid lg:grid-cols-5 gap-16 items-start">
-            <div className="lg:col-span-3 space-y-6">
-                 <h2 className="text-3xl font-bold font-heading">The AI Advantage</h2>
-                 <p className="text-lg text-muted-foreground">See how much time and effort you save by using the AI.</p>
-                 <div className="space-y-4 pt-4">
-                     {feature.details.aiVsManual.map((item, index) => (
-                        <div key={index} className="grid grid-cols-3 gap-4 items-center">
-                            <div className="col-span-1 flex items-center gap-2 font-semibold text-foreground/90">{React.cloneElement(item.icon, { className: "h-5 w-5 text-muted-foreground"})} {item.metric}</div>
-                            <div className="col-span-1 text-center bg-muted/50 p-3 rounded-lg border text-sm">{item.manual}</div>
-                            <div className="col-span-1 text-center bg-primary/10 text-primary font-semibold p-3 rounded-lg border border-primary/20">{item.ai}</div>
-                        </div>
-                     ))}
-                 </div>
+        <div className="container mx-auto px-4">
+           <div className="text-center max-w-2xl mx-auto mb-16">
+                 <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">The AI Advantage</h2>
+                 <p className="mt-4 text-lg text-muted-foreground">See how much time and effort you save by using the AI.</p>
             </div>
-            <div className="lg:col-span-2 space-y-6">
-                <h2 className="text-3xl font-bold font-heading">Good to Know</h2>
-                <p className="text-lg text-muted-foreground">Answers to common questions.</p>
-                 <div className="space-y-4 pt-4">
-                    {feature.details.faqs.map((faq, index) => (
-                        <div key={index} className="p-4 bg-muted/40 rounded-lg border">
-                           <h4 className="font-semibold">{faq.question}</h4>
-                           <p className="text-sm text-muted-foreground mt-1">{faq.answer}</p>
-                        </div>
-                    ))}
-                 </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {feature.details.aiVsManual.map((item, index) => (
+                    <Card key={index} className="text-center">
+                        <CardHeader>
+                            <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
+                                {React.cloneElement(item.icon, { className: 'h-8 w-8' })}
+                            </div>
+                            <CardTitle>{item.metric}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div>
+                                <p className="text-sm text-muted-foreground">MANUAL</p>
+                                <p className="font-semibold text-lg">{item.manual}</p>
+                            </div>
+                             <div>
+                                <p className="text-sm text-primary">WITH WHATSMAP AI</p>
+                                <p className="font-semibold text-lg text-primary">{item.ai}</p>
+                            </div>
+                        </CardContent>
+                    </Card>
+                ))}
             </div>
         </div>
       </section>
@@ -159,10 +162,33 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             </div>
         </div>
       </section>
+      
+       {/* FAQ Section */}
+      <section className="py-24 md:py-32">
+        <div className="container mx-auto px-4">
+             <div className="text-center max-w-2xl mx-auto mb-16">
+                 <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Good to Know</h2>
+                 <p className="mt-4 text-lg text-muted-foreground">Answers to common questions.</p>
+            </div>
+            <Card className="max-w-3xl mx-auto">
+                <CardContent className="p-6">
+                    <Accordion type="single" collapsible className="w-full">
+                        {feature.details.faqs.map((faq, index) => (
+                            <AccordionItem value={`item-${index}`} key={index}>
+                                <AccordionTrigger className="text-left text-lg">{faq.question}</AccordionTrigger>
+                                <AccordionContent className="text-base text-muted-foreground">{faq.answer}</AccordionContent>
+                            </AccordionItem>
+                        ))}
+                    </Accordion>
+                </CardContent>
+            </Card>
+        </div>
+      </section>
+
 
       {/* Related Blog Posts */}
       {blogPost && (
-        <section className="py-24 md:py-32">
+        <section className="py-24 md:py-32 bg-muted/30">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
                      <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">From the Handbook</h2>
