@@ -57,6 +57,24 @@ export default function MarketingDashboardPage() {
     ? features
     : features.filter(feature => feature.categories.includes(activeFilter));
 
+  const appsThatNeedConnection: { [key: string]: string } = {
+    'meta-ads-copilot': 'Facebook',
+    'audience-creator': 'Facebook',
+    'insta-ads-designer': 'Instagram',
+    'instagram-admin-ai': 'Instagram',
+    'email-creator': 'Gmail / Outlook',
+    'whatsapp-manager': 'WhatsApp Business',
+  };
+
+  const appsThatNeedPayment: string[] = [
+      'rebranding',
+      'pdf-editor',
+      'landing-pages',
+      'investor-matching',
+      'market-reports',
+      'market-trends'
+  ];
+
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1 w-full max-w-full px-4 md:px-6 lg:px-8 py-8">
@@ -104,24 +122,3 @@ export default function MarketingDashboardPage() {
     </div>
   );
 }
-
-const appsThatNeedConnection: { [key: string]: string } = {
-    'meta-ads-copilot': 'Facebook',
-    'audience-creator': 'Facebook',
-    'insta-ads-designer': 'Instagram',
-    'instagram-admin-ai': 'Instagram',
-    'email-creator': 'Gmail / Outlook',
-    'whatsapp-manager': 'WhatsApp Business',
-    'facebook-ads-ai': 'Facebook',
-    'reel-ads-ai': 'Instagram',
-    'story-planner-ai': 'Instagram'
-};
-
-const appsThatNeedPayment: string[] = [
-    'rebranding',
-    'pdf-editor',
-    'landing-pages',
-    'investor-matching',
-    'market-reports',
-    'market-trends'
-];

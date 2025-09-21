@@ -21,6 +21,8 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { track } from '@/lib/events';
 import { Feature } from '@/lib/tools-client';
+import { useTabManager } from '@/context/TabManagerContext';
+import { useRouter } from 'next/navigation';
 
 
 interface DashboardServiceCardProps {
@@ -40,6 +42,8 @@ export function DashboardServiceCard({
 }: DashboardServiceCardProps) {
   const { toast } = useToast();
   const [isConnecting, setIsConnecting] = useState(false);
+  const { addTab } = useTabManager();
+  const router = useRouter();
   
   const { title, description, icon, href, guideHref, color, dashboardTitle } = tool;
 
@@ -77,6 +81,12 @@ export function DashboardServiceCard({
         });
     }, 1500);
   }
+  
+  const handleOpenApp = () => {
+    addTab({ href: tool.href, label: tool.title });
+    router.push(tool.href);
+    track('app_opened', { toolId: tool.id });
+  };
 
   
   const AddButtonContent = () => (
@@ -88,14 +98,11 @@ export function DashboardServiceCard({
 
   const MainAction = () => {
     if (isAdded) {
-        const destination = href;
         return (
-             <Link href={destination} onClick={() => track('app_opened', { toolId: tool.id })}>
-                <Button size="sm">
-                    Open
-                    <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </Button>
-            </Link>
+             <Button size="sm" onClick={handleOpenApp}>
+                Open
+                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Button>
         )
     }
 

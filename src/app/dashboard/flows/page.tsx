@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -8,6 +9,8 @@ import { Button } from '@/components/ui/button';
 import { tools, Feature } from '@/lib/tools-client';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { useTabManager } from '@/context/TabManagerContext';
+import { useRouter } from 'next/navigation';
 
 // Simplified representation of flows
 const suggestedFlows = [
@@ -34,8 +37,20 @@ const suggestedFlows = [
 ];
 
 const FlowCard = ({ flow, installedApps }: { flow: typeof suggestedFlows[0], installedApps: string[] }) => {
+    const { addTab } = useTabManager();
+    const router = useRouter();
     const requiredTools = flow.apps.map(appId => tools.find(t => t.id === appId)).filter(Boolean) as Feature[];
     const isRunnable = requiredTools.every(tool => installedApps.includes(tool.id));
+
+    const handleRunFlow = () => {
+        // In a real app, this would trigger the flow execution.
+        // For now, it opens the first app in the flow.
+        const firstTool = requiredTools[0];
+        if (firstTool) {
+             addTab({ href: firstTool.href, label: firstTool.title });
+             router.push(firstTool.href);
+        }
+    }
 
     return (
         <Card className={cn("flex flex-col", !isRunnable && "bg-muted/50 border-dashed")}>
@@ -62,7 +77,7 @@ const FlowCard = ({ flow, installedApps }: { flow: typeof suggestedFlows[0], ins
                 </div>
             </CardContent>
             <CardFooter>
-                 <Button className="w-full" disabled={!isRunnable}>
+                 <Button className="w-full" disabled={!isRunnable} onClick={handleRunFlow}>
                     <Play className="mr-2 h-4 w-4" />
                     Run Flow
                 </Button>
