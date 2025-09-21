@@ -200,9 +200,9 @@ export const pricingData = {
     },
     {
       "name": "LISTING INTELLIGENCE",
-      "apps": ["Listing Manager","Listing Generator","Property Finder Pilot","Bayut Pilot","Listing Performance","AI Price Estimator","Commission Calculator","Payment Planner","Investor Matching","Multi-Offer Builder"],
+      "apps": ["Listing Manager","Listing Generator","Property Finder Pilot","Bayut Pilot","Listing Performance","AI Price Estimator","Commission Calculator","Payment Planner","Investor Matching","Multi-Offer Builder", "Lead Investigator AI", "CRM Memory", "Market Library", "Market Reports"],
       "description": "Central hub for property management and market intelligence.",
-      "monthly_price": 40
+      "monthly_price": 50
     },
     {
       "name": "ENTRESTATE CREATIVE SUITE",
