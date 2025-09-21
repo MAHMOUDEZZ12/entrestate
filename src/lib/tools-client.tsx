@@ -280,9 +280,9 @@ export const tools: Feature[] = mergeToolData().map(tool => {
             break;
          case 'ugc-script-writer':
             tool.creationFields = [
-                 { id: 'projectId', name: 'Project', type: 'select', options: ['emaar-beachfront', 'damac-hills-2', 'sobha-hartland'], placeholder: 'Select a project to write a script for' },
-                 { id: 'vibe', name: 'Vibe', type: 'select', options: ['Exciting & Upbeat', 'Authentic & Relatable', 'Luxurious & Exclusive'] },
-                 { id: 'hook', name: 'Hook Style', type: 'select', options: ['Question-based', 'Problem/Solution', 'Surprising Stat'] },
+                 { id: 'topic', name: 'Topic or Project', type: 'text', placeholder: 'e.g., "Emaar Beachfront 2BR"' },
+                 { id: 'vibe', name: 'Vibe', type: 'select', options: ['Exciting & Upbeat', 'Authentic & Relatable', 'Luxurious & Exclusive', 'Informative & Educational'] },
+                 { id: 'hookStyle', name: 'Hook Style', type: 'select', options: ['Question-based', 'Problem/Solution', 'Surprising Stat', 'Direct & Bold'] },
             ];
             break;
         case 'insta-ads-designer':

@@ -35,7 +35,7 @@ function OnboardingComponent() {
     const [draft, setDraft] = useState({
         city: 'Dubai',
         country: 'UAE',
-        devFocus: ['Emaar'],
+        devFocus: [] as string[],
         firstPass: {} as Record<string, 'relevant' | 'not'>,
         scanSelected: [] as string[],
         shortlist: [] as string[],
@@ -53,7 +53,9 @@ function OnboardingComponent() {
             setIsLoading(true);
             fetch('/api/projects/suggest?devs=Emaar,Damac&limit=2')
                 .then(res => res.json())
-                .then(data => setSuggestedProjects(data.data || []))
+                .then(data => {
+                    if (data.ok) setSuggestedProjects(data.data || []);
+                })
                 .catch(err => console.error("Failed to fetch suggestions", err))
                 .finally(() => setIsLoading(false));
         }
@@ -66,7 +68,9 @@ function OnboardingComponent() {
             const devQuery = draft.devFocus.length > 0 ? `q=${draft.devFocus.join(',')}` : 'q=emaar,damac,sobha,nakheel,meraas,aldar';
             fetch(`/api/projects/scan?${devQuery}&limit=12`)
                 .then(res => res.json())
-                .then(data => setScannedProjects(data.data || []))
+                .then(data => {
+                    if(data.ok) setScannedProjects(data.data || []);
+                })
                 .catch(err => console.error("Failed to fetch scan", err))
                 .finally(() => setIsLoading(false));
         }
@@ -487,5 +491,3 @@ export default function OnboardingPage() {
         </div>
     )
 }
-
-    
