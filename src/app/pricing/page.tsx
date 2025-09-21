@@ -12,7 +12,7 @@ import { Switch } from '@/components/ui/switch';
 import Link from 'next/link';
 
 export default function PricingPage() {
-  const [isAnnual, setIsAnnual] = useState(false);
+  const [isAnnual, setIsAnnual] = useState(true);
   const proPlan = pricingData.bundles.find(b => b.name === 'ENTRESTATE PRO');
   const otherBundles = pricingData.bundles.filter(b => b.name !== 'ENTRESTATE PRO');
 
@@ -28,7 +28,7 @@ export default function PricingPage() {
             <span className={cn(isAnnual ? 'text-muted-foreground' : 'text-foreground', 'font-medium')}>Monthly</span>
             <Switch checked={isAnnual} onCheckedChange={setIsAnnual} aria-label="Toggle billing frequency" />
             <span className={cn(isAnnual ? 'text-foreground' : 'text-muted-foreground', 'font-medium')}>
-                Annually <span className="text-primary font-semibold">(-25%)</span>
+                Annually <span className="text-primary font-semibold">(-40%)</span>
             </span>
         </div>
 
