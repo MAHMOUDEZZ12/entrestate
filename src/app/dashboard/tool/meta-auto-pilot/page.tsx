@@ -104,7 +104,7 @@ export default function MetaAutoPilotPage() {
                         <CardDescription>The AI has prepared your campaign. Review the details and launch when ready.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        {isLoading && !campaignPlan ? (
+                        {isLoading && !selectedWorkflow ? (
                             <div className="flex items-center justify-center h-64 text-muted-foreground">
                                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                                 <span>Configuring Workflow...</span>

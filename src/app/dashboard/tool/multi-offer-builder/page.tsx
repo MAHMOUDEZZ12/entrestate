@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Sparkles, Loader2, Container, Upload } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { useToast } from '@/hooks/use-toast';
+import { generateMultiOffer } from '@/ai/flows/market-intelligence/generate-multi-offer';
 
 export default function MultiOfferBuilderPage() {
   const { toast } = useToast();
@@ -29,12 +30,15 @@ export default function MultiOfferBuilderPage() {
     setIsLoading(true);
     setResult(null);
 
-    // Simulate API call
-    setTimeout(() => {
-        setResult('data:application/pdf;base64,'); // Placeholder for a real PDF data URI
-        setIsLoading(false);
+    try {
+        const response = await generateMultiOffer({ properties, clientInfo, terms });
+        setResult(response.offerPackageDataUri);
         toast({ title: 'Comparison Ready!', description: 'Your multi-offer package has been generated.' });
-    }, 2500);
+    } catch(e: any) {
+        toast({ title: "Error", description: e.message, variant: "destructive" });
+    } finally {
+        setIsLoading(false);
+    }
   };
 
   return (

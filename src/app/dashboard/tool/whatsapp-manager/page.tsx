@@ -12,6 +12,7 @@ import { Sparkles, Loader2, MessageSquare, Upload, Send } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { useToast } from '@/hooks/use-toast';
 import { fileToDataUri } from '@/lib/tools-client';
+import { manageWhatsAppCampaign } from '@/ai/flows/listing-crm/manage-whatsapp-campaign';
 
 export default function WhatsappManagerPage() {
   const { toast } = useToast();
@@ -34,16 +35,15 @@ export default function WhatsappManagerPage() {
 
     const contactsDataUri = await fileToDataUri(contactsFile);
 
-    // Simulate API call
-    setTimeout(() => {
-        const mockResult = {
-            status: `Message template for '${campaignType}' is ready to send to the uploaded contact list.`,
-            messageTemplate: `Hi [Name]! Just a heads-up about a great new opportunity: ${context}. Would you be interested in the details? Let me know!`
-        };
-        setResult(mockResult);
-        setIsLoading(false);
+    try {
+        const response = await manageWhatsAppCampaign({ contactsDataUri, campaignType, context });
+        setResult(response);
         toast({ title: 'Campaign Ready!', description: 'Your WhatsApp message template is ready.' });
-    }, 2000);
+    } catch(e: any) {
+        toast({ title: "Error", description: e.message, variant: "destructive" });
+    } finally {
+        setIsLoading(false);
+    }
   };
 
   return (

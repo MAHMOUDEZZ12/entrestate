@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Sparkles, Loader2, Video, Upload } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { useToast } from '@/hooks/use-toast';
+import { generateReel } from '@/ai/flows/archy/generate-reel';
 
 export default function ReelAdsPage() {
   const { toast } = useToast();
@@ -31,12 +32,15 @@ export default function ReelAdsPage() {
     setIsLoading(true);
     setResult(null);
 
-    // Simulate API call
-    setTimeout(() => {
-        setResult('data:video/mp4;base64,'); // Placeholder for a real video data URI
-        setIsLoading(false);
+    try {
+        const response = await generateReel({ projectId, sellingPoints, vibe });
+        setResult(response.reelVideoDataUri);
         toast({ title: 'Reel Generated!', description: 'Your new video reel is ready.' });
-    }, 3000);
+    } catch (e: any) {
+        toast({ title: "Error", description: e.message, variant: "destructive" });
+    } finally {
+        setIsLoading(false);
+    }
   };
 
   return (
