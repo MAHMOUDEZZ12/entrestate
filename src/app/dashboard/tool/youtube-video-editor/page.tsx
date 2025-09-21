@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Loader2, Sparkles, Pen, Upload, Youtube, Download, Save, Scissors, Text, Music, Film, Brush } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PageHeader } from '@/components/ui/page-header';
-import { editYoutubeVideo } from '@/ai/flows/edit-youtube-video';
+import { editYoutubeVideo } from '@/ai/flows/archy/edit-youtube-video';
 import { fileToDataUri } from '@/lib/tools-client';
 import { useCanvas } from '@/context/CanvasContext';
 import { Textarea } from '@/components/ui/textarea';
@@ -97,6 +97,7 @@ export default function YoutubeVideoEditorPage() {
             const payload = {
                 sourceVideo: videoUri,
                 editingInstructions: instructions,
+                deepEditInstructions: instructions,
             };
             
             const response = await editYoutubeVideo(payload);
@@ -170,7 +171,7 @@ export default function YoutubeVideoEditorPage() {
                             <a href={resultData.editedVideoDataUri} download="edited-video.mp4">
                                 <Button variant="outline"><Download className="mr-2"/> Download Video</Button>
                             </a>
-                            <Button onClick={() => handleFileChange({ target: { files: [sourceVideo] } } as any)}>
+                            <Button onClick={() => sourceVideo && handleFileChange({ target: { files: [sourceVideo] } } as any)}>
                                 <Pen className="mr-2 h-4 w-4" /> Continue Editing
                             </Button>
                          </div>
