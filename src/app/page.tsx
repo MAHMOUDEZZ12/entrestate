@@ -133,20 +133,6 @@ const SearchSimulation = () => {
                         </CardContent>
                     </Card>
                  </motion.div>
-
-                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.3 }}>
-                     <Card className="bg-background/80">
-                         <CardHeader><CardTitle>Key Features</CardTitle></CardHeader>
-                         <CardContent>
-                             <ul className="list-disc list-inside space-y-1 text-sm text-left">
-                                <li>Swimmable Crystal Lagoon</li>
-                                <li>Retail Outlets & Waterfront Cafes</li>
-                                <li>State-of-the-art Gym</li>
-                                <li>Community Parks and Kids Play Areas</li>
-                            </ul>
-                         </CardContent>
-                    </Card>
-                 </motion.div>
             </div>
         </div>
     )
@@ -367,7 +353,8 @@ export default function HomePage() {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 space-y-24 md:space-y-32">
             
             {/* Product 1: 3XCHAT APP LITE */}
-            <div id="product-3xchat" className="grid lg:grid-cols-2 gap-16 items-center">
+            <div id="product-3xchat" className="grid lg:grid-cols-2 gap-16 items-center relative">
+               <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-500/10 to-transparent -z-10 blur-3xl"/>
               <div className="space-y-8">
                 <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
                   3XCHAT APP LITE
@@ -387,14 +374,15 @@ export default function HomePage() {
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
-               <Card className="w-full h-[500px] mx-auto shadow-2xl group relative bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex flex-col items-center justify-center p-2">
+               <Card className="w-full h-[500px] mx-auto shadow-2xl group relative bg-background/50 backdrop-blur-sm flex flex-col items-center justify-center p-2">
                  <ChatSimulation />
               </Card>
             </div>
 
             {/* Product 2: PRO SEARCH ENG.x 3 */}
-            <div id="product-pro-search" className="grid lg:grid-cols-2 gap-16 items-center">
-               <Card className="w-full min-h-[600px] max-h-[700px] mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col text-center p-2">
+            <div id="product-pro-search" className="grid lg:grid-cols-2 gap-16 items-center relative">
+              <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/10 to-transparent -z-10 blur-3xl"/>
+               <Card className="w-full min-h-[600px] max-h-[700px] mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-background/50 backdrop-blur-sm flex flex-col text-center p-2">
                     <SearchSimulation />
                </Card>
               <div className="space-y-8 lg:order-1">
@@ -419,7 +407,8 @@ export default function HomePage() {
             </div>
 
              {/* Product 3: LLM MODEL X3.5 */}
-            <div id="product-llm-x35" className="grid lg:grid-cols-2 gap-16 items-center">
+            <div id="product-llm-x35" className="grid lg:grid-cols-2 gap-16 items-center relative">
+               <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500/10 to-transparent -z-10 blur-3xl"/>
               <div className="space-y-8">
                 <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
                   LLM MODEL X3.5
@@ -439,14 +428,15 @@ export default function HomePage() {
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
-               <Card className="w-full h-[500px] mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-green-500/10 to-teal-500/10 flex flex-col items-center justify-center text-center p-2">
+               <Card className="w-full h-[500px] mx-auto overflow-hidden shadow-2xl group relative bg-background/50 backdrop-blur-sm flex flex-col items-center justify-center text-center p-2">
                   <LlmSimulation />
                </Card>
             </div>
 
             {/* Product 4: AIXA INTEL RE5.2 */}
-            <div id="product-aixa" className="grid lg:grid-cols-2 gap-16 items-center">
-                <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-red-500/10 to-orange-500/10 flex flex-col text-center p-2">
+            <div id="product-aixa" className="grid lg:grid-cols-2 gap-16 items-center relative">
+                 <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-red-500/10 to-transparent -z-10 blur-3xl"/>
+                <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-background/50 backdrop-blur-sm flex flex-col text-center p-2">
                     <AixaIntelSimulation />
                 </Card>
                 <div className="space-y-8 lg:order-1">
@@ -471,7 +461,8 @@ export default function HomePage() {
             </div>
 
             {/* Product 5: MEGA LISTING PRO 2 */}
-            <div id="product-mega-listing" className="grid lg:grid-cols-2 gap-16 items-center">
+            <div id="product-mega-listing" className="grid lg:grid-cols-2 gap-16 items-center relative">
+              <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-500/10 to-transparent -z-10 blur-3xl"/>
               <div className="space-y-8">
                 <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
                   MEGA LISTING PRO 2
@@ -491,7 +482,7 @@ export default function HomePage() {
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
-              <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-purple-500/10 to-pink-500/10 flex flex-col items-center justify-center text-center p-2">
+              <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-background/50 backdrop-blur-sm flex flex-col items-center justify-center text-center p-2">
                  <MegaListingSimulation />
               </Card>
             </div>
