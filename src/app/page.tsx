@@ -232,9 +232,9 @@ const AixaIntelSimulation = () => {
         <div className="w-full h-full flex flex-col bg-muted/50 rounded-xl p-4 gap-4">
             <h3 className="text-lg font-bold font-heading text-center">AIXA Market Intelligence</h3>
             <div className="flex-grow">
-                 <ResponsiveContainer width="100%" height="100%">
+                <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={mockChartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                         <defs>
+                        <defs>
                             <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.8}/>
                                 <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0}/>
