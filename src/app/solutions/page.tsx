@@ -25,19 +25,19 @@ const solutionCategories = [
         name: "Lead Gen Apps",
         icon: <Target className="h-8 w-8 text-primary" />,
         description: "Go beyond basic ads. Find high-intent buyers and sellers with AI-powered targeting and creative generation.",
-        apps: tools.filter(t => ['audience-creator', 'meta-ads-copilot', 'insta-ads-designer', 'landing-page-builder'].includes(t.id))
+        apps: tools.filter(t => ['audience-creator', 'meta-ads-copilot', 'insta-ads-designer', 'landing-pages'].includes(t.id))
     },
     {
         name: "Sales Pro Apps",
         icon: <Sparkles className="h-8 w-8 text-primary" />,
         description: "Automate your sales workflow, from creating stunning assets to generating multi-property offers for clients.",
-        apps: tools.filter(t => ['automated-rebranding', 'multi-offer-builder', 'payment-planner', 'ai-video-presenter'].includes(t.id))
+        apps: tools.filter(t => ['rebranding', 'multi-offer-builder', 'payment-planner', 'ai-video-presenter'].includes(t.id))
     },
     {
         name: "Lead Management Apps",
         icon: <Filter className="h-8 w-8 text-primary" />,
         description: "Nurture your leads with intelligent, automated tools that transform your database into a deal-making engine.",
-        apps: tools.filter(t => ['investor-matching', 'lead-investigator-ai', 'whatsapp-manager', 'crm-memory'].includes(t.id))
+        apps: tools.filter(t => ['investor-matching', 'lead-investigator', 'whatsapp-campaigns', 'crm-assistant'].includes(t.id))
     }
 ];
 
@@ -123,3 +123,5 @@ export default function SolutionsPage() {
     </div>
   );
 }
+
+    

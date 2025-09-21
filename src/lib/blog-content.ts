@@ -1195,3 +1195,5 @@ export const appDetails = {
     }
   ]
 }
+
+    

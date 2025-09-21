@@ -125,9 +125,9 @@ const mergeToolData = (): Feature[] => {
                     icon: i === 0 ? <Upload /> : i === 1 ? <Sparkles /> : <Download />,
                     text: s.replace(/step \d+: /i, '').trim(),
                 })),
-                synergy: detailsContent.chain.split('→').map(toolName => ({
-                    tool: toolName.trim(),
-                    benefit: `Integrates with ${toolName.trim()} to create a seamless workflow.`
+                synergy: detailsContent.integrations.map(integration => ({
+                    tool: integration,
+                    benefit: `Integrates seamlessly with ${integration} to create powerful, automated workflows.`
                 })),
                 faqs: detailsContent.faqs.map(faq => ({ question: faq.q, answer: faq.a })),
             };
@@ -510,3 +510,5 @@ export const tools: Feature[] = mergeToolData().map(tool => {
     }
     return tool;
 });
+
+    

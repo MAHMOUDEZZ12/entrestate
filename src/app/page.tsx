@@ -82,7 +82,7 @@ const SearchSimulation = () => {
     ];
 
     return (
-        <div className="w-full h-full bg-muted/50 rounded-xl p-4 flex flex-col gap-4 overflow-hidden mask-gradient-vertical">
+        <div className="w-full h-full bg-muted/50 rounded-xl p-4 flex flex-col gap-4 overflow-hidden">
              <div className="relative flex-shrink-0">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
@@ -93,47 +93,43 @@ const SearchSimulation = () => {
                     disabled
                 />
             </div>
-            <div className="space-y-4 overflow-y-auto no-scrollbar">
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
-                    <Card className="bg-background/80 text-left">
-                        <CardHeader>
-                            <CardTitle className="text-2xl">Project Overview: Damac Lagoons</CardTitle>
-                            <CardDescription>Developer: DAMAC Properties</CardDescription>
-                        </CardHeader>
-                        <CardContent className="text-base text-foreground/80 leading-relaxed">
-                            <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
-                        </CardContent>
-                    </Card>
-                </motion.div>
+            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }} className="flex-grow overflow-y-auto no-scrollbar">
+                <Card className="bg-background/80 text-left w-full">
+                    <CardHeader>
+                        <CardTitle className="text-2xl">Project Overview: Damac Lagoons</CardTitle>
+                        <CardDescription>Developer: DAMAC Properties</CardDescription>
+                    </CardHeader>
+                    <CardContent className="text-base text-foreground/80 leading-relaxed">
+                        <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
+                    </CardContent>
+                </Card>
 
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.2 }}>
-                    <Card className="bg-background/80">
-                         <CardHeader><CardTitle>Units & Availability</CardTitle></CardHeader>
-                        <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Unit Type</TableHead>
-                                        <TableHead>Size</TableHead>
-                                        <TableHead className="text-right">Status</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {units.map((unit, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell className="font-medium">{unit.name}</TableCell>
-                                        <TableCell>{unit.size}</TableCell>
-                                        <TableCell className="text-right">
-                                             <Badge variant={unit.status === 'Sold Out' ? 'destructive' : 'default'}>{unit.status}</Badge>
-                                        </TableCell>
-                                    </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </CardContent>
-                    </Card>
-                 </motion.div>
-            </div>
+                 <Card className="bg-background/80 text-left mt-4">
+                     <CardHeader><CardTitle>Units & Availability</CardTitle></CardHeader>
+                    <CardContent>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHead>Unit Type</TableHead>
+                                    <TableHead>Size</TableHead>
+                                    <TableHead className="text-right">Status</TableHead>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                {units.map((unit, index) => (
+                                <TableRow key={index}>
+                                    <TableCell className="font-medium">{unit.name}</TableCell>
+                                    <TableCell>{unit.size}</TableCell>
+                                    <TableCell className="text-right">
+                                         <Badge variant={unit.status === 'Sold Out' ? 'destructive' : 'default'}>{unit.status}</Badge>
+                                    </TableCell>
+                                </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </CardContent>
+                </Card>
+             </motion.div>
         </div>
     )
 }
@@ -356,7 +352,7 @@ export default function HomePage() {
             <div id="product-3xchat" className="grid lg:grid-cols-2 gap-16 items-center relative">
                <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-500/10 to-transparent -z-10 blur-3xl"/>
               <div className="space-y-6">
-                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground [text-shadow:0_0_15px_hsl(var(--primary))]">
+                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground" style={{ textShadow: '0 0 10px hsla(var(--primary), 0.3)'}}>
                   3XCHAT APP LITE
                 </h3>
                 <p className="text-xl text-foreground/70 leading-relaxed">
@@ -370,7 +366,7 @@ export default function HomePage() {
                      <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Contextual Recall:</span><br /><span className="text-muted-foreground">Retains conversation history for personalized, multi-turn dialogues.</span></div></li>
                   </ul>
                 </div>
-                 <Link href="/products/3xchat" className="inline-block mt-6">
+                 <Link href="/products/3xchat" className="inline-block pt-6">
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
@@ -386,7 +382,7 @@ export default function HomePage() {
                     <SearchSimulation />
                </Card>
               <div className="space-y-6 lg:order-1">
-                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground [text-shadow:0_0_15px_hsl(var(--primary))]">
+                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground" style={{ textShadow: '0 0 10px hsla(var(--primary), 0.3)'}}>
                   PRO SEARCH ENG.x 3
                 </h3>
                 <p className="text-xl text-foreground/70 leading-relaxed">
@@ -400,7 +396,7 @@ export default function HomePage() {
                     <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Cross-Source Synthesis:</span><br /><span className="text-muted-foreground">Unifies information from disparate internal and external repositories.</span></div></li>
                   </ul>
                 </div>
-                 <Link href="/products/pro-search" className="inline-block mt-6">
+                 <Link href="/products/pro-search" className="inline-block pt-6">
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
@@ -410,7 +406,7 @@ export default function HomePage() {
             <div id="product-llm-x35" className="grid lg:grid-cols-2 gap-16 items-center relative">
                <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-green-500/10 to-transparent -z-10 blur-3xl"/>
               <div className="space-y-6">
-                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground [text-shadow:0_0_15px_hsl(var(--primary))]">
+                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground" style={{ textShadow: '0 0 10px hsla(var(--primary), 0.3)'}}>
                   LLM MODEL X3.5
                 </h3>
                 <p className="text-xl text-foreground/70 leading-relaxed">
@@ -424,7 +420,7 @@ export default function HomePage() {
                      <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Creative Ideation Engine:</span><br /><span className="text-muted-foreground">Generates innovative concepts, headlines, and narrative structures.</span></div></li>
                   </ul>
                 </div>
-                 <Link href="/products/llm-model" className="inline-block mt-6">
+                 <Link href="/products/llm-model" className="inline-block pt-6">
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
@@ -440,7 +436,7 @@ export default function HomePage() {
                     <AixaIntelSimulation />
                 </Card>
                 <div className="space-y-6 lg:order-1">
-                    <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground [text-shadow:0_0_15px_hsl(var(--primary))]">
+                    <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground" style={{ textShadow: '0 0 10px hsla(var(--primary), 0.3)'}}>
                         AIXA INTEL RE5.2
                     </h3>
                     <p className="text-xl text-foreground/70 leading-relaxed">
@@ -454,7 +450,7 @@ export default function HomePage() {
                             <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Risk Mitigation:</span><br /><span className="text-muted-foreground">Anticipate and prepare for potential market downturns or operational challenges.</span></div></li>
                         </ul>
                     </div>
-                     <Link href="/products/aixa-intel" className="inline-block mt-6">
+                     <Link href="/products/aixa-intel" className="inline-block pt-6">
                         <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                      </Link>
                 </div>
@@ -464,7 +460,7 @@ export default function HomePage() {
             <div id="product-mega-listing" className="grid lg:grid-cols-2 gap-16 items-center relative">
               <div className="absolute -inset-20 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-500/10 to-transparent -z-10 blur-3xl"/>
               <div className="space-y-6">
-                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground [text-shadow:0_0_15px_hsl(var(--primary))]">
+                <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground" style={{ textShadow: '0 0 10px hsla(var(--primary), 0.3)'}}>
                   MEGA LISTING PRO 2
                 </h3>
                 <p className="text-xl text-foreground/70 leading-relaxed">
@@ -478,7 +474,7 @@ export default function HomePage() {
                     <li className="flex items-start gap-3"><Check className="h-5 w-5 text-primary mt-1 shrink-0" /><div><span className="font-semibold">Eliminated Manual Entry:</span><br /><span className="text-muted-foreground">Drastically reduce administrative burden and data entry errors.</span></div></li>
                   </ul>
                 </div>
-                 <Link href="/products/mega-listing" className="inline-block mt-6">
+                 <Link href="/products/mega-listing" className="inline-block pt-6">
                     <Button variant="outline" size="lg">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                  </Link>
               </div>
@@ -493,3 +489,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
