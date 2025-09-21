@@ -14,7 +14,7 @@ import {
 import { toast as sonnerToast } from "sonner";
 import { Copy, Download, Trash2, Eye } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
   Table,
@@ -141,7 +141,7 @@ const mergeToolData = (): Feature[] => {
         return {
             ...(tool as any),
             longDescription: detailsContent?.full_description || tool.description,
-            isPage: ['bayut-sync', 'property-finder-sync', 'listing-manager', 'listing-performance', 'market-trends', 'youtube-video-editor', 'pdf-editor'].includes(tool.id),
+            isPage: ['bayut-sync', 'property-finder-sync', 'listing-manager', 'listing-performance', 'market-trends', 'youtube-video-editor', 'pdf-editor', 'chatbot-creator', 'keyword-planner', 'projects-finder'].includes(tool.id),
             href: `/dashboard/tool/${tool.id}`,
             guideHref: `/apps/${tool.id}`,
             mindMapCategory: tool.categories.includes('Ads') ? 'Meta Pilot (Campaign Automation)' :
