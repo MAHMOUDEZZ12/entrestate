@@ -6,7 +6,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building2, Camera, Calculator, Album, Wand2, Database
+    FileCheck, Palette, Map, LandPlot, Building2, Camera, Calculator, Album, Wand2, Database, BarChart
 } from 'lucide-react';
 import type { Feature } from '@/lib/tools-client';
 
