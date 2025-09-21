@@ -1,8 +1,8 @@
 
 'use client';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Check, Sparkles, ArrowRight } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Check, Sparkles, ArrowRight, Layers, FileText, Search } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ProductPage() {
@@ -14,11 +14,11 @@ export default function ProductPage() {
                         PRO SEARCH ENG.x 3
                     </h1>
                     <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-foreground/70">
-                       Move beyond keyword matching. Our advanced search engine dives into the semantic fabric of information, revealing connections and insights that traditional systems miss.
+                       Move beyond keyword matching. Our advanced search engine understands intent and context, diving into the semantic fabric of your data to reveal insights that traditional systems miss.
                     </p>
                     <div className="mt-8">
                         <Link href="/signup">
-                            <Button size="lg">Get Started <ArrowRight /></Button>
+                            <Button size="lg">Integrate Pro Search <ArrowRight /></Button>
                         </Link>
                     </div>
                 </div>
@@ -26,9 +26,9 @@ export default function ProductPage() {
 
             <section className="py-24 md:py-32">
                 <div className="container mx-auto px-4">
-                    <div className="text-center max-w-2xl mx-auto mb-16">
-                        <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Key Features</h2>
-                        <p className="mt-4 text-lg text-muted-foreground">Find answers, not just documents.</p>
+                    <div className="text-center max-w-3xl mx-auto mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Find Answers, Not Just Documents</h2>
+                        <p className="mt-4 text-lg text-muted-foreground">Our semantic search engine delivers unparalleled relevance and accuracy, saving your team time and unlocking hidden value in your data.</p>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <Card className="text-center">
@@ -36,7 +36,7 @@ export default function ProductPage() {
                                 <CardTitle>Hyper-Relevant Results</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p>Drastically reduces time spent sifting through irrelevant information and documents.</p>
+                                <p>Understands natural language queries to drastically reduce time spent sifting through irrelevant information.</p>
                             </CardContent>
                         </Card>
                         <Card className="text-center">
@@ -44,7 +44,7 @@ export default function ProductPage() {
                                 <CardTitle>Hidden Pattern Discovery</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p>Identifies non-obvious correlations and emerging trends from your data.</p>
+                                <p>Identifies non-obvious correlations, market trends, and customer patterns from your unstructured data.</p>
                             </CardContent>
                         </Card>
                         <Card className="text-center">
@@ -52,9 +52,70 @@ export default function ProductPage() {
                                 <CardTitle>Cross-Source Synthesis</CardTitle>
                             </CardHeader>
                             <CardContent>
-                                <p>Unifies information from disparate internal and external repositories into one answer.</p>
+                                <p>Unifies information from disparate internal and external repositories into a single, cohesive answer.</p>
                             </CardContent>
                         </Card>
+                    </div>
+                </div>
+            </section>
+            
+            <section className="py-24 md:py-32 bg-muted/50">
+                <div className="container mx-auto px-4">
+                    <div className="text-center max-w-3xl mx-auto mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">How It Works</h2>
+                        <p className="mt-4 text-lg text-muted-foreground">Transform your knowledge into an intelligent, searchable asset.</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                        <div className="flex flex-col items-center">
+                            <div className="p-4 bg-primary/10 rounded-full text-primary mb-4"><Layers className="h-8 w-8"/></div>
+                            <h3 className="text-xl font-bold mb-2">1. Ingest Your Data</h3>
+                            <p className="text-muted-foreground">Connect your data sources—brochures, reports, CRM notes, public websites—to our secure ingestion pipeline.</p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <div className="p-4 bg-primary/10 rounded-full text-primary mb-4"><FileText className="h-8 w-8"/></div>
+                            <h3 className="text-xl font-bold mb-2">2. Create Vector Embeddings</h3>
+                            <p className="text-muted-foreground">Our engine converts your documents into vector representations, capturing their semantic meaning.</p>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <div className="p-4 bg-primary/10 rounded-full text-primary mb-4"><Search className="h-8 w-8"/></div>
+                            <h3 className="text-xl font-bold mb-2">3. Query in Natural Language</h3>
+                            <p className="text-muted-foreground">Ask complex questions and get precise answers synthesized from across all your connected data sources.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="py-24 md:py-32">
+                <div className="container mx-auto px-4">
+                     <div className="text-center max-w-3xl mx-auto mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Use Cases</h2>
+                        <p className="mt-4 text-lg text-muted-foreground">Powering the next generation of real estate intelligence.</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <Card>
+                            <CardHeader><CardTitle>Intelligent Agent Assistant</CardTitle></CardHeader>
+                            <CardContent><p>Empower your agents to instantly find any property detail, market statistic, or client history note.</p></CardContent>
+                        </Card>
+                        <Card>
+                            <CardHeader><CardTitle>Public-Facing Discovery</CardTitle></CardHeader>
+                            <CardContent><p>Create a powerful, engaging search experience for your customers on your public website.</p></CardContent>
+                        </Card>
+                         <Card>
+                            <CardHeader><CardTitle>Internal Knowledge Management</CardTitle></CardHeader>
+                            <CardContent><p>Build a "second brain" for your entire organization, making all internal documents instantly accessible.</p></CardContent>
+                        </Card>
+                    </div>
+                </div>
+            </section>
+
+             <section className="py-24 md:py-32 bg-primary text-primary-foreground">
+                <div className="container mx-auto px-4 text-center">
+                    <h2 className="text-3xl font-bold">Ready to Unlock Your Data's Potential?</h2>
+                    <p className="mt-4 text-lg text-primary-foreground/80 max-w-2xl mx-auto">Stop searching and start finding. Let Pro Search become the intelligent core of your operations.</p>
+                    <div className="mt-8">
+                        <Link href="/signup">
+                            <Button size="lg" variant="secondary">Request a Demo</Button>
+                        </Link>
                     </div>
                 </div>
             </section>
