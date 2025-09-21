@@ -7,6 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Search, Sparkles, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 // Helper for smooth scrolling
 const scrollToSection = (id: string) => {
@@ -28,6 +30,7 @@ export default function HomePage() {
 
   return (
     <>
+      <LandingHeader />
       <main className="flex-1 w-full">
         {/* New Hero Section */}
         <section className="relative flex h-screen w-full items-center justify-center overflow-hidden border-b">
@@ -71,6 +74,7 @@ export default function HomePage() {
             <p className="text-muted-foreground">The rest of your landing page sections would follow.</p>
         </section>
       </main>
+      <LandingFooter />
     </>
   );
 }

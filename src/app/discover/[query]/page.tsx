@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Search, Loader2, Sparkles, Building, BarChart, LayoutTemplate, ArrowRight, UserPlus, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
@@ -11,6 +11,9 @@ import Link from 'next/link';
 import { tools } from '@/lib/tools-client';
 import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
 import { Skeleton } from '@/components/ui/skeleton';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
+import { Input } from '@/components/ui/input';
 
 
 const mockChartData = [
@@ -139,12 +142,15 @@ const LoadingSkeleton = () => (
 
 export default function DiscoverResultsPage() {
     const params = useParams();
-    const query = params.query as string || '';
+    const router = useRouter();
+    const initialQuery = params.query as string || '';
+    const [searchQuery, setSearchQuery] = useState(decodeURIComponent(initialQuery));
     const [isLoading, setIsLoading] = useState(true);
     const [results, setResults] = useState<any[] | null>(null);
 
     useEffect(() => {
-        const runSearch = async () => {
+        const runSearch = async (q: string) => {
+            if (!q) return;
             setIsLoading(true);
             setResults(null);
 
@@ -154,7 +160,7 @@ export default function DiscoverResultsPage() {
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         toolId: 'discover-engine',
-                        payload: { query: decodeURIComponent(query) }
+                        payload: { query: q }
                     })
                 });
 
@@ -181,18 +187,37 @@ export default function DiscoverResultsPage() {
             }
         };
 
-        if (query) {
-            runSearch();
+        if (initialQuery) {
+            runSearch(decodeURIComponent(initialQuery));
+        } else {
+            setIsLoading(false);
         }
-    }, [query]);
+    }, [initialQuery]);
+
+     const handleSearch = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!searchQuery.trim()) return;
+        router.push(`/discover/${encodeURIComponent(searchQuery.trim())}`);
+    };
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
+            <LandingHeader />
             <main className="flex-1 w-full max-w-5xl mx-auto px-4 md:px-6 py-12 md:py-20">
                 <div className="mb-12">
+                    <form onSubmit={handleSearch} className="relative z-10 mb-8">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <Input 
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder='e.g., "create an ad for Emaar Beachfront"' 
+                            className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-md"
+                        />
+                         <button type="submit" className="hidden" aria-hidden="true">Submit</button>
+                    </form>
                     <p className="text-muted-foreground">Showing results for:</p>
                     <h1 className="text-3xl md:text-4xl font-bold tracking-tighter">
-                        {decodeURIComponent(query)}
+                        {decodeURIComponent(initialQuery)}
                     </h1>
                 </div>
 
@@ -235,12 +260,13 @@ export default function DiscoverResultsPage() {
                     </AnimatePresence>
                 </div>
 
-                 {!isLoading && results?.length === 0 && (
+                 {!isLoading && results?.length === 0 && initialQuery && (
                      <div className="text-center py-16 text-muted-foreground">
-                        <p>No results found for &quot;{decodeURIComponent(query)}&quot;.</p>
+                        <p>No results found for &quot;{decodeURIComponent(initialQuery)}&quot;.</p>
                      </div>
                  )}
             </main>
+            <LandingFooter />
         </div>
     );
 }

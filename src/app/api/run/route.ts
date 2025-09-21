@@ -17,7 +17,7 @@ import { aiBrandCreator } from '@/ai/flows/archy/ai-brand-creator';
 import { generateMarketReport } from '@/ai/flows/market-intelligence/generate-market-report';
 import { getMarketTrends } from '@/ai/flows/market-intelligence/get-market-trends';
 import { generateListing } from '@/ai/flows/listing-crm/generate-listing';
-import { generateStory } from '@/aiflows/archy/generate-story';
+import { generateStory } from '@/ai/flows/archy/generate-story';
 import { generateReel } from '@/ai/flows/archy/generate-reel';
 import { generateTikTokVideo } from '@/ai/flows/archy/generate-tiktok-video';
 import { getCrmMemory } from '@/ai/flows/listing-crm/get-crm-memory';
