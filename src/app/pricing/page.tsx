@@ -56,16 +56,20 @@ export default function PricingPage() {
     }
   };
 
+  const isProSelected = useMemo(() => {
+    if (!proPlan) return false;
+    return allApps.length > 0 && allApps.every(app => selectedApps.includes(app.name)) && selectedApps.length === allApps.length;
+  }, [selectedApps, proPlan, allApps]);
+  
   const handleSelectPro = () => {
     if (!proPlan) return;
-    const isCurrentlyPro = allApps.length > 0 && allApps.every(app => selectedApps.includes(app)) && selectedApps.length === allApps.length;
-
-    if (isCurrentlyPro) {
+    if (isProSelected) {
       setSelectedApps([]);
     } else {
       setSelectedApps(proPlan.apps);
     }
   };
+
 
   const individualAppsPrice = useMemo(() => {
     return allApps
@@ -84,11 +88,6 @@ export default function PricingPage() {
     }
     return null;
   }, [selectedApps, bundles, proPlan, allApps]);
-
-  const isProSelected = useMemo(() => {
-    if (!proPlan) return false;
-    return allApps.length > 0 && allApps.every(app => selectedApps.includes(app.name));
-  }, [selectedApps, proPlan, allApps]);
 
 
   const finalPrice = isProSelected && proPlan ? proPlan.monthly_price : activeBundle ? activeBundle.monthly_price : individualAppsPrice;
