@@ -94,15 +94,15 @@ export default function ProductPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <Card>
                             <CardHeader><CardTitle>Automated Social Media Calendars</CardTitle></CardHeader>
-                            <CardContent><p>Generate a full week's worth of engaging social media posts from a single topic or property.</p></CardContent>
+                            <CardContent><p>Generate a full week's worth of engaging, platform-specific social media posts from a single topic or property, complete with hashtag strategies and image suggestions.</p></CardContent>
                         </Card>
                         <Card>
                             <CardHeader><CardTitle>Persuasive Listing Descriptions</CardTitle></CardHeader>
-                            <CardContent><p>Create compelling, SEO-friendly property descriptions optimized for portals like Bayut and Property Finder.</p></CardContent>
+                            <CardContent><p>Create compelling, SEO-friendly property descriptions optimized for portals like Bayut and Property Finder, highlighting key features and creating a narrative that sells a lifestyle, not just a property.</p></CardContent>
                         </Card>
                          <Card>
                             <CardHeader><CardTitle>Personalized Email Campaigns</CardTitle></CardHeader>
-                            <CardContent><p>Draft entire multi-step email drip campaigns, from lead nurturing to new launch announcements.</p></CardContent>
+                            <CardContent><p>Draft entire multi-step email drip campaigns. From nurturing a new lead with information about their area of interest to announcing a new project launch to your VIP client list, automate your communications.</p></CardContent>
                         </Card>
                     </div>
                 </div>

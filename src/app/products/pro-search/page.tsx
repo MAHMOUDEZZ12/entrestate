@@ -94,15 +94,15 @@ export default function ProductPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <Card>
                             <CardHeader><CardTitle>Intelligent Agent Assistant</CardTitle></CardHeader>
-                            <CardContent><p>Empower your agents to instantly find any property detail, market statistic, or client history note.</p></CardContent>
+                            <CardContent><p>Empower your agents to instantly find any property detail, market statistic, or client history note just by asking. "Which client was interested in golf course villas last month?"</p></CardContent>
                         </Card>
                         <Card>
                             <CardHeader><CardTitle>Public-Facing Discovery</CardTitle></CardHeader>
-                            <CardContent><p>Create a powerful, engaging search experience for your customers on your public website.</p></CardContent>
+                            <CardContent><p>Create a powerful, engaging search experience for your customers. Instead of simple filters, allow them to search for "a family-friendly community with good schools and a park."</p></CardContent>
                         </Card>
                          <Card>
                             <CardHeader><CardTitle>Internal Knowledge Management</CardTitle></CardHeader>
-                            <CardContent><p>Build a "second brain" for your entire organization, making all internal documents instantly accessible.</p></CardContent>
+                            <CardContent><p>Build a "second brain" for your entire organization. Make all internal documents, training materials, and market reports instantly accessible through a single, intelligent search bar.</p></CardContent>
                         </Card>
                     </div>
                 </div>

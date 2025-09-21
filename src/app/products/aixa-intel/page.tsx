@@ -94,15 +94,15 @@ export default function ProductPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <Card>
                             <CardHeader><CardTitle>Investor Advisory</CardTitle></CardHeader>
-                            <CardContent><p>Advise clients on the best-performing neighborhoods and property types based on predictive yield and appreciation data.</p></CardContent>
+                            <CardContent><p>Confidently advise clients on the best-performing neighborhoods and property types by showing them predictive yield and appreciation data, moving beyond historical performance alone.</p></CardContent>
                         </Card>
                         <Card>
                             <CardHeader><CardTitle>Developer Planning</CardTitle></CardHeader>
-                            <CardContent><p>Inform project planning and land acquisition by identifying areas with the highest future demand.</p></CardContent>
+                            <CardContent><p>Inform project planning and land acquisition by identifying areas with the highest future demand. Validate a new tower's unit mix by analyzing demographic shifts and buyer interest trends before breaking ground.</p></CardContent>
                         </Card>
                          <Card>
                             <CardHeader><CardTitle>Agent Prospecting</CardTitle></CardHeader>
-                            <CardContent><p>Focus your marketing efforts on "hot" zones where selling or buying activity is projected to increase.</p></CardContent>
+                            <CardContent><p>Focus your marketing efforts on "hot" zones where selling or buying activity is projected to increase. Get alerts on neighborhoods with a sudden spike in rental searches, indicating a potential new investor market.</p></CardContent>
                         </Card>
                     </div>
                 </div>

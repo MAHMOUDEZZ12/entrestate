@@ -94,15 +94,15 @@ export default function ProductPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <Card>
                             <CardHeader><CardTitle>Website Lead Capture</CardTitle></CardHeader>
-                            <CardContent><p>Turn anonymous website visitors into qualified leads by answering their questions in real-time.</p></CardContent>
+                            <CardContent><p>Turn anonymous website visitors into qualified leads. When a user asks, "Do you have any 3-bedrooms under 2M AED?", the bot can instantly search your inventory, present a matching property, and ask, "This one matches your criteria. May I have your email to send you the full brochure?"</p></CardContent>
                         </Card>
                         <Card>
                             <CardHeader><CardTitle>Project Launch Registration</CardTitle></CardHeader>
-                            <CardContent><p>Build hype and a VIP list for new projects by allowing users to register their interest via chat.</p></CardContent>
+                            <CardContent><p>Build hype and a VIP list for new projects. Deploy the bot on a pre-launch landing page to answer questions about the development, show renders, and capture registrations from high-intent buyers who want to be first in line.</p></CardContent>
                         </Card>
                          <Card>
                             <CardHeader><CardTitle>After-Hours Support</CardTitle></CardHeader>
-                            <CardContent><p>Provide instant answers to common questions 24/7, improving customer satisfaction.</p></CardContent>
+                            <CardContent><p>Provide instant answers 24/7. Handle common questions like "What are the service charges?" or "When is the handover date?" automatically, freeing up your team to focus on closing deals, not answering repetitive queries.</p></CardContent>
                         </Card>
                     </div>
                 </div>

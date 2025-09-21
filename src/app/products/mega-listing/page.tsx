@@ -94,15 +94,15 @@ export default function ProductPage() {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         <Card>
                             <CardHeader><CardTitle>Large-Scale Project Launches</CardTitle></CardHeader>
-                            <CardContent><p>Publish an entire off-plan project's inventory across all major portals in a single, coordinated push.</p></CardContent>
+                            <CardContent><p>Publish an entire off-plan project's inventory—hundreds of units—across all major portals in a single, coordinated push. Ensure every unit is accurately represented everywhere, instantly.</p></CardContent>
                         </Card>
                         <Card>
                             <CardHeader><CardTitle>Agency Portfolio Management</CardTitle></CardHeader>
-                            <CardContent><p>Ensure your entire agency's portfolio of listings is consistent, up-to-date, and professional everywhere online.</p></CardContent>
+                            <CardContent><p>Ensure your entire agency's portfolio of listings is consistent, up-to-date, and professional everywhere online. Update a price once in the Listing Manager and see it reflected on all portals.</p></CardContent>
                         </Card>
                          <Card>
                             <CardHeader><CardTitle>Individual Agent Efficiency</CardTitle></CardHeader>
-                            <CardContent><p>Free up hours of an agent's time per week by eliminating repetitive data entry on multiple websites.</p></CardContent>
+                            <CardContent><p>Free up hours of an agent's time per week by eliminating repetitive data entry on multiple websites. A single agent can now manage the marketing for dozens of properties simultaneously.</p></CardContent>
                         </Card>
                     </div>
                 </div>
