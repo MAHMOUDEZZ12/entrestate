@@ -201,7 +201,7 @@ const mergeToolData = (): Feature[] => {
         return {
             ...(tool as any),
             longDescription: detailsContent?.full_description || tool.description,
-            isPage: ['bayut-sync', 'property-finder-sync', 'listing-manager', 'listing-performance', 'market-trends', 'youtube-video-editor', 'pdf-editor', 'chatbot-creator', 'keyword-planner', 'projects-finder', 'market-reports', 'deal-analyzer', 'ugc-script-writer', 'ai-video-presenter', 'meta-auto-pilot', 'campaign-builder', 'lease-reviewer', 'tiktok-editor', 'reel-ads', 'crm-assistant', 'whatsapp-manager', 'multi-offer-builder'].includes(tool.id),
+            isPage: ['bayut-sync', 'property-finder-sync', 'listing-manager', 'listing-performance', 'market-trends', 'youtube-video-editor', 'pdf-editor', 'chatbot-creator', 'keyword-planner', 'projects-finder', 'market-reports', 'deal-analyzer', 'ugc-script-writer', 'ai-video-presenter', 'meta-auto-pilot', 'campaign-builder', 'lease-reviewer', 'tiktok-editor', 'reel-ads', 'crm-assistant', 'whatsapp-manager', 'multi-offer-builder', 'automated-rebranding', 'ai-price-estimator', 'commission-calculator', 'payment-planner', 'listing-generator'].includes(tool.id),
             href: `/dashboard/tool/${tool.id}`,
             guideHref: `/apps/${tool.id}`,
             mindMapCategory: tool.categories.includes('Ads') ? 'Meta Pilot (Campaign Automation)' :

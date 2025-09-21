@@ -69,7 +69,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'tiktok-editor': generateTikTokVideo,
     'crm-assistant': getCrmMemory,
     'instagram-admin-ai': manageSocialPage,
-    'offer-generator': generateMultiOffer,
+    'multi-offer-builder': generateMultiOffer,
     'email-creator': createEmailCampaign,
     'whatsapp-manager': manageWhatsAppCampaign,
     'meta-ads-copilot': createMetaCampaign,
