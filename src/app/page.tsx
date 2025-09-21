@@ -374,7 +374,7 @@ export default function HomePage() {
                   3XCHAT APP LITE
                 </h3>
                 <p className="text-xl text-foreground/70 leading-relaxed">
-                  Transform customer interactions with an application engineered for immediate, impactful engagement. 3XCHAT APP LITE redefines responsiveness, ensuring every customer feels heard and valued, around the clock.
+                  Transform customer interactions into an opportunity. 3XCHAT APP LITE redefines responsiveness, ensuring every customer feels heard and valued, around the clock.
                 </p>
                  <div className="space-y-4 pt-4">
                   <h4 className="font-semibold text-xl">Key Features:</h4>
