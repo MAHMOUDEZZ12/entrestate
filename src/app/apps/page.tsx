@@ -17,6 +17,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { pricingData } from '@/lib/pricing';
 
 const filterCategories: FilterCategory[] = [
     'All', 'Marketing', 'Lead Gen', 'Creative', 'Sales Tools', 'Social & Comms', 
@@ -28,6 +29,8 @@ const announcements = [
     "You can now connect your Bayut account to sync listings automatically.",
     "The Investor Matching tool now supports commercial properties.",
 ];
+
+const anyAppPlan = pricingData.pricing_plans.find(p => p.plan_id === 'any_app_monthly');
 
 const FeatureCard = ({
   feature,
@@ -74,7 +77,8 @@ const FeatureCard = ({
         </div>
         <h2 className="text-2xl font-bold font-heading text-foreground mb-2">{feature.title}</h2>
         <p className="text-lg text-foreground/70 flex-grow">{feature.description}</p>
-         <div className="mt-6">
+         <div className="mt-6 flex justify-between items-center">
+            <div className="text-lg font-bold text-primary">{anyAppPlan?.price_display}</div>
             <Button variant="link" className="p-0 text-base text-primary">
                 Explore App
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -197,7 +201,8 @@ const FeatureModal = ({ feature, onClose }: { feature: Feature | null, onClose: 
 
             <Separator />
 
-            <DialogFooter className="p-6 bg-muted/50 rounded-b-2xl">
+            <DialogFooter className="p-6 bg-muted/50 rounded-b-2xl flex justify-between items-center w-full">
+                <div className="text-xl font-bold text-primary">{anyAppPlan?.price_display}</div>
                 <Link href={`/dashboard/tool/${feature.id}`}>
                     <Button size="lg" className='text-base'>
                       {feature.cta}
