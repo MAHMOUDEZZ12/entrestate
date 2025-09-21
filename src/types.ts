@@ -131,7 +131,7 @@ export type InvestigateLeadOutput = z.infer<typeof InvestigateLeadOutputSchema>;
 
 // Schemas for AI Video Presenter
 export const GenerateVideoPresenterInputSchema = z.object({
-  characterImageUri: z.string().optional().describe("A data URI of the user's photo to create a digital twin. If not provided, a character will be generated from the description."),
+  characterImageUri: z.string().optional().describe("A data URI of the user's photo to create a digital twin. This is the primary input for the presenter's appearance."),
   characterDescription: z.string().optional().describe("A text description to generate a new character image if no photo is uploaded."),
   script: z.string().describe("The script for the presenter to speak."),
 });
