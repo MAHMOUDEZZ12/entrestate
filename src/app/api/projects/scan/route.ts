@@ -5,6 +5,9 @@ import type { Project } from "@/types";
 import { cookies } from "next/headers";
 
 export async function GET(req: Request) {
+  if (!adminDb) {
+    return fail("Firebase Admin is not initialized. Check server environment.", 503);
+  }
   try {
     const { searchParams } = new URL(req.url);
     const limit = Number(searchParams.get("limit") || 20);

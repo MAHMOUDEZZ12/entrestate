@@ -52,9 +52,6 @@ export default function AuthPage() {
     setError(null);
     try {
       const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      });
       await signInWithPopup(auth, provider);
       toast({ title: "Authentication Successful!", description: "Redirecting..." });
       router.push('/dashboard');

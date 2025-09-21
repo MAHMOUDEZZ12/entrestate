@@ -22,6 +22,9 @@ async function getUidFromRequest(req: Request): Promise<string | null> {
 }
 
 export async function GET(req: Request) {
+  if (!adminDb) {
+    return fail("Firebase Admin is not initialized. Check server environment.", 503);
+  }
   try {
     const uid = await getUidFromRequest(req);
     if (!uid) return fail("Unauthorized", 401);
@@ -38,6 +41,9 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  if (!adminDb) {
+    return fail("Firebase Admin is not initialized. Check server environment.", 503);
+  }
   try {
     const uid = await getUidFromRequest(req);
     if (!uid) return fail("Unauthorized", 401);
@@ -57,6 +63,9 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+    if (!adminDb) {
+        return fail("Firebase Admin is not initialized. Check server environment.", 503);
+    }
     try {
         const uid = await getUidFromRequest(req);
         if (!uid) return fail("Unauthorized", 401);

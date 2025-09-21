@@ -14,25 +14,25 @@ let adminApp: App | undefined;
 
 if (getApps().length === 0) {
     try {
+        // This is the recommended approach for Google Cloud environments like Cloud Run
+        adminApp = initializeApp({
+            credential: applicationDefault(),
+        });
+    } catch (e: any) {
+        console.warn(`Firebase Admin SDK initialization with default credentials failed: ${e.message}. This is expected in local development. Falling back to service account JSON.`);
+        // Fallback for local development using a service account file
         const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT;
         if (serviceAccountString) {
-            const serviceAccount = JSON.parse(serviceAccountString);
-            adminApp = initializeApp({
-                credential: cert(serviceAccount),
-            });
+            try {
+                const serviceAccount = JSON.parse(serviceAccountString);
+                adminApp = initializeApp({
+                    credential: cert(serviceAccount),
+                });
+            } catch (parseError: any) {
+                 console.error("Failed to parse FIREBASE_SERVICE_ACCOUNT JSON:", parseError);
+            }
         } else {
-             adminApp = initializeApp({
-                credential: applicationDefault(),
-            });
-        }
-    } catch (error: any) {
-        console.warn(`Firebase Admin SDK initialization failed: ${error.message}. This might be expected in certain environments. Falling back to default credentials if available.`);
-        try {
-            adminApp = initializeApp({
-                credential: applicationDefault(),
-            });
-        } catch (fallbackError: any) {
-            console.error("Firebase Admin SDK fallback initialization also failed:", fallbackError);
+            console.warn("FIREBASE_SERVICE_ACCOUNT environment variable not set. Firebase Admin SDK might not be initialized.");
         }
     }
 } else {

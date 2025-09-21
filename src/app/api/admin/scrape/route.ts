@@ -88,6 +88,9 @@ async function scrapePropertyFinder() {
 
 
 export async function GET(req: Request) {
+  if (!adminDb) {
+    return fail("Firebase Admin is not initialized. Check server environment.", 503);
+  }
   try {
     const { searchParams } = new URL(req.url);
     const source = searchParams.get('source') || 'dxboffplan';
