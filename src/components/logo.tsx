@@ -12,7 +12,8 @@ export const Logo = ({ className }: { className?: string }) => (
         alt="Entrestate Logo"
         width={240}
         height={55}
-        className="h-14 w-auto object-contain"
+        className="object-contain"
+        priority
     />
   </Link>
 );
