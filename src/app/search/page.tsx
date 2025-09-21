@@ -1,9 +1,11 @@
+
 'use client';
 
 import React, { useEffect } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { BrainCircuit } from 'lucide-react';
-import Head from 'next/head';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 export default function SearchPage() {
   useEffect(() => {
@@ -27,16 +29,20 @@ export default function SearchPage() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      <PageHeader
-        title="Market Search Engine"
-        description="Your AI-powered second brain for the real estate market. Search across verified portals, news, and project sites."
-        icon={<BrainCircuit className="h-6 w-6" />}
-      />
+    <>
+      <LandingHeader />
+      <div className="flex flex-col min-h-screen">
+        <PageHeader
+          title="Market Search Engine"
+          description="Your AI-powered second brain for the real estate market. Search across verified portals, news, and project sites."
+          icon={<BrainCircuit className="h-6 w-6" />}
+        />
 
-      <main className="flex-1 container mx-auto p-4 md:p-6">
-        <div className="gcse-search"></div>
-      </main>
-    </div>
+        <main className="flex-1 container mx-auto p-4 md:p-6">
+          <div className="gcse-search"></div>
+        </main>
+      </div>
+      <LandingFooter />
+    </>
   );
 }
