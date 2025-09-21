@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, 'useMemo', useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { ArrowRight, Check, Package, Sparkles, Wallet } from 'lucide-react';
 import {
@@ -40,10 +40,10 @@ export default function PricingPage() {
   const handleBundleSelection = (bundleName: string) => {
     const bundle = bundles.find(b => b.name === bundleName);
     if (!bundle) return;
-
-    const allAppsInBundleSelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.length && selectedApps.length === bundle.apps.length;
-
-    if (allAppsInBundleSelected) {
+  
+    const isCurrentlySelected = bundle.apps.every(app => selectedApps.includes(app)) && bundle.apps.length === selectedApps.length;
+  
+    if (isCurrentlySelected) {
       setSelectedApps([]);
     } else {
       setSelectedApps(bundle.apps);
@@ -80,7 +80,7 @@ export default function PricingPage() {
 
   const isProSelected = useMemo(() => {
     if (!proPlan) return false;
-    return proPlan.apps.length > 0 && selectedApps.length >= proPlan.apps.length && proPlan.apps.every(app => selectedApps.includes(app));
+    return proPlan.apps.length > 0 && selectedApps.length >= proPlan.apps.length && proPlan.apps.every(app => selectedApps.includes(app.name));
   }, [selectedApps, proPlan]);
 
   const finalPrice = isProSelected && proPlan ? proPlan.monthly_price : activeBundle ? activeBundle.monthly_price : individualAppsPrice;
@@ -163,13 +163,13 @@ export default function PricingPage() {
                         disabled={isProSelected}
                       >
                         <div className="flex items-center gap-2">
-                          <div className={cn("h-4 w-4 rounded-full border-2 flex items-center justify-center", isSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
+                           <div className={cn("h-4 w-4 rounded-full border-2 flex items-center justify-center", isSelected ? 'bg-primary border-primary' : 'bg-background border-muted-foreground')}>
                             {isSelected && <Check className="h-3 w-3 text-primary-foreground" />}
                           </div>
                           <p className="font-semibold text-foreground text-sm">{bundle.name}</p>
+                           {savings > 0 && <p className="text-xs font-semibold text-primary ml-auto">Save ${savings.toFixed(2)}/mo</p>}
                         </div>
                         <p className="text-xs text-muted-foreground text-left mt-1">{bundle.description}</p>
-                        {savings > 0 && <p className="text-xs font-semibold text-primary mt-1">Save ${savings.toFixed(2)}/mo</p>}
                       </button>
                     );
                   })}
@@ -210,12 +210,12 @@ export default function PricingPage() {
             <CardContent>
               {selectedApps.length > 0 && (
                 <div className="mb-4">
-                  <p className="font-semibold text-sm mb-2">Selected Apps:</p>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedApps.map(appName => (
-                      <Badge key={appName} variant="secondary">{appName}</Badge>
-                    ))}
-                  </div>
+                    <p className="font-semibold text-sm mb-2">Selected Apps:</p>
+                    <div className="flex flex-wrap gap-2">
+                        {selectedApps.map(appName => (
+                            <Badge key={appName} variant="secondary">{appName}</Badge>
+                        ))}
+                    </div>
                 </div>
               )}
               <div className="text-center">
@@ -237,7 +237,7 @@ export default function PricingPage() {
             </CardContent>
             <CardFooter>
               <Button size="lg" className="w-full" disabled={selectedApps.length === 0}>
-                {isProSelected ? 'Go PRO Now' : `Get ${selectedApps.length > 0 ? selectedApps.length : ''} App(s)`}
+                {isProSelected ? 'Get Full Access To All The APPS' : `Get ${selectedApps.length > 0 ? selectedApps.length : ''} App(s)`}
               </Button>
             </CardFooter>
           </Card>
