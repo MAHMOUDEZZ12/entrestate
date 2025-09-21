@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from './theme-switcher';
 import { CommandMenu } from './ui/command-menu';
+import { Logo } from './logo';
 
 const ENTRESTATE_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/entrestate.com%20logo%20agaist-10%20(4).png?alt=media&token=92958e4e-b603-4f3d-bf12-780e72362652';
 
@@ -43,16 +44,7 @@ export function LandingHeader() {
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center">
           <div className="mr-auto flex items-center gap-6">
-              <Link href="/" className="flex items-center gap-2"> 
-                <Image 
-                  src={ENTRESTATE_LOGO_URL} 
-                  alt="Entrestate Logo" 
-                  width={160} 
-                  height={36} 
-                  className="w-auto h-9 object-contain"
-                  priority
-                />
-              </Link>
+              <Logo />
               <nav className="hidden md:flex items-center gap-1">
                 {navLinks.map((link) => (
                     <Link key={link.name} href={link.href}>
@@ -92,14 +84,7 @@ export function LandingHeader() {
                    <div className="p-4 flex flex-col h-full">
                        <div className="flex justify-between items-center mb-8">
                           <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
-                            <Image 
-                              src={ENTRESTATE_LOGO_URL} 
-                              alt="Entrestate Logo" 
-                              width={160} 
-                              height={36} 
-                              className="w-auto h-9 object-contain"
-                              priority
-                            />
+                            <Logo />
                           </Link>
                           <Button variant="ghost" size="icon" onClick={() => setIsMobileMenuOpen(false)}>
                               <X className="h-6 w-6" />

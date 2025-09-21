@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Facebook, Twitter, Linkedin } from 'lucide-react';
 import Image from 'next/image';
 import { tools } from '@/lib/tools-data';
+import { Logo } from './logo';
 
 const ENTRESTATE_LOGO_URL = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/entrestate.com%20logo%20agaist-10%20(4).png?alt=media&token=92958e4e-b603-4f3d-bf12-780e72362652';
 
@@ -14,9 +15,7 @@ export function LandingFooter() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 md:gap-12">
           
           <div className="col-span-2 lg:col-span-1">
-            <Link href="/" className="flex items-center gap-2">
-              <Image src={ENTRESTATE_LOGO_URL} alt="Entrestate Logo" width={180} height={40} />
-            </Link>
+            <Logo />
             <p className="mt-4 text-sm text-foreground/70">
               The AI-Native Operating System for Real Estate.
             </p>
