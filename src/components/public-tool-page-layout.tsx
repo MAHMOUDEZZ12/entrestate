@@ -19,6 +19,8 @@ interface PublicToolPageLayoutProps {
 }
 
 export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
+  // Create a hint from the feature title for the placeholder image
+  const imageHint = feature.title.toLowerCase().split(' ').slice(0, 2).join(' ');
 
   return (
     <main className="flex-1 w-full bg-background">
@@ -70,7 +72,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                                     width={1280}
                                     height={720}
                                     className="w-full h-full object-cover"
-                                    data-ai-hint={feature.title}
+                                    data-ai-hint={imageHint}
                                 />
                             </div>
                         </CardContent>
@@ -90,7 +92,6 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                                      <div className="p-3 bg-primary/10 text-primary rounded-full w-fit">
                                         {React.cloneElement(step.icon, { className: 'h-6 w-6' })}
                                     </div>
-                                    <div className="w-px h-full bg-border flex-grow"></div>
                                 </div>
                                 <div>
                                     <h3 className="text-2xl font-bold font-heading mb-2">Step {i+1}</h3>
@@ -105,7 +106,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       </section>
       
       {/* AI vs Manual */}
-      <section className="py-24 md:py-32">
+       <section className="py-24 md:py-32">
         <div className="container mx-auto px-4">
            <div className="text-center max-w-2xl mx-auto mb-16">
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">The AI Advantage</h2>
@@ -135,6 +136,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             </div>
         </div>
       </section>
+
 
       {/* Synergy Section */}
        <section className="py-24 md:py-32 bg-muted/30">
