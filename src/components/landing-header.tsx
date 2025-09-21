@@ -47,9 +47,9 @@ export function LandingHeader() {
                 <Image 
                   src={ENTRESTATE_LOGO_URL} 
                   alt="Entrestate Logo" 
-                  width={140} 
-                  height={32} 
-                  className="w-auto h-8 object-contain"
+                  width={160} 
+                  height={36} 
+                  className="w-auto h-9 object-contain"
                   priority
                 />
               </Link>
@@ -95,9 +95,9 @@ export function LandingHeader() {
                             <Image 
                               src={ENTRESTATE_LOGO_URL} 
                               alt="Entrestate Logo" 
-                              width={140} 
-                              height={32} 
-                              className="w-auto h-8 object-contain"
+                              width={160} 
+                              height={36} 
+                              className="w-auto h-9 object-contain"
                               priority
                             />
                           </Link>

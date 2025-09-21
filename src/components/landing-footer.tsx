@@ -15,7 +15,7 @@ export function LandingFooter() {
           
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2">
-              <Image src={ENTRESTATE_LOGO_URL} alt="Entrestate Logo" width={140} height={32} />
+              <Image src={ENTRESTATE_LOGO_URL} alt="Entrestate Logo" width={180} height={40} />
             </Link>
             <p className="mt-4 text-sm text-foreground/70">
               The AI-Native Operating System for Real Estate.
