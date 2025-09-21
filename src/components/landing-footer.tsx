@@ -16,10 +16,10 @@ export function LandingFooter() {
           
           <div className="col-span-2 lg:col-span-1">
             <Logo />
-            <p className="mt-4 text-sm text-foreground/70">
+            <p className="mt-2 text-sm text-foreground/70">
               The AI-Native Operating System for Real Estate.
             </p>
-            <p className="mt-2 text-sm text-muted-foreground">
+            <p className="mt-1 text-sm text-muted-foreground">
               &copy; {currentYear} Entrestate. All rights reserved.
             </p>
           </div>
