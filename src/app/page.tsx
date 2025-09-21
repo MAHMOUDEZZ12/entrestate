@@ -4,12 +4,13 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Check, Sparkles } from 'lucide-react';
+import { ArrowRight, Check, Sparkles, Search, Building, BarChart, LayoutTemplate } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { visuals } from '@/lib/visuals';
 import { cn } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
 
 
 const ChatSimulation = () => {
@@ -57,6 +58,51 @@ const ChatSimulation = () => {
                     </div>
                 ))}
             </motion.div>
+        </div>
+    )
+}
+
+const SearchSimulation = () => {
+    const results = [
+        { icon: <Building />, title: "Project: Emaar Beachfront", description: "Verified project data, floor plans, and pricing." },
+        { icon: <BarChart />, title: "Trend: Dubai Marina Prices", description: "Price index is up 3.2% QoQ in this area." },
+        { icon: <LayoutTemplate />, title: "Tool: Landing Page Builder", description: "Create a dedicated landing page for this project." }
+    ];
+
+    return (
+        <div className="w-full h-full bg-muted/50 rounded-xl p-4 flex flex-col gap-3">
+             <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                <Input
+                    type="text"
+                    placeholder="Search..."
+                    className="w-full pl-10 h-10 bg-background"
+                    defaultValue="Emaar Beachfront"
+                    disabled
+                />
+            </div>
+            <div className="space-y-2">
+                {results.map((item, index) => (
+                    <motion.div
+                        key={index}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: 0.2 * index }}
+                    >
+                        <Card className="bg-background/80">
+                            <CardContent className="p-3 flex items-center gap-3">
+                                <div className="p-2 bg-primary/10 text-primary rounded-md">
+                                    {item.icon}
+                                </div>
+                                <div>
+                                    <p className="font-semibold text-sm">{item.title}</p>
+                                    <p className="text-xs text-muted-foreground">{item.description}</p>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    </motion.div>
+                ))}
+            </div>
         </div>
     )
 }
@@ -140,11 +186,8 @@ export default function HomePage() {
 
             {/* Product 2: PRO SEARCH ENG.x 3 */}
             <div id="product-pro-search" className="grid lg:grid-cols-2 gap-16 items-center">
-               <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col items-center justify-center text-center p-8">
-                  <h3 className="text-4xl font-bold font-heading">PRO SEARCH ENG.x 3</h3>
-                   <Link href="/products/pro-search" className="mt-4">
-                      <Button variant="outline">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
-                  </Link>
+               <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col items-center justify-center text-center p-2">
+                    <SearchSimulation />
                </Card>
               <div className="space-y-8 lg:order-1">
                 <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
@@ -260,3 +303,5 @@ export default function HomePage() {
     </div>
   );
 }
+
+    
