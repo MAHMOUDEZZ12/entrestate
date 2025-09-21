@@ -20,6 +20,7 @@ import {
   Palette,
   LayoutGrid,
   Bot,
+  Database,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
@@ -29,6 +30,7 @@ const mainNavLinks = [
   { href: '/dashboard/marketing', icon: <LayoutGrid className="h-5 w-5" />, label: 'Apps' },
   { href: '/dashboard/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },
   { href: '/dashboard/assistant', icon: <Bot className="h-5 w-5" />, label: 'AI Assistant' },
+  { href: '/dashboard/data-importer', icon: <Database className="h-5 w-5" />, label: 'Data Importer' },
 ];
 
 const secondaryNavLinks = [
