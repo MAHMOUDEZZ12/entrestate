@@ -8,7 +8,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube
 } from 'lucide-react';
 import { toast as sonnerToast } from "sonner";
 import { Copy, Download, Trash2, Eye } from 'lucide-react';
@@ -89,6 +89,8 @@ export const filesToDataUris = (files: FileList): Promise<string[]> => {
     return Promise.all(promises);
 };
 
+const Languages = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-languages"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>;
+
 const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' | 'renderResult' | 'href' | 'guideHref' | 'mindMapCategory' | 'isPage'>[] = [
     // Meta Ads Pilot
     { id: 'meta-auto-pilot', title: 'Meta Auto Pilot', dashboardTitle: 'Meta Auto Pilot', description: 'Single-click manager for your entire Meta suite.', icon: <Sparkles />, color: '#4B0082', categories: ['Ads', 'Marketing'], badge: 'AUTO', cta: 'Launch Campaign' },
@@ -108,7 +110,7 @@ const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' 
     { id: 'brochure-translator', title: 'Brochure Translator', description: 'Translate any brochure to multiple languages in seconds.', icon: <Languages />, color: '#1E90FF', categories: ['Editing'], cta: 'Translate Brochure' },
     { id: 'pdf-editor', title: 'Visual PDF Editor (Deprecated)', dashboardTitle: 'PDF Editor', description: 'A legacy tool for simple PDF edits.', icon: <PenTool />, color: '#696969', categories: ['Editing'], badge: 'DEPRECATED', cta: 'Edit PDF' },
     { id: 'pdf-editor-ai', title: 'PDF EDITOR AI', description: 'Edit PDF documents with AI-powered tools.', icon: <Wand2 />, color: '#1E90FF', categories: ['Editing', 'Creative'], cta: 'Edit with AI' },
-    { id: 'images-hq-ai', title: 'Images HQ AI', description: 'Generate high-quality, royalty-free images for listings and ads.', icon: <Image />, color: '#1E90FF', categories: ['Creative'], cta: 'Generate Image' },
+    { id: 'images-hq-ai', title: 'Images HQ AI', description: 'Generate high-quality, royalty-free images for listings and ads.', icon: <ImageIcon />, color: '#1E90FF', categories: ['Creative'], cta: 'Generate Image' },
     { id: 'logo-creator-ai', title: 'Logo Creator AI', description: 'Create a professional logo for your brand in seconds.', icon: <Sparkles />, color: '#1E90FF', categories: ['Creative'], cta: 'Create Logo' },
     { id: 'aerial-view-generator', title: 'Aerial View Generator', description: 'Create cinematic, aerial video tours of any property.', icon: <Camera />, color: '#8A2BE2', categories: ['Creative', 'Video'], cta: 'Generate Aerial View' },
 
@@ -146,8 +148,6 @@ const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' 
     { id: 'creative-execution-terminal', title: 'Creative Execution Terminal', dashboardTitle: 'Execution Terminal', description: 'The execution engine for complex creative tasks.', icon: <Terminal />, color: '#333333', categories: ['Developer'], cta: 'Run Job' },
     { id: 'superfreetime', title: 'Super Free Time', description: 'A secret tool for some fun.', icon: <KeyRound />, color: '#FFD700', categories: [], cta: 'Play' },
 ];
-
-const Languages = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-languages"><path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/></svg>;
 
 // Function to merge data with details
 const mergeToolData = (): Feature[] => {
