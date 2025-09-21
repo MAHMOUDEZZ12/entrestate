@@ -6,7 +6,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building2, Camera, Calculator, Album, Wand2, Database, BarChart
+    FileCheck, Palette, Map, LandPlot, Building2, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image
 } from 'lucide-react';
 import type { Feature } from '@/lib/tools-client';
 
@@ -199,6 +199,48 @@ export const tools: Omit<Feature, 'details' | 'longDescription' | 'creationField
         isPage: true,
         href: "/dashboard/tool/pdf-editor",
         guideHref: "/apps/visual-pdf-editor",
+    },
+    {
+        id: 'pdf-editor-ai',
+        title: "PDF EDITOR AI",
+        description: "Edit PDF documents with AI-powered tools.",
+        icon: <Wand2 />,
+        color: '#E54D2E',
+        categories: ['Creative', 'Editing'],
+        badge: 'NEW',
+        cta: "Edit PDF with AI",
+        mindMapCategory: "Archy (Creative Marketing)",
+        isPage: false,
+        href: "/dashboard/tool/pdf-editor-ai",
+        guideHref: "/apps/pdf-editor-ai",
+    },
+    {
+        id: 'images-hq-ai',
+        title: "Images HQ AI",
+        description: "Generate high-quality, royalty-free images for your listings and ads.",
+        icon: <Image />,
+        color: '#34A853',
+        categories: ['Creative', 'Marketing'],
+        badge: 'NEW',
+        cta: "Generate Images",
+        mindMapCategory: "Archy (Creative Marketing)",
+        isPage: false,
+        href: "/dashboard/tool/images-hq-ai",
+        guideHref: "/apps/images-hq-ai",
+    },
+    {
+        id: 'logo-creator-ai',
+        title: "Logo Creator AI",
+        description: "Create a professional logo for your brand in seconds.",
+        icon: <Sparkles />,
+        color: '#FBBC05',
+        categories: ['Creative', 'Marketing'],
+        badge: 'NEW',
+        cta: "Create a Logo",
+        mindMapCategory: "Archy (Creative Marketing)",
+        isPage: false,
+        href: "/dashboard/tool/logo-creator-ai",
+        guideHref: "/apps/logo-creator-ai",
     },
     {
         id: 'aerial-view-generator',
@@ -506,7 +548,7 @@ export const tools: Omit<Feature, 'details' | 'longDescription' | 'creationField
         cta: "Provision VM",
         mindMapCategory: "Core Platform",
         isPage: false,
-        href: "/dashboard/tool/vm-creator",
+href: "/dashboard/tool/vm-creator",
         guideHref: "/apps/vm-creator",
     },
     {

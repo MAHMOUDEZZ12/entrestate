@@ -189,6 +189,33 @@ export const pricingData = {
       "level_of_knowledge_required": "Zero",
       "expected_results": "High-quality, engaging social stories.",
       "pricing": 4.69
+    },
+    {
+      "name": "PDF EDITOR AI",
+      "bundle": "ENTRESTATE CREATIVE SUITE",
+      "description": "Edit PDF documents with AI-powered tools.",
+      "flow": "Upload a PDF and use natural language to make changes.",
+      "level_of_knowledge_required": "Zero",
+      "expected_results": "Quick and easy PDF edits without complex software.",
+      "pricing": 4.69
+    },
+    {
+      "name": "Images HQ AI",
+      "bundle": "ENTRESTATE CREATIVE SUITE",
+      "description": "Generate high-quality, royalty-free images for your listings and ads.",
+      "flow": "Use text prompts to create any image you need.",
+      "level_of_knowledge_required": "Zero",
+      "expected_results": "Stunning visuals for all your marketing materials.",
+      "pricing": 4.69
+    },
+    {
+      "name": "Logo Creator AI",
+      "bundle": "ENTRESTATE CREATIVE SUITE",
+      "description": "Create a professional logo for your brand in seconds.",
+      "flow": "Describe your brand and style, and the AI will generate logo options.",
+      "level_of_knowledge_required": "Zero",
+      "expected_results": "A unique and memorable logo for your business.",
+      "pricing": 4.69
     }
   ],
   "bundles": [
@@ -234,9 +261,21 @@ export const pricingData = {
     },
     {
       "name": "ENTRESTATE CREATIVE SUITE",
-      "apps": ["UGC Script Writer","AI YouTube Video Editor","Landing Page Builder","Automated Rebranding","Brochure Translator","Story Planner","Insta Ads Designer","Reel Ads"],
+      "apps": [
+        "UGC Script Writer",
+        "AI YouTube Video Editor",
+        "Landing Page Builder",
+        "Automated Rebranding",
+        "Brochure Translator",
+        "Story Planner",
+        "Insta Ads Designer",
+        "Reel Ads",
+        "PDF EDITOR AI",
+        "Images HQ AI",
+        "Logo Creator AI"
+      ],
       "description": "Complete AI-powered marketing and content creation toolkit.",
-      "monthly_price": 25,
+      "monthly_price": 25
     },
     {
       "name": "ENTRESTATE PRO",

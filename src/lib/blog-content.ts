@@ -482,6 +482,102 @@ export const appDetails = {
       "cta": "Explore App"
     },
     {
+      "name": "PDF EDITOR AI",
+      "hero": "PDF EDITOR AI — Edit PDF documents with AI-powered tools.",
+      "full_description": "PDF EDITOR AI allows you to edit PDF documents using natural language commands. Change text, swap images, and adjust layouts without needing complex software like Adobe Acrobat.",
+      "level_of_knowledge_required": "Zero. Just describe the changes you want to make.",
+      "difference_vs_native": "Traditional PDF editors require manual selection and manipulation of elements. PDF EDITOR AI understands your intent and executes the changes for you.",
+      "flow": "Upload a PDF, provide a list of instructions, and the AI generates a new, edited PDF.",
+      "chain": "Brand Creator -> PDF EDITOR AI -> Automated Rebranding",
+      "expected_results": "Dramatically faster PDF edits, especially for batch changes or complex documents. Ensures brand consistency when used with Brand Creator.",
+      "features": [
+        "Natural language editing",
+        "Text and image replacement",
+        "Layout adjustments",
+        "Batch processing"
+      ],
+      "demo_placeholder": "An animation showing a user typing 'change the price to $2.5M' and the PDF updating.",
+      "use_cases": [
+        "Updating pricing on brochures",
+        "Swapping outdated images in a presentation",
+        "Correcting typos in a signed document"
+      ],
+      "faqs": [
+        { "q": "Can it edit any PDF?", "a": "It works best with PDFs that have selectable text. Scanned documents or images may have limited editability." },
+        { "q": "Are my documents secure?", "a": "Yes, all documents are processed securely and are not used for any other purpose." }
+      ],
+      "integrations": [
+        "Brand Creator",
+        "Automated Rebranding",
+        "CRM Memory"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Images HQ AI",
+      "hero": "Images HQ AI — Generate high-quality, royalty-free images for your listings and ads.",
+      "full_description": "Images HQ AI is a powerful text-to-image generator that creates stunning, photorealistic visuals for all your marketing needs. Describe what you want, and the AI brings it to life.",
+      "level_of_knowledge_required": "Zero. If you can describe it, you can create it.",
+      "difference_vs_native": "Stock photo sites offer limited, generic options. Images HQ AI provides unique, custom-tailored images that perfectly match your brand and listing.",
+      "flow": "Write a descriptive prompt (e.g., 'A modern living room with a view of the Dubai skyline at sunset'). The AI generates image options. Select and download the one you like.",
+      "chain": "Images HQ AI -> Insta Ads Designer -> Landing Page Builder",
+      "expected_results": "Unique, eye-catching visuals that increase engagement and make your listings stand out. Eliminates the cost and hassle of stock photography.",
+      "features": [
+        "Text-to-image generation",
+        "Multiple art styles (photorealistic, illustrative, etc.)",
+        "High-resolution downloads",
+        "Royalty-free commercial use"
+      ],
+      "demo_placeholder": "A carousel showing a text prompt and the various images generated from it.",
+      "use_cases": [
+        "Creating hero images for landing pages",
+        "Generating lifestyle shots for social media ads",
+        "Visualizing a property before it's built"
+      ],
+      "faqs": [
+        { "q": "Are the images truly royalty-free?", "a": "Yes, you have full commercial rights to use the images you generate." },
+        { "q": "How specific can my prompts be?", "a": "The more specific, the better! You can describe lighting, colors, camera angles, and more." }
+      ],
+      "integrations": [
+        "Insta Ads Designer",
+        "Landing Page Builder",
+        "Reel Ads"
+      ],
+      "cta": "Explore App"
+    },
+    {
+      "name": "Logo Creator AI",
+      "hero": "Logo Creator AI — Create a professional logo for your brand in seconds.",
+      "full_description": "Logo Creator AI is a rapid logo generation tool. Simply describe your company and your desired style, and the AI will produce a variety of unique, professional logos for you to choose from.",
+      "level_of_knowledge_required": "Zero. No design skills needed.",
+      "difference_vs_native": "Hiring a designer is expensive and time-consuming. Logo Creator AI delivers professional results instantly, at a fraction of the cost.",
+      "flow": "Enter your company name, industry, and style preferences (e.g., 'modern, minimalist, luxury'). The AI generates logos. Pick your favorite and download it.",
+      "chain": "Logo Creator AI -> Brand Creator -> Automated Rebranding",
+      "expected_results": "A professional and unique logo that establishes your brand identity. Saves significant time and money compared to traditional design processes.",
+      "features": [
+        "AI-powered logo design",
+        "Multiple style options",
+        "Vector and raster file downloads",
+        "Full ownership of your design"
+      ],
+      "demo_placeholder": "An animation showing a user entering 'Luxe Realty' and a grid of professional logos appearing.",
+      "use_cases": [
+        "New real estate agencies needing a brand identity",
+        "Individual agents creating a personal brand",
+        "Developers launching a new project with its own logo"
+      ],
+      "faqs": [
+        { "q": "Can I get the logo in different file formats?", "a": "Yes, you can download your logo in formats suitable for web and print, including SVG, PNG, and JPG." },
+        { "q": "Can I make changes to the generated logos?", "a": "Yes, you can refine colors, fonts, and layouts before finalizing your design." }
+      ],
+      "integrations": [
+        "Brand Creator",
+        "Automated Rebranding",
+        "Landing Page Builder"
+      ],
+      "cta": "Explore App"
+    },
+    {
       "name": "Aerial View Generator",
       "hero": "Aerial View Generator — Create cinematic, aerial video tours of any property.",
       "full_description": "Aerial View Generator synthesizes cinematic aerial video sequences for properties using available imagery, 3D models, or drone footage. It produces smooth flights, flyovers, and dynamic reveal shots ideal for listing videos and promotional content.",
@@ -1195,5 +1291,3 @@ export const appDetails = {
     }
   ]
 }
-
-    
