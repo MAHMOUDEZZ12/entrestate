@@ -10,14 +10,14 @@ import { LandingFooter } from '@/components/landing-footer';
 export default function SearchPage() {
   useEffect(() => {
     const script = document.createElement('script');
-    script.src = 'https://cse.google.com/cse.js?cx=507222cc63ead4dd7';
+    script.src = 'https://cse.google.com/cse.js?cx=c4d7e9ede8a4347d3';
     script.async = true;
     document.body.appendChild(script);
 
     return () => {
       // Find the script and remove it
       const existingScript = document.querySelector(
-        'script[src="https://cse.google.com/cse.js?cx=507222cc63ead4dd7"]'
+        'script[src="https://cse.google.com/cse.js?cx=c4d7e9ede8a4347d3"]'
       );
       if (existingScript) {
         document.body.removeChild(existingScript);
@@ -39,7 +39,7 @@ export default function SearchPage() {
         />
 
         <main className="flex-1 container mx-auto p-4 md:p-6">
-          <div className="gcse-search"></div>
+          <div key="gcse-search-container" className="gcse-search"></div>
         </main>
       </div>
       <LandingFooter />
