@@ -75,8 +75,8 @@ const SearchSimulation = () => {
     ];
 
     return (
-        <div className="w-full h-full bg-muted/50 rounded-xl p-4 flex flex-col gap-4">
-             <div className="relative">
+        <div className="w-full h-full bg-muted/50 rounded-xl p-4 flex flex-col gap-4 overflow-hidden mask-gradient-vertical">
+             <div className="relative flex-shrink-0">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                     type="text"
@@ -86,19 +86,15 @@ const SearchSimulation = () => {
                     disabled
                 />
             </div>
-            <div className="space-y-4">
+            <div className="space-y-4 overflow-y-auto no-scrollbar">
                 <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3, delay: 0.1 }}>
                     <Card className="bg-background/80">
                         <CardHeader>
                             <CardTitle className="text-2xl">Project Overview: Damac Lagoons</CardTitle>
                             <CardDescription>Developer: DAMAC Properties</CardDescription>
                         </CardHeader>
-                        <CardContent className="text-base text-foreground/80 leading-relaxed space-y-4">
+                        <CardContent className="text-base text-foreground/80 leading-relaxed">
                             <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
-                             <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
-                              <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
-                               <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
-                                <p>A sprawling Mediterranean-inspired master community of villas and townhouses, where each cluster is themed after a different coastal city like Santorini, Venice, and Costa Brava. The community is centered around a massive swimmable crystal lagoon, offering a unique resort-style living experience in Dubai.</p>
                         </CardContent>
                     </Card>
                 </motion.div>
@@ -165,44 +161,70 @@ const SearchSimulation = () => {
 }
 
 const LlmSimulation = () => {
-    const messages = [
-        { from: 'user', text: "Analyze Damac Lagoons for investment potential." },
-        { from: 'ai', text: "Certainly. Damac Lagoons shows strong investment potential. \n\n- **High Rental Yield:** Expected rental yield is 8-10% due to the unique resort-style amenities. \n- **Capital Appreciation:** Located in a high-growth corridor with significant infrastructure development. \n- **Market Trend:** The sub-community style is popular with both residents and tourists, ensuring high demand.\n\n**Recommendation:** A strong 'Buy', particularly for townhouses aimed at the long-term rental market." },
-        { from: 'user', text: "Compare it to Emaar Beachfront." },
-        { from: 'ai', text: "Emaar Beachfront offers a premium on rental yield due to its prime location and brand, but Damac Lagoons has a lower entry price, potentially offering higher cash-on-cash returns for a leveraged investor. Beachfront is a blue-chip asset; Lagoons is a high-growth opportunity." },
+    const features = ["Santorini - Blue & White theme", "Venice - Gondola Rides", "Costa Brava - Spanish Style", "Malta - Play & Learn Hub"];
+    const units = [
+        { name: "3-Bed Townhouse (TH-L)", size: "2,012 sqft", status: "Sold Out" },
+        { name: "4-Bed Townhouse (TH-M)", size: "2,280 sqft", status: "Available" },
+        { name: "5-Bed Villa (V-5)", size: "3,700 sqft", status: "Available" },
+        { name: "6-Bed Villa (V-6)", size: "4,550 sqft", status: "Sold Out" },
     ];
-
+    
     return (
         <div className="h-full w-full bg-muted/50 rounded-xl p-4 overflow-hidden mask-gradient-vertical">
              <motion.div
-                animate={{ y: [0, -150] }}
+                animate={{ y: [0, -450] }}
                 transition={{
-                    duration: 12,
+                    duration: 15,
                     repeat: Infinity,
                     repeatType: 'loop',
                     ease: 'linear',
                 }}
-                className="space-y-3"
+                className="space-y-4"
             >
                 {/* Duplicate messages for seamless loop */}
-                {[...messages, ...messages].map((msg, index) => (
-                    <div
-                        key={index}
-                        className={cn(
-                            "flex items-start gap-2",
-                            msg.from === 'user' ? 'justify-end' : 'justify-start'
-                        )}
-                    >
-                         {msg.from === 'ai' && <div className="h-6 w-6 rounded-full bg-primary/20 flex-shrink-0 mt-1" />}
-                        <div
-                            className={cn(
-                                "max-w-[85%] rounded-lg p-2 px-3 text-sm",
-                                msg.from === 'user'
-                                    ? 'bg-primary text-primary-foreground'
-                                    : 'bg-background border'
-                            )}
-                        >
-                           <p className="whitespace-pre-wrap">{msg.text}</p>
+                {[1, 2].map((i) => (
+                    <div key={i} className="space-y-4">
+                        <div className="flex items-start gap-2 justify-end">
+                            <div className="max-w-[85%] rounded-lg p-2 px-3 text-sm bg-primary text-primary-foreground">
+                                <p>Analyze Damac Lagoons for investment potential.</p>
+                            </div>
+                        </div>
+
+                        <div className="flex items-start gap-2 justify-start">
+                            <div className="h-6 w-6 rounded-full bg-primary/20 flex-shrink-0 mt-1" />
+                            <div className="max-w-[85%] space-y-3">
+                                <div className="rounded-lg p-3 text-sm bg-background border">
+                                    <p>Certainly. Damac Lagoons shows strong investment potential. Here's a summary:</p>
+                                    <ul className="mt-2 list-disc list-inside text-foreground/80 text-xs">
+                                        <li><span className="font-semibold">High Rental Yield:</span> Expected yield is 8-10% due to unique resort-style amenities.</li>
+                                        <li><span className="font-semibold">Capital Appreciation:</span> Located in a high-growth corridor with significant infrastructure development.</li>
+                                        <li><span className="font-semibold">Market Trend:</span> The sub-community style is popular with both residents and tourists, ensuring high demand.</li>
+                                    </ul>
+                                </div>
+                                <Card className="bg-background/80">
+                                    <CardHeader className="p-3"><CardTitle className="text-base">Units & Availability</CardTitle></CardHeader>
+                                    <CardContent className="p-3 pt-0">
+                                        <Table>
+                                            <TableHeader>
+                                                <TableRow><TableHead className="h-8">Unit</TableHead><TableHead className="h-8 text-right">Status</TableHead></TableRow>
+                                            </TableHeader>
+                                            <TableBody>
+                                                {units.slice(0, 2).map((unit, index) => (
+                                                <TableRow key={index}>
+                                                    <TableCell className="font-medium text-xs py-1">{unit.name}</TableCell>
+                                                    <TableCell className="text-right py-1">
+                                                        <Badge variant={unit.status === 'Sold Out' ? 'destructive' : 'default'} className="text-xs">{unit.status}</Badge>
+                                                    </TableCell>
+                                                </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </CardContent>
+                                </Card>
+                                 <div className="rounded-lg p-3 text-sm bg-background border">
+                                    <p className="font-semibold">Recommendation: A strong 'Buy', particularly for townhouses aimed at the long-term rental market.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 ))}
