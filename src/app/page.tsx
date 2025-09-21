@@ -4,9 +4,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { visuals } from '@/lib/visuals';
 
@@ -79,21 +79,21 @@ export default function HomePage() {
                   </ul>
                 </div>
               </div>
-               <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative">
-                 <div className="absolute inset-0 z-10 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                 <CardContent className="p-0 h-full relative z-20">
-                    <Image src={visuals['3xchat']} alt="3XCHAT APP LITE visual" width={500} height={500} className="w-full h-full object-contain"/>
-                 </CardContent>
-               </Card>
+              <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-indigo-500/10 to-purple-500/10 flex flex-col items-center justify-center text-center p-8">
+                  <h3 className="text-4xl font-bold font-heading">3XCHAT APP LITE</h3>
+                  <Link href="/products/3xchat" className="mt-4">
+                      <Button variant="outline">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                  </Link>
+              </Card>
             </div>
 
             {/* Product 2: PRO SEARCH ENG.x 3 */}
             <div id="product-pro-search" className="grid lg:grid-cols-2 gap-16 items-center">
-               <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative">
-                 <div className="absolute inset-0 z-10 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                 <CardContent className="p-0 h-full relative z-20">
-                    <Image src={visuals['pro-search']} alt="PRO SEARCH ENG.x 3 visual" width={500} height={500} className="w-full h-full object-contain"/>
-                 </CardContent>
+               <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-blue-500/10 to-cyan-500/10 flex flex-col items-center justify-center text-center p-8">
+                  <h3 className="text-4xl font-bold font-heading">PRO SEARCH ENG.x 3</h3>
+                   <Link href="/products/pro-search" className="mt-4">
+                      <Button variant="outline">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                  </Link>
                </Card>
               <div className="space-y-8 lg:order-1">
                 <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
@@ -131,21 +131,21 @@ export default function HomePage() {
                   </ul>
                 </div>
               </div>
-               <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative">
-                 <div className="absolute inset-0 z-10 bg-gradient-to-br from-green-500/20 to-teal-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                 <CardContent className="p-0 h-full relative z-20">
-                    <Image src={visuals['llm-model']} alt="LLM MODEL X3.5 visual" width={500} height={500} className="w-full h-full object-contain"/>
-                 </CardContent>
+               <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-green-500/10 to-teal-500/10 flex flex-col items-center justify-center text-center p-8">
+                  <h3 className="text-4xl font-bold font-heading">LLM MODEL X3.5</h3>
+                   <Link href="/products/llm-model" className="mt-4">
+                      <Button variant="outline">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                  </Link>
                </Card>
             </div>
 
             {/* Product 4: AIXA INTEL RE5.2 */}
             <div id="product-aixa" className="grid lg:grid-cols-2 gap-16 items-center">
-                <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative">
-                    <div className="absolute inset-0 z-10 bg-gradient-to-br from-red-500/20 to-orange-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <CardContent className="p-0 h-full relative z-20">
-                        <Image src={visuals['aixa-intel']} alt="AIXA INTEL RE5.2 visual" width={500} height={500} className="w-full h-full object-contain"/>
-                    </CardContent>
+                <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl lg:order-2 group relative bg-gradient-to-br from-red-500/10 to-orange-500/10 flex flex-col items-center justify-center text-center p-8">
+                    <h3 className="text-4xl font-bold font-heading">AIXA INTEL RE5.2</h3>
+                     <Link href="/products/aixa-intel" className="mt-4">
+                        <Button variant="outline">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                    </Link>
                 </Card>
                 <div className="space-y-8 lg:order-1">
                     <h3 className="text-4xl md:text-5xl font-bold font-heading tracking-tight text-foreground">
@@ -183,11 +183,11 @@ export default function HomePage() {
                   </ul>
                 </div>
               </div>
-              <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative">
-                <div className="absolute inset-0 z-10 bg-gradient-to-br from-purple-500/20 to-pink-500/20 blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <CardContent className="p-0 h-full relative z-20">
-                    <Image src={visuals['mega-listing']} alt="MEGA LISTING PRO 2 visual" width={500} height={500} className="w-full h-full object-contain"/>
-                </CardContent>
+              <Card className="w-full aspect-square mx-auto overflow-hidden shadow-2xl group relative bg-gradient-to-br from-purple-500/10 to-pink-500/10 flex flex-col items-center justify-center text-center p-8">
+                <h3 className="text-4xl font-bold font-heading">MEGA LISTING PRO 2</h3>
+                 <Link href="/products/mega-listing" className="mt-4">
+                    <Button variant="outline">Discover More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                </Link>
               </Card>
             </div>
             
