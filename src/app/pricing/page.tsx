@@ -33,7 +33,9 @@ export default function PricingPage() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch">
-            {otherBundles.map(bundle => (
+            {otherBundles.map(bundle => {
+              const annualPrice = bundle.monthly_price * 12 * 0.6; // 40% discount
+              return (
                 <Card key={bundle.name} className="flex flex-col">
                     <CardHeader>
                         <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-4">
@@ -44,7 +46,7 @@ export default function PricingPage() {
                     </CardHeader>
                     <CardContent className="flex-1 space-y-4">
                         <div className="flex items-baseline gap-2">
-                           <span className="text-4xl font-bold">${isAnnual ? bundle.annual_price : bundle.monthly_price}</span>
+                           <span className="text-4xl font-bold">${isAnnual ? (annualPrice / 12).toFixed(2) : bundle.monthly_price.toFixed(2)}</span>
                            <span className="text-muted-foreground">/ month</span>
                         </div>
                         <p className="font-semibold text-sm text-foreground">INCLUDES:</p>
@@ -61,7 +63,7 @@ export default function PricingPage() {
                         <Button className="w-full">Get Started</Button>
                     </CardFooter>
                 </Card>
-            ))}
+            )})}
         </div>
 
         {proPlan && (
@@ -74,7 +76,7 @@ export default function PricingPage() {
                         <h2 className="text-3xl font-bold font-heading">{proPlan.name}</h2>
                         <p className="text-lg text-muted-foreground mt-2">{proPlan.description}</p>
                          <div className="flex items-baseline gap-2 mt-6">
-                           <span className="text-5xl font-bold">${isAnnual ? proPlan.annual_price : proPlan.monthly_price}</span>
+                           <span className="text-5xl font-bold">${isAnnual ? ((proPlan.monthly_price * 12 * 0.6) / 12).toFixed(2) : proPlan.monthly_price.toFixed(2)}</span>
                            <span className="text-muted-foreground">/ month</span>
                         </div>
                          <Link href="/signup">

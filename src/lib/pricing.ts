@@ -194,31 +194,27 @@ export const pricingData = {
   "bundles": [
     {
       "name": "META ADS PILOT",
-      "apps": ["Meta Auto Pilot","Campaign Builder","Audience Creator","Insta Ads Designer","Reel Ads"],
+      "apps": ["Meta Auto Pilot","Campaign Builder","Audience Creator","Insta Ads Designer","Reel Ads", "Story Planner", "Payment Planner", "Landing Page Builder", "UGC Script Writer", "Instagram DM Chatbot", "Facebook Messages chatbot", "Lead Form Creator"],
       "description": "AI-powered co-pilot for running campaigns on Facebook & Instagram.",
-      "monthly_price": 20,
-      "annual_price": 15
+      "monthly_price": 45
     },
     {
       "name": "LISTING INTELLIGENCE",
       "apps": ["Listing Manager","Listing Generator","Property Finder Pilot","Bayut Pilot","Listing Performance","AI Price Estimator","Commission Calculator","Payment Planner","Investor Matching","Multi-Offer Builder"],
       "description": "Central hub for property management and market intelligence.",
-      "monthly_price": 40,
-      "annual_price": 30
+      "monthly_price": 40
     },
     {
       "name": "ENTRESTATE CREATIVE SUITE",
       "apps": ["UGC Script Writer","AI YouTube Video Editor","Landing Page Builder","Automated Rebranding","Brochure Translator","Story Planner","Insta Ads Designer","Reel Ads"],
       "description": "Complete AI-powered marketing and content creation toolkit.",
-      "monthly_price": 25,
-      "annual_price": 15
+      "monthly_price": 25
     },
     {
       "name": "ENTRESTATE PRO",
       "apps": ["All META ADS PILOT apps","All LISTING INTELLIGENCE apps","All ENTRESTATE CREATIVE SUITE apps","WhatsApp Manager","Lead Investigator AI","Market Library","Market Reports","Market Trends Watcher","Brand Creator","CRM Memory","Assistant AI","Embeddable Site Assistant","VM Creator","Creative Execution Terminal"],
       "description": "Ultimate full-suite experience — all apps, full automation, unlimited AI tools.",
-      "monthly_price": 140,
-      "annual_price": 70
+      "monthly_price": 140
     }
   ]
 }
