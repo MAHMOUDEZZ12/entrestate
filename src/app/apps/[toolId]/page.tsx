@@ -6,6 +6,7 @@ import { notFound, useParams } from 'next/navigation';
 import { tools } from '@/lib/tools-client';
 import { appDetails } from '@/lib/blog-content';
 import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
+import { BrainCircuit, Clock2, CheckCircle } from 'lucide-react';
 
 
 // Function to merge data with details, now on the server
