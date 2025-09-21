@@ -14,7 +14,7 @@ export default function AboutPage() {
   return (
     <div className="flex flex-col">
       <PageHeader
-        title="About WhatsMAP"
+        title="About Entrestate"
         description="We are building the AI-native operating system for the real estate industry."
         icon={<Users2 className="h-8 w-8" />}
       />
@@ -22,7 +22,7 @@ export default function AboutPage() {
         <Card className="bg-card/80 backdrop-blur-lg">
             <CardContent className="p-8 md:p-12 prose prose-lg dark:prose-invert max-w-none">
                  <div className="flex justify-center mb-8">
-                    <Image src={visuals['aixa-intel']} alt="AIXA Logo" width={80} height={80} />
+                    <Image src={"https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.firebasestorage.app/o/Aixa-logo.png?alt=media&token=16231f13-d6e3-489d-be1a-e1ecc38c2df6"} alt="Entrestate Logo" width={80} height={80} />
                 </div>
                 
                 <h2>A Note from the Creator</h2>
@@ -30,7 +30,7 @@ export default function AboutPage() {
                     In the fast-paced world of real estate, the gap between data and decision is where fortunes are made and lost. For years, I watched brilliant agents, developers, and marketers operate with fragmented tools and incomplete information, relying on intuition where they should have had certainty.
                 </p>
                 <p>
-                    That’s why WhatsMAP was born. It’s not about replacing the agent, but empowering them to become a "Super Agent." It’s about transforming raw, chaotic market data—from portals like Bayut and Property Finder, to social trends and DLD records—into clear, actionable intelligence. It's about automating the mundane tasks that consume 80% of your day, so you can focus on what you do best: building relationships and closing deals.
+                    That’s why Entrestate was born. It’s not about replacing the agent, but empowering them to become a "Super Agent." It’s about transforming raw, chaotic market data—from portals like Bayut and Property Finder, to social trends and DLD records—into clear, actionable intelligence. It's about automating the mundane tasks that consume 80% of your day, so you can focus on what you do best: building relationships and closing deals.
                 </p>
                 <p>
                     We are forging a new paradigm where technology and human expertise converge to create an unparalleled advantage. This is more than a company; it's a commitment to building the future of real estate, one intelligent tool at a time.

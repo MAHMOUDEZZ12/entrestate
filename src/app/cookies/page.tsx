@@ -17,7 +17,7 @@ export default function CookiesPage() {
         <Card className="mt-8 bg-card/50">
             <CardContent className="p-8 prose prose-lg dark:prose-invert max-w-none">
               <p>
-                This Cookie Policy explains how Super Seller Suite ("we", "us", and "our") uses cookies and similar technologies to recognize you when you visit our website. It explains what these technologies are and why we use them, as well as your rights to control our use of them.
+                This Cookie Policy explains how Entrestate ("we", "us", and "our") uses cookies and similar technologies to recognize you when you visit our website. It explains what these technologies are and why we use them, as well as your rights to control our use of them.
               </p>
 
               <h2>What are cookies?</h2>
@@ -38,10 +38,10 @@ export default function CookiesPage() {
               <h2>Contact Us</h2>
               <p>If you have questions or comments about this Cookie Policy, please contact us at:</p>
               <p>
-                Super Seller Suite<br />
+                Entrestate<br />
                 123 AI Lane<br />
                 Innovation City, 12345<br />
-                <a href="mailto:privacy@supersellersuite.ai">privacy@supersellersuite.ai</a>
+                <a href="mailto:privacy@entrestate.com">privacy@entrestate.com</a>
               </p>
             </CardContent>
         </Card>

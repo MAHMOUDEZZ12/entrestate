@@ -46,7 +46,7 @@ export function LandingHeader() {
               <Link href="/" className="flex items-center gap-2"> 
                 <Image 
                   src={AIXA_LOGO_URL} 
-                  alt="WhatsMAP Logo" 
+                  alt="Entrestate Logo" 
                   width={32} 
                   height={32} 
                   className="w-auto h-8 object-contain"
@@ -94,7 +94,7 @@ export function LandingHeader() {
                           <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
                             <Image 
                               src={AIXA_LOGO_URL} 
-                              alt="WhatsMAP Logo" 
+                              alt="Entrestate Logo" 
                               width={32} 
                               height={32} 
                               className="w-auto h-8 object-contain"

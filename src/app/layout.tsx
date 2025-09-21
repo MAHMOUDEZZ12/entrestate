@@ -21,11 +21,11 @@ const fontHeading = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://whatsap.ai'),
-  title: 'WhatsMAP — AI-Native Real Estate Ecosystem',
+  metadataBase: new URL('https://entrestate.com'),
+  title: 'Entrestate — AI-Native Real Estate Ecosystem',
   description: 'An AI-native ecosystem for real estate professionals, featuring intelligent search and a suite of powerful B2B tools.',
   openGraph: {
-    title: 'WhatsMAP — AI-Native Real Estate Ecosystem',
+    title: 'Entrestate — AI-Native Real Estate Ecosystem',
     description: 'The future of real estate is here. Intelligent, persona-driven search and a complete suite of professional AI tools.',
     images: ['/og-image.png'],
   },

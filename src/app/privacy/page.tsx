@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
@@ -16,14 +17,14 @@ export default function PrivacyPage() {
         <Card className="mt-8 bg-card/80 backdrop-blur-lg">
             <CardContent className="p-8 prose prose-lg dark:prose-invert max-w-none">
               <p>
-                Welcome to WhatsMAP ("we," "us," or "our"). We are deeply committed to protecting your privacy and ensuring the security of your data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-native real estate ecosystem. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access or use the application.
+                Welcome to Entrestate ("we," "us," or "our"). We are deeply committed to protecting your privacy and ensuring the security of your data. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our AI-native real estate ecosystem. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access or use the application.
               </p>
 
               <h2>Information We Collect</h2>
               <p>We collect information to provide and improve our services to you. This includes:</p>
               <ul>
                 <li><strong>Personal Data:</strong> Information that can be used to identify you, such as your name, email address, phone number, and billing information when you register for an account or subscribe to our services.</li>
-                <li><strong>Usage Data:</strong> Information on how you access and use the WhatsMAP platform, including page views, features used, and interactions with our AI tools. This helps us optimize your experience.</li>
+                <li><strong>Usage Data:</strong> Information on how you access and use the Entrestate platform, including page views, features used, and interactions with our AI tools. This helps us optimize your experience.</li>
                 <li><strong>Client Data & Assets:</strong> Any proprietary documents (e.g., brochures, client lists) you upload to train your AI assistant are treated with the highest confidentiality. This data is firewalled and NEVER used to train external AI models or shared with third parties. It is exclusively used to enhance *your* private AI co-pilot.</li>
               </ul>
 
@@ -47,7 +48,7 @@ export default function PrivacyPage() {
               <p>We may disclose your Personal Data in the good faith belief that such action is necessary to:</p>
               <ul>
                 <li>Comply with a legal obligation.</li>
-                <li>Protect and defend the rights or property of WhatsMAP.</li>
+                <li>Protect and defend the rights or property of Entrestate.</li>
                 <li>Prevent or investigate possible wrongdoing in connection with the Service.</li>
                 <li>Protect the personal safety of users of the Service or the public.</li>
                 <li>Protect against legal liability.</li>
@@ -67,10 +68,10 @@ export default function PrivacyPage() {
               <h2>Contact Us</h2>
               <p>If you have questions or comments about this Privacy Policy, please contact us at:</p>
               <p>
-                WhatsMAP Legal Department<br />
+                Entrestate Legal Department<br />
                 123 AI Lane<br />
                 Innovation City, 12345<br />
-                <a href="mailto:privacy@whatsmap.ai">privacy@whatsmap.ai</a>
+                <a href="mailto:privacy@entrestate.com">privacy@entrestate.com</a>
               </p>
             </CardContent>
         </Card>

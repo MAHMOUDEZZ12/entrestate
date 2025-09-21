@@ -53,8 +53,8 @@ export default function DocumentationPage() {
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
          <PageHeader 
             icon={<GitBranch className="h-8 w-8" />}
-            title="Suite Documentation"
-            description="A technical overview of the technologies and AI flows that power the Super Seller Suite."
+            title="Entrestate Documentation"
+            description="A technical overview of the technologies and AI flows that power the Entrestate platform."
         />
 
         <section className="my-16">
@@ -116,7 +116,7 @@ export default function DocumentationPage() {
                         External Service Connections
                     </CardTitle>
                     <p className="text-foreground/70 pt-2">
-                        Super Seller Suite connects to various external services to automate your workflow. Here's how they work.
+                        Entrestate connects to various external services to automate your workflow. Here's how they work.
                     </p>
                 </CardHeader>
                 <CardContent className="space-y-6 prose prose-lg dark:prose-invert max-w-none">
@@ -127,7 +127,7 @@ export default function DocumentationPage() {
                     
                     <h3>API Key-Based Connections</h3>
                     <p>
-                        For some specialized services, you may need to provide an API key. An API key is a unique string of characters that you get from the service provider, which you then save in your Super Seller Suite settings.
+                        For some specialized services, you may need to provide an API key. An API key is a unique string of characters that you get from the service provider, which you then save in your Entrestate settings.
                     </p>
                      <ul>
                         <li><strong>Google AI (Gemini):</strong> To power all AI features, the application requires a <code>GEMINI_API_KEY</code>. You obtain this from Google AI Studio and set it up once in your local environment file or server configuration.</li>

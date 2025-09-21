@@ -15,14 +15,14 @@ export function LandingFooter() {
           
           <div className="col-span-2 lg:col-span-1">
             <Link href="/" className="flex items-center gap-2">
-              <Image src={AIXA_LOGO_URL} alt="WhatsMAP Logo" width={32} height={32} />
-              <span className="text-2xl font-bold font-heading text-primary">WhatsMAP</span>
+              <Image src={AIXA_LOGO_URL} alt="Entrestate Logo" width={32} height={32} />
+              <span className="text-2xl font-bold font-heading text-primary">Entrestate</span>
             </Link>
             <p className="mt-4 text-sm text-foreground/70">
               The AI-Native Operating System for Real Estate.
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
-              &copy; {currentYear} WhatsMAP. All rights reserved.
+              &copy; {currentYear} Entrestate. All rights reserved.
             </p>
           </div>
 

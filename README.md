@@ -1,7 +1,8 @@
-# Super Sales Suite (S3)
+
+# Entrestate
 
 ## Overview
-Super Sales Suite (S3) is a **real estate–focused AI productivity hub**.  
+Entrestate is a **real estate–focused AI productivity hub**.  
 It connects **projects, brands, storage, and sales tools** into one unified system that empowers agents to create, manage, and sell faster.  
 
 The system is built on a **modular architecture**: each feature is an AI-driven service card that plugs into a shared core (auth, storage, brand kit, project library).
@@ -99,5 +100,5 @@ storage/{fileId}
 
 ## Vision
 
-S3 turns every salesperson into a Super-Seller by giving them tools, not just tasks.
-With projects, brand, and storage unified, S3 becomes the AI co-pilot for real estate sales.
+Entrestate empowers every salesperson by giving them tools, not just tasks.
+With projects, brand, and storage unified, Entrestate becomes the AI co-pilot for real estate sales.
