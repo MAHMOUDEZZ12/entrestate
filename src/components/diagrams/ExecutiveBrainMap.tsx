@@ -13,8 +13,6 @@ export default function ExecutiveBrainMap(props: Props) {
       <title id="title">Super Sales Suite — Executive Brain Map (Light)</title>
       <desc id="desc">High-level architecture showing UI, AI Core, Event Bus, Services, Data, and Background Jobs.</desc>
 
-      {/* Brand palette: Lime #95FE54 | Pink #F64A8B | Gray #7A7A7A | Base #FFFFFF */}
-
       {/* Background */}
       <rect x="0" y="0" width="1200" height="800" fill="#FFFFFF"/>
 
@@ -36,7 +34,7 @@ export default function ExecutiveBrainMap(props: Props) {
 
       {/* Event Bus halo */}
       <circle cx="600" cy="400" r="220" fill="none" stroke="#BBBBBB" strokeDasharray="6 8"/>
-      <text x="600" y="175" textAnchor="middle" fill="#7A7A7A" fontSize="12">Event Bus &amp; Orchestration</text>
+      <text x="600" y="225" textAnchor="middle" fill="#7A7A7A" fontSize="12">Event Bus &amp; Orchestration</text>
 
       {/* AI Core */}
       <g>

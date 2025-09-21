@@ -1,0 +1,83 @@
+# Super Sales Suite (S3) — AI-Native Real Estate Ecosystem
+
+Welcome to the Super Sales Suite, an AI-native operating system designed to give real estate professionals an unparalleled advantage. This platform integrates market intelligence, creative tooling, and campaign automation into a single, seamless cockpit.
+
+![Executive Brain Map](https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.appspot.com/o/executive_brain_map.png?alt=media&token=167a5704-ca13-43e6-997c-9b73715d31f0)
+
+*A high-level diagram of the event-driven architecture. See the full SVG in `src/components/diagrams/ExecutiveBrainMap.tsx`.*
+
+---
+
+## Core Architecture
+
+The system is built on a modular, event-driven architecture designed for scalability and extensibility.
+
+-   **Frontend**: A responsive and performant UI built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, and **ShadCN UI** components. Hosted on Vercel or Firebase Hosting.
+-   **AI Core**: All AI capabilities are powered by **Genkit**, Google's open-source framework for building production-grade AI flows, using the latest **Gemini** models.
+-   **Backend & Data**: The backend is serverless, utilizing **Firebase** for Authentication, **Firestore** for the database (e.g., user profiles, project libraries), and **Cloud Storage** for assets.
+-   **Event Bus**: Cloud Pub/Sub and Cloud Functions form the backbone of our event-driven system, allowing services to communicate asynchronously and enabling complex, multi-step workflows.
+
+---
+
+## Key Concepts
+
+-   **Service Cards (Apps)**: The core of the user experience. Each tool (e.g., "Insta Ads Designer," "Market Reports") is a self-contained "Service Card" in the dashboard. Users can add these apps to their workspace to build their personalized toolkit.
+-   **AI Flows**: Each Service Card is powered by one or more Genkit AI flows (`src/ai/flows`). These flows encapsulate the business logic and calls to the Gemini API, taking user input and producing intelligent outputs.
+-   **Pilots (Automated Workflows)**: Certain tools, like the `Meta Auto Pilot`, act as orchestrators. They don't just perform a single task; they run a sequence of other AI flows to complete a complex workflow, such as launching a full ad campaign from a single user command.
+-   **Brand Kit & Knowledge Base**: A central repository per user (`/dashboard/brand`) where they can upload their logos, define brand colors, and provide documents (brochures, client lists). The AI Assistant and other creative tools use this data to ensure all generated content is personalized and on-brand.
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+-   Node.js (v18 or later)
+-   npm or yarn
+-   Firebase Account & Project
+
+### Installation
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/your-repo/super-sales-suite.git
+    cd super-sales-suite
+    ```
+
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+3.  **Set up environment variables:**
+    -   Create a `.env.local` file in the root directory.
+    -   Add your Firebase project configuration keys (from the Firebase console) and your Google AI (Gemini) API key.
+    ```
+    NEXT_PUBLIC_FIREBASE_API_KEY=...
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=...
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID=...
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=...
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=...
+    NEXT_PUBLIC_FIREBASE_APP_ID=...
+    NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=...
+
+    GEMINI_API_KEY=...
+    ```
+
+4.  **Run the development server:**
+    ```bash
+    npm run dev
+    ```
+    The application will be available at `http://localhost:3000`.
+
+---
+
+## Contributing
+
+We welcome contributions! The easiest way to contribute is by adding a new **Service Card**. Please see the detailed guide in `CONTRIBUTING.md`.
+
+---
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for details.
