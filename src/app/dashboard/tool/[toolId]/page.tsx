@@ -55,7 +55,7 @@ const getToolSchema = (tool: Feature | undefined) => {
                 fieldSchema = z.custom<FileList>().refine(files => files && files.length > 0, `${field.name} is required.`);
             }
         } else if (field.type === 'number') {
-            fieldSchema = z.string().min(1, `${field.name} is required`).refine(val => !isNaN(Number(val)), { message: "Must be a number" });
+            fieldSchema = z.string().min(1, `${field.name} is required`).refine(val => !isNaN(Number(val)), { message: "Must be a number" }).transform(Number);
         } else if (optionalTextFields.includes(field.id) || (tool.id === 'insta-ads-designer' && field.id === 'projectId') ) {
              fieldSchema = z.string().optional();
         }
@@ -73,14 +73,6 @@ const getToolSchema = (tool: Feature | undefined) => {
         return acc;
     }, {} as Record<string, z.ZodTypeAny>);
 
-    // Special handling for grouped fields like price and age ranges
-    if (tool.id === 'targeting') {
-        shape.minPrice = z.string().refine(val => !isNaN(Number(val)), { message: "Must be a number" });
-        shape.maxPrice = z.string().refine(val => !isNaN(Number(val)), { message: "Must be a number" });
-        shape.minAge = z.string().refine(val => !isNaN(Number(val)), { message: "Must be a number" });
-        shape.maxAge = z.string().refine(val => !isNaN(Number(val)), { message: "Must be a number" });
-    }
-
     const baseSchema = z.object(shape);
 
     // Add cross-field validations
@@ -93,22 +85,6 @@ const getToolSchema = (tool: Feature | undefined) => {
     }, {
         message: 'Either a Project or a Brochure must be provided.',
         path: ['projectId'], 
-    }).refine(data => {
-         if (tool.id === 'targeting') {
-            return Number(data.maxPrice) >= Number(data.minPrice);
-        }
-        return true;
-    }, {
-        message: 'Max Price must be greater than or equal to Min Price.',
-        path: ['maxPrice'],
-    }).refine(data => {
-         if (tool.id === 'targeting') {
-            return Number(data.maxAge) >= Number(data.minAge);
-        }
-        return true;
-    }, {
-        message: 'Max Age must be greater than or equal to Min Age.',
-        path: ['maxAge'],
     });
 };
 
@@ -222,7 +198,7 @@ const AppActivationGate = ({ tool, onActivated }: { tool: Feature, onActivated: 
                 <div className="p-3 rounded-lg w-fit text-white mx-auto" style={{ backgroundColor: tool.color }}>
                     {React.cloneElement(tool.icon, { className: 'h-10 w-10' })}
                 </div>
-                 <CardTitle className="text-2xl mt-4">Activate {tool.title}</CardTitle>
+                 <CardTitle className="text-2xl mt-4">{tool.title}</CardTitle>
                 <CardDescription>This app isn't in your workspace yet. Add it to start generating.</CardDescription>
             </CardHeader>
             <CardContent>
@@ -249,13 +225,12 @@ export default function ToolPage() {
   
   const [isAppAdded, setIsAppAdded] = React.useState(false);
 
-
   React.useEffect(() => {
     const currentTool = clientTools.find((t) => t.id === toolId);
+    setTool(currentTool);
     if (currentTool?.isPage) {
-        // This logic can be simplified or removed if all tools get custom pages
-    } else {
-        setTool(currentTool);
+        // This is a custom page, so we don't render the generic form.
+        // The individual page component will handle its own logic.
     }
     if (currentTool?.id === 'audience-creator') {
         setShowCampaignNotice(true);
@@ -295,14 +270,16 @@ export default function ToolPage() {
   if (!tool) {
     return (
         <div className="flex h-[80vh] items-center justify-center">
-            <Card className="m-4">
-                <CardHeader>
-                    <CardTitle>Tool not found</CardTitle>
-                    <CardDescription>Please select a tool from the sidebar to get started.</CardDescription>
-                </CardHeader>
-            </Card>
+            <Loader2 className="h-8 w-8 animate-spin" />
         </div>
     );
+  }
+
+  if (tool.isPage) {
+      // For tools with custom pages, we don't render the generic form.
+      // The specific page component at /dashboard/tool/[toolId]/page.tsx handles the UI.
+      // This logic is simplified; in a real app you might use a component mapping.
+      return null;
   }
   
   const handleGeneration = async (data: Record<string, any>) => {
@@ -317,64 +294,19 @@ export default function ToolPage() {
 
         let payload: Record<string, any> = {};
 
-        // Special handling for insta-ads-designer
-        if (currentTool.id === 'insta-ads-designer' && data.projectId) {
-            // In a real app, we'd fetch the project's brochure URI from a database.
-            // For now, we'll simulate this.
-            const projectBrochures: { [key: string]: string } = {
-                'emaar-beachfront': 'https://www.example.com/emaar-brochure.pdf',
-                'damac-hills-2': 'https://www.example.com/damac-brochure.pdf',
-                'sobha-hartland': 'https://www.example.com/sobha-brochure.pdf',
-            };
-            payload.projectName = data.projectId; // Send name instead of brochure
-            // brochureDataUri will be omitted, letting the backend know to use the project name.
-        }
-
-
+        // Convert file inputs to data URIs
         for (const field of currentTool.creationFields) {
             const fieldId = field.id;
-            if (field.type === 'button' || field.type === 'group-header' || !data.hasOwnProperty(fieldId)) continue;
-            
-            // Skip brochureDataUri for insta-ads if projectId is set
-            if (currentTool.id === 'insta-ads-designer' && data.projectId && fieldId === 'brochureDataUri') {
-                continue;
-            }
-
-            const value = data[fieldId];
-            if (value === null || value === undefined) continue;
-
-            if (field.type === 'file' && value instanceof FileList && value.length > 0) {
+            if (field.type === 'file' && data[fieldId] instanceof FileList && data[fieldId].length > 0) {
                  if (field.multiple) {
-                    payload[fieldId] = await filesToDataUris(value);
+                    data[fieldId] = await filesToDataUris(data[fieldId]);
                 } else {
-                    payload[fieldId] = await fileToDataUri(value[0]);
+                    data[fieldId] = await fileToDataUri(data[fieldId][0]);
                 }
-            } else if (field.type === 'number') {
-                 payload[fieldId] = Number(value);
-            } else if (field.type !== 'file' && value) {
-                payload[fieldId] = value;
             }
         }
         
-        // Special payload structuring for specific tools
-        if (currentTool.id === 'targeting') {
-             payload = {
-                location: data.location,
-                propertyType: data.propertyType,
-                priceRange: { min: Number(data.minPrice), max: Number(data.maxPrice) },
-                amenities: data.amenities.split(',').map((s:string) => s.trim()),
-                ageRange: { min: Number(data.minAge), max: Number(data.maxAge) },
-                incomeLevel: data.incomeLevel,
-                interests: data.interests.split(',').map((s:string) => s.trim()),
-            };
-        } else if (currentTool.id === 'investor-matching') {
-            payload = {
-                ...payload, // keep other fields
-                clientDatabase: await fileToDataUri(data.clientDatabase[0]),
-                price: Number(data.price),
-                capRate: Number(data.capRate),
-            }
-        }
+        payload = data;
         
         track('tool_run_started', { toolId });
 
@@ -423,7 +355,7 @@ export default function ToolPage() {
     const fieldError = errors[field.id];
 
     return (
-        <div key={field.id} className={cn("space-y-2", (field.type === 'textarea' && tool.id !== 'targeting') && "md:col-span-2" )}>
+        <div key={field.id} className={cn("space-y-2", (field.type === 'textarea') && "md:col-span-2" )}>
         {field.type !== 'button' && <Label htmlFor={field.id} className="font-semibold">{field.name}</Label>}
         <Controller
             name={field.id as any}
@@ -464,6 +396,7 @@ export default function ToolPage() {
                                 }
                             }} 
                             defaultValue={value}
+                            name={name}
                         >
                         <SelectTrigger id={field.id}>
                             <SelectValue placeholder={field.placeholder || `Select ${field.name}`} />
@@ -579,3 +512,4 @@ export default function ToolPage() {
     </main>
   );
 }
+
