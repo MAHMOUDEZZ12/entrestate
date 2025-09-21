@@ -216,6 +216,51 @@ export const pricingData = {
       "level_of_knowledge_required": "Zero",
       "expected_results": "A unique and memorable logo for your business.",
       "pricing": 4.69
+    },
+    {
+      "name": "AI Video Presenter",
+      "bundle": "ENTRESTATE CREATIVE SUITE",
+      "description": "Create a lifelike AI presenter to deliver your project pitch.",
+      "flow": "Provide a script and brand assets to generate a professional video.",
+      "level_of_knowledge_required": "Zero",
+      "expected_results": "Faster video production cycles and consistent messaging.",
+      "pricing": 9.30
+    },
+    {
+      "name": "Aerial View Generator",
+      "bundle": "ENTRESTATE CREATIVE SUITE",
+      "description": "Create cinematic, aerial video tours of any property.",
+      "flow": "Generates smooth flight sequences for listings and promotional content.",
+      "level_of_knowledge_required": "Low",
+      "expected_results": "High-impact visual content that improves listing engagement.",
+      "pricing": 4.69
+    },
+    {
+      "name": "Market Trends Watcher",
+      "bundle": "MARKET INTELLIGENCE",
+      "description": "Identify emerging market trends before they become mainstream.",
+      "flow": "Monitors market signals to provide early warnings and actionable insights.",
+      "level_of_knowledge_required": "Low",
+      "expected_results": "Faster response to market shifts for better pricing and marketing.",
+      "pricing": 4.69
+    },
+    {
+      "name": "Deal Analyzer",
+      "bundle": "MARKET INTELLIGENCE",
+      "description": "Analyze the investment potential of any real estate deal.",
+      "flow": "Calculates cap rate, cash flow, and other key investment metrics.",
+      "level_of_knowledge_required": "Zero",
+      "expected_results": "Data-driven deal analysis to support investment decisions.",
+      "pricing": 4.69
+    },
+    {
+      "name": "Keyword Planner",
+      "bundle": "META ADS PILOT",
+      "description": "Generate strategic keyword plans for Google Ads.",
+      "flow": "Creates comprehensive ad groups and keyword variations to capture high-intent leads.",
+      "level_of_knowledge_required": "Zero",
+      "expected_results": "Professional keyword plans ready for implementation in Google Ads.",
+      "pricing": 4.69
     }
   ],
   "bundles": [
@@ -231,9 +276,7 @@ export const pricingData = {
         "Payment Planner",
         "Landing Page Builder",
         "UGC Script Writer",
-        "Instagram DM Chatbot",
-        "Facebook Messages chatbot",
-        "Lead Form Creator"
+        "Keyword Planner"
       ],
       "description": "AI-powered co-pilot for running campaigns on Facebook & Instagram.",
       "monthly_price": 45
@@ -252,7 +295,6 @@ export const pricingData = {
         "Investor Matching",
         "Multi-Offer Builder",
         "Lead Investigator AI",
-        "CRM Memory",
         "Market Library",
         "Market Reports"
       ],
@@ -272,7 +314,9 @@ export const pricingData = {
         "Reel Ads",
         "PDF EDITOR AI",
         "Images HQ AI",
-        "Logo Creator AI"
+        "Logo Creator AI",
+        "AI Video Presenter",
+        "Aerial View Generator"
       ],
       "description": "Complete AI-powered marketing and content creation toolkit.",
       "monthly_price": 25
@@ -313,10 +357,16 @@ export const pricingData = {
         "Creative Execution Terminal",
         "PDF EDITOR AI",
         "Images HQ AI",
-        "Logo Creator AI"
+        "Logo Creator AI",
+        "AI Video Presenter",
+        "Aerial View Generator",
+        "Deal Analyzer",
+        "Keyword Planner"
       ],
       "description": "Ultimate full-suite experience — all apps, full automation, unlimited AI tools.",
       "monthly_price": 140
     }
   ]
 }
+
+    
