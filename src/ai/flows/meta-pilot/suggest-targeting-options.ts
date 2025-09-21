@@ -35,7 +35,13 @@ export async function suggestTargetingOptions(
 
 const prompt = ai.definePrompt({
   name: 'suggestTargetingOptionsPrompt',
-  input: {schema: SuggestTargetingOptionsInputSchema},
+  input: {schema: z.object({
+    projectId: z.string(),
+    projectName: z.string(),
+    area: z.string(),
+    city: z.string(),
+    priceFrom: z.string(),
+  })},
   output: {schema: SuggestTargetingOptionsOutputSchema},
   prompt: `You are an expert in digital marketing and advertising, specializing in real estate.
   Based on the provided project details, suggest 2-3 distinct targeting strategies for an ad campaign on platforms like Meta (Facebook/Instagram) and Google.
@@ -71,6 +77,9 @@ const suggestTargetingOptionsFlow = ai.defineFlow(
   },
   async (input) => {
     // Fetch real project data from Firestore
+    if (!adminDb) {
+      throw new Error("Firestore Admin DB is not available.");
+    }
     const projectDoc = await adminDb.collection('projects_catalog').doc(input.projectId).get();
     if (!projectDoc.exists) {
         throw new Error(`Project with ID "${input.projectId}" not found in the Market Library.`);
@@ -84,7 +93,7 @@ const suggestTargetingOptionsFlow = ai.defineFlow(
         projectName: projectData?.name || 'N/A',
         area: projectData?.area || 'N/A',
         city: projectData?.city || 'N/A',
-        priceFrom: projectData?.priceFrom || 'N/A',
+        priceFrom: projectData?.priceFrom?.toString() || 'N/A',
     });
     
     if (!output) {
