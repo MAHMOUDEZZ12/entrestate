@@ -35,7 +35,7 @@ export default function CommunityPage() {
   return (
     <div className="flex flex-col">
       <PageHeader
-        title="Join the WhatsMAP Community"
+        title="Join the Entrestate Community"
         description="Connect, learn, and grow with a network of forward-thinking real estate professionals."
         icon={<Users2 className="h-8 w-8" />}
       />

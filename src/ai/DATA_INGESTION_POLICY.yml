@@ -1,7 +1,7 @@
-whatsmap_ingestion_policy:
+entrestate_ingestion_policy:
   description: >
     Ingestion cadence, SLAs, retention and recommended ingestion method
-    for WhatsMAP training layers (structured → social → internal).
+    for Entrestate training layers (structured → social → internal).
   global_defaults:
     retry_policy:
       max_attempts: 5
@@ -12,7 +12,7 @@ whatsmap_ingestion_policy:
       permanent: mark_source_alarm
     monitoring:
       metrics: [ingest_latency_seconds, success_rate, error_rate, items_per_run]
-      logging_destination: bigquery_logs.whatsmap_ingest_runs
+      logging_destination: bigquery_logs.entrestate_ingest_runs
   layers:
 
     layer_1_structured_core:
@@ -58,8 +58,8 @@ whatsmap_ingestion_policy:
         max_ingest_latency: "2h"
         availability_target: "99.9%"
       storage:
-        raw_bucket: gs://whatsmap/layer1/raw/
-        processed_table: bigquery.whatsmap.layer1_listings
+        raw_bucket: gs://entrestate/layer1/raw/
+        processed_table: bigquery.entrestate.layer1_listings
         graph_target: neo4j.properties
 
     layer_2_semi_structured_dynamic:
@@ -92,8 +92,8 @@ whatsmap_ingestion_policy:
         max_ingest_latency: "6h"
         availability_target: "99.5%"
       storage:
-        raw_bucket: gs://whatsmap/layer2/raw/
-        processed_table: bigquery.whatsmap.layer2_media
+        raw_bucket: gs://entrestate/layer2/raw/
+        processed_table: bigquery.entrestate.layer2_media
 
     layer_3_social_pulse:
       priority: real_time
@@ -142,8 +142,8 @@ whatsmap_ingestion_policy:
         max_ingest_latency: "5m"
         availability_target: "99.0%"
       storage:
-        raw_bucket: gs://whatsmap/layer3/raw/
-        processed_table: bigquery.whatsmap.layer3_social
+        raw_bucket: gs://entrestate/layer3/raw/
+        processed_table: bigquery.entrestate.layer3_social
       notes:
         - "Prefer streaming APIs where available (Twitter X, Instagram Graph, Facebook)."
         - "Respect rate limits; use batching and backoff to avoid bans."
@@ -151,7 +151,7 @@ whatsmap_ingestion_policy:
 
     layer_4_internal_market_signals:
       priority: sovereign
-      description: "WhatsMAP native signals (search trends, user actions, derived KPIs)."
+      description: "Entrestate native signals (search trends, user actions, derived KPIs)."
       sources:
         - name: User_Search_Trends
           method: event_stream
@@ -176,8 +176,8 @@ whatsmap_ingestion_policy:
         max_ingest_latency: "5m"
         availability_target: "99.99%"
       storage:
-        raw_bucket: gs://whatsmap/layer4/raw/
-        processed_table: bigquery.whatsmap.layer4_user_signals
+        raw_bucket: gs://entrestate/layer4/raw/
+        processed_table: bigquery.entrestate.layer4_user_signals
 
   cross_layer_rules:
     deduplication:

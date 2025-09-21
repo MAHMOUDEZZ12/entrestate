@@ -9,7 +9,7 @@ export default function OnboardingPage() {
   return (
     <div className="flex flex-col">
       <PageHeader
-        title="Welcome to WhatsMAP"
+        title="Welcome to Entrestate"
         description="Let's get your AI co-pilot set up for success. (Coming Soon)"
         icon={<Sparkles className="h-8 w-8" />}
       />

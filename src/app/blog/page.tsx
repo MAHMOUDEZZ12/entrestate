@@ -20,7 +20,7 @@ export default function BlogPage() {
   return (
     <div className="flex flex-col">
       <PageHeader
-        title="WhatsMAP Insights"
+        title="Entrestate Insights"
         description="Expert analysis, industry trends, and practical guides for the modern real estate professional."
         icon={<Rss className="h-8 w-8" />}
       />

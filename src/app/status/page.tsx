@@ -10,7 +10,7 @@ export default function StatusPage() {
     <div className="flex flex-col">
       <PageHeader
         title="System Status"
-        description="Real-time status of all WhatsMAP services and AI models."
+        description="Real-time status of all Entrestate services and AI models."
         icon={<Server className="h-8 w-8" />}
       />
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20">

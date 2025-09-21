@@ -2,13 +2,13 @@
 
 This document outlines the core vision, data sources, and technical capabilities of the Super Seller Suite. It serves as the primary training and reference material for all AI-driven development.
 
-## 1. Core Product Vision: The "WhatsMAP" Real Estate Engine
+## 1. Core Product Vision: The "Entrestate" Real Estate Engine
 
-Super Seller Suite (S3) is architected to be more than just a collection of tools; it is an **intelligent, end-to-end real estate market intelligence engine**, codenamed **WhatsMAP**.
+Super Seller Suite (S3) is architected to be more than just a collection of tools; it is an **intelligent, end-to-end real estate market intelligence engine**, codenamed **Entrestate**.
 
 Our primary mission is to build a sophisticated system that can ingest, analyze, and act upon a vast range of real estate data, as outlined in the `DATA_INGESTION_POLICY.yml`. While this engine will power the Super Seller Suite application for individual agents and brokerages, the core technology is designed to be productized as a standalone **SaaS offering**.
 
-### Standalone SaaS Product: WhatsMAP Search
+### Standalone SaaS Product: Entrestate Search
 
 The ultimate goal is to leverage our data and AI capabilities to launch a new, separate product: a real estate search engine that will disrupt traditional listing sites (like Bayut, Property Finder, Zillow). This search engine will offer both a web interface and a chat-based experience, providing unparalleled market intelligence to consumers, investors, and other real estate companies. It will be powered by the same Vertex AI Search backend we are building for S3.
 
@@ -21,7 +21,7 @@ The Super Seller Suite application serves as the first and primary implementatio
 
 ## 2. Primary Data Sources
 
-The WhatsMAP intelligence engine will be trained and continuously updated using the following primary data sources, as specified in the ingestion policy. These sites are the foundation of our market knowledge.
+The Entrestate intelligence engine will be trained and continuously updated using the following primary data sources, as specified in the ingestion policy. These sites are the foundation of our market knowledge.
 
 ### Core UAE Portals & Blogs:
 - www.dxboffplan.com
@@ -66,7 +66,7 @@ The following Google Cloud APIs are enabled and form the technical backbone of o
 - **Cloud Translation API**: For translating brochures and listings into multiple languages.
 
 ### Search & Data Infrastructure:
-- **Discovery Engine API (Vertex AI Search)**: The core of our WhatsMAP search product. This will power the "Discover" feature and the standalone search engine.
+- **Discovery Engine API (Vertex AI Search)**: The core of our Entrestate search product. This will power the "Discover" feature and the standalone search engine.
 - **Google Custom Search API**: To be used by scraping and data ingestion tools to find new data sources.
 
 ### Orchestration & Infrastructure:
