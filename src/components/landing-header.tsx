@@ -43,7 +43,7 @@ export function LandingHeader() {
     <>
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center">
-          <div className="mr-auto flex items-center gap-6">
+          <div className="mr-auto flex items-end gap-6 pb-2">
               <Logo />
               <nav className="hidden md:flex items-center gap-1">
                 {navLinks.map((link) => (
