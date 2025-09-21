@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { Workflow, Plus, Play, Sparkles, ArrowRight, CheckCircle, ExternalLink, Settings2, Save, Zap, GripVertical } from 'lucide-react';
+import { Workflow, Plus, Play, Sparkles, ArrowRight, CheckCircle, ExternalLink, Settings2, Save, Zap, GripVertical, MousePointerClick, GitBranch, AlertCircle, Sparkle, Mail, MessageSquare } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { tools, Feature } from '@/lib/tools-client';
@@ -18,12 +18,16 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Reorder } from 'framer-motion';
+import { Separator }from '@/components/ui/separator';
+
+type StepType = 'trigger' | 'action' | 'condition' | 'event';
 
 interface FlowStep {
     id: string;
-    type: 'trigger' | 'action' | 'event';
+    type: StepType;
     appId: string | null;
-    appName: string | null;
+    appName: string;
+    appDescription: string;
     appIcon?: React.ReactNode;
     appColor?: string;
 }
@@ -50,11 +54,59 @@ const AppSelectionModal = ({ onSelectApp, installedApps }: { onSelectApp: (app: 
     );
 }
 
+const getIconForType = (type: StepType) => {
+    switch (type) {
+        case 'trigger': return <Zap className="h-6 w-6 text-amber-500" />;
+        case 'action': return <Sparkles className="h-6 w-6 text-blue-500" />;
+        case 'condition': return <GitBranch className="h-6 w-6 text-purple-500" />;
+        default: return <MousePointerClick className="h-6 w-6 text-muted-foreground" />;
+    }
+}
+
+const initialFlow: FlowStep[] = [
+    {
+        id: 'trigger-1',
+        type: 'trigger',
+        appId: 'crm-assistant',
+        appName: 'New Lead Added',
+        appDescription: 'When a new lead is created in your CRM.',
+        appIcon: <Plus className="h-6 w-6" />,
+        appColor: '#4B5563'
+    },
+    {
+        id: 'action-1',
+        type: 'action',
+        appId: 'lead-investigator',
+        appName: 'Investigate Lead',
+        appDescription: 'Run open-source intelligence checks.',
+        appIcon: <Search className="h-6 w-6" />,
+        appColor: '#3B82F6'
+    },
+     {
+        id: 'condition-1',
+        type: 'condition',
+        appId: null,
+        appName: 'If... Then...',
+        appDescription: 'Branch the flow based on data.',
+        appIcon: <GitBranch className="h-6 w-6" />,
+        appColor: '#8B5CF6'
+    },
+    {
+        id: 'action-2',
+        type: 'action',
+        appId: 'whatsapp-manager',
+        appName: 'Send WhatsApp Message',
+        appDescription: 'Send a personalized welcome message.',
+        appIcon: <MessageSquare className="h-6 w-6" />,
+        appColor: '#10B981'
+    }
+];
+
 
 export default function FlowsPage() {
   const [installedApps, setInstalledApps] = useState<Feature[]>([]);
   const [isClient, setIsClient] = useState(false);
-  const [currentFlow, setCurrentFlow] = useState<FlowStep[]>([]);
+  const [currentFlow, setCurrentFlow] = useState<FlowStep[]>(initialFlow);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -64,12 +116,13 @@ export default function FlowsPage() {
     setInstalledApps(userApps);
   }, []);
 
-  const handleAddStep = (type: 'trigger' | 'action' | 'event') => {
+  const handleAddStep = (type: StepType) => {
       const newStep: FlowStep = {
           id: `step-${Date.now()}`,
           type,
           appId: null,
-          appName: null
+          appName: `Select ${type}`,
+          appDescription: `Choose an app to perform this ${type}.`,
       };
       if (type === 'trigger' && currentFlow.some(s => s.type === 'trigger')) {
           toast({ title: "Trigger already exists", description: "A flow can only have one trigger.", variant: "destructive" });
@@ -82,17 +135,17 @@ export default function FlowsPage() {
   const handleSelectAppForStep = (stepId: string, app: Feature) => {
       setCurrentFlow(prev => prev.map(step => 
           step.id === stepId 
-          ? { ...step, appId: app.id, appName: app.title, appIcon: app.icon, appColor: app.color }
+          ? { ...step, appId: app.id, appName: app.title, appDescription: app.description, appIcon: app.icon, appColor: app.color }
           : step
       ));
   }
   
   const handleRunFlow = () => {
-    if (currentFlow.some(step => !step.appId && step.type !== 'event')) {
+    if (currentFlow.some(step => !step.appId)) {
         toast({ title: "Incomplete Flow", description: "Please select an app for every trigger and action in the flow.", variant: "destructive"});
         return;
     }
-    toast({ title: "Running Flow...", description: "Your custom automation has started. You will be notified upon completion." });
+    toast({ title: "Flow Activated!", description: "This automation is now live and will run when the trigger occurs." });
   }
 
   if (!isClient) {
@@ -102,83 +155,71 @@ export default function FlowsPage() {
   return (
     <div className="flex flex-col">
       <PageHeader
-        title="Flow Builder"
-        description="Create your own automations. Drag, drop, and connect your apps to build powerful, custom workflows, just like Zapier."
+        title="Flow Builder (Zapier Mode)"
+        description="Create powerful, automated Zaps by connecting your apps. Your flows run in the background, 24/7."
         icon={<Workflow className="h-6 w-6" />}
       >
         <div className="flex gap-2">
             <Button variant="outline"><Save className="mr-2 h-4 w-4" /> Save Flow</Button>
-            <Button onClick={handleRunFlow}><Play className="mr-2 h-4 w-4"/> Run Flow</Button>
+            <Button onClick={handleRunFlow}><Play className="mr-2 h-4 w-4"/> Activate Flow</Button>
         </div>
       </PageHeader>
       <div className="p-4 md:p-6 space-y-8">
         <Card className="w-full max-w-2xl mx-auto border-dashed">
             <CardContent className="p-6 md:p-10">
-                <div className="flex flex-col items-center gap-2">
-                    {currentFlow.length === 0 && (
-                         <div className="text-center p-8">
-                            <p className="text-lg font-semibold">Start building your flow</p>
-                            <p className="text-muted-foreground">Add a trigger to begin.</p>
-                        </div>
-                    )}
-
-                    <Reorder.Group axis="y" values={currentFlow} onReorder={setCurrentFlow} className="w-full max-w-md space-y-2">
+                <div className="flex flex-col items-center gap-0">
+                    
+                    <Reorder.Group axis="y" values={currentFlow} onReorder={setCurrentFlow} className="w-full max-w-md space-y-0">
                         {currentFlow.map((step, index) => (
-                            <Reorder.Item key={step.id} value={step}>
+                           <React.Fragment key={step.id}>
+                            <Reorder.Item value={step}>
                                 <Dialog>
                                     <DialogTrigger asChild>
-                                        <button className="w-full text-left">
+                                        <div className="w-full text-left group cursor-pointer">
                                             <Card 
-                                                className={cn("hover:border-primary/50 hover:shadow-lg transition-all relative group")}
+                                                className={cn("hover:border-primary/50 hover:shadow-lg transition-all relative z-10")}
                                                 style={{borderColor: step.appId ? step.appColor : undefined}}
                                             >
                                                 <CardHeader>
                                                     <CardTitle className="flex items-center gap-4">
-                                                        <GripVertical className="h-5 w-5 text-muted-foreground absolute left-2 top-1/2 -translate-y-1/2 opacity-50 group-hover:opacity-100 transition-opacity" />
+                                                        <GripVertical className="h-5 w-5 text-muted-foreground absolute left-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity" />
                                                         <div 
                                                             className="p-3 rounded-lg text-white" 
                                                             style={{ backgroundColor: step.appColor || 'hsl(var(--muted))' }}
                                                         >
-                                                            {step.appId ? (
-                                                                React.cloneElement(step.appIcon as React.ReactElement, { className: 'h-6 w-6' })
-                                                            ) : (
-                                                                step.type === 'event' ? <Zap className="h-6 w-6 text-muted-foreground"/> : <Sparkles className="h-6 w-6 text-muted-foreground"/>
-                                                            )}
+                                                          {getIconForType(step.type)}
                                                         </div>
                                                         <div className="flex-1">
-                                                            <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{index === 0 ? 'Trigger' : step.type}</p>
-                                                            <p className="text-xl font-semibold">{step.appName || `Select ${step.type}`}</p>
+                                                            <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{step.type}</p>
+                                                            <p className="text-xl font-semibold">{step.appName}</p>
+                                                            <p className="text-xs text-muted-foreground">{step.appDescription}</p>
                                                         </div>
                                                     </CardTitle>
                                                 </CardHeader>
                                             </Card>
-                                        </button>
+                                        </div>
                                     </DialogTrigger>
                                     <AppSelectionModal installedApps={installedApps} onSelectApp={(app) => handleSelectAppForStep(step.id, app)} />
                                 </Dialog>
                             </Reorder.Item>
+                            {index < currentFlow.length - 1 && (
+                                <div className="h-8 w-px bg-border my-1 self-center" />
+                            )}
+                           </React.Fragment>
                         ))}
                     </Reorder.Group>
 
-                    {currentFlow.length > 0 && <div className="h-4 w-px bg-border my-1" />}
-
-                    <div className="flex flex-col gap-2 w-full max-w-md mt-4">
-                         {currentFlow.length === 0 && (
-                             <Button onClick={() => handleAddStep('trigger')} variant="outline" className="w-full border-dashed">
-                                <Plus className="mr-2 h-4 w-4"/> Add Trigger
-                            </Button>
-                         )}
-                         {currentFlow.length > 0 && (
-                            <div className="grid grid-cols-2 gap-2">
-                                 <Button onClick={() => handleAddStep('action')} variant="outline" className="w-full border-dashed">
-                                    <Plus className="mr-2 h-4 w-4"/> Add Action
+                    <div className="mt-8 w-full max-w-md">
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button variant="outline" className="w-full border-dashed">
+                                    <Plus className="mr-2 h-4 w-4"/> Add Step
                                 </Button>
-                                 <Button onClick={() => handleAddStep('event')} variant="outline" className="w-full border-dashed">
-                                    <Zap className="mr-2 h-4 w-4"/> Add Event
-                                </Button>
-                            </div>
-                         )}
+                            </DialogTrigger>
+                            <AppSelectionModal installedApps={installedApps} onSelectApp={(app) => handleSelectAppForStep('new-step', app)} />
+                        </Dialog>
                     </div>
+
                 </div>
             </CardContent>
         </Card>
