@@ -131,7 +131,7 @@ const headlinePrompt = ai.definePrompt({
     - Project Name: {{{projectName}}}
     - Offer Details: {{{projectDetails}}}
 
-    For each strategy, provide a name (e.g., "Urgency-Focused", "Luxury-Focused", "Benefit-Focused"), a compelling headline, and a clear call-to-action.
+    For each strategy, provide a unique ID, a name (e.g., "Urgency-Focused", "Luxury-Focused", "Benefit-Focused"), a compelling headline, and a clear call-to-action.
     `,
 });
 
@@ -207,3 +207,5 @@ const generateLandingPageFlow = ai.defineFlow(
     };
   }
 );
+
+    
