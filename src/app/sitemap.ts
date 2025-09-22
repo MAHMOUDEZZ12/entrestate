@@ -1,6 +1,6 @@
 
 import { MetadataRoute } from 'next';
-import { tools } from '@/lib/tools-client';
+import { tools } from '@/lib/tools-data'; // Changed import source
 import { appDetails } from '@/lib/blog-content';
 
 
@@ -73,3 +73,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   return [...staticRoutes, ...productRoutes, ...blogRoutes, ...toolRoutes, ...appRoutes];
 }
+
+    

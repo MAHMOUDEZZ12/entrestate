@@ -75,19 +75,19 @@ export function DashboardHeader() {
                     <Link href="/dashboard">Dashboard</Link>
                 </BreadcrumbLink>
             </BreadcrumbItem>
-            {pathSegments.map((segment, index) => {
-                if (segment === 'dashboard') return null;
+            {pathSegments.slice(1).map((segment, index) => {
                 const href = `/${pathSegments.slice(0, index + 2).join('/')}`;
                 const isLast = index === pathSegments.length - 2;
+                const name = getBreadcrumbName(href);
                 return (
                     <React.Fragment key={href}>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
                             {isLast ? (
-                                <BreadcrumbPage>{getBreadcrumbName(href)}</BreadcrumbPage>
+                                <BreadcrumbPage className="capitalize">{name}</BreadcrumbPage>
                             ) : (
                                 <BreadcrumbLink asChild>
-                                    <Link href={href}>{getBreadcrumbName(href)}</Link>
+                                    <Link href={href} className="capitalize">{name}</Link>
                                 </BreadcrumbLink>
                             )}
                         </BreadcrumbItem>
@@ -110,3 +110,5 @@ export function DashboardHeader() {
     </header>
   );
 }
+
+    

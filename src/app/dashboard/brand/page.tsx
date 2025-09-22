@@ -215,7 +215,7 @@ export default function BrandPage() {
                         <Label>Company Logo</Label>
                          <div className="flex items-center gap-4">
                             <div className="relative flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed rounded-lg cursor-pointer bg-muted/20 hover:border-primary transition-colors">
-                                <input id="logo-upload" type="file" accept="image/*" className="sr-only" onChange={(e) => handleLogoFileChange(e.target.files)} ref={fileInputRef} />
+                                <Input id="logo-upload" type="file" accept="image/*" className="sr-only" onChange={(e) => handleLogoFileChange(e.target.files)} ref={fileInputRef} />
                                 <label htmlFor="logo-upload" className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
                                 {logoPreview ? (
                                     <Image src={logoPreview} alt="Logo preview" fill={true} className="object-contain rounded-md p-2" />
@@ -277,8 +277,8 @@ export default function BrandPage() {
                                     }}
                                 />
                                 {file.icon}
-                                <div>
-                                    <p className="font-semibold text-sm">{file.name}</p>
+                                <div className="overflow-hidden">
+                                    <p className="font-semibold text-sm truncate">{file.name}</p>
                                     <p className="text-xs text-muted-foreground">{file.size}</p>
                                 </div>
                             </div>

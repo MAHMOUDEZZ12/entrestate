@@ -33,7 +33,6 @@ const mainNavLinks = [
   { href: '/dashboard/flows', icon: <Workflow className="h-5 w-5" />, label: 'Flows' },
   { href: '/dashboard/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },
   { href: '/dashboard/assistant', icon: <Bot className="h-5 w-5" />, label: 'AI Assistant' },
-  { href: '/dashboard/data-importer', icon: <Database className="h-5 w-5" />, label: 'Data Importer' },
 ];
 
 const secondaryNavLinks = [
@@ -53,10 +52,12 @@ export function DashboardSidebar() {
             <Link
               href={link.href}
               className={cn(
-                'flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8',
-                isActive && 'bg-accent text-accent-foreground'
+                'relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
               )}
             >
+              {isActive && (
+                <span className="absolute left-0 h-6 w-1 rounded-r-full bg-primary" />
+              )}
               {link.icon}
               <span className="sr-only">{link.label}</span>
             </Link>
@@ -85,3 +86,5 @@ export function DashboardSidebar() {
     </aside>
   );
 }
+
+    

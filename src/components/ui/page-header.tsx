@@ -13,7 +13,7 @@ interface PageHeaderProps {
 export function PageHeader({ title, description, icon, children }: PageHeaderProps) {
   return (
     <div className="container mx-auto px-4 md:px-6 py-8 md:py-12 border-b">
-      <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex items-start gap-4">
           {icon && (
             <div className="p-3 bg-primary/10 text-primary rounded-lg mt-1 hidden sm:block">
@@ -29,8 +29,10 @@ export function PageHeader({ title, description, icon, children }: PageHeaderPro
             </p>
           </div>
         </div>
-        {children && <div className="mt-4 sm:mt-0 flex-shrink-0">{children}</div>}
+        {children && <div className="mt-4 md:mt-0 flex-shrink-0">{children}</div>}
       </div>
     </div>
   );
 }
+
+    

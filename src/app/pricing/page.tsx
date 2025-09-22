@@ -173,7 +173,7 @@ export default function PricingPage() {
   return (
     <div className="flex flex-col min-h-screen">
       <LandingHeader />
-      <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-20">
+      <main className="flex-1 w-full max-w-5xl mx-auto px-4 md:px-6 py-12 md:py-20">
         <PageHeader
           title="Plans & Pricing"
           description="Choose the perfect toolkit for your real estate ambitions. From individual apps to the full AI-powered ecosystem."
@@ -325,3 +325,5 @@ export default function PricingPage() {
     </div>
   );
 }
+
+    
