@@ -27,7 +27,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/community',
     '/discover',
     '/solutions',
-    '/technology'
+    '/technology',
+    '/products/estchat-x3',
+    '/products/mega-listing-pro-2',
+    '/products/pro-search-eng-x3',
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),

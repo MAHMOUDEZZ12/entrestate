@@ -8,9 +8,8 @@ import { ArrowRight } from 'lucide-react';
 import { Logo } from './logo';
 
 const navLinks = [
-    { name: 'Solutions', href: '/solutions' },
+    { name: 'Products', href: '/#pillars' },
     { name: 'Apps', href: '/apps' },
-    { name: 'Market', href: '/market' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'Resources', href: '/resources' },
     { name: 'Community', href: '/community' },

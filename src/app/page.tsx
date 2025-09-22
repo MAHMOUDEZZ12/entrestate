@@ -4,13 +4,14 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
-import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit, Building, Users, User, Library } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit, Building, Users, User, Library, FileJson, Telescope, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { ShinyButton } from '@/components/ui/shiny-button';
+import Image from 'next/image';
 
 
 const products = [
@@ -32,6 +33,33 @@ const products = [
         description: "Your personal AI assistant that learns from your data to automate tasks, answer questions, and run campaigns.",
         href: "/dashboard/assistant"
     }
+];
+
+const productPillars = [
+    {
+        name: "PRO SEARCH ENG. x3",
+        slug: "pro-search-eng-x3",
+        icon: <Telescope className="h-8 w-8" />,
+        description: "The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.",
+        visualization: "https://picsum.photos/seed/pro-search-viz/800/600",
+        vizHint: "abstract data visualization prism",
+    },
+    {
+        name: "ESTCHAT X3",
+        slug: "estchat-x3",
+        icon: <MessageCircle className="h-8 w-8" />,
+        description: "The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.",
+        visualization: "https://picsum.photos/seed/estchat-viz/800/600",
+        vizHint: "modern chat interface bubbles",
+    },
+    {
+        name: "MEGA LISTING PRO 2",
+        slug: "mega-listing-pro-2",
+        icon: <FileJson className="h-8 w-8" />,
+        description: "The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.",
+        visualization: "https://picsum.photos/seed/mega-listing-viz/800/600",
+        vizHint: "network globe data nodes",
+    },
 ];
 
 const workflowSteps = [
@@ -159,8 +187,36 @@ export default function HomePage() {
                 </div>
            </div>
         </section>
+        
+        <section id="pillars" className="py-20 md:py-32">
+            <div className="container mx-auto px-4 text-center">
+                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Our Core Product Pillars</h2>
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                    Three powerful, interconnected systems that form the foundation of our AI-native ecosystem.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                   {productPillars.map((pillar) => (
+                       <Card key={pillar.name} className="text-left hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col group">
+                           <CardHeader>
+                               <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-3">{pillar.icon}</div>
+                               <CardTitle>{pillar.name}</CardTitle>
+                               <CardDescription>{pillar.description}</CardDescription>
+                           </CardHeader>
+                           <CardContent className="flex-grow flex flex-col justify-end">
+                                <div className="aspect-video relative rounded-md overflow-hidden border">
+                                    <Image src={pillar.visualization} alt={`${pillar.name} visualization`} layout="fill" objectFit="cover" data-ai-hint={pillar.vizHint} />
+                                </div>
+                               <Link href={`/products/${pillar.slug}`} className="mt-4">
+                                   <Button variant="outline" className="w-full">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                               </Link>
+                           </CardContent>
+                       </Card>
+                   ))}
+                </div>
+            </div>
+        </section>
 
-        <section id="how-it-works" className="py-20 md:py-32">
+        <section id="how-it-works" className="py-20 md:py-32 bg-muted/50">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">A Radically Simple Workflow</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -184,7 +240,7 @@ export default function HomePage() {
         </section>
 
 
-        <section className="py-20 md:py-32 bg-muted/50">
+        <section className="py-20 md:py-32">
             <div className="container mx-auto px-4 text-center">
                  <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-6">
                     <Bot className="h-10 w-10" />
@@ -201,7 +257,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section className="py-20 md:py-32">
+        <section className="py-20 md:py-32 bg-muted/50">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Built for the Modern Professional</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -223,7 +279,7 @@ export default function HomePage() {
             </div>
         </section>
         
-        <section className="py-20 md:py-32 bg-muted/50">
+        <section className="py-20 md:py-32">
             <div className="container mx-auto px-4 text-center">
                  <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-6">
                     <BrainCircuit className="h-10 w-10" />
@@ -240,7 +296,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section className="py-20 md:py-32">
+        <section className="py-20 md:py-32 bg-muted/50">
             <div className="container mx-auto px-4 text-center">
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ready to Become a Super Agent?</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -259,5 +315,3 @@ export default function HomePage() {
     </>
   );
 }
-
-    
