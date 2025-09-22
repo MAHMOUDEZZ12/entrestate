@@ -13,7 +13,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { ShinyButton } from '@/components/ui/shiny-button';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from '@/lib/utils';
 import { MegaListingSimulation } from '@/components/mega-listing-simulation';
 import { ProSearchSimulation } from '@/components/pro-search-simulation';
@@ -77,6 +77,14 @@ const personas = [
 export default function HomePage() {
   const router = useRouter();
   const [query, setQuery] = React.useState('');
+  const workflowRef = React.useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: workflowRef,
+    offset: ["start end", "end start"]
+  });
+
+  const pathLength = useTransform(scrollYProgress, [0.1, 0.4], [0, 1]);
+
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +97,26 @@ export default function HomePage() {
       <LandingHeader />
       <main className="flex-1 w-full">
         {/* New Hero Section */}
-        <section className="relative flex h-[calc(100vh-4rem)] w-full items-center justify-center overflow-hidden border-b bg-gradient-to-br from-background via-primary/5 to-background">
+        <section className="relative flex h-[calc(100vh-4rem)] w-full items-center justify-center overflow-hidden border-b bg-background">
+          <motion.div
+            className="absolute inset-0 z-0"
+            style={{
+                background: `radial-gradient(ellipse at 50% 30%, hsl(var(--primary) / 0.1), transparent 70%)`
+            }}
+            animate={{
+                background: [
+                    `radial-gradient(ellipse at 50% 30%, hsl(var(--primary) / 0.1), transparent 70%)`,
+                    `radial-gradient(ellipse at 70% 40%, hsl(var(--accent) / 0.08), transparent 70%)`,
+                    `radial-gradient(ellipse at 30% 40%, hsl(var(--primary) / 0.08), transparent 70%)`,
+                    `radial-gradient(ellipse at 50% 30%, hsl(var(--primary) / 0.1), transparent 70%)`,
+                ]
+            }}
+            transition={{
+                duration: 15,
+                repeat: Infinity,
+                ease: "linear"
+            }}
+          />
           <div className="relative z-10 container mx-auto px-4 text-center">
             <div className="flex flex-col items-center">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading tracking-tighter leading-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
@@ -177,17 +204,34 @@ export default function HomePage() {
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
                     Transform hours of manual work into an intelligent, automated process.
                 </p>
-                <div className="relative mt-16">
-                    <div className="absolute top-1/2 left-0 w-full h-0.5 bg-border -translate-y-1/2 hidden md:block" />
+                <div className="relative mt-16" ref={workflowRef}>
+                     <svg className="absolute top-0 left-0 w-full h-full hidden md:block" aria-hidden="true">
+                        <motion.path
+                            d="M 200 80 C 400 80, 400 200, 600 200 S 800 80, 1000 80"
+                            fill="none"
+                            stroke="hsl(var(--border))"
+                            strokeWidth="2"
+                            strokeDasharray="1"
+                            strokeDashoffset="0"
+                            style={{ pathLength }}
+                        />
+                    </svg>
                     <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12">
-                        {workflowSteps.map(step => (
-                            <div key={step.step} className="flex flex-col items-center text-center">
+                        {workflowSteps.map((step, index) => (
+                             <motion.div 
+                                key={step.step}
+                                initial={{ opacity: 0, y: 50 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.2 }}
+                                viewport={{ once: true, amount: 0.5 }}
+                                className="flex flex-col items-center text-center"
+                              >
                                 <div className="p-4 bg-primary text-primary-foreground rounded-full mb-4 border-4 border-background">
                                     {step.icon}
                                 </div>
                                 <h3 className="text-xl font-bold font-heading">{step.title}</h3>
                                 <p className="mt-2 text-muted-foreground">{step.description}</p>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
@@ -201,27 +245,37 @@ export default function HomePage() {
                     Whether you're a solo agent or a large developer, Entrestate is your competitive edge.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                   {personas.map((persona) => (
-                       <Card key={persona.title} className="text-center bg-card flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10">
-                           <CardHeader className="items-center">
-                               <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-3">{persona.icon}</div>
-                               <CardTitle>{persona.title}</CardTitle>
-                                <CardDescription>{persona.description}</CardDescription>
-                           </CardHeader>
-                           <CardContent className="flex-grow">
-                                <ul className="text-left space-y-2 text-sm">
-                                    {persona.benefits.map(benefit => (
-                                        <li key={benefit} className="flex items-start gap-3">
-                                            <Check className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
-                                            <span>{benefit}</span>
-                                        </li>
-                                    ))}
-                                </ul>
-                           </CardContent>
-                           <CardFooter>
-                               <Button variant="secondary" className="w-full">Learn More</Button>
-                           </CardFooter>
-                       </Card>
+                   {personas.map((persona, index) => (
+                       <motion.div
+                          key={persona.title}
+                          initial={{ opacity: 0, y: 50 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                          viewport={{ once: true, amount: 0.3 }}
+                        >
+                          <Card className="text-center bg-card flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 h-full">
+                              <CardHeader className="items-center">
+                                  <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-3">{persona.icon}</div>
+                                  <CardTitle>{persona.title}</CardTitle>
+                                   <CardDescription>{persona.description}</CardDescription>
+                              </CardHeader>
+                              <CardContent className="flex-grow">
+                                   <ul className="text-left space-y-2 text-sm">
+                                       {persona.benefits.map(benefit => (
+                                           <li key={benefit} className="flex items-start gap-3">
+                                               <Check className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
+                                               <span>{benefit}</span>
+                                           </li>
+                                       ))}
+                                   </ul>
+                              </CardContent>
+                              <CardFooter>
+                                  <Link href="/solutions" className="w-full">
+                                    <Button variant="secondary" className="w-full">Learn More</Button>
+                                  </Link>
+                              </CardFooter>
+                          </Card>
+                        </motion.div>
                    ))}
                 </div>
             </div>
@@ -247,5 +301,7 @@ export default function HomePage() {
     </>
   );
 }
+
+    
 
     
