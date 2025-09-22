@@ -139,7 +139,7 @@ export default function HomePage() {
                 The AI-Native Operating System for Real Estate
               </h1>
               <p className="mt-6 max-w-2xl text-lg md:text-xl text-foreground/70">
-                Pick one of the Sales AI models or hire a full customer service team in 3 shifts speaks all languages and realtors by nature! This is not a fancy product and no magic website needed, they come with their magic.
+                Pick one of the Sales AI models or hire a full team in 3 shifts, multi languages, and realtors by nature! This is not a fancy product and no perfect website needed, they come with their magic.
               </p>
                <div className="mt-10 w-full max-w-2xl">
                      <div className="relative group">
@@ -174,7 +174,9 @@ export default function HomePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                    <div className="space-y-4 text-center md:text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Telescope className="h-8 w-8" /></div>
-                       <h3 className="text-3xl font-bold font-heading">PRO SEARCH ENG. x3</h3>
+                       <h3 className="text-3xl font-bold font-heading">
+                          <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">PRO SEARCH ENG. x3</span>
+                       </h3>
                        <p className="text-lg text-muted-foreground">The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.</p>
                        <Link href={`/products/pro-search-eng-x3`}>
                            <Button variant="outline">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
@@ -188,7 +190,9 @@ export default function HomePage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                     <div className="space-y-4 text-center md:text-left md:order-2">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><MessageCircle className="h-8 w-8" /></div>
-                       <h3 className="text-3xl font-bold font-heading">ESTCHAT X3</h3>
+                        <h3 className="text-3xl font-bold font-heading">
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">ESTCHAT X3</span>
+                        </h3>
                        <p className="text-lg text-muted-foreground">The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.</p>
                        <Link href={`/products/estchat-x3`}>
                            <Button variant="outline">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
@@ -202,7 +206,9 @@ export default function HomePage() {
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                     <div className="space-y-4 text-center md:text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><FileJson className="h-8 w-8" /></div>
-                       <h3 className="text-3xl font-bold font-heading">MEGA LISTING PRO 2</h3>
+                        <h3 className="text-3xl font-bold font-heading">
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">MEGA LISTING PRO 2</span>
+                        </h3>
                        <p className="text-lg text-muted-foreground">The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.</p>
                        <Link href={`/products/mega-listing-pro-2`}>
                            <Button variant="outline">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
