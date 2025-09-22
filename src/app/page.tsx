@@ -163,10 +163,8 @@ export default function HomePage() {
         <section id="pillars" className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 space-y-20">
                  <div className="max-w-3xl mx-auto text-center">
-                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                        <span className="text-6xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent drop-shadow-md">
-                           Explore the magical Realtors AI models
-                        </span>
+                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent drop-shadow-md">
+                       Explore the magical Realtors AI models
                     </h2>
                     <p className="mt-4 text-lg text-muted-foreground">
                         This is not a fancy product and no perfect website needed, they come with their perfection.
