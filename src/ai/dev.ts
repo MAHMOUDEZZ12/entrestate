@@ -11,7 +11,7 @@ export default genkit({
   plugins: [
     (firebase as any).default(),
     googleAI({
-      apiVersion: 'v1beta',
+      apiVersion: 'v1',
     }),
   ],
   logLevel: 'debug',
