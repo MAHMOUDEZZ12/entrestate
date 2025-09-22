@@ -19,23 +19,18 @@ function initializeAdminApp(): App | undefined {
     }
 
     try {
+        const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT;
+        if (serviceAccountString) {
+            const serviceAccount = JSON.parse(serviceAccountString);
+            return initializeApp({ credential: cert(serviceAccount) }, 'firebase-admin-app');
+        }
+
         // Recommended for Google Cloud environments (e.g., Cloud Run, App Hosting)
         return initializeApp({ credential: applicationDefault() }, 'firebase-admin-app');
     } catch (e: any) {
-        // Fallback for local development or other environments
-        const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT;
-        if (serviceAccountString) {
-            try {
-                const serviceAccount = JSON.parse(serviceAccountString);
-                return initializeApp({ credential: cert(serviceAccount) }, 'firebase-admin-app');
-            } catch (parseError: any) {
-                console.error("Failed to parse FIREBASE_SERVICE_ACCOUNT JSON. Firebase Admin SDK not initialized.", parseError.message);
-                return undefined;
-            }
-        } else {
-            console.warn("Firebase Admin SDK not initialized. Set GOOGLE_APPLICATION_CREDENTIALS or FIREBASE_SERVICE_ACCOUNT.");
-            return undefined;
-        }
+        console.error("Firebase Admin SDK initialization failed.", e.message);
+        console.warn("Set FIREBASE_SERVICE_ACCOUNT (for local/Vercel) or ensure Application Default Credentials are available (for Google Cloud).");
+        return undefined;
     }
 }
 
