@@ -12,6 +12,13 @@ import Link from 'next/link';
 import { ArrowRight, Bot, Check, FileJson, MessageCircle, Telescope, Shield, Cpu, Workflow, BarChart } from 'lucide-react';
 import { ShinyButton } from '@/components/ui/shiny-button';
 
+// Import Simulations
+import { ProSearchSimulation } from '@/components/pro-search-simulation';
+import { EstChatSimulation } from '@/components/est-chat-simulation';
+import { MegaListingSimulation } from '@/components/mega-listing-simulation';
+import { EbramSimulation } from '@/components/ebram-simulation';
+
+
 const productsData: {[key: string]: any} = {
   'estchat-x3': {
     title: 'ESTCHAT X3 APP LITE',
@@ -43,6 +50,7 @@ const productsData: {[key: string]: any} = {
         { tier: 'Pro', description: 'Deeper CRM integrations, campaign orchestration, AI video agents.' },
         { tier: 'Enterprise', description: 'Full regulatory dashboard integration, cross-market intelligence, white-label licensing.' },
     ],
+    simulation: <EstChatSimulation />,
   },
   'mega-listing-pro-2': {
     title: 'MEGA LISTING PRO 2',
@@ -73,6 +81,7 @@ const productsData: {[key: string]: any} = {
         { tier: 'Pro', description: 'Multi-platform syndication + archive API.' },
         { tier: 'Enterprise', description: 'White-label registry for governments and real estate authorities.' },
     ],
+    simulation: <MegaListingSimulation />,
   },
   'pro-search-eng-x3': {
     title: 'PRO SEARCH ENG. x3',
@@ -104,6 +113,7 @@ const productsData: {[key: string]: any} = {
         { tier: 'Phase 2', description: 'Deploy Smart Search with AI natural language.' },
         { tier: 'Phase 3', description: 'Unlock Deep Search with premium investor dashboards.' },
     ],
+    simulation: <ProSearchSimulation />,
   },
   'ebram-judicial-ai': {
     title: 'EBRAM JUDICIAL AI',
@@ -134,6 +144,7 @@ const productsData: {[key: string]: any} = {
         { tier: 'Phase 2', description: 'Extend to inheritance and family law.' },
         { tier: 'Phase 3', description: 'Launch as Judicial AI across sectors (beyond real estate).' },
     ],
+    simulation: <EbramSimulation />,
   }
 };
 
@@ -168,6 +179,13 @@ export default function ProductPage() {
                     </p>
                  </CardContent>
             </Card>
+        </section>
+        
+        <section>
+            <h2 className="text-3xl font-bold text-center mb-8">Product in Action</h2>
+            <div className="flex justify-center">
+                {product.simulation}
+            </div>
         </section>
 
         <section>
