@@ -180,7 +180,3 @@ export default function SolutionsPage() {
     </>
   );
 }
-
-
-
-    
