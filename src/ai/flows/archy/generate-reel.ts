@@ -51,6 +51,20 @@ export async function generateReel(input: GenerateReelInput): Promise<GenerateRe
   return generateReelFlow(input);
 }
 
+// Helper to fetch and encode the video
+async function getVideoDataUri(videoUrl: string): Promise<string> {
+    const fetch = (await import('node-fetch')).default;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.VERTEX_AI_API_KEY;
+    if (!apiKey) throw new Error("API key is missing.");
+
+    const videoDownloadResponse = await fetch(`${videoUrl}&key=${apiKey}`);
+    if (!videoDownloadResponse.ok) {
+        throw new Error(`Failed to download video: ${videoDownloadResponse.statusText}`);
+    }
+    const videoBuffer = await videoDownloadResponse.arrayBuffer();
+    return `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+}
+
 
 const generateReelFlow = ai.defineFlow(
   {
@@ -62,15 +76,14 @@ const generateReelFlow = ai.defineFlow(
     
     let { operation } = await ai.generate({
       model: googleAI.model('veo-2.0-generate-001'),
-      prompt: `Create a modern, fast-paced Instagram Reel for a real estate project.
+      prompt: `Create a modern, fast-paced Instagram Reel for a real estate project. The video should be vertical (9:16) and around 15-30 seconds long.
       
       Vibe: ${input.vibe}
       Key Selling Points (as text overlays): ${input.sellingPoints}
 
-      Use quick cuts, dynamic transitions, and engaging text animations. The video should be vertical (9:16) and around 15-30 seconds long.
+      Use quick cuts, dynamic transitions, and engaging text animations.
       `,
       config: {
-        durationSeconds: 8,
         aspectRatio: '9:16',
       }
     });
@@ -87,10 +100,7 @@ const generateReelFlow = ai.defineFlow(
     const video = operation.output?.message?.content.find(p => !!p.media);
     if (!video || !video.media?.url) throw new Error("Generated video not found in operation result.");
 
-    const fetch = (await import('node-fetch')).default;
-    const videoDownloadResponse = await fetch(`${video.media!.url}&key=${process.env.GEMINI_API_KEY}`);
-    const videoBuffer = await videoDownloadResponse.arrayBuffer();
-    const videoDataUri = `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+    const videoDataUri = await getVideoDataUri(video.media.url);
     
     return {
       reelVideoDataUri: videoDataUri,

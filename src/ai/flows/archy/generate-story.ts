@@ -50,6 +50,20 @@ export async function generateStory(input: GenerateStoryInput): Promise<Generate
   return generateStoryFlow(input);
 }
 
+// Helper to fetch and encode the video
+async function getVideoDataUri(videoUrl: string): Promise<string> {
+    const fetch = (await import('node-fetch')).default;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.VERTEX_AI_API_KEY;
+    if (!apiKey) throw new Error("API key is missing.");
+
+    const videoDownloadResponse = await fetch(`${videoUrl}&key=${apiKey}`);
+    if (!videoDownloadResponse.ok) {
+        throw new Error(`Failed to download video: ${videoDownloadResponse.statusText}`);
+    }
+    const videoBuffer = await videoDownloadResponse.arrayBuffer();
+    return `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+}
+
 const generateStoryFlow = ai.defineFlow(
   {
     name: 'generateStoryFlow',
@@ -59,16 +73,15 @@ const generateStoryFlow = ai.defineFlow(
   async input => {
     let { operation } = await ai.generate({
       model: googleAI.model('veo-2.0-generate-001'),
-      prompt: `Create a short, animated social media story for a real estate project.
+      prompt: `Create a short, animated social media story for a real estate project. The video should be vertical (9:16) and about 15 seconds long.
       
       Project: ${input.projectId}
       Vibe: ${input.vibe}
       Final Call to Action: "${input.callToAction}"
 
-      Animate a sequence of 3-5 images with modern transitions and text overlays. The final frame should feature the call to action prominently. The video should be vertical (9:16) and about 15 seconds long.
+      Animate a sequence of 3-5 images with modern transitions and text overlays. The final frame should feature the call to action prominently.
       `,
       config: {
-        durationSeconds: 8,
         aspectRatio: '9:16',
       }
     });
@@ -85,10 +98,7 @@ const generateStoryFlow = ai.defineFlow(
     const video = operation.output?.message?.content.find(p => !!p.media);
     if (!video || !video.media?.url) throw new Error("Generated video not found in operation result.");
 
-    const fetch = (await import('node-fetch')).default;
-    const videoDownloadResponse = await fetch(`${video.media!.url}&key=${process.env.GEMINI_API_KEY}`);
-    const videoBuffer = await videoDownloadResponse.arrayBuffer();
-    const videoDataUri = `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+    const videoDataUri = await getVideoDataUri(video.media.url);
 
     return {
       storyVideoDataUri: videoDataUri,

@@ -41,6 +41,20 @@ async function toWav(pcmData: Buffer): Promise<string> {
     });
 }
 
+// Helper to fetch and encode the video
+async function getVideoDataUri(videoUrl: string): Promise<string> {
+    const fetch = (await import('node-fetch')).default;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.VERTEX_AI_API_KEY;
+    if (!apiKey) throw new Error("API key is missing.");
+
+    const videoDownloadResponse = await fetch(`${videoUrl}&key=${apiKey}`);
+    if (!videoDownloadResponse.ok) {
+        throw new Error(`Failed to download video: ${videoDownloadResponse.statusText}`);
+    }
+    const videoBuffer = await videoDownloadResponse.arrayBuffer();
+    return `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+}
+
 
 const generateVideoPresenterFlow = ai.defineFlow(
   {
@@ -74,7 +88,6 @@ const generateVideoPresenterFlow = ai.defineFlow(
                 { text: `Make this person speak the following script in a professional, engaging manner, as if presenting to a client. The person should have natural facial expressions and mouth movements that match the words. Do not add background music.\n\nScript: "${input.script}"` }
             ],
             config: {
-                durationSeconds: 8, // Adjust as needed
                 aspectRatio: "9:16",
                 personGeneration: 'allow_adult',
             }
@@ -100,10 +113,7 @@ const generateVideoPresenterFlow = ai.defineFlow(
     if (operation.error) throw new Error(`Video generation failed: ${operation.error.message}`);
     const video = operation.output?.message?.content.find(p => !!p.media);
     if (!video || !video.media?.url) throw new Error("Generated video not found in operation result.");
-    const fetch = (await import('node-fetch')).default;
-    const videoDownloadResponse = await fetch(`${video.media!.url}&key=${process.env.GEMINI_API_KEY}`);
-    const videoBuffer = await videoDownloadResponse.arrayBuffer();
-    const videoDataUri = `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+    const videoDataUri = await getVideoDataUri(video.media.url);
 
     // Process audio result
     if (!audioResult.media) throw new Error("Audio generation failed to return media.");

@@ -5,7 +5,7 @@
  * @fileOverview An AI flow to edit a video for YouTube based on user instructions.
  *
  * This flow takes a source video, a set of instructions, and returns a new,
- * edited video ready for YouTube.
+ * edited video ready for YouTube, now powered by the advanced Veo 3 model with sound.
  *
  * @module AI/Flows/EditYouTubeVideo
  *
@@ -59,6 +59,20 @@ export async function editYoutubeVideo(input: EditYouTubeVideoInput): Promise<Ed
   return editYoutubeVideoFlow(input);
 }
 
+// Helper to fetch and encode the video
+async function getVideoDataUri(videoUrl: string): Promise<string> {
+    const fetch = (await import('node-fetch')).default;
+    const apiKey = process.env.GEMINI_API_KEY || process.env.VERTEX_AI_API_KEY;
+    if (!apiKey) throw new Error("API key is missing.");
+
+    const videoDownloadResponse = await fetch(`${videoUrl}&key=${apiKey}`);
+    if (!videoDownloadResponse.ok) {
+        throw new Error(`Failed to download video: ${videoDownloadResponse.statusText}`);
+    }
+    const videoBuffer = await videoDownloadResponse.arrayBuffer();
+    return `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+}
+
 
 const editYoutubeVideoFlow = ai.defineFlow(
   {
@@ -68,10 +82,10 @@ const editYoutubeVideoFlow = ai.defineFlow(
   },
   async (input) => {
     let { operation } = await ai.generate({
-      model: googleAI.model('veo-2.0-generate-001'),
+      model: googleAI.model('veo-3.0-generate-preview'),
       prompt: [
         { media: { url: input.sourceVideo } },
-        { text: `You are an expert video editor. Edit this source video according to the following instructions to make it ready for YouTube.
+        { text: `You are an expert video editor. Edit this source video according to the following instructions to make it ready for YouTube. The final video should have sound that matches the visuals and instructions.
 
         General Instructions: ${input.editingInstructions}
         
@@ -80,7 +94,7 @@ const editYoutubeVideoFlow = ai.defineFlow(
         Return the final edited video.` }
       ],
       config: {
-        durationSeconds: 8,
+        // Veo 3 uses a default duration of 8s and does not support custom durationSeconds
         aspectRatio: '16:9',
       }
     });
@@ -97,10 +111,7 @@ const editYoutubeVideoFlow = ai.defineFlow(
     const video = operation.output?.message?.content.find(p => !!p.media);
     if (!video || !video.media?.url) throw new Error("Edited video not found in operation result.");
 
-    const fetch = (await import('node-fetch')).default;
-    const videoDownloadResponse = await fetch(`${video.media!.url}&key=${process.env.GEMINI_API_KEY}`);
-    const videoBuffer = await videoDownloadResponse.arrayBuffer();
-    const videoDataUri = `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+    const videoDataUri = await getVideoDataUri(video.media.url);
     
     return {
         editedVideoDataUri: videoDataUri,

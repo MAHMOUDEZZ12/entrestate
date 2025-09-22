@@ -112,19 +112,21 @@ export async function rebrandBrochure(
 
 const rebrandBrochurePrompt = ai.definePrompt({
   name: 'rebrandBrochurePrompt',
-  input: {schema: RebrandBrochureInputSchema},
+  input: {schema: z.object({
+      ...RebrandBrochureInputSchema.shape,
+      // The prompt needs the potentially generated logo
+      generatedLogoDataUri: z.string().optional(),
+  })},
   output: {schema: RebrandBrochureOutputSchema},
   prompt: `You are an expert marketing assistant specializing in rebranding brochures.
 
 You will rebrand the brochure provided with the user's contact details, company logo, and chosen branding elements.
 
-If the user doesn't provide a company logo, you will generate one based on the company name and branding elements. Try to create a simple and memorable logo. Return the logo as a data URI.
-
 Use the following information to rebrand the brochure:
 
 Contact Details: {{{contactDetails}}}
 Company Name: {{{companyName}}}
-Company Logo: {{#if companyLogoDataUri}}{{media url=companyLogoDataUri}}{{else}}Generate a logo based on the company name and branding elements.{{/if}}
+Company Logo: {{#if companyLogoDataUri}}{{media url=companyLogoDataUri}}{{else}}{{#if generatedLogoDataUri}}{{media url=generatedLogoDataUri}}{{else}}No logo provided or generated.{{/if}}{{/if}}
 Tone of Voice: {{{toneOfVoice}}}
 Colors: {{{colors}}}
 
@@ -157,7 +159,7 @@ const generateLogoFlow = ai.defineFlow(
       model: googleAI.model('imagen-4.0-fast-generate-001'),
       prompt: `Create a clean, professional, minimalist logo for a real estate company named "${input.companyName}". Use a color palette of ${input.colors}. The logo should be on a transparent background.`
     });
-    if (!media?.url) throw new Error("Failed to generate character image.");
+    if (!media?.url) throw new Error("Failed to generate a logo image.");
     return { logoDataUri: media.url };
   }
 );
@@ -170,21 +172,28 @@ const rebrandBrochureFlow = ai.defineFlow(
     outputSchema: RebrandBrochureOutputSchema,
   },
   async (input) => {
-    let logoUri = input.companyLogoDataUri;
+    let logoToUse = input.companyLogoDataUri;
+    let generatedLogoUri: string | undefined = undefined;
 
-    // Generate a logo if one wasn't provided but is mentioned in the instructions.
-    if (!logoUri && input.deepEditInstructions?.toLowerCase().includes("logo")) {
+    // Generate a logo if one wasn't provided but is mentioned in the instructions or if no logo is provided at all.
+    const shouldGenerateLogo = !input.companyLogoDataUri && (input.deepEditInstructions?.toLowerCase().includes("logo") || !input.companyLogoDataUri);
+
+    if (shouldGenerateLogo) {
       const logoResult = await generateLogoFlow({
         companyName: input.companyName,
         colors: input.colors,
       });
-      logoUri = logoResult.logoDataUri;
+      generatedLogoUri = logoResult.logoDataUri;
+      logoToUse = generatedLogoUri; // This will be used for the prompt, but we return the generated one separately
     }
+    
+    // The prompt needs to know about the generated logo if it exists
+    const promptPayload = {
+      ...input,
+      generatedLogoDataUri: generatedLogoUri,
+    };
 
-    const { output } = await rebrandBrochurePrompt({
-        ...input,
-        companyLogoDataUri: logoUri, // Pass the potentially new logo URI to the prompt
-    });
+    const { output } = await rebrandBrochurePrompt(promptPayload);
 
     if (!output) {
       throw new Error("Failed to generate rebranded brochure.");
@@ -193,7 +202,7 @@ const rebrandBrochureFlow = ai.defineFlow(
     // Ensure the generated logo URI is included in the final output if it was created.
     return {
       rebrandedBrochureDataUri: output.rebrandedBrochureDataUri,
-      logoDataUri: logoUri,
+      logoDataUri: generatedLogoUri, // Return the newly generated logo if it exists
     };
   }
 );
