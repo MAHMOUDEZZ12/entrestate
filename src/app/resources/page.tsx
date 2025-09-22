@@ -13,7 +13,7 @@ const resourceLinks = [
   {
     icon: <Workflow className="h-8 w-8 text-primary" />,
     title: 'Flow Library',
-    description: 'Explore pre-built automation templates that connect your apps into powerful workflows. The fastest way to put your AI to work.',
+    description: 'Explore pre-built automations that connect your apps into powerful workflows. The fastest way to put your AI to work.',
     href: '/resources/flows',
     cta: 'Browse Flows',
   },

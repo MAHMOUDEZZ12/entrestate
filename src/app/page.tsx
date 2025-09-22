@@ -41,7 +41,7 @@ export default function HomePage() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (!query.trim()) return;
-    router.push(`/discover/${encodeURIComponent(query.trim())}`);
+    router.push(`/discover/search?q=${encodeURIComponent(query.trim())}`);
   };
 
   return (
@@ -69,7 +69,7 @@ export default function HomePage() {
                             <Input 
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                placeholder='e.g., "create an ad for Emaar Beachfront"' 
+                                placeholder='e.g., "Emaar Beachfront price trends"' 
                                 className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-lg"
                             />
                              <button type="submit" className="hidden" aria-hidden="true">Submit</button>

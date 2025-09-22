@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import Link from 'next/link';
@@ -26,7 +25,9 @@ import {
   Workflow,
   Building,
   Target,
-  Users
+  Users,
+  BookOpen,
+  School
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
@@ -37,13 +38,14 @@ const mainNavLinks = [
   { href: '/dashboard/flows', icon: <Workflow className="h-5 w-5" />, label: 'Flows' },
   { href: '/dashboard/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },
   { href: '/dashboard/assistant', icon: <Bot className="h-5 w-5" />, label: 'AI Assistant' },
-  { href: '/dashboard/projects', icon: <Building className="h-5 w-5" />, label: 'My Projects' },
+  { href: '/dashboard/tool/projects-finder', icon: <Database className="h-5 w-5" />, label: 'Market Library' },
   { href: '/dashboard/leads', icon: <Target className="h-5 w-5" />, label: 'Leads & CRM' },
-  { href: '/dashboard/clients', icon: <Users2 className="h-5 w-5" />, label: 'Client Pages' },
   { href: '/dashboard/directory', icon: <Users className="h-5 w-5" />, label: 'Contacts Directory' },
 ];
 
 const secondaryNavLinks = [
+    { href: '/community/academy', icon: <School className="h-5 w-5" />, label: 'Academy' },
+    { href: '/resources', icon: <BookOpen className="h-5 w-5" />, label: 'Resources' },
     { href: '/dashboard/system-health', icon: <HeartPulse className="h-5 w-5" />, label: 'System Health' },
     { href: '/dashboard/settings', icon: <Settings className="h-5 w-5" />, label: 'Settings' }
 ];
@@ -84,5 +86,3 @@ export function DashboardSidebar() {
     </aside>
   );
 }
-
-    

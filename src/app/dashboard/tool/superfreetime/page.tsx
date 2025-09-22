@@ -197,8 +197,8 @@ export default function SuperFreeTimePage() {
                     </DialogHeader>
                     <DialogFooter className="justify-center sm:justify-center gap-2">
                         {showReward ? (
-                            <Link href="/login">
-                            <Button size="lg">Login or Register</Button>
+                            <Link href="/dashboard/assistant">
+                            <Button size="lg">Go to Assistant</Button>
                             </Link>
                         ) : (
                         <>
@@ -206,8 +206,8 @@ export default function SuperFreeTimePage() {
                             {foundKey ? (
                                 <Button size="lg" onClick={() => setShowReward(true)}>Claim Your Prize</Button>
                             ) : (
-                                <Link href="/login">
-                                    <Button size="lg"><UserPlus className="mr-2 h-4 w-4"/> Let's Get To Business</Button>
+                                <Link href="/dashboard">
+                                    <Button size="lg"><Briefcase className="mr-2 h-4 w-4"/> Let's Get To Business</Button>
                                 </Link>
                             )}
                         </>
@@ -219,5 +219,3 @@ export default function SuperFreeTimePage() {
         </main>
     );
 }
-
-    

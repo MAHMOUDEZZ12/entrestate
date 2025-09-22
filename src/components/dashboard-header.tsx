@@ -1,10 +1,9 @@
 
-
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Search, Package2 } from 'lucide-react';
+import { Menu, Search, BookOpen, GitBranch, Users2, Workflow, School } from 'lucide-react';
 import React from 'react';
 import { GlobalSearch } from '@/components/ui/global-search';
 import {
@@ -33,6 +32,13 @@ const breadcrumbNameMap: { [key: string]: string } = {
     '/dashboard/onboarding': 'Onboarding',
     '/dashboard/system-health': 'System Health',
     '/dashboard/projects': 'My Projects',
+    '/dashboard/directory': 'Contacts Directory',
+    '/community/academy': 'Market Academy',
+    '/community/roadmap': 'Roadmap',
+    '/community/documentation': 'Documentation',
+    '/community': 'Community Notes',
+    '/resources/flows': 'Flow Library',
+    '/resources': 'Resources',
 };
 
 const getBreadcrumbName = (path: string) => {
@@ -95,21 +101,23 @@ export function DashboardHeader() {
             })}
         </BreadcrumbList>
       </Breadcrumb>
-
-      <div className="relative ml-auto flex-1 md:grow-0">
-        <Button variant="outline" className="w-full justify-start text-muted-foreground md:w-[200px] lg:w-[336px]" onClick={() => setIsSearchOpen(true)}>
-            <Search className="mr-2 h-4 w-4" />
-            <span className="truncate">Search tools, projects...</span>
-             <kbd className="pointer-events-none ml-auto hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 sm:flex">
-                <span className="text-xs">⌘</span>K
-            </kbd>
-        </Button>
-        <GlobalSearch isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
-      </div>
+      
+       <div className="ml-auto flex items-center gap-2">
+            <nav className="hidden md:flex items-center gap-1">
+                <Link href="/resources"><Button variant="ghost" size="sm"><BookOpen className="h-4 w-4 mr-1"/> Resources</Button></Link>
+                <Link href="/community"><Button variant="ghost" size="sm"><Users2 className="h-4 w-4 mr-1"/> Community</Button></Link>
+            </nav>
+          <div className="relative flex-1 md:grow-0">
+            <Button variant="outline" className="w-full justify-start text-muted-foreground md:w-[200px] lg:w-[336px]" onClick={() => setIsSearchOpen(true)}>
+                <Search className="mr-2 h-4 w-4" />
+                <span className="truncate">Search tools, projects...</span>
+                 <kbd className="pointer-events-none ml-auto hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground opacity-100 sm:flex">
+                    <span className="text-xs">⌘</span>K
+                </kbd>
+            </Button>
+            <GlobalSearch isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
+          </div>
+       </div>
     </header>
   );
 }
-
-    
-
-    

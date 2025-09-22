@@ -85,7 +85,6 @@ const mockNotes = [
 
 const NewNoteForm = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
     const { toast } = useToast();
-    const [noteType, setNoteType] = useState<string | undefined>();
     
     const {
         control,
@@ -173,8 +172,7 @@ const NewNoteForm = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
             {selectedType === 'Self Intro' && (
                 <Button type="button" variant="outline" onClick={handleGenerateIntro}>Generate with AI</Button>
             )}
-
-            <Controller name="content" control={control} render={({ field }) => (
+             <Controller name="content" control={control} render={({ field }) => (
                 <div className="space-y-2">
                     <Label htmlFor="content">Content</Label>
                     <Textarea id="content" placeholder="Share your thoughts, questions, or requests..." rows={6} {...field} />

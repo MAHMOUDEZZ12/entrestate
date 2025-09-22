@@ -79,6 +79,7 @@ export default function DashboardPage() {
   const handleOpenApp = (tool: Feature) => {
     addTab({ href: tool.href, label: tool.title });
     router.push(tool.href);
+    track('app_opened', { toolId: tool.id });
   };
 
   const myApps = React.useMemo(() => {
@@ -143,7 +144,15 @@ export default function DashboardPage() {
                     ) : userProjects.length > 0 ? (
                         userProjects.slice(0, 3).map(p => <ProjectCard key={p.id} project={p} />)
                     ) : (
-                        <p className="text-sm text-muted-foreground text-center py-8">No projects in your library yet.</p>
+                        <div className="text-center py-8 border-2 border-dashed rounded-lg">
+                            <p className="text-sm text-muted-foreground">No projects in your library yet.</p>
+                            <Link href="/dashboard/tool/projects-finder" className="mt-2 inline-block">
+                                <Button size="sm" variant="outline">
+                                    <PlusCircle className="mr-2 h-4 w-4" />
+                                    Add from Market Library
+                                </Button>
+                            </Link>
+                        </div>
                     )}
                      <Link href="/dashboard/tool/projects-finder" className="w-full">
                         <Button variant="outline" className="w-full">
@@ -158,5 +167,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    

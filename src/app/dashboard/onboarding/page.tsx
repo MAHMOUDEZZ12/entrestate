@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
@@ -12,7 +11,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { ProjectCard } from '@/components/ui/project-card';
 import { ProviderTile } from '@/components/ui/provider-tile';
-import { Check, ChevronRight, X, ArrowLeft, Loader2, Sparkles, Upload } from 'lucide-react';
+import { Check, ChevronRight, X, ArrowLeft, Loader2, Sparkles, Upload, Users2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import Image from 'next/image';
@@ -20,6 +19,7 @@ import { track } from '@/lib/events';
 import type { Project } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import { Textarea } from '@/components/ui/textarea';
+import Link from 'next/link';
 
 const MOCK_DEVELOPERS = ['Emaar', 'Damac', 'Sobha', 'Nakheel', 'Meraas', 'Aldar'];
 
@@ -468,37 +468,21 @@ function OnboardingComponent() {
                              <div className="mx-auto w-fit p-4 bg-primary/10 text-primary rounded-full mb-4">
                                 <Sparkles className="h-10 w-10" />
                              </div>
-                            <CardTitle>You're all set. Choose your starting plan.</CardTitle>
+                            <CardTitle>You're all set!</CardTitle>
+                            <CardDescription>Your brand and project library are ready. What would you like to do next?</CardDescription>
                         </CardHeader>
-                        <CardContent className="space-y-6">
-                            <p className="text-muted-foreground">Your brand and project library are ready. You can start for free or pick a plan.</p>
-                            <div className="grid md:grid-cols-3 gap-4">
-                                <Card className="text-left bg-muted/50 text-center">
-                                    <CardHeader>
-                                        <CardTitle className="text-lg">Student</CardTitle>
-                                        <CardDescription>Learn & build, free domain included.</CardDescription>
-                                        <Button className="mt-2" variant="outline" onClick={() => track('onboarding_plan_selected', { plan: 'student' })}>Start Student</Button>
-                                    </CardHeader>
-                                </Card>
-                                 <Card className="text-left border-primary bg-primary/20 text-center">
-                                    <CardHeader>
-                                        <CardTitle className="text-lg text-primary">Seller</CardTitle>
-                                        <CardDescription className="text-primary/80">Publish ready, upgrade later.</CardDescription>
-                                        <Button className="mt-2" onClick={() => track('onboarding_plan_selected', { plan: 'seller' })}>Start Seller</Button>
-                                    </CardHeader>
-                                </Card>
-                                 <Card className="text-left bg-muted/50 text-center">
-                                    <CardHeader>
-                                        <CardTitle className="text-lg">Marketer</CardTitle>
-                                        <CardDescription>Run ads, automations & targeting.</CardDescription>
-                                         <Button className="mt-2" variant="outline" onClick={() => track('onboarding_plan_selected', { plan: 'marketer' })}>Start Marketer</Button>
-                                    </CardHeader>
-                                </Card>
-                            </div>
-                             <p className="text-xs text-muted-foreground">You can always change your plan later. No charges until you confirm.</p>
+                        <CardContent className="space-y-3">
+                            <Link href="/dashboard" className="w-full block">
+                               <Button size="lg" className="w-full">Go to Dashboard</Button>
+                            </Link>
+                             <Link href="/community" className="w-full block">
+                                <Button size="lg" variant="outline" className="w-full">
+                                    <Users2 className="mr-2 h-4 w-4"/> Say Hi to the Community
+                                </Button>
+                            </Link>
                         </CardContent>
                         <CardFooter>
-                           <Button onClick={finishOnboarding} className="w-full md:w-auto mx-auto" variant="secondary">Finish Setup & Go to Dashboard</Button>
+                           <p className="text-xs text-muted-foreground mx-auto">You can always change your settings later from the dashboard.</p>
                         </CardFooter>
                     </Card>
                  );
