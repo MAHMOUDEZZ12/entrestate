@@ -85,7 +85,7 @@ const suggestTargetingOptionsFlow = ai.defineFlow(
     // Pass the real data to the prompt
     const { output } = await prompt({
         ...input,
-        ...projectData, // Spread the fetched project data into the prompt input
+        // Spread the fetched project data into the prompt input
         projectName: projectData?.name || 'N/A',
         area: projectData?.area || 'N/A',
         city: projectData?.city || 'N/A',
