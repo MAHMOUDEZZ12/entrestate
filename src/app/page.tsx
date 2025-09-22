@@ -12,6 +12,7 @@ import { LandingFooter } from '@/components/landing-footer';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import Image from 'next/image';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 
 const products = [
@@ -41,24 +42,33 @@ const productPillars = [
         slug: "pro-search-eng-x3",
         icon: <Telescope className="h-8 w-8" />,
         description: "The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.",
-        visualization: "https://picsum.photos/seed/pro-search-viz/800/600",
-        vizHint: "abstract data visualization prism",
+        visualizations: [
+            { src: "https://picsum.photos/seed/search-ui/800/600", hint: "real estate search results page" },
+            { src: "https://picsum.photos/seed/search-map/800/600", hint: "map view with property pins" },
+            { src: "https://picsum.photos/seed/search-analytics/800/600", hint: "data analytics dashboard graph" },
+        ],
     },
     {
         name: "ESTCHAT X3",
         slug: "estchat-x3",
         icon: <MessageCircle className="h-8 w-8" />,
         description: "The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.",
-        visualization: "https://picsum.photos/seed/estchat-viz/800/600",
-        vizHint: "modern chat interface bubbles",
+        visualizations: [
+            { src: "https://picsum.photos/seed/chat-widget/800/600", hint: "modern website chat widget" },
+            { src: "https://picsum.photos/seed/chat-ig/800/600", hint: "instagram direct message interface" },
+            { src: "https://picsum.photos/seed/chat-crm/800/600", hint: "crm dashboard with chat logs" },
+        ],
     },
     {
         name: "MEGA LISTING PRO 2",
         slug: "mega-listing-pro-2",
         icon: <FileJson className="h-8 w-8" />,
         description: "The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.",
-        visualization: "https://picsum.photos/seed/mega-listing-viz/800/600",
-        vizHint: "network globe data nodes",
+        visualizations: [
+            { src: "https://picsum.photos/seed/listing-grid/800/600", hint: "grid of property listings" },
+            { src: "https://picsum.photos/seed/listing-dupe/800/600", hint: "duplicate detection interface" },
+            { src: "https://picsum.photos/seed/listing-archive/800/600", hint: "data archive historical records" },
+        ],
     },
 ];
 
@@ -203,9 +213,23 @@ export default function HomePage() {
                                <CardDescription>{pillar.description}</CardDescription>
                            </CardHeader>
                            <CardContent className="flex-grow flex flex-col justify-end">
-                                <div className="aspect-video relative rounded-md overflow-hidden border">
-                                    <Image src={pillar.visualization} alt={`${pillar.name} visualization`} layout="fill" objectFit="cover" data-ai-hint={pillar.vizHint} />
-                                </div>
+                                <Carousel className="w-full max-w-xs mx-auto">
+                                    <CarouselContent>
+                                        {pillar.visualizations.map((vis, index) => (
+                                            <CarouselItem key={index}>
+                                                <div className="p-1">
+                                                    <Card>
+                                                        <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
+                                                            <Image src={vis.src} alt={`${pillar.name} visualization ${index + 1}`} layout="fill" objectFit="cover" data-ai-hint={vis.hint} />
+                                                        </CardContent>
+                                                    </Card>
+                                                </div>
+                                            </CarouselItem>
+                                        ))}
+                                    </CarouselContent>
+                                    <CarouselPrevious className="left-2" />
+                                    <CarouselNext className="right-2" />
+                                </Carousel>
                                <Link href={`/products/${pillar.slug}`} className="mt-4">
                                    <Button variant="outline" className="w-full">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
                                </Link>
