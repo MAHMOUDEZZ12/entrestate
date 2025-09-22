@@ -25,7 +25,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/community/academy',
     '/community/roadmap',
     '/community/documentation',
-    '/discover',
     '/technology',
     '/resources/flows',
     '/products/estchat-x3',
