@@ -115,20 +115,16 @@ export default function HomePage() {
         </section>
 
         <section id="pillars" className="py-20 md:py-32 bg-muted/30">
-            <div className="container mx-auto px-4 space-y-24 relative">
-                 <div className="absolute top-0 left-1/2 -ml-px h-full w-0.5 bg-gradient-to-b from-primary/20 via-accent/20 to-primary/20 hidden md:block" />
-
-                 <div className="text-center relative z-10">
-                     <div className="inline-block p-4 bg-background rounded-2xl border">
-                        <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Our Core Product Pillars</h2>
-                        <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                            Three powerful, interconnected systems that form the foundation of our AI-native ecosystem.
-                        </p>
-                    </div>
+            <div className="container mx-auto px-4 space-y-20">
+                 <div className="text-center">
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Our Core Product Pillars</h2>
+                    <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                        Three powerful, interconnected systems that form the foundation of our AI-native ecosystem.
+                    </p>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
-                   <div className="space-y-4 text-center md:text-left md:pr-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                   <div className="space-y-4 text-center md:text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Telescope className="h-8 w-8" /></div>
                        <h3 className="text-3xl font-bold font-heading">PRO SEARCH ENG. x3</h3>
                        <p className="text-lg text-muted-foreground">The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.</p>
@@ -154,8 +150,8 @@ export default function HomePage() {
                    </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
-                    <div className="space-y-4 text-center md:text-left md:order-2 md:pl-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div className="space-y-4 text-center md:text-left md:order-2">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><MessageCircle className="h-8 w-8" /></div>
                        <h3 className="text-3xl font-bold font-heading">ESTCHAT X3</h3>
                        <p className="text-lg text-muted-foreground">The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.</p>
@@ -185,8 +181,8 @@ export default function HomePage() {
                    </div>
                 </div>
 
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
-                    <div className="space-y-4 text-center md:text-left md:pr-12">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div className="space-y-4 text-center md:text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><FileJson className="h-8 w-8" /></div>
                        <h3 className="text-3xl font-bold font-heading">MEGA LISTING PRO 2</h3>
                        <p className="text-lg text-muted-foreground">The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.</p>
