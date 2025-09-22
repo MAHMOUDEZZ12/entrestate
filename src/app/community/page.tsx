@@ -7,8 +7,8 @@ import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
 import { ArrowRight, BookOpen, GitFork, Users2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { LandingHeader } from '../landing-header';
-import { LandingFooter } from '../landing-footer';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 const communityLinks = [
   {

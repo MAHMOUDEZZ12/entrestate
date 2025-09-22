@@ -43,14 +43,6 @@ const runToolSchema = z.object({
   payload: z.any(),
 });
 
-// A specific flow for the market chatbot
-const marketChatAssistantFlow = async (payload: { message: string }) => {
-    const { output } = await ai.generate({
-        prompt: `You are a friendly and knowledgeable real estate market expert with over 25 years of experience in the Dubai/UAE area. A user on a website is asking a question. Answer it concisely and helpfully, drawing on your deep market knowledge. User's question: "${payload.message}"`,
-    });
-    return { reply: output?.text! };
-};
-
 
 const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'insta-ads-designer': generateAdFromBrochure,
@@ -81,7 +73,6 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'commission-calculator': (payload) => Promise.resolve(payload),
     'lead-investigator': investigateLead,
     'keyword-planner': generateKeywordPlan,
-    'market-chat-assistant': marketChatAssistantFlow,
     'ai-video-presenter': generateVideoPresenter,
     'discover-engine': discoverEngine,
     'deal-analyzer': dealAnalyzer,

@@ -58,9 +58,9 @@ const ToolPage = () => {
        let fieldSchema: z.ZodTypeAny;
 
         if (field.type === 'number') {
-            fieldSchema = z.string().min(1, `${field.name} is required`).refine(val => !isNaN(Number(val)), { message: "Must be a number" }).transform(Number);
+            fieldSchema = z.string().min(1, `${field.name} is required.`).refine(val => !isNaN(parseFloat(val)), { message: "Must be a valid number." }).transform(Number);
         } else {
-             fieldSchema = z.string().min(1, `${field.name} is required`);
+             fieldSchema = z.string().min(1, `${field.name} is required.`);
         }
       (acc as any)[field.id] = fieldSchema;
       return acc;
@@ -159,7 +159,7 @@ const ToolPage = () => {
             name={field.id as any}
             control={control}
             render={({ field: { onChange, onBlur, value, name, ref } }) => (
-                <Input id={field.id} type={field.type === 'number' ? 'number' : 'text'} placeholder={field.placeholder} onChange={onChange} value={value || ''} onBlur={onBlur} name={name} ref={ref} />
+                <Input id={field.id} type={field.type === 'number' ? 'text' : 'text'} placeholder={field.placeholder} onChange={onChange} value={value || ''} onBlur={onBlur} name={name} ref={ref} />
             )}
             />
         {fieldError && <p className="text-sm text-destructive">{fieldError.message as string}</p>}
