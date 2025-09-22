@@ -123,6 +123,23 @@ export default function HomePage() {
         <section className="py-20 md:py-32">
             <div className="container mx-auto px-4 text-center">
                  <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-6">
+                    <Bot className="h-10 w-10" />
+                 </div>
+                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your AI Co-Pilot</h2>
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                    At the heart of Entrestate is your personal AI assistant. Train it on your data, command it with natural language, and let it run complex workflows for you. It's not an add-on; it's the core of the experience.
+                </p>
+                <div className="mt-8">
+                    <Link href="/dashboard/assistant">
+                        <Button variant="outline" size="lg">Meet Your Co-Pilot <ArrowRight /></Button>
+                    </Link>
+                </div>
+            </div>
+        </section>
+        
+        <section className="py-20 md:py-32 bg-muted/50">
+            <div className="container mx-auto px-4 text-center">
+                 <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-6">
                     <BrainCircuit className="h-10 w-10" />
                  </div>
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Powered by Google AI</h2>
@@ -137,7 +154,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section className="py-20 md:py-32 bg-muted/50">
+        <section className="py-20 md:py-32">
             <div className="container mx-auto px-4 text-center">
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ready to Become a Super Agent?</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
