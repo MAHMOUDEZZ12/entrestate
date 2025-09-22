@@ -13,7 +13,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { ShinyButton } from '@/components/ui/shiny-button';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, useMotionValue, animate } from "framer-motion";
 import { cn } from '@/lib/utils';
 import { MegaListingSimulation } from '@/components/mega-listing-simulation';
 import { EstChatSimulation } from '@/components/est-chat-simulation';
@@ -90,9 +90,9 @@ const personas = [
 
 const flowLibraryExamples = [
     {
-        title: "Full Listing Syndication",
-        description: "Generate a perfect listing description and automatically publish it to both Property Finder and Bayut in one click.",
-        apps: ["Listing Generator", "Property Finder Pilot", "Bayut Pilot"],
+        title: "Multi Projects Brochure",
+        description: "Select multiple properties and generate a beautiful side-by-side comparison PDF for your client.",
+        apps: ["Market Library", "Multi-Offer Builder"],
     },
     {
         title: "Automated Lead Nurturing",
@@ -105,9 +105,9 @@ const flowLibraryExamples = [
         apps: ["Insta Ads Designer", "Audience Creator", "Meta Auto Pilot"],
     },
     {
-        title: "Multi Projects Brochure",
-        description: "Select multiple properties and generate a beautiful side-by-side comparison PDF for your client.",
-        apps: ["Market Library", "Multi-Offer Builder"],
+        title: "Full Listing Syndication",
+        description: "Generate a perfect listing description and automatically publish it to both Property Finder and Bayut in one click.",
+        apps: ["Listing Generator", "Property Finder Pilot", "Bayut Pilot"],
     }
 ];
 
@@ -127,7 +127,55 @@ export default function HomePage() {
   const y3 = useTransform(scrollYProgress, [0.2, 0.9], ["0%", "-15%"]);
   
   const flowSectionRef = React.useRef<HTMLDivElement>(null);
+  const [hoveredCard, setHoveredCard] = React.useState<string | null>(null);
+  const gridRef = React.useRef<HTMLDivElement>(null);
+  const cardRefs = React.useRef<{[key: string]: HTMLDivElement | null}>({});
 
+  const { scrollYProgress: gridScrollYProgress } = useScroll({
+    target: gridRef,
+    offset: ["start end", "end start"],
+  });
+
+  const strokePathLength = useTransform(gridScrollYProgress, [0.3, 0.6], [0, 1]);
+
+  const getPathForCard = (cardKey: string | null) => {
+    if (!cardKey || !gridRef.current || !cardRefs.current[cardKey]) {
+      // Default to outlining the whole grid
+      const gridRect = gridRef.current?.getBoundingClientRect();
+      if (!gridRect) return "M0 0";
+      const padding = 12; // A bit of space around the grid
+      return `M${padding},${padding} H${gridRect.width - padding} V${gridRect.height - padding} H${padding}Z`;
+    }
+
+    const gridBounds = gridRef.current.getBoundingClientRect();
+    const cardBounds = cardRefs.current[cardKey]?.getBoundingClientRect();
+    if (!cardBounds) return "M0 0";
+    
+    const x = cardBounds.left - gridBounds.left - 4;
+    const y = cardBounds.top - gridBounds.top - 4;
+    const width = cardBounds.width + 8;
+    const height = cardBounds.height + 8;
+    
+    return `M${x},${y} h${width} v${height} h-${width} Z`;
+  }
+  
+  const strokePath = useMotionValue(getPathForCard(null));
+
+  React.useEffect(() => {
+    const newPath = getPathForCard(hoveredCard);
+    animate(strokePath, newPath, { duration: 0.3, ease: "easeInOut" });
+  }, [hoveredCard, strokePath]);
+
+  React.useEffect(() => {
+    // Ensure the default path is set on mount
+    const handleResize = () => {
+        const defaultPath = getPathForCard(null);
+        strokePath.set(defaultPath);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [strokePath]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -285,6 +333,7 @@ Name a project, and click "list it" - this is literally how it works.
                                     whileInView={{ opacity: 1, y: 0 }}
                                     transition={{ duration: 0.5, delay: index * 0.1 }}
                                     viewport={{ once: true, amount: 0.3 }}
+                                    className="h-full"
                                 >
                                 <Card className="text-left bg-card/80 backdrop-blur-sm border h-full flex flex-col shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10">
                                     <CardHeader>
@@ -335,33 +384,62 @@ Name a project, and click "list it" - this is literally how it works.
                         className="absolute bottom-full left-1/2 -translate-x-1/2 h-16 w-px"
                         style={{ background: 'linear-gradient(to top, hsl(var(--primary)), transparent)'}}
                     />
+                    
+                    <div ref={gridRef} className="relative max-w-6xl mx-auto">
+                        <svg className="absolute inset-0 w-full h-full" style={{ pointerEvents: 'none' }}>
+                            <motion.path
+                                d={getPathForCard(null)}
+                                fill="none"
+                                stroke="hsl(var(--primary))"
+                                strokeWidth="2"
+                                strokeOpacity="0.3"
+                                initial={{ pathLength: 0 }}
+                                style={{ pathLength: strokePathLength }}
+                            />
+                            <motion.path
+                                d={strokePath}
+                                fill="none"
+                                stroke="hsl(var(--primary))"
+                                strokeWidth="2.5"
+                                strokeLinecap="round"
+                            />
+                        </svg>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                        {flowLibraryExamples.map(flow => {
-                            const flowApps = flow.apps.map(appName => tools.find(t => t.title === appName)).filter(Boolean);
-                            return (
-                                <Card key={flow.title} className="text-left bg-card/80 backdrop-blur-lg border border-border/20 h-full flex flex-col hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
-                                    <CardHeader>
-                                        <CardTitle className="text-lg">{flow.title}</CardTitle>
-                                    </CardHeader>
-                                    <CardContent className="flex-grow">
-                                        <p className="text-sm text-muted-foreground">{flow.description}</p>
-                                    </CardContent>
-                                    <CardFooter>
-                                        <div className="flex items-center gap-2">
-                                            {flowApps.map((app, index) => app && (
-                                                <React.Fragment key={app.id}>
-                                                    <div className="p-2 rounded-full bg-muted">
-                                                        {React.cloneElement(app.icon, { className: 'h-4 w-4 text-muted-foreground' })}
-                                                    </div>
-                                                    {index < flowApps.length - 1 && <Plus className="h-4 w-4 text-muted-foreground" />}
-                                                </React.Fragment>
-                                            ))}
-                                        </div>
-                                    </CardFooter>
-                                </Card>
-                            )
-                        })}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            {flowLibraryExamples.map(flow => {
+                                const flowApps = flow.apps.map(appName => tools.find(t => t.title === appName)).filter(Boolean);
+                                return (
+                                    <div
+                                        key={flow.title}
+                                        ref={el => cardRefs.current[flow.title] = el}
+                                        onMouseEnter={() => setHoveredCard(flow.title)}
+                                        onMouseLeave={() => setHoveredCard(null)}
+                                        className="relative z-10"
+                                    >
+                                        <Card className="text-left bg-card/80 backdrop-blur-lg border border-border/20 h-full flex flex-col hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
+                                            <CardHeader>
+                                                <CardTitle className="text-lg">{flow.title}</CardTitle>
+                                            </CardHeader>
+                                            <CardContent className="flex-grow">
+                                                <p className="text-sm text-muted-foreground">{flow.description}</p>
+                                            </CardContent>
+                                            <CardFooter>
+                                                <div className="flex items-center gap-2">
+                                                    {flowApps.map((app, index) => app && (
+                                                        <React.Fragment key={app.id}>
+                                                            <div className="p-2 rounded-full bg-muted">
+                                                                {React.cloneElement(app.icon, { className: 'h-4 w-4 text-muted-foreground' })}
+                                                            </div>
+                                                            {index < flowApps.length - 1 && <Plus className="h-4 w-4 text-muted-foreground" />}
+                                                        </React.Fragment>
+                                                    ))}
+                                                </div>
+                                            </CardFooter>
+                                        </Card>
+                                    </div>
+                                )
+                            })}
+                        </div>
                     </div>
                     
                     <div className="mt-16">
@@ -389,6 +467,7 @@ Name a project, and click "list it" - this is literally how it works.
                           whileInView={{ opacity: 1, y: 0 }}
                           transition={{ duration: 0.5, delay: index * 0.1 }}
                           viewport={{ once: true, amount: 0.3 }}
+                          className="h-full"
                         >
                           <Card className="text-center bg-card flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10 h-full">
                               <CardHeader className="items-center">
