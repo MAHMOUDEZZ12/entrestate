@@ -55,6 +55,14 @@ const GenerateLandingPageInputSchema = z.object({
       "A project brochure, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
   /**
+   * An optional custom domain for the landing page.
+   */
+  customDomain: z.string().optional().describe('The custom domain for the landing page (e.g., my-awesome-project.com).'),
+   /**
+   * An optional path for the landing page URL.
+   */
+  path: z.string().optional().describe('The path for the landing page URL (e.g., /exclusive-offer).'),
+  /**
    * A flag to indicate if we should only generate headline strategies.
    */
   generateHeadlinesOnly: z.boolean().optional().describe('If true, only generate headline strategies.'),
@@ -82,6 +90,10 @@ const GenerateLandingPageOutputSchema = z.object({
     .string()
     .optional()
     .describe('The generated HTML content for the landing page.'),
+   /**
+   * The final URL for the published page.
+   */
+  publishUrl: z.string().optional().describe('The final URL for the published page.'),
   /**
    * A list of suggested headline strategies.
    */
@@ -133,6 +145,10 @@ const landingPagePrompt = ai.definePrompt({
   **Project Details:**
   - Project Name: {{{projectName}}}
   - Offer Details: {{{projectDetails}}}
+  - Domain: {{#if customDomain}}{{{customDomain}}}{{else}}Not specified{{/if}}
+  - Path: {{#if path}}{{{path}}}{{else}}/{{/if}}
+  
+  **Branding & Content:**
   - Branding Style(s): {{{brandingStyle}}}
   - Desired Page Structure: Create a page with {{{numberOfSections}}} main sections.
   {{#if projectBrochureDataUri}}
@@ -146,17 +162,18 @@ const landingPagePrompt = ai.definePrompt({
   **Instructions:**
 
   1.  **HTML Structure:** Create a full HTML5 document structure (\`<!DOCTYPE html>\`, \`<html>\`, \`<head>\`, \`<body>\`).
-  2.  **Tailwind CSS:** Use the Tailwind CSS CDN script in the \`<head>\` for styling. Do not use any other CSS frameworks or custom CSS. \`<script src="https://cdn.tailwindcss.com"></script>\`
-  3.  **Hero Section:** Create a visually impressive hero section using a high-quality placeholder image from picsum.photos as the background. It must feature the chosen **Headline** and **Call-to-Action**.
-  4.  **Content Sections:** Based on the 'numberOfSections' parameter, build out the page.
+  2.  **SEO & Metadata**: In the \`<head>\`, include a compelling \`<title>\` tag and relevant meta tags (description, og:title, og:description) based on the project name, details, and domain.
+  3.  **Tailwind CSS:** Use the Tailwind CSS CDN script in the \`<head>\` for styling. Do not use any other CSS frameworks or custom CSS. \`<script src="https://cdn.tailwindcss.com"></script>\`
+  4.  **Hero Section:** Create a visually impressive hero section using a high-quality placeholder image from picsum.photos as the background. It must feature the chosen **Headline** and **Call-to-Action**.
+  5.  **Content Sections:** Based on the 'numberOfSections' parameter, build out the page.
       - If 2 sections: Hero + Lead Capture Form.
       - If 3 sections: Hero + Key Features + Lead Capture Form.
       - If 4 sections: Hero + Key Features + Gallery + Lead Capture Form.
       - If 5 sections: Hero + Key Features + Gallery + Location/Map + Lead Capture Form.
       - Use placeholder images from picsum.photos for the gallery and other sections.
-  5.  **Lead Capture Form:** This is critical. Include a prominent lead capture form with fields for Name, Email, and Phone Number, and a clear "Register Your Interest" button.
-  6.  **Branding:** Ensure the overall design (colors, fonts) reflects the specified 'Branding Style(s)'. If multiple styles are provided, blend them intelligently (e.g., Modern structure with Luxury accents).
-  7.  **Output:** Return ONLY the complete, raw HTML code for the landing page in the landingPageHtml field. Do not include any explanations, markdown, or other text outside of the HTML itself.
+  6.  **Lead Capture Form:** This is critical. Include a prominent lead capture form with fields for Name, Email, and Phone Number, and a clear "Register Your Interest" button.
+  7.  **Branding:** Ensure the overall design (colors, fonts) reflects the specified 'Branding Style(s)'. If multiple styles are provided, blend them intelligently (e.g., Modern structure with Luxury accents).
+  8.  **Output:** Return ONLY the complete, raw HTML code for the landing page in the landingPageHtml field. Do not include any explanations, markdown, or other text outside of the HTML itself.
   `,
 });
 
@@ -176,10 +193,17 @@ const generateLandingPageFlow = ai.defineFlow(
     }
 
     const {output} = await landingPagePrompt(input);
-    if (!output) {
+    if (!output || !output.landingPageHtml) {
       throw new Error('Failed to generate landing page HTML.');
     }
+
+    const domain = input.customDomain || 'example.com';
+    const path = input.path || '';
+    const publishUrl = `https://${domain}${path}`;
     
-    return output;
+    return {
+        landingPageHtml: output.landingPageHtml,
+        publishUrl: publishUrl,
+    };
   }
 );

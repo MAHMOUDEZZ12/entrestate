@@ -425,7 +425,7 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                 </div>
             );
             break;
-        case 'pdf-editor':
+        case 'pdf-editor-ai':
              tool.creationFields = [
                 { id: 'sourcePdf', name: 'Source PDF', type: 'file', description: 'Upload the PDF you want to edit.' },
                 { id: 'editInstructions', name: 'Editing Instructions', type: 'textarea', placeholder: 'e.g., "Change the main title to \'Luxury Living in Dubai\'. Replace the logo on page 1. Swap the image on page 3 with the new one I uploaded."', description: 'Describe the changes you want to make.' },
@@ -433,10 +433,12 @@ export const tools: Feature[] = mergeToolData().map(tool => {
             ];
             tool.renderResult = (result, toast) => (
                  <div className="space-y-4">
-                    <h3 className="font-semibold">Execution Plan Summary:</h3>
-                    <p className="p-4 bg-muted rounded-md text-sm">{result.summary}</p>
-                    <h3 className="font-semibold">Steps to be Executed:</h3>
-                     <ul className="space-y-2">
+                    <Alert>
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>Execution Plan Generated</AlertTitle>
+                        <AlertDescription>The AI has created a plan. Review the steps below and click "Execute Plan" to apply the changes.</AlertDescription>
+                    </Alert>
+                    <ul className="space-y-2">
                         {result.executionPlan.map((step: any, index: number) => (
                             <li key={index} className="p-3 border rounded-lg bg-muted/50 text-sm">
                                 <p><strong>Step {index+1}:</strong> {step.description}</p>
@@ -444,6 +446,7 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                             </li>
                         ))}
                     </ul>
+                    <Button className="w-full" onClick={() => toast({ title: 'Execution Sent!', description: 'The plan is being executed by the backend.'})}>Execute Plan</Button>
                 </div>
             );
             break;
@@ -451,15 +454,31 @@ export const tools: Feature[] = mergeToolData().map(tool => {
             tool.creationFields = [
                 { id: 'projectName', name: 'Project Name', type: 'text', placeholder: 'e.g., Emaar Beachfront' },
                 { id: 'projectDetails', name: 'Project/Offer Details', type: 'textarea', placeholder: 'e.g., Luxury 2-bedroom apartments with sea view, 10% down payment' },
+                { id: 'group-header-1', name: 'Branding & Layout', type: 'group-header' },
                 { id: 'brandingStyle', name: 'Branding Style', type: 'select', options: ['Modern & Minimalist', 'Luxury & Elegant', 'Bold & Vibrant', 'Calm & Natural'] },
                 { id: 'numberOfSections', name: 'Number of Sections', type: 'select', options: ['2', '3', '4', '5'] },
                 { id: 'projectBrochureDataUri', name: 'Upload Brochure (Optional)', type: 'file' },
+                { id: 'group-header-2', name: 'Domain & URL', type: 'group-header' },
+                { id: 'customDomain', name: 'Custom Domain (Optional)', type: 'text', placeholder: 'e.g., my-awesome-project.com' },
+                { id: 'path', name: 'URL Path (Optional)', type: 'text', placeholder: 'e.g., /exclusive-offer' },
             ];
             tool.renderResult = (result, toast) => (
                  <div>
+                    {result.publishUrl &&
+                        <div className="mb-4">
+                             <h3 className="font-semibold mb-2">Publish URL:</h3>
+                            <a href={result.publishUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline flex items-center gap-2">
+                               {result.publishUrl} <LinkIcon className="h-4 w-4" />
+                            </a>
+                        </div>
+                    }
                     <h3 className="font-semibold mb-2">Generated Landing Page HTML:</h3>
-                    <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap max-h-96 overflow-auto">{result.landingPageHtml}</pre>
-                    <Button className="mt-2" onClick={() => copyToClipboard(result.landingPageHtml, toast)}><Copy className="mr-2"/> Copy HTML</Button>
+                    <div className="relative">
+                        <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap max-h-96 overflow-auto">{result.landingPageHtml}</pre>
+                        <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => copyToClipboard(result.landingPageHtml, toast)}>
+                            <Copy className="h-4 w-4"/>
+                        </Button>
+                    </div>
                 </div>
             );
             break;
