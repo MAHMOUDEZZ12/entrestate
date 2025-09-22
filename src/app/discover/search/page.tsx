@@ -21,7 +21,7 @@ function SearchResultsComponent() {
             icon={<Search className="h-8 w-8" />}
         />
         <div className="mt-8">
-            <DiscoverSearch />
+            <DiscoverSearch query={query} />
         </div>
     </div>
   );
