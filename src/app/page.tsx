@@ -16,7 +16,6 @@ import { Badge } from '@/components/ui/badge';
 import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from '@/lib/utils';
 import { MegaListingSimulation } from '@/components/mega-listing-simulation';
-import { ProSearchSimulation } from '@/components/pro-search-simulation';
 import { EstChatSimulation } from '@/components/est-chat-simulation';
 import { FlowSimulation } from '@/components/flow-simulation';
 
@@ -177,18 +176,37 @@ export default function HomePage() {
                        <h3 className="text-3xl font-bold font-heading">
                           <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">PRO SEARCH ENG. x3</span>
                        </h3>
-                       <p className="text-2xl font-semibold !leading-tight">We turned the untouched search bar into unmatched search engine</p>
-                        <p className="text-lg text-muted-foreground">
-                            This model switch the life on you website.<br/>
-                            We added a decentralized market libirary to it.<br/>
-                            try our discovery search to see how it works!
+                       <p className="text-2xl font-semibold !leading-tight">We turned the untouched search bar into an unmatched search engine.</p>
+                        <p className="text-lg text-muted-foreground whitespace-pre-line">
+                            This model switches the life on your website.
+We added a decentralized market library to it.
+Try our discovery search to see how it works!
                        </p>
-                       <Link href={`/products/pro-search-eng-x3`}>
+                       <Link href="/discover/search">
                            <Button variant="outline" className="mt-6 shadow">let's Go <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                    <div>
-                       <ProSearchSimulation />
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Three Engines in One</CardTitle>
+                                <CardDescription>Our search goes beyond keywords, offering layers of discovery for every need.</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-4">
+                                <div>
+                                    <h4 className="font-semibold">Fast Search</h4>
+                                    <p className="text-sm text-muted-foreground">Instant, keyword-driven results for quick lookups.</p>
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold">Smart Search</h4>
+                                    <p className="text-sm text-muted-foreground">AI-powered semantic search that understands intent and context.</p>
+                                </div>
+                                <div>
+                                    <h4 className="font-semibold">Deep Search</h4>
+                                    <p className="text-sm text-muted-foreground">Historical and predictive analytics for true market intelligence.</p>
+                                </div>
+                            </CardContent>
+                        </Card>
                    </div>
                 </div>
 
@@ -199,10 +217,10 @@ export default function HomePage() {
                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">ESTCHAT X3</span>
                         </h3>
                        <p className="text-2xl font-semibold !leading-tight">The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.</p>
-                       <p className="text-lg text-muted-foreground">
-                            Imagine hiring a super agent with 15 years market experience<br/>
-                            He knows everything and come with a learning dashboad<br/>
-                            Use it in social media, Landing pages, company site, or QR code on businesscard
+                       <p className="text-lg text-muted-foreground whitespace-pre-line">
+                            Imagine hiring a super agent with 15 years market experience.
+He knows everything and comes with a learning dashboard.
+Use it in social media, Landing pages, company site, or QR code on businesscard.
                        </p>
                        <Link href={`/products/estchat-x3`}>
                            <Button variant="outline" className="mt-6 shadow">Name your SuperAgent <ArrowRight className="ml-2 h-4 w-4"/></Button>
@@ -219,22 +237,18 @@ export default function HomePage() {
                         <h3 className="text-3xl font-bold font-heading">
                             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">MEGA LISTING PRO 2</span>
                         </h3>
-                        <p className="text-2xl font-semibold !leading-tight">From Listings to MEGA PRO Listings</p>
-                       <p className="text-lg text-muted-foreground">
-                            You don’t need more listings, you need a perfect listing manager<br/>
-                            Listing is a little far byond a good images, It’s a word sensitive <br/>
-                            and require not less than a stock market attention<br/>
-                            name a project, and click list it this is litterly how it works.
+                        <p className="text-2xl font-semibold !leading-tight">From Listings to MEGA PRO Listings.</p>
+                       <p className="text-lg text-muted-foreground whitespace-pre-line">
+                            You don’t need more listings, you need a perfect listing manager.
+Listing is a little far beyond good images, It’s word sensitive
+and requires not less than stock market attention.
+Name a project, and click "list it" - this is literally how it works.
                        </p>
                        <Link href={`/products/mega-listing-pro-2`}>
                            <Button variant="outline" className="mt-6 shadow">Use it to stop blaming Portals <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                     <div>
-                        <div className="text-left mb-4">
-                            <h4 className="text-lg font-semibold">Project Overview</h4>
-                            <p className="text-sm text-muted-foreground">The AI engine consolidates messy, duplicate listings from multiple portals into one verified, perfect source of truth.</p>
-                        </div>
                         <MegaListingSimulation />
                    </div>
                 </div>
