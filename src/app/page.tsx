@@ -58,7 +58,7 @@ const productPillars = [
         icon: <Telescope className="h-8 w-8" />,
         description: "The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.",
         visual: (
-            <Carousel className="w-full max-w-xs mx-auto">
+            <Carousel className="w-full max-w-sm mx-auto">
                 <CarouselContent>
                     <CarouselItem>
                         <div className="p-1">
@@ -92,8 +92,8 @@ const productPillars = [
         icon: <MessageCircle className="h-8 w-8" />,
         description: "The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.",
          visual: (
-            <div className="w-full max-w-xs mx-auto p-1">
-                 <Card className="h-[208px] flex flex-col">
+            <div className="w-full max-w-sm mx-auto p-1">
+                 <Card className="h-[208px] sm:h-[238px] flex flex-col bg-muted/30">
                     <CardHeader className="p-3 border-b flex-row items-center justify-between space-y-0">
                         <div className="flex items-center gap-2">
                              <div className="relative">
@@ -105,7 +105,7 @@ const productPillars = [
                          <Badge variant="secondary">In-Use</Badge>
                     </CardHeader>
                     <CardContent className="p-3 flex-1 flex flex-col gap-2 justify-end">
-                       <ChatBubble className="bg-muted self-start">Hi! I'm looking for a 2BR villa in Dubai Hills.</ChatBubble>
+                       <ChatBubble className="bg-card self-start">Hi! I'm looking for a 2BR villa in Dubai Hills.</ChatBubble>
                        <ChatBubble className="bg-primary text-primary-foreground self-end">I have 3 top options for you. Would you like to see the comparison?</ChatBubble>
                     </CardContent>
                 </Card>
@@ -118,7 +118,7 @@ const productPillars = [
         icon: <FileJson className="h-8 w-8" />,
         description: "The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.",
         visual: (
-             <Carousel className="w-full max-w-xs mx-auto">
+             <Carousel className="w-full max-w-sm mx-auto">
                 <CarouselContent>
                     <CarouselItem>
                         <div className="p-1">
@@ -206,10 +206,7 @@ export default function HomePage() {
       <LandingHeader />
       <main className="flex-1 w-full">
         {/* New Hero Section */}
-        <section className="relative flex h-[calc(100vh-4rem)] w-full items-center justify-center overflow-hidden border-b">
-          <div className="absolute inset-0 z-0 bg-gradient-to-br from-background via-primary/5 to-background">
-             {/* Subtle background visuals can go here */}
-          </div>
+        <section className="relative flex h-[calc(100vh-4rem)] w-full items-center justify-center overflow-hidden border-b bg-gradient-to-br from-background via-primary/5 to-background">
           <div className="relative z-10 container mx-auto px-4 text-center">
             <div className="flex flex-col items-center">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading tracking-tighter leading-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
@@ -237,7 +234,7 @@ export default function HomePage() {
           </div>
         </section>
         
-        <section id="products" className="py-20 md:py-32 text-center bg-muted/50">
+        <section id="products" className="py-20 md:py-32 text-center bg-background">
            <div className="container mx-auto px-4">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">The Entrestate Flywheel</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -245,7 +242,7 @@ export default function HomePage() {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
                    {products.map((product) => (
-                       <Card key={product.name} className="text-left hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all">
+                       <Card key={product.name} className="text-left hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all bg-card/50">
                            <CardHeader>
                                <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-3">{product.icon}</div>
                                <CardTitle>{product.name}</CardTitle>
@@ -262,33 +259,33 @@ export default function HomePage() {
            </div>
         </section>
         
-        <section id="pillars" className="py-20 md:py-32">
-            <div className="container mx-auto px-4 text-center">
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Our Core Product Pillars</h2>
-                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    Three powerful, interconnected systems that form the foundation of our AI-native ecosystem.
-                </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-                   {productPillars.map((pillar) => (
-                       <Card key={pillar.name} className="text-left hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all flex flex-col group">
-                           <CardHeader>
-                               <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-3">{pillar.icon}</div>
-                               <CardTitle>{pillar.name}</CardTitle>
-                               <CardDescription>{pillar.description}</CardDescription>
-                           </CardHeader>
-                           <CardContent className="flex-grow flex flex-col justify-end">
-                                {pillar.visual}
-                               <Link href={`/products/${pillar.slug}`} className="mt-4">
-                                   <Button variant="outline" className="w-full">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
-                               </Link>
-                           </CardContent>
-                       </Card>
-                   ))}
+        <section id="pillars" className="py-20 md:py-32 bg-muted/30">
+            <div className="container mx-auto px-4 space-y-16">
+                 <div className="text-center">
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Our Core Product Pillars</h2>
+                    <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                        Three powerful, interconnected systems that form the foundation of our AI-native ecosystem.
+                    </p>
                 </div>
+                {productPillars.map((pillar, index) => (
+                   <div key={pillar.name} className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                       <div className={cn("space-y-4", index % 2 !== 0 && "md:order-2")}>
+                           <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit">{pillar.icon}</div>
+                           <h3 className="text-3xl font-bold font-heading">{pillar.name}</h3>
+                           <p className="text-lg text-muted-foreground">{pillar.description}</p>
+                           <Link href={`/products/${pillar.slug}`}>
+                               <Button variant="outline">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                           </Link>
+                       </div>
+                       <div className={cn(index % 2 !== 0 && "md:order-1")}>
+                           {pillar.visual}
+                       </div>
+                   </div>
+               ))}
             </div>
         </section>
 
-        <section id="how-it-works" className="py-20 md:py-32 bg-muted/50">
+        <section id="how-it-works" className="py-20 md:py-32 bg-background">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Path to a 10x Workflow</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -311,7 +308,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section className="py-20 md:py-32">
+        <section className="py-20 md:py-32 bg-muted/30">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">An Operating System for Every Role</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -319,7 +316,7 @@ export default function HomePage() {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
                    {personas.map((persona) => (
-                       <Card key={persona.title} className="text-center bg-card/50 flex flex-col">
+                       <Card key={persona.title} className="text-center bg-card flex flex-col">
                            <CardHeader className="items-center">
                                <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-3">{persona.icon}</div>
                                <CardTitle>{persona.title}</CardTitle>
