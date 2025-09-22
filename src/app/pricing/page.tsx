@@ -312,7 +312,7 @@ export default function PricingPage() {
               </div>
             </CardContent>
             <CardFooter>
-              <Link href="/signup" className="w-full">
+              <Link href="/login" className="w-full">
                 <Button size="lg" className="w-full" disabled={selectedApps.length === 0}>
                   {isProSelected ? 'Get Full Access To All The APPS' : `Get ${selectedApps.length > 0 ? selectedApps.length : ''} App(s)`}
                 </Button>

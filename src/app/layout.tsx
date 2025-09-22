@@ -1,4 +1,3 @@
-
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster";
 import './globals.css';
@@ -6,7 +5,7 @@ import { Poppins, PT_Sans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { CookieConsent } from '@/components/cookie-consent';
 import { ThemeProvider } from '@/components/theme-switcher';
-import { AuthProvider } from '@/hooks/useAuth.tsx';
+import { AuthProvider } from '@/hooks/useAuth';
 
 const fontSans = PT_Sans({ 
   subsets: ['latin'],

@@ -1,4 +1,3 @@
-
 import { MetadataRoute } from 'next';
 import { tools } from '@/lib/tools-data';
 import { appDetails } from '@/lib/blog-content';

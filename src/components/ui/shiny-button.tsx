@@ -17,7 +17,7 @@ export const ShinyButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ c
           className
         )}
       >
-        <span className="relative z-10">{props.children}</span>
+        <span className="relative z-10 flex items-center gap-2">{props.children}</span>
         <span
           className={cn(
             "absolute inset-0 block",

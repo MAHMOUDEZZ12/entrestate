@@ -1,4 +1,3 @@
-
 import { auth } from "@/lib/firebase";
 
 export async function track(event: string, props: Record<string, any> = {}) {
