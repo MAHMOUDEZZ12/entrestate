@@ -33,12 +33,9 @@ export const MegaListingSimulation = () => {
         <div 
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="w-full max-w-2xl mx-auto p-0.5 rounded-2xl bg-gradient-to-r from-primary/20 via-accent/20 to-primary/20 shadow-2xl shadow-primary/10 cursor-pointer h-full min-h-[400px]"
+            className="w-full max-w-2xl mx-auto cursor-pointer h-full min-h-[400px]"
         >
-            <div className="bg-card rounded-[15px] h-full">
-                <div className="p-4 border-b">
-                    <h3 className="text-lg font-semibold">MEGA LISTING PRO 2: Simulation</h3>
-                </div>
+            <div className="h-full">
                 <div className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] gap-6 items-center">
                     
                     <div className="relative h-80">
