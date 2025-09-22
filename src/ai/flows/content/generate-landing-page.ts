@@ -5,7 +5,8 @@
  * @fileOverview AI flow to generate a landing page for a specific project based on project details and user branding.
  *
  * This flow generates the HTML for a complete landing page, incorporating project details,
- * user branding preferences, and information from an optional brochure.
+ * user branding preferences, and information from an optional brochure. It also generates
+ * headline and call-to-action strategies in the same call.
  *
  * @export {function} generateLandingPage - The main function to generate a landing page.
  * @export {type} GenerateLandingPageInput - The Zod schema for the input of the generateLandingPage flow.
@@ -60,18 +61,6 @@ export const GenerateLandingPageInputSchema = z.object({
    * An optional path for the landing page URL.
    */
   path: z.string().optional().describe('The path for the landing page URL (e.g., /exclusive-offer).'),
-  /**
-   * A flag to indicate if we should only generate headline strategies.
-   */
-  generateHeadlinesOnly: z.boolean().optional().describe('If true, only generate headline strategies.'),
-  /**
-   * The user's selected headline strategy.
-   */
-  selectedHeadline: z.string().optional().describe('The headline from the user-selected strategy.'),
-  /**
-   * The user's selected call-to-action strategy.
-   */
-  selectedCta: z.string().optional().describe('The call-to-action from the user-selected strategy.'),
 });
 export type GenerateLandingPageInput = z.infer<
   typeof GenerateLandingPageInputSchema
@@ -86,7 +75,6 @@ export const GenerateLandingPageOutputSchema = z.object({
    */
   landingPageHtml: z
     .string()
-    .optional()
     .describe('The generated HTML content for the landing page.'),
    /**
    * The final URL for the published page.
@@ -100,7 +88,7 @@ export const GenerateLandingPageOutputSchema = z.object({
       strategy: z.string().describe('The name of the strategy (e.g., "Urgency Focused").'),
       headline: z.string().describe('The suggested headline.'),
       cta: z.string().describe('The suggested call to action text.'),
-  })).optional(),
+  })).describe("A list of 3-5 distinct headline and CTA strategies."),
 });
 export type GenerateLandingPageOutput = z.infer<
   typeof GenerateLandingPageOutputSchema
@@ -111,7 +99,7 @@ export type GenerateLandingPageOutput = z.infer<
  * This function serves as a wrapper for the underlying Genkit flow.
  *
  * @param {GenerateLandingPageInput} input - The input data for generating the landing page.
- * @returns {Promise<GenerateLandingPageOutput>} A promise that resolves with the generated landing page HTML.
+ * @returns {Promise<GenerateLandingPageOutput>} A promise that resolves with the generated landing page HTML and strategies.
  */
 export async function generateLandingPage(
   input: GenerateLandingPageInput
@@ -119,26 +107,12 @@ export async function generateLandingPage(
   return generateLandingPageFlow(input);
 }
 
-const headlinePrompt = ai.definePrompt({
-    name: 'landingPageHeadlinePrompt',
-    input: { schema: GenerateLandingPageInputSchema },
-    output: { schema: GenerateLandingPageOutputSchema },
-    prompt: `You are an expert real estate marketing strategist. Based on the following project details, generate 3 distinct strategies for the main headline and call-to-action (CTA) for a landing page.
-
-    **Project Details:**
-    - Project Name: {{{projectName}}}
-    - Offer Details: {{{projectDetails}}}
-
-    For each strategy, provide a unique ID, a name (e.g., "Urgency-Focused", "Luxury-Focused", "Benefit-Focused"), a compelling headline, and a clear call-to-action.
-    `,
-});
-
 
 const landingPagePrompt = ai.definePrompt({
   name: 'landingPagePrompt',
   input: {schema: GenerateLandingPageInputSchema },
   output: {schema: GenerateLandingPageOutputSchema},
-  prompt: `You are an expert web developer specializing in high-converting real estate landing pages. Your task is to generate a complete, single-file HTML document using Tailwind CSS for styling.
+  prompt: `You are an expert web developer and marketing strategist specializing in high-converting real estate landing pages. Your task is to generate a complete, single-file HTML document using Tailwind CSS, AND a set of marketing strategies for the page's headline and Call-to-Action (CTA).
 
   **Project Details:**
   - Project Name: {{{projectName}}}
@@ -153,25 +127,20 @@ const landingPagePrompt = ai.definePrompt({
   - Project Brochure: {{media url=projectBrochureDataUri}}
   {{/if}}
 
-  **Chosen Strategy:**
-  - Headline: {{{selectedHeadline}}}
-  - Call-to-Action: {{{selectedCta}}}
-
   **Instructions:**
 
-  1.  **HTML Structure:** Create a full HTML5 document structure (\`<!DOCTYPE html>\`, \`<html>\`, \`<head>\`, \`<body>\`).
-  2.  **SEO & Metadata**: In the \`<head>\`, include a compelling \`<title>\` tag and relevant meta tags (description, og:title, og:description) based on the project name, details, and domain.
-  3.  **Tailwind CSS:** Use the Tailwind CSS CDN script in the \`<head>\` for styling. Do not use any other CSS frameworks or custom CSS. \`<script src="https://cdn.tailwindcss.com"></script>\`
-  4.  **Hero Section:** Create a visually impressive hero section using a high-quality placeholder image from picsum.photos as the background. It must feature the chosen **Headline** and **Call-to-Action**.
-  5.  **Content Sections:** Based on the 'numberOfSections' parameter, build out the page.
-      - If 2 sections: Hero + Lead Capture Form.
-      - If 3 sections: Hero + Key Features + Lead Capture Form.
-      - If 4 sections: Hero + Key Features + Gallery + Lead Capture Form.
-      - If 5 sections: Hero + Key Features + Gallery + Location/Map + Lead Capture Form.
-      - Use placeholder images from picsum.photos for the gallery and other sections.
-  6.  **Lead Capture Form:** This is critical. Include a prominent lead capture form with fields for Name, Email, and Phone Number, and a clear "Register Your Interest" button.
-  7.  **Branding:** Ensure the overall design (colors, fonts) reflects the specified 'Branding Style(s)'. If multiple styles are provided, blend them intelligently (e.g., Modern structure with Luxury accents).
-  8.  **Output:** Return ONLY the complete, raw HTML code for the landingPageHtml field. Do not include any explanations, markdown, or other text outside of the HTML itself.
+  1.  **Generate Headline Strategies (headlineOptions):** First, devise 3 distinct strategies for the main headline and call-to-action (CTA). For each strategy, provide a unique ID, a name (e.g., "Urgency-Focused", "Luxury-Focused", "Benefit-Focused"), a compelling headline, and a clear call-to-action.
+  
+  2.  **Generate Landing Page HTML (landingPageHtml):** Create a full HTML5 document for the landing page. For the hero section, use the *first* headline strategy you generated as the default.
+      -   **HTML Structure:** Create a full HTML5 document structure (\`<!DOCTYPE html>\`, \`<html>\`, \`<head>\`, \`<body>\`).
+      -   **SEO & Metadata**: In the \`<head>\`, include a compelling \`<title>\` tag and relevant meta tags (description, og:title, og:description).
+      -   **Tailwind CSS:** Use the Tailwind CSS CDN script in the \`<head>\` for styling: \`<script src="https://cdn.tailwindcss.com"></script>\`.
+      -   **Hero Section:** Create a visually impressive hero section using a high-quality placeholder image from picsum.photos. It must feature the headline and CTA from your **first** generated strategy.
+      -   **Content Sections:** Based on the 'numberOfSections' parameter, build out the page (Hero, Key Features, Gallery, Location, Lead Form). Use placeholder images from picsum.photos.
+      -   **Lead Capture Form:** This is critical. Include a prominent lead capture form with fields for Name, Email, and Phone Number.
+      -   **Branding:** Ensure the design reflects the specified 'Branding Style(s)'.
+
+  3.  **Output:** Return ONLY the complete JSON object containing both the 'headlineOptions' array and the 'landingPageHtml' string. Do not include any other explanations or markdown.
   `,
 });
 
@@ -182,17 +151,9 @@ const generateLandingPageFlow = ai.defineFlow(
     outputSchema: GenerateLandingPageOutputSchema,
   },
   async input => {
-    if (input.generateHeadlinesOnly) {
-        const { output } = await headlinePrompt(input);
-        if (!output || !output.headlineOptions) {
-            throw new Error('Failed to generate headline strategies.');
-        }
-        return { headlineOptions: output.headlineOptions };
-    }
-
     const {output} = await landingPagePrompt(input);
-    if (!output || !output.landingPageHtml) {
-      throw new Error('Failed to generate landing page HTML.');
+    if (!output || !output.landingPageHtml || !output.headlineOptions) {
+      throw new Error('Failed to generate landing page content and strategies.');
     }
 
     const domain = input.customDomain || 'example.com';
@@ -201,9 +162,10 @@ const generateLandingPageFlow = ai.defineFlow(
     
     return {
         landingPageHtml: output.landingPageHtml,
+        headlineOptions: output.headlineOptions,
         publishUrl: publishUrl,
     };
   }
 );
 
-      
+    

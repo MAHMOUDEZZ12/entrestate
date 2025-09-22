@@ -47,10 +47,9 @@ const ToolPage = () => {
   const [showConfetti, setShowConfetti] = React.useState(false);
   const { toast } = useToast();
   const [filePayload, setFilePayload] = React.useState<Record<string, any>>({});
-
-  // State for landing page strategy selection
-  const [headlineStrategies, setHeadlineStrategies] = React.useState<any[] | null>(null);
-  const [selectedStrategyId, setSelectedStrategyId] = React.useState<string | null>(null);
+  
+  // Specific state for landing page tool to manage live preview
+  const [liveHtml, setLiveHtml] = React.useState<string | null>(null);
 
   React.useEffect(() => {
     const currentTool = clientTools.find((t) => t.id === toolId);
@@ -115,67 +114,9 @@ const ToolPage = () => {
     setIsLoading(true);
     setError(null);
     setResult(null);
+    setLiveHtml(null);
     setShowConfetti(false);
     
-    // Specific logic for landing-pages tool
-    if (toolId === 'landing-pages') {
-      // Step 1: Generate headline strategies
-      if (!headlineStrategies) {
-        try {
-          const payload = { ...data, ...filePayload, generateHeadlinesOnly: true };
-          const response = await fetch('/api/run', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ toolId, payload }),
-          });
-          const responseData = await response.json();
-          if (!response.ok) throw new Error(responseData.error || 'Failed to generate strategies.');
-          setHeadlineStrategies(responseData.headlineOptions);
-          toast({ title: "Strategies Generated", description: "Please select a headline strategy to continue."});
-        } catch (e: any) {
-          setError(e.message || 'An unexpected error occurred.');
-        } finally {
-          setIsLoading(false);
-        }
-        return; // End execution here for step 1
-      }
-
-      // Step 2: Generate the actual page with the selected strategy
-      if (selectedStrategyId) {
-        try {
-            const selectedStrategy = headlineStrategies.find(s => s.id === selectedStrategyId);
-            if (!selectedStrategy) throw new Error("Selected strategy not found.");
-
-            const payload = { 
-                ...data, 
-                ...filePayload, 
-                generateHeadlinesOnly: false,
-                selectedHeadline: selectedStrategy.headline,
-                selectedCta: selectedStrategy.cta,
-            };
-            const response = await fetch('/api/run', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ toolId, payload }),
-            });
-            const responseData = await response.json();
-            if (!response.ok) throw new Error(responseData.error || 'An API error occurred.');
-            
-            setResult(responseData);
-            setShowConfetti(true);
-            setHeadlineStrategies(null); // Reset for next run
-            setSelectedStrategyId(null);
-        } catch (e: any) {
-            setError(e.message);
-        } finally {
-            setIsLoading(false);
-        }
-        return;
-      }
-    }
-
-
-    // Generic logic for all other tools
     try {
         let payload: Record<string, any> = {...data, ...filePayload};
         track('tool_run_started', { toolId });
@@ -193,6 +134,12 @@ const ToolPage = () => {
         }
         
         setResult(responseData);
+
+        // Special handling for landing page live preview
+        if (toolId === 'landing-pages' && responseData.landingPageHtml) {
+            setLiveHtml(responseData.landingPageHtml);
+        }
+
         setShowConfetti(true);
         track('tool_run_succeeded', { toolId });
     } catch (e: any) {
@@ -269,9 +216,91 @@ const ToolPage = () => {
         </div>
     );
   };
+
+  const handleStrategyChange = (headline: string, cta: string) => {
+    if (!liveHtml) return;
+    const doc = new DOMParser().parseFromString(liveHtml, 'text/html');
+    const heroHeadline = doc.querySelector('h1');
+    const heroCta = doc.querySelector('a.cta-button'); // Assuming a CTA button has this class
+
+    if (heroHeadline) {
+      heroHeadline.textContent = headline;
+    }
+    if (heroCta) {
+      heroCta.textContent = cta;
+    }
+    setLiveHtml(doc.documentElement.outerHTML);
+  };
+  
+  const LandingPageResult = ({ result }: { result: any }) => {
+      if (!liveHtml) return null;
+
+      return (
+        <div className="space-y-4">
+          <Alert>
+            <Wand2 className="h-4 w-4" />
+            <AlertTitle>Strategies & Live Preview</AlertTitle>
+            <AlertDescription>
+              Select a strategy to see it update on the live preview below.
+            </AlertDescription>
+          </Alert>
+
+          <RadioGroup
+            onValueChange={(value) => {
+              const [headline, cta] = value.split('||');
+              handleStrategyChange(headline, cta);
+            }}
+            defaultValue={`${result.headlineOptions[0].headline}||${result.headlineOptions[0].cta}`}
+          >
+            {result.headlineOptions.map((strategy: any) => (
+              <Label
+                key={strategy.id}
+                htmlFor={strategy.id}
+                className="block cursor-pointer rounded-lg border p-4 has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+              >
+                <div className="flex items-start gap-4">
+                  <RadioGroupItem
+                    value={`${strategy.headline}||${strategy.cta}`}
+                    id={strategy.id}
+                  />
+                  <div>
+                    <p className="font-bold">
+                      {strategy.strategy}:{' '}
+                      <span className="font-normal">"{strategy.headline}"</span>
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      CTA: "{strategy.cta}"
+                    </p>
+                  </div>
+                </div>
+              </Label>
+            ))}
+          </RadioGroup>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Live Preview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <iframe
+                srcDoc={liveHtml}
+                title="Landing Page Preview"
+                className="h-[600px] w-full rounded-md border"
+              />
+            </CardContent>
+             <CardFooter>
+                 <Button onClick={() => copyToClipboard(liveHtml, toast)}>
+                    <Copy className="mr-2 h-4 w-4" />
+                    Copy HTML
+                 </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      );
+  }
   
   const renderResultContent = () => {
-        if (isLoading && !headlineStrategies) {
+        if (isLoading) {
             return (
                 <div className="flex items-center justify-center h-full text-center text-muted-foreground">
                     <div>
@@ -282,7 +311,7 @@ const ToolPage = () => {
             );
         }
 
-        if (error && !result) {
+        if (error) {
             return (
                 <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
@@ -291,41 +320,28 @@ const ToolPage = () => {
                 </Alert>
             );
         }
-
-        if (headlineStrategies) {
+        
+        if (!result) {
             return (
-                <div className="space-y-4">
-                     <Alert>
-                        <Wand2 className="h-4 w-4" />
-                        <AlertTitle>Step 2: Choose Your Strategy</AlertTitle>
-                        <AlertDescription>The AI has generated several marketing angles. Select one to generate the final landing page.</AlertDescription>
-                    </Alert>
-                    <RadioGroup value={selectedStrategyId || ''} onValueChange={setSelectedStrategyId}>
-                        {headlineStrategies.map(strategy => (
-                            <Label key={strategy.id} htmlFor={strategy.id} className="block p-4 border rounded-lg has-[:checked]:bg-primary/10 has-[:checked]:border-primary cursor-pointer">
-                                <div className="flex items-center gap-4">
-                                <RadioGroupItem value={strategy.id} id={strategy.id} />
-                                <div>
-                                    <p className="font-bold">{strategy.strategy}: <span className="font-normal">"{strategy.headline}"</span></p>
-                                    <p className="text-sm text-muted-foreground">CTA: "{strategy.cta}"</p>
-                                </div>
-                                </div>
-                            </Label>
-                        ))}
-                    </RadioGroup>
+                 <div className="flex items-center justify-center h-full text-center text-muted-foreground">
+                    <p>The AI-generated output will appear here.</p>
                 </div>
-            );
+            )
+        }
+        
+        // Special render for landing pages
+        if (tool.id === 'landing-pages') {
+            return <LandingPageResult result={result} />;
         }
 
-        if (result && tool.renderResult) {
+        if (tool.renderResult) {
             return tool.renderResult(result, toast);
         }
 
+        // Default generic renderer
         return (
-            <div className="flex items-center justify-center h-full text-center text-muted-foreground">
-                <p>The AI-generated output will appear here.</p>
-            </div>
-        )
+            <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap max-h-[70vh] overflow-auto">{JSON.stringify(result, null, 2)}</pre>
+        );
   };
 
 
@@ -343,7 +359,7 @@ const ToolPage = () => {
                     <CardHeader>
                         <CardTitle>Configuration</CardTitle>
                         <CardDescription>
-                            {toolId === 'landing-pages' && !headlineStrategies ? "Step 1: Provide project details for the AI to generate marketing strategies." : "Provide the necessary inputs for the AI."}
+                            Provide the necessary inputs for the AI.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
@@ -352,7 +368,7 @@ const ToolPage = () => {
                         </div>
                     </CardContent>
                     <CardFooter>
-                        <Button type="submit" size="lg" disabled={isLoading || (toolId === 'landing-pages' && headlineStrategies && !selectedStrategyId)}>
+                        <Button type="submit" size="lg" disabled={isLoading}>
                         {isLoading ? (
                             <>
                             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -361,7 +377,7 @@ const ToolPage = () => {
                         ) : (
                              <>
                             <Sparkles className="mr-2 h-5 w-5" />
-                            {toolId === 'landing-pages' && headlineStrategies ? "Generate Landing Page" : tool.cta}
+                            {tool.cta}
                             </>
                         )}
                         </Button>
@@ -386,5 +402,3 @@ const ToolPage = () => {
 export default ToolPage;
 
     
-
-      
