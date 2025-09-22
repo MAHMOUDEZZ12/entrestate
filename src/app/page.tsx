@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
@@ -202,7 +202,7 @@ export default function HomePage() {
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
                    {personas.map((persona) => (
-                       <Card key={persona.title} className="text-center bg-card flex flex-col">
+                       <Card key={persona.title} className="text-center bg-card flex flex-col transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/10">
                            <CardHeader className="items-center">
                                <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-3">{persona.icon}</div>
                                <CardTitle>{persona.title}</CardTitle>
@@ -211,16 +211,16 @@ export default function HomePage() {
                            <CardContent className="flex-grow">
                                 <ul className="text-left space-y-2 text-sm">
                                     {persona.benefits.map(benefit => (
-                                        <li key={benefit} className="flex items-center gap-2">
-                                            <Check className="h-4 w-4 text-green-500" />
+                                        <li key={benefit} className="flex items-start gap-3">
+                                            <Check className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
                                             <span>{benefit}</span>
                                         </li>
                                     ))}
                                 </ul>
                            </CardContent>
-                           <CardContent>
+                           <CardFooter>
                                <Button variant="secondary" className="w-full">Learn More</Button>
-                           </CardContent>
+                           </CardFooter>
                        </Card>
                    ))}
                 </div>
@@ -247,3 +247,5 @@ export default function HomePage() {
     </>
   );
 }
+
+    
