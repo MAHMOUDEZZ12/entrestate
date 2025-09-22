@@ -341,6 +341,22 @@ export default function HomePage() {
             </div>
         </section>
         
+        <section className="py-20 md:py-32 bg-background">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ready to Become a Super Agent?</h2>
+            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+              Train your assistant, explore the apps, and start closing faster today.
+            </p>
+            <div className="mt-8">
+              <Link href="/signup">
+                <ShinyButton>
+                  Start Your Free Trial <ArrowRight />
+                </ShinyButton>
+              </Link>
+            </div>
+          </div>
+        </section>
+
       </main>
       <LandingFooter />
     </>
