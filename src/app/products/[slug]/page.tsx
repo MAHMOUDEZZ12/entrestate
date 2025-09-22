@@ -165,6 +165,7 @@ export default function ProductPage() {
           title={product.title}
           description={product.tagline}
           icon={product.icon}
+          simulation={product.simulation}
         />
         
         <section>
@@ -179,13 +180,6 @@ export default function ProductPage() {
                     </p>
                  </CardContent>
             </Card>
-        </section>
-        
-        <section>
-            <h2 className="text-3xl font-bold text-center mb-8">Product in Action</h2>
-            <div className="flex justify-center">
-                {product.simulation}
-            </div>
         </section>
 
         <section>
