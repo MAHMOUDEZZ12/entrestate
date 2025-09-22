@@ -90,6 +90,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'lease-reviewer': leaseReviewerFlow,
     'chatbot-creator': chatbotCreatorFlow,
     'paypal-transaction': getPaypalTransaction,
+    'prompt-library': (payload) => Promise.resolve({ message: "Executed from library", payload }), // Added for library execution
     'meta-auto-pilot': async (payload) => {
       // The real-time updates are simulated on the client,
       // so this endpoint can just run the whole flow and return the final result.
