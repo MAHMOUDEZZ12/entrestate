@@ -116,7 +116,6 @@ export default function HomePage() {
 
         <section id="pillars" className="py-20 md:py-32 bg-muted/30">
             <div className="container mx-auto px-4 space-y-24 relative">
-                {/* Connecting Line */}
                  <div className="absolute top-0 left-1/2 -ml-px h-full w-0.5 bg-gradient-to-b from-primary/20 via-accent/20 to-primary/20 hidden md:block" />
 
                  <div className="text-center relative z-10">
@@ -128,7 +127,6 @@ export default function HomePage() {
                     </div>
                 </div>
                 
-                {/* Pillar 1: Search */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
                    <div className="space-y-4 text-center md:text-left md:pr-12">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Telescope className="h-8 w-8" /></div>
@@ -149,14 +147,13 @@ export default function HomePage() {
                            </CardHeader>
                            <CardContent className="p-4">
                                 <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center p-4">
-                                   <Image src="https://picsum.photos/seed/jvc-2029-roi/800/600" alt="Search results for JVC 2029 ROI" width={800} height={600} className="rounded" data-ai-hint="predictive analytics chart" />
+                                   <Image src="https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.appspot.com/o/jvc-2029-roi.png?alt=media&token=1d09e53b-e1c8-4734-a212-386f671c504a" alt="Search results for JVC 2029 ROI" width={800} height={600} className="rounded" data-ai-hint="predictive analytics chart" />
                                 </div>
                            </CardContent>
                        </Card>
                    </div>
                 </div>
 
-                {/* Pillar 2: Chat */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
                     <div className="space-y-4 text-center md:text-left md:order-2 md:pl-12">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><MessageCircle className="h-8 w-8" /></div>
@@ -188,7 +185,6 @@ export default function HomePage() {
                    </div>
                 </div>
 
-                {/* Pillar 3: Listing */}
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center relative z-10">
                     <div className="space-y-4 text-center md:text-left md:pr-12">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><FileJson className="h-8 w-8" /></div>
@@ -206,7 +202,7 @@ export default function HomePage() {
                            </CardHeader>
                            <CardContent className="p-4">
                                 <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center p-4 relative">
-                                   <Image src="https://picsum.photos/seed/listing-grid-final/800/600" alt="A preview of a unified property listing" fill className="rounded object-cover" data-ai-hint="property listing grid" />
+                                   <Image src="https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.appspot.com/o/listing-grid-final.png?alt=media&token=42514a34-2e67-4a00-b99b-430c45184288" alt="A preview of a unified property listing" fill className="rounded object-contain" data-ai-hint="property listing grid" />
                                 </div>
                            </CardContent>
                        </Card>
