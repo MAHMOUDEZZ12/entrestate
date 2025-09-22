@@ -10,9 +10,9 @@ import { Building, Waves, Home, Sparkles, TrendingUp } from 'lucide-react';
 
 const FastSearchResult = () => (
     <div className="space-y-2 text-sm">
-        <p className="p-2 bg-muted/50 rounded-md">JVC - Binghatti Crest</p>
-        <p className="p-2 bg-muted/50 rounded-md">JVC - The Cello</p>
-        <p className="p-2 bg-muted/50 rounded-md">JVC - Aykon City</p>
+        <div className="p-2 bg-muted/50 rounded-md flex justify-between"><span>JVC - Binghatti Crest</span> <Badge variant="secondary">Off-Plan</Badge></div>
+        <div className="p-2 bg-muted/50 rounded-md flex justify-between"><span>JVC - The Cello</span><Badge variant="secondary">Off-Plan</Badge></div>
+        <div className="p-2 bg-muted/50 rounded-md flex justify-between"><span>JVC - Aykon City</span><Badge variant="secondary">Ready</Badge></div>
     </div>
 );
 
@@ -35,9 +35,14 @@ const SmartSearchResult = () => (
                     <p className="text-xs text-muted-foreground">Understood you're looking for community-focused villas. Lagoons offers a unique, resort-style living experience.</p>
                 </div>
                 <div className="space-y-2 text-xs border-t pt-3">
-                   <div className="flex justify-between"><span>Status:</span><span className="font-semibold">Active</span></div>
-                   <div className="flex justify-between"><span>Unit Types:</span><span className="font-semibold">Villas, Townhouses</span></div>
-                   <div className="flex justify-between"><span>Key Amenity:</span><span className="font-semibold">Crystal Lagoon</span></div>
+                   <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground flex items-center gap-1"><Waves className="h-3 w-3"/>Key Amenity:</span>
+                        <span className="font-semibold">Crystal Lagoon</span>
+                   </div>
+                   <div className="flex justify-between items-center">
+                        <span className="text-muted-foreground flex items-center gap-1"><Home className="h-3 w-3"/>Unit Types:</span>
+                        <span className="font-semibold">Villas, Townhouses</span>
+                   </div>
                 </div>
             </CardContent>
         </Card>
@@ -81,7 +86,7 @@ export const ProSearchSimulation = () => {
                 <p className="text-xs text-muted-foreground font-mono">"Damac properties lagons"</p>
             </CardHeader>
             <CardContent className="p-3">
-                <Tabs defaultValue="smart" className="w-full">
+                <Tabs defaultValue="deep" className="w-full">
                     <TabsList className="grid w-full grid-cols-3 h-9">
                         <TabsTrigger value="fast" className="text-xs">Fast</TabsTrigger>
                         <TabsTrigger value="smart" className="text-xs">Smart</TabsTrigger>
@@ -92,7 +97,7 @@ export const ProSearchSimulation = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="mt-3"
+                        className="mt-3 min-h-[220px]"
                     >
                         <TabsContent value="fast" className="m-0"><FastSearchResult /></TabsContent>
                         <TabsContent value="smart" className="m-0"><SmartSearchResult /></TabsContent>
