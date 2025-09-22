@@ -79,7 +79,7 @@ export default function DashboardPage() {
   const handleOpenApp = (tool: Feature) => {
     addTab({ href: tool.href, label: tool.title });
     router.push(tool.href);
-    track('app_opened', { toolId: tool.id });
+    // track('app_opened', { toolId: tool.id });
   };
 
   const myApps = React.useMemo(() => {

@@ -10,7 +10,6 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
-  BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
@@ -137,7 +136,7 @@ export function DashboardHeader() {
                             {tab.label}
                         </Link>
                         {openTabs.length > 1 && (
-                            <button onClick={() => removeTab(tab.href)} className="absolute right-1 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10">
+                            <button onClick={(e) => { e.stopPropagation(); removeTab(tab.href); }} className="absolute right-1 top-1/2 -translate-y-1/2 p-0.5 rounded-full hover:bg-black/10 dark:hover:bg-white/10">
                                 <X className="h-3 w-3" />
                                 <span className="sr-only">Close tab</span>
                             </button>

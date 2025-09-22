@@ -57,7 +57,7 @@ export default function MarketingDashboardPage() {
 
   const appsThatNeedPayment: string[] = [
       'rebranding',
-      'pdf-editor',
+      'pdf-editor-ai',
       'landing-pages',
       'investor-matching',
       'market-reports',
