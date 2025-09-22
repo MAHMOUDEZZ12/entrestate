@@ -15,7 +15,7 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'zod';
+import {z} from 'genkit';
 
 /**
  * Defines the schema for the input of the deal analyzer flow.
