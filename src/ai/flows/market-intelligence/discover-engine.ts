@@ -13,6 +13,8 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
+import { vertexAI } from '@genkit-ai/googleai';
+
 
 const DiscoverResultSchema = z.object({
   id: z.string(),
@@ -49,13 +51,17 @@ const discoverEngineFlow = ai.defineFlow(
         const dataStoreId = 'entrestate-kb_1722284949580';
         const dataStore = `projects/${projectId}/locations/global/collections/default_collection/dataStores/${dataStoreId}`;
         
+        // IMPORTANT: Use vertexAI() for datastore/retriever integration.
+        const discoverModel = vertexAI('gemini-1.5-pro-preview');
+
         const response = await ai.generate({
-          model: 'googleai/gemini-1.5-pro-preview',
-          tools: [ai.tool.retriever({ datastore: dataStore })],
+          model: discoverModel,
+          tools: [ai.tool.retriever({ datastore })],
           prompt: query,
         });
-
+        
         const references = response.references();
+        
         if (!references || references.length === 0) {
             return { results: [] };
         }
@@ -79,7 +85,7 @@ const discoverEngineFlow = ai.defineFlow(
 
     } catch (error: any) {
         console.error("Vertex AI Search API Error:", error.message || error);
-        const detail = error.message || 'An unknown error occurred while querying the Discovery Engine.';
+        const detail = error.cause?.message || error.message || 'An unknown error occurred while querying the Discovery Engine.';
         throw new Error(`Failed to query Discovery Engine: ${detail}`);
     }
   }
