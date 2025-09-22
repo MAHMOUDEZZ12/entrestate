@@ -16,7 +16,6 @@ import { ShinyButton } from '@/components/ui/shiny-button';
 import { ProSearchSimulation } from '@/components/pro-search-simulation';
 import { EstChatSimulation } from '@/components/est-chat-simulation';
 import { MegaListingSimulation } from '@/components/mega-listing-simulation';
-import { EbramSimulation } from '@/components/ebram-simulation';
 
 
 const productsData: {[key: string]: any} = {
@@ -147,7 +146,7 @@ const productsData: {[key: string]: any} = {
         { tier: 'Phase 2', description: 'Extend to inheritance and family law.' },
         { tier: 'Phase 3', description: 'Launch as Judicial AI across sectors (beyond real estate).' },
     ],
-    simulation: <EbramSimulation />,
+    simulation: null,
     cta: { text: "Get Started", href: "/login" }
   }
 };
@@ -155,6 +154,11 @@ const productsData: {[key: string]: any} = {
 
 export default function ProductPage() {
   const { slug } = useParams<{ slug: string }>();
+  
+  if (slug === 'ebram-judicial-ai') {
+    notFound();
+  }
+
   const product = productsData[slug];
 
   if (!product) {

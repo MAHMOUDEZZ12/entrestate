@@ -31,7 +31,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/products/estchat-x3',
     '/products/mega-listing-pro-2',
     '/products/pro-search-eng-x3',
-    '/products/ebram-judicial-ai',
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),

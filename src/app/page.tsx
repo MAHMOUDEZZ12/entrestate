@@ -18,7 +18,6 @@ import { cn } from '@/lib/utils';
 import { MegaListingSimulation } from '@/components/mega-listing-simulation';
 import { EstChatSimulation } from '@/components/est-chat-simulation';
 import { FlowSimulation } from '@/components/flow-simulation';
-import { EbramSimulation } from '@/components/ebram-simulation';
 
 
 const ChatBubble = ({ children, className }: { children: React.ReactNode, className?: string }) => (
@@ -253,26 +252,6 @@ Name a project, and click "list it" - this is literally how it works.
                         <MegaListingSimulation />
                     </div>
                 </div>
-                
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-                    <div className="space-y-4 text-left md:order-2">
-                       <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Shield className="h-8 w-8" /></div>
-                        <h3 className="text-3xl font-bold font-heading">
-                           <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">EBRAM JUDICIAL AI</span>
-                        </h3>
-                       <p className="text-2xl font-semibold !leading-tight">The Legal Nervous System. Every real estate system is incomplete without law, enforcement, and permanence.</p>
-                       <p className="text-lg text-muted-foreground whitespace-pre-line">
-                            Markets collapse when contracts are unclear, when disputes drag on, or when property lineage is lost. EBRAM's DNA is legal permanence. Once a property event enters EBRAM, it is undeniable, executable, and archived for 1,000 years.
-                       </p>
-                       <Link href={`/products/ebram-judicial-ai`}>
-                           <Button variant="outline" className="mt-6 shadow">Explore EBRAM <ArrowRight className="ml-2 h-4 w-4"/></Button>
-                       </Link>
-                   </div>
-                   <div className="md:order-1">
-                        <EbramSimulation />
-                   </div>
-                </div>
-
             </div>
         </section>
 
