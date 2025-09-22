@@ -59,38 +59,23 @@ const productPillars = [
         icon: <Telescope className="h-8 w-8" />,
         description: "The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.",
         visual: (
-            <Carousel className="w-full max-w-sm mx-auto">
-                <CarouselContent>
-                    <CarouselItem>
-                        <div className="p-1">
-                            <Card>
-                                <CardHeader>
-                                  <div className="flex items-center gap-2 text-sm text-muted-foreground p-2 bg-muted rounded-md">
-                                    <Search className="h-4 w-4" />
-                                    <span>JVC Area expected rental ROI in 2029</span>
-                                  </div>
-                                </CardHeader>
-                                <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
-                                    <Image src="https://picsum.photos/seed/jvc-2029-roi/800/600" alt="Search results for JVC 2029 ROI" layout="fill" objectFit="cover" data-ai-hint="predictive analytics chart" />
-                                    <Badge className="absolute top-2 right-2">In-Use</Badge>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </CarouselItem>
-                     <CarouselItem>
-                        <div className="p-1">
-                            <Card>
-                                <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
-                                    <Image src="https://picsum.photos/seed/search-map/800/600" alt="Map view of search results" layout="fill" objectFit="cover" data-ai-hint="map view real estate" />
-                                     <Badge className="absolute top-2 right-2">In-Use</Badge>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </CarouselItem>
-                </CarouselContent>
-                <CarouselPrevious className="left-2" />
-                <CarouselNext className="right-2"/>
-            </Carousel>
+            <Card className="w-full max-w-lg mx-auto overflow-hidden">
+                <CardHeader className="p-4 border-b">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground p-2 bg-muted rounded-md">
+                        <Search className="h-4 w-4" />
+                        <span>JVC Area expected rental ROI in 2029</span>
+                    </div>
+                </CardHeader>
+                <CardContent className="p-4">
+                     <div className="flex justify-between items-center mb-3">
+                        <h3 className="font-semibold">Deep Search Results: Predictive Analysis</h3>
+                        <Badge variant="default">In-Use</Badge>
+                     </div>
+                     <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center p-4">
+                        <Image src="https://picsum.photos/seed/jvc-2029-roi/800/600" alt="Search results for JVC 2029 ROI" width={800} height={600} className="rounded" data-ai-hint="predictive analytics chart" />
+                     </div>
+                </CardContent>
+            </Card>
         ),
     },
     {
@@ -99,26 +84,24 @@ const productPillars = [
         icon: <MessageCircle className="h-8 w-8" />,
         description: "The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.",
          visual: (
-            <div className="w-full max-w-sm mx-auto p-1">
-                 <Card className="h-[280px] sm:h-[300px] flex flex-col bg-muted/30">
-                    <CardHeader className="p-3 border-b flex-row items-center justify-between space-y-0">
-                        <div className="flex items-center gap-2">
-                             <div className="relative">
-                                <User className="h-6 w-6 text-muted-foreground" />
-                                <span className="absolute bottom-0 right-0 block h-2 w-2 rounded-full bg-green-500 ring-2 ring-card" />
-                            </div>
-                            <p className="font-semibold text-sm">Live Chat</p>
+             <Card className="w-full max-w-sm mx-auto h-[480px] flex flex-col bg-muted/30">
+                <CardHeader className="p-3 border-b flex-row items-center justify-between space-y-0">
+                    <div className="flex items-center gap-2">
+                         <div className="relative">
+                            <User className="h-6 w-6 text-muted-foreground" />
+                            <span className="absolute bottom-0 right-0 block h-2 w-2 rounded-full bg-green-500 ring-2 ring-card" />
                         </div>
-                         <Badge variant="secondary">In-Use</Badge>
-                    </CardHeader>
-                    <CardContent className="p-3 flex-1 flex flex-col gap-2 justify-end">
-                       <ChatBubble className="bg-card self-start">Hi! I'm looking for a 2BR villa in Dubai Hills.</ChatBubble>
-                       <ChatBubble className="bg-primary text-primary-foreground self-end">I have 3 top options for you. Would you like to see the comparison?</ChatBubble>
-                       <ChatBubble className="bg-card self-start">Yes, please. And what's the typical service charge there?</ChatBubble>
-                       <ChatBubble className="bg-primary text-primary-foreground self-end">Generating comparison... Service charges in Dubai Hills average AED 4-6 per sq. ft. annually.</ChatBubble>
-                    </CardContent>
-                </Card>
-            </div>
+                        <p className="font-semibold text-sm">Live Chat</p>
+                    </div>
+                     <Badge variant="secondary">In-Use</Badge>
+                </CardHeader>
+                <CardContent className="p-3 flex-1 flex flex-col gap-2 justify-end">
+                   <ChatBubble className="bg-card self-start">Hi! I'm looking for a 2BR villa in Dubai Hills.</ChatBubble>
+                   <ChatBubble className="bg-primary text-primary-foreground self-end">I have 3 top options for you. Would you like to see the comparison?</ChatBubble>
+                   <ChatBubble className="bg-card self-start">Yes, please. And what's the typical service charge there?</ChatBubble>
+                   <ChatBubble className="bg-primary text-primary-foreground self-end">Generating comparison... Service charges in Dubai Hills average AED 4-6 per sq. ft. annually.</ChatBubble>
+                </CardContent>
+            </Card>
         ),
     },
     {
@@ -127,42 +110,17 @@ const productPillars = [
         icon: <FileJson className="h-8 w-8" />,
         description: "The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.",
         visual: (
-             <Carousel className="w-full max-w-sm mx-auto">
-                <CarouselContent>
-                    <CarouselItem>
-                        <div className="p-1">
-                            <Card>
-                                <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
-                                    <Image src="https://picsum.photos/seed/listing-form/800/600" alt="A real estate listing data form being filled out" layout="fill" objectFit="cover" data-ai-hint="data form UI" />
-                                    <Badge className="absolute top-2 right-2">In-Use</Badge>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </CarouselItem>
-                     <CarouselItem>
-                        <div className="p-1">
-                            <Card>
-                                <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
-                                    <Image src="https://picsum.photos/seed/listing-preview/800/600" alt="A preview of a property listing" layout="fill" objectFit="cover" data-ai-hint="property listing preview" />
-                                    <Badge className="absolute top-2 right-2">In-Use</Badge>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </CarouselItem>
-                    <CarouselItem>
-                        <div className="p-1">
-                            <Card>
-                                <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
-                                    <Image src="https://picsum.photos/seed/listing-grid-final/800/600" alt="The final listing appearing in a grid of properties" layout="fill" objectFit="cover" data-ai-hint="property grid UI" />
-                                    <Badge className="absolute top-2 right-2">In-Use</Badge>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </CarouselItem>
-                </CarouselContent>
-                <CarouselPrevious className="left-2" />
-                <CarouselNext className="right-2"/>
-            </Carousel>
+             <Card className="w-full max-w-lg mx-auto overflow-hidden">
+                <CardHeader className="p-4 border-b flex justify-between items-center">
+                    <CardTitle className="text-lg">Unified Listing View</CardTitle>
+                    <Badge variant="default">In-Use</Badge>
+                </CardHeader>
+                <CardContent className="p-4">
+                     <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center p-4">
+                        <Image src="https://picsum.photos/seed/listing-preview/800/600" alt="A preview of a property listing" width={800} height={600} className="rounded" data-ai-hint="property listing preview" />
+                     </div>
+                </CardContent>
+            </Card>
         ),
     },
 ];
@@ -279,7 +237,7 @@ export default function HomePage() {
         </section>
         
         <section id="pillars" className="py-20 md:py-32 bg-muted/30">
-            <div className="container mx-auto px-4 space-y-16">
+            <div className="container mx-auto px-4 space-y-24">
                  <div className="text-center">
                     <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Our Core Product Pillars</h2>
                     <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -288,8 +246,8 @@ export default function HomePage() {
                 </div>
                 {productPillars.map((pillar, index) => (
                    <div key={pillar.name} className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
-                       <div className={cn("space-y-4", index % 2 !== 0 && "md:order-2")}>
-                           <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit">{pillar.icon}</div>
+                       <div className={cn("space-y-4 text-center md:text-left", index % 2 !== 0 && "md:order-2")}>
+                           <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block">{pillar.icon}</div>
                            <h3 className="text-3xl font-bold font-heading">{pillar.name}</h3>
                            <p className="text-lg text-muted-foreground">{pillar.description}</p>
                            <Link href={`/products/${pillar.slug}`}>
@@ -358,24 +316,6 @@ export default function HomePage() {
                    ))}
                 </div>
             </div>
-        </section>
-        
-        <section className="py-20 md:py-32 bg-background">
-          <div className="container mx-auto px-4 text-center">
-             <div className="max-w-2xl mx-auto">
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Get Started with the Future of Real Estate</h2>
-                <p className="mt-4 text-lg text-muted-foreground">
-                    Launch your AI co-pilot, explore the app store, and transform your workflow today. No credit card required to start.
-                </p>
-                <div className="mt-8">
-                  <Link href="/signup">
-                    <ShinyButton>
-                      Start Your Free Trial <ArrowRight />
-                    </ShinyButton>
-                  </Link>
-                </div>
-             </div>
-          </div>
         </section>
 
       </main>
