@@ -12,8 +12,8 @@
  */
 
 import { ai } from '@/ai/genkit';
-import { z } from 'zod';
-import { googleAI } from '@genkit-ai/googleai';
+import { z } from 'genkit';
+import { vertexAI } from '@genkit-ai/vertexai';
 
 
 const DiscoverResultSchema = z.object({
@@ -51,7 +51,7 @@ const discoverEngineFlow = ai.defineFlow(
         const dataStoreId = 'entrestate-kb_1722284949580';
         const dataStore = `projects/${projectId}/locations/global/collections/default_collection/dataStores/${dataStoreId}`;
         
-        const llm = googleAI('gemini-1.5-pro-preview');
+        const llm = vertexAI('gemini-1.5-pro-preview');
 
         const response = await ai.generate({
           model: llm,
