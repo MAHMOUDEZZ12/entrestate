@@ -14,6 +14,8 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { google } from 'googleapis';
+import { GoogleAuth } from 'google-auth-library';
+
 
 const discoveryengine = google.discoveryengine('v1');
 
@@ -46,14 +48,14 @@ const discoverEngineFlow = ai.defineFlow(
   async ({ query }) => {
     
     // Use Application Default Credentials for authentication in Google Cloud environments
-    const auth = new google.auth.GoogleAuth({
+    const auth = new GoogleAuth({
         scopes: ['https://www.googleapis.com/auth/cloud-platform'],
     });
 
     const authClient = await auth.getClient();
     google.options({ auth: authClient });
 
-    const projectId = process.env.GOOGLE_CLOUD_PROJECT || process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
     if (!projectId) {
         throw new Error("Google Cloud Project ID is not configured.");
     }
