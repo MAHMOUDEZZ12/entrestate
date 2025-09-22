@@ -11,7 +11,7 @@ const navLinks = [
     { name: 'Products', href: '/#pillars' },
     { name: 'Apps', href: '/apps' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Academy', href: '/community/academy' },
+    { name: 'Solutions', href: '/solutions' },
     { name: 'Community', href: '/community' },
     { name: 'Blog', href: '/blog' },
 ];
