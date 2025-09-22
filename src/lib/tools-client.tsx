@@ -259,14 +259,14 @@ export const tools: Feature[] = mergeToolData().map(tool => {
         case 'chatbot-creator':
             tool.creationFields = [
                  { id: 'projectName', name: 'Project Name', type: 'text', placeholder: 'e.g., Emaar Beachfront', description: "The name of the project the chatbot will represent." },
-                 { id: 'welcomeMessage', name: 'Welcome Message (Optional)', type: 'textarea', placeholder: 'e.g., "Welcome to Emaar Beachfront! How can I help you today?"' },
+                 { id: 'welcomeMessage', name: 'Welcome Message (Optional)', type: 'textarea', placeholder: 'e.g., \"Welcome to Emaar Beachfront! How can I help you today?\"' },
                  { id: 'primaryColor', name: 'Primary Color (Optional)', type: 'text', placeholder: '#007bff', description: 'A hex color code for the chatbot widget.' },
                  { id: 'allowedDomains', name: 'Allowed Domains (Optional)', type: 'textarea', placeholder: 'example.com\nanother-site.net', description: "One domain per line. If empty, the chatbot can run anywhere." },
             ];
             tool.renderResult = (result, toast) => (
                  <div className="space-y-4">
                     <h3 className="font-semibold">Embed Code:</h3>
-                    <p className="text-sm text-muted-foreground">Copy and paste this snippet into the `<body>` of your website.</p>
+                    <p className="text-sm text-muted-foreground">Copy and paste this snippet into the `&lt;body&gt;` of your website.</p>
                     <CodeBlock>{result.embedCode.trim()}</CodeBlock>
                 </div>
             );
@@ -784,3 +784,5 @@ export const tools: Feature[] = mergeToolData().map(tool => {
     }
     return tool;
 });
+
+    
