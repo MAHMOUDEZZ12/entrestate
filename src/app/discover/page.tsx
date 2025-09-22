@@ -5,9 +5,9 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Search, Sparkles } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
+import { GoogleCX } from 'react-google-cx';
 
 const DiscoverPage = () => {
     const [query, setQuery] = useState('');
@@ -17,7 +17,6 @@ const DiscoverPage = () => {
         e.preventDefault();
         if (!query.trim()) return;
         
-        // Navigate to the new search results page
         router.push(`/discover/search?q=${encodeURIComponent(query.trim())}`);
     };
 
@@ -48,6 +47,7 @@ const DiscoverPage = () => {
                                 placeholder='e.g., "Emaar Beachfront price trends"' 
                                 className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-lg"
                             />
+                             <button type="submit" className="hidden" aria-hidden="true">Submit</button>
                         </form>
                      </div>
                 </div>
