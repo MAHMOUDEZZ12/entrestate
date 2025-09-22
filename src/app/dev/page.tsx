@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
-import { PlusCircle, Bot, GitCommit, AlertTriangle, GanttChartSquare, RotateCw, Loader2, Sparkles, CheckCircle, MessageSquare, Undo, Copy, Database, BrainCircuit, Activity, BarChart2, Users, MoreHorizontal } from 'lucide-react';
+import { PlusCircle, Bot, GitCommit, AlertTriangle, GanttChartSquare, RotateCw, Loader2, Sparkles, CheckCircle, MessageSquare, Undo, Copy, Database, BrainCircuit, Activity, BarChart2, Users, MoreHorizontal, HeartPulse, GitMerge } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -22,6 +22,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGr
 import { tools } from '@/lib/tools-client';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import Link from 'next/link';
 
 
 type TaskStatus = 'New' | 'Planned' | 'Coded' | 'Implemented' | 'Assured' | 'Issue Reported';
@@ -374,19 +375,42 @@ export default function DevAdminPage() {
                 <Card>
                     <CardHeader>
                         <CardTitle>Data Ingestion</CardTitle>
-                        <CardDescription>Update the Market Library by scraping various sources.</CardDescription>
+                        <CardDescription>Manage data pipelines and knowledge base sources.</CardDescription>
                     </CardHeader>
-                    <CardContent>
-                        <div className="flex items-center gap-4 flex-wrap">
-                            <Button onClick={() => handleScrape('dxboffplan')} disabled={scrapingStates['dxboffplan']}>
-                                {scrapingStates['dxboffplan'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
-                                {scrapingStates['dxboffplan'] ? 'Scraping...' : 'Scrape DXBOffPlan'}
-                            </Button>
-                            <Button onClick={() => handleScrape('propertyfinder')} disabled={scrapingStates['propertyfinder']}>
-                                {scrapingStates['propertyfinder'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
-                                {scrapingStates['propertyfinder'] ? 'Scraping...' : 'Scrape Property Finder'}
-                            </Button>
-                        </div>
+                    <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <Card>
+                            <CardHeader><CardTitle>Scraping</CardTitle></CardHeader>
+                            <CardContent className="flex flex-col gap-2">
+                                <Button onClick={() => handleScrape('dxboffplan')} disabled={scrapingStates['dxboffplan']}>
+                                    {scrapingStates['dxboffplan'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
+                                    {scrapingStates['dxboffplan'] ? 'Scraping...' : 'Scrape DXBOffPlan'}
+                                </Button>
+                                <Button onClick={() => handleScrape('propertyfinder')} disabled={scrapingStates['propertyfinder']}>
+                                    {scrapingStates['propertyfinder'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
+                                    {scrapingStates['propertyfinder'] ? 'Scraping...' : 'Scrape Property Finder'}
+                                </Button>
+                            </CardContent>
+                        </Card>
+                         <Card>
+                            <CardHeader><CardTitle>Data Importer/Exporter</CardTitle></CardHeader>
+                            <CardContent>
+                                <Link href="/dev/data-importer">
+                                    <Button variant="secondary" className="w-full">
+                                        Open XML Importer
+                                    </Button>
+                                </Link>
+                            </CardContent>
+                        </Card>
+                         <Card>
+                            <CardHeader><CardTitle>Developer Archive</CardTitle></CardHeader>
+                            <CardContent>
+                                <Link href="/dev/archive">
+                                    <Button variant="secondary" className="w-full">
+                                        View Archive
+                                    </Button>
+                                </Link>
+                            </CardContent>
+                        </Card>
                     </CardContent>
                 </Card>
                 <Card>
@@ -472,25 +496,33 @@ export default function DevAdminPage() {
             </TabsContent>
 
              <TabsContent value="usage" className="mt-6 space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Card>
-                         <CardHeader>
-                            <CardTitle>App Usage Analytics</CardTitle>
-                            <CardDescription>Placeholder for app usage reports.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="text-center text-muted-foreground py-12">
-                            <BarChart2 className="h-10 w-10 mx-auto mb-2" />
-                            <p>App usage data will be displayed here.</p>
-                        </CardContent>
-                    </Card>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                      <Card>
                          <CardHeader>
-                            <CardTitle>Backend Connections Status</CardTitle>
-                            <CardDescription>Placeholder for backend service status.</CardDescription>
+                            <CardTitle>System Health</CardTitle>
+                            <CardDescription>A real-time analysis of all application services and their status.</CardDescription>
                         </CardHeader>
-                        <CardContent className="text-center text-muted-foreground py-12">
-                             <Activity className="h-10 w-10 mx-auto mb-2" />
-                            <p>Live status of all connected APIs.</p>
+                        <CardContent>
+                             <Link href="/dev/system-health">
+                                <Button variant="secondary" className="w-full">
+                                    <HeartPulse className="mr-2 h-4 w-4" />
+                                    View Full System Health Report
+                                </Button>
+                            </Link>
+                        </CardContent>
+                    </Card>
+                      <Card>
+                         <CardHeader>
+                            <CardTitle>Sitemap & Structure</CardTitle>
+                            <CardDescription>A visual overview of the application's pages and architecture.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                             <Link href="/dev/sitemap">
+                                <Button variant="secondary" className="w-full">
+                                    <GitMerge className="mr-2 h-4 w-4" />
+                                    View Application Sitemap
+                                </Button>
+                            </Link>
                         </CardContent>
                     </Card>
                      <Card className="md:col-span-2">
