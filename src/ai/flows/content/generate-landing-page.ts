@@ -18,7 +18,7 @@ import {z} from 'genkit';
 /**
  * Defines the schema for the input of the landing page generation flow.
  */
-const GenerateLandingPageInputSchema = z.object({
+export const GenerateLandingPageInputSchema = z.object({
   /**
    * The name of the project.
    */
@@ -80,7 +80,7 @@ export type GenerateLandingPageInput = z.infer<
 /**
  * Defines the schema for the output of the landing page generation flow.
  */
-const GenerateLandingPageOutputSchema = z.object({
+export const GenerateLandingPageOutputSchema = z.object({
   /**
    * The generated HTML content for the landing page.
    */
@@ -171,7 +171,7 @@ const landingPagePrompt = ai.definePrompt({
       - Use placeholder images from picsum.photos for the gallery and other sections.
   6.  **Lead Capture Form:** This is critical. Include a prominent lead capture form with fields for Name, Email, and Phone Number, and a clear "Register Your Interest" button.
   7.  **Branding:** Ensure the overall design (colors, fonts) reflects the specified 'Branding Style(s)'. If multiple styles are provided, blend them intelligently (e.g., Modern structure with Luxury accents).
-  8.  **Output:** Return ONLY the complete, raw HTML code for the landing page in the landingPageHtml field. Do not include any explanations, markdown, or other text outside of the HTML itself.
+  8.  **Output:** Return ONLY the complete, raw HTML code for the landingPageHtml field. Do not include any explanations, markdown, or other text outside of the HTML itself.
   `,
 });
 

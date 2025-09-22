@@ -57,7 +57,7 @@ export interface AppEvent {
   ts?: any; // serverTimestamp()
 }
 
-// Schemas for Audience Creator AI (`suggest-targeting-options`)
+// Schemas for Audience Creator (`suggest-targeting-options`)
 export const SuggestTargetingOptionsInputSchema = z.object({
   projectId: z.string().describe('The project ID to generate targeting for.'),
 });

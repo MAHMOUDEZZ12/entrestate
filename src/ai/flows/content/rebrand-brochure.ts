@@ -19,7 +19,7 @@ import { googleAI } from '@genkit-ai/googleai';
 /**
  * Defines the schema for the input of the brochure rebranding flow.
  */
-const RebrandBrochureInputSchema = z.object({
+export const RebrandBrochureInputSchema = z.object({
   /**
    * The source brochure document, encoded as a Base64 data URI.
    * @example "data:application/pdf;base64,..."
@@ -67,13 +67,12 @@ const RebrandBrochureInputSchema = z.object({
     .optional()
     .describe('Optional specific instructions for deep editing.'),
 });
-
 export type RebrandBrochureInput = z.infer<typeof RebrandBrochureInputSchema>;
 
 /**
  * Defines the schema for the output of the brochure rebranding flow.
  */
-const RebrandBrochureOutputSchema = z.object({
+export const RebrandBrochureOutputSchema = z.object({
   /**
    * The rebranded brochure, returned as a Base64 data URI.
    */
@@ -92,7 +91,6 @@ const RebrandBrochureOutputSchema = z.object({
       "The generated logo, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'. Only present if a logo was generated."
     ),
 });
-
 export type RebrandBrochureOutput = z.infer<typeof RebrandBrochureOutputSchema>;
 
 /**

@@ -19,7 +19,7 @@ import { googleAI } from '@genkit-ai/googleai';
 /**
  * Defines the schema for the input of the video editing flow.
  */
-const EditYouTubeVideoInputSchema = z.object({
+export const EditYouTubeVideoInputSchema = z.object({
   sourceVideo: z
     .string()
     .describe(
@@ -38,7 +38,7 @@ export type EditYouTubeVideoInput = z.infer<typeof EditYouTubeVideoInputSchema>;
 /**
  * Defines the schema for the output of the video editing flow.
  */
-const EditYouTubeVideoOutputSchema = z.object({
+export const EditYouTubeVideoOutputSchema = z.object({
   editedVideoDataUri: z
     .string()
     .describe(

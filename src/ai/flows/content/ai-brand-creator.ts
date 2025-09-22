@@ -9,8 +9,8 @@
  * acting as a command from the AI Assistant.
  *
  * @export {function} aiBrandCreator - The main function to configure the workspace.
- * @export {type} AIBrandCreatorInput - The Zod schema for the input of the aiBrandCreator flow.
- * @export {type} AIBrandCreatorOutput - The Zod schema for the output of the aiBrandCreator flow.
+ * @export {type} AiBrandCreatorInput - The Zod schema for the input of the aiBrandCreator flow.
+ * @export {type} AiBrandCreatorOutput - The Zod schema for the output of the aiBrandCreator flow.
  */
 
 import {ai} from '@/ai/genkit';
@@ -19,7 +19,7 @@ import {z} from 'genkit';
 /**
  * Defines the schema for the input of the ai brand creator flow.
  */
-export const AIBrandCreatorInputSchema = z.object({
+export const AiBrandCreatorInputSchema = z.object({
   /**
    * The user's command or instruction.
    * @example "Set up my brand and projects from the uploaded files."
@@ -34,12 +34,12 @@ export const AIBrandCreatorInputSchema = z.object({
       "An array of documents (e.g., PDFs, text files) as data URIs. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
 });
-export type AIBrandCreatorInput = z.infer<typeof AIBrandCreatorInputSchema>;
+export type AiBrandCreatorInput = z.infer<typeof AiBrandCreatorInputSchema>;
 
 /**
  * Defines the schema for the output of the ai brand creator flow.
  */
-export const AIBrandCreatorOutputSchema = z.object({
+export const AiBrandCreatorOutputSchema = z.object({
   /**
    * The extracted brand information.
    */
@@ -86,26 +86,26 @@ export const AIBrandCreatorOutputSchema = z.object({
       'A human-readable summary of the setup actions performed by the AI.'
     ),
 });
-export type AIBrandCreatorOutput = z.infer<typeof AIBrandCreatorOutputSchema>;
+export type AiBrandCreatorOutput = z.infer<typeof AiBrandCreatorOutputSchema>;
 
 
 /**
  * An AI flow that configures the user's workspace based on provided documents and a command.
  * This function serves as a wrapper for the underlying Genkit flow.
  *
- * @param {AIBrandCreatorInput} input - The input data for the setup process.
- * @returns {Promise<AIBrandCreatorOutput>} A promise that resolves with the extracted setup data.
+ * @param {AiBrandCreatorInput} input - The input data for the setup process.
+ * @returns {Promise<AiBrandCreatorOutput>} A promise that resolves with the extracted setup data.
  */
 export async function aiBrandCreator(
-  input: z.infer<typeof AIBrandCreatorInputSchema>
-): Promise<z.infer<typeof AIBrandCreatorOutputSchema>> {
+  input: z.infer<typeof AiBrandCreatorInputSchema>
+): Promise<z.infer<typeof AiBrandCreatorOutputSchema>> {
   return aiBrandCreatorFlow(input);
 }
 
 const aiBrandCreatorPrompt = ai.definePrompt({
   name: 'aiBrandCreatorPrompt',
-  input: {schema: AIBrandCreatorInputSchema},
-  output: {schema: AIBrandCreatorOutputSchema},
+  input: {schema: AiBrandCreatorInputSchema},
+  output: {schema: AiBrandCreatorOutputSchema},
   model: 'gemini-1.5-pro-preview',
   prompt: `You are an expert system administrator for the Super Seller Suite. Your task is to configure the user's workspace based on their command and the documents they provide.
 
@@ -131,8 +131,8 @@ const aiBrandCreatorPrompt = ai.definePrompt({
 const aiBrandCreatorFlow = ai.defineFlow(
   {
     name: 'aiBrandCreatorFlow',
-    inputSchema: AIBrandCreatorInputSchema,
-    outputSchema: AIBrandCreatorOutputSchema,
+    inputSchema: AiBrandCreatorInputSchema,
+    outputSchema: AiBrandCreatorOutputSchema,
   },
   async input => {
     const {output} = await aiBrandCreatorPrompt(input);

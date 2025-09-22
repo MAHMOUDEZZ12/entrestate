@@ -19,7 +19,7 @@ import {z} from 'genkit';
 /**
  * Defines the schema for the input of the PDF editing flow.
  */
-const EditPdfInputSchema = z.object({
+export const EditPdfInputSchema = z.object({
   /**
    * The source PDF document, encoded as a Base64 data URI.
    * @example "data:application/pdf;base64,..."
@@ -45,7 +45,6 @@ const EditPdfInputSchema = z.object({
       "An optional array of new images to be used, as data URIs. Expected format: 'data:<mimetype>;base64,<encoded_data>'. Only provide if your instructions reference replacing an image."
     ),
 });
-
 export type EditPdfInput = z.infer<typeof EditPdfInputSchema>;
 
 /**
@@ -60,7 +59,7 @@ const ExecutionStepSchema = z.object({
 /**
  * Defines the schema for the output of the PDF editing plan generation flow.
  */
-const EditPdfOutputSchema = z.object({
+export const EditPdfOutputSchema = z.object({
   /**
    * A human-readable summary of the plan.
    */

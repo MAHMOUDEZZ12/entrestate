@@ -40,6 +40,19 @@ export const UgcScriptWriterOutputSchema = z.object({
 export type UgcScriptWriterOutput = z.infer<typeof UgcScriptWriterOutputSchema>;
 
 
+/**
+ * An AI flow that generates UGC-style video scripts.
+ *
+ * @param {UgcScriptWriterInput} input - The input data for the script generation.
+ * @returns {Promise<UgcScriptWriterOutput>} A promise that resolves with the generated scripts.
+ */
+export async function ugcScriptWriter(
+  input: UgcScriptWriterInput
+): Promise<UgcScriptWriterOutput> {
+  return ugcScriptWriterFlow(input);
+}
+
+
 const ugcScriptWriterPrompt = ai.definePrompt({
   name: 'ugcScriptWriterPrompt',
   input: { schema: UgcScriptWriterInputSchema },
@@ -79,16 +92,3 @@ const ugcScriptWriterFlow = ai.defineFlow(
     return output;
   }
 );
-
-
-/**
- * An AI flow that generates UGC-style video scripts.
- *
- * @param {UgcScriptWriterInput} input - The input data for the script generation.
- * @returns {Promise<UgcScriptWriterOutput>} A promise that resolves with the generated scripts.
- */
-export async function ugcScriptWriter(
-  input: UgcScriptWriterInput
-): Promise<UgcScriptWriterOutput> {
-  return ugcScriptWriterFlow(input);
-}
