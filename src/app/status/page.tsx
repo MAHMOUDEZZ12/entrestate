@@ -5,8 +5,8 @@ import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Server, CheckCircle, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LandingHeader } from '../landing-header';
-import { LandingFooter } from '../landing-footer';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
