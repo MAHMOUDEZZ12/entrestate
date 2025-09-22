@@ -12,6 +12,7 @@ import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { tools } from '@/lib/tools-client';
 import { cn } from '@/lib/utils';
+import { Badge } from '@/components/ui/badge';
 
 
 const posts = appDetails.apps.map(content => {
@@ -21,7 +22,8 @@ const posts = appDetails.apps.map(content => {
         title: content.hero,
         description: content.full_description,
         date: "July 29, 2024", // Placeholder date
-        color: tool?.color || 'hsl(var(--primary))'
+        color: tool?.color || 'hsl(var(--primary))',
+        categories: tool?.categories || []
     };
 });
 
@@ -39,17 +41,22 @@ export default function BlogPage() {
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {posts.map((post) => (
               <Link href={`/blog/${post.slug}`} key={post.slug} className="block break-inside-avoid">
-                <Card className="flex flex-col bg-card/80 backdrop-blur-lg hover:-translate-y-1 transition-transform duration-300 hover:shadow-xl"
-                      style={{'--card-border-color': post.color} as React.CSSProperties} >
-                  <CardHeader className="border-b-2 border-[var(--card-border-color)]">
+                <Card className="flex flex-col bg-card/80 backdrop-blur-lg hover:-translate-y-1 transition-transform duration-300 hover:shadow-xl border-b-4"
+                      style={{'--card-border-color': post.color, borderColor: 'var(--card-border-color)'} as React.CSSProperties} >
+                  <CardHeader>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                        {post.categories.slice(0, 2).map(cat => (
+                            <Badge key={cat} variant="secondary" className="text-xs">{cat}</Badge>
+                        ))}
+                    </div>
                     <CardTitle className="text-xl font-bold font-heading">{post.title}</CardTitle>
                     <CardDescription>{post.date}</CardDescription>
                   </CardHeader>
-                  <CardContent className="flex-1 pt-6">
+                  <CardContent className="flex-1 pt-2">
                     <p className="text-muted-foreground line-clamp-4">{post.description}</p>
                   </CardContent>
                   <CardFooter>
-                      <Button variant="link" className="p-0">
+                      <Button variant="link" className="p-0 text-primary">
                         Read More <ArrowRight className="ml-2 h-4 w-4" />
                       </Button>
                   </CardFooter>
