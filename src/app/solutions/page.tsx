@@ -12,6 +12,7 @@ import {
 } from '@/components/ui/accordion';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
+import { cn } from '@/lib/utils';
 
 const faqData = [
     {
@@ -147,14 +148,17 @@ export default function SolutionsPage() {
             icon={<HelpCircle className="h-8 w-8" />}
           />
         
-        <div className="mt-12 space-y-16">
-            {faqData.map(category => (
-                <section key={category.category} id={category.category.toLowerCase().replace(/\s/g, '-')}>
-                    <div className="flex items-center gap-4 mb-8">
-                        <div className="p-3 bg-primary/10 text-primary rounded-lg">
-                           {category.icon}
+        <div className="mt-12 space-y-24">
+            {faqData.map((category, index) => (
+                <section key={category.category} id={category.category.toLowerCase().replace(/\s/g, '-')} className="border-t pt-12">
+                    <div className={cn("flex flex-col gap-4 mb-8", index % 2 === 0 ? "md:text-left md:items-start" : "md:text-right md:items-end")}>
+                        <div className="flex items-center gap-4">
+                            {index % 2 !== 0 && <h2 className="text-3xl font-bold font-heading">{category.category}</h2>}
+                            <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                               {category.icon}
+                            </div>
+                             {index % 2 === 0 && <h2 className="text-3xl font-bold font-heading">{category.category}</h2>}
                         </div>
-                        <h2 className="text-3xl font-bold font-heading">{category.category}</h2>
                     </div>
                      <Accordion type="single" collapsible className="w-full space-y-4">
                         {category.faqs.map((faq, index) => (
