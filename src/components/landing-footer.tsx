@@ -39,6 +39,7 @@ export function LandingFooter() {
             <h4 className="text-lg font-semibold font-heading mb-4">Resources</h4>
             <nav className="flex flex-col space-y-2">
               <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link>
+              <Link href="/community/academy" className="text-muted-foreground hover:text-primary transition-colors">Academy</Link>
               <Link href="/resources/flows" className="text-muted-foreground hover:text-primary transition-colors">Flow Library</Link>
               <Link href="/market" className="text-muted-foreground hover:text-primary transition-colors">Market Pulse</Link>
               <Link href="/documentation" className="text-muted-foreground hover:text-primary transition-colors">Documentation</Link>
