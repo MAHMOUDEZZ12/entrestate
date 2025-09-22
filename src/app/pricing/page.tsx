@@ -97,7 +97,7 @@ export default function PricingPage() {
                                 id: 'custom',
                                 name: 'Your Custom Plan',
                                 tagline: `${selectedApps.length} app(s) selected.`,
-                                price_monthly: isAnnual ? customPrice / 12 * (1/0.7) : customPrice,
+                                price_monthly: isAnnual ? (customPrice > 0 ? (customPrice / 12 * (1/0.7)) : 0) : customPrice,
                                 popular: false,
                                 features: selectedApps.length > 0 ? selectedApps : ['Select apps to see them here.']
                             }}
