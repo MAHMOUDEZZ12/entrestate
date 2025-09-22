@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -12,7 +13,8 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { google } from 'googleapis';
+import { googleAI } from '@genkit-ai/googleai';
+
 
 const DiscoverResultSchema = z.object({
   id: z.string(),
@@ -40,52 +42,33 @@ const discoverEngineFlow = ai.defineFlow(
     outputSchema: DiscoverEngineOutputSchema,
   },
   async ({ query }) => {
-    const discoveryengine = google.discoveryengine('v1');
-
+    
     try {
         const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
         if (!projectId) {
             throw new Error("Google Cloud Project ID is not configured in environment variables (NEXT_PUBLIC_FIREBASE_PROJECT_ID).");
         }
 
-        const auth = new google.auth.GoogleAuth({
-            scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-        });
-        const authClient = await auth.getClient();
-        google.options({ auth: authClient });
+        // Dynamically construct the data store path.
+        // NOTE: The dataStore ID is assumed to follow this pattern. If it's different, it should also be an env var.
+        const dataStore = googleAI.dataStore(`projects/${projectId}/locations/global/collections/default_collection/dataStores/entrestate-kb_1722284949580`);
         
-        const servingConfig = `projects/${projectId}/locations/global/collections/default_collection/dataStores/entrestate-kb_1722284949580/servingConfigs/default_serving_config`;
-
-        const request = {
-            servingConfig,
-            query: query,
-            pageSize: 10,
-            contentSearchSpec: {
-                summarySpec: {
-                    summaryResultCount: 5,
-                    ignoreAdversarialQuery: true,
-                },
-                extractiveContentSpec: {
-                    maxExtractiveAnswerCount: 3,
-                }
+        const response = await googleAI.search(dataStore, query, {
+            contentConfig: {
+                summary: true,
+                maxDocuments: 10,
             }
-        };
+        });
 
-        const response = await discoveryengine.projects.locations.dataStores.servingConfigs.search(request);
-        
-        const results = response.data.results || [];
-        
-        const formattedResults = results.map((item: any) => {
-            const doc = item.document;
-            const structData = doc.structData || {};
-            const derivedData = doc.derivedStructData || {};
+        const formattedResults = response.map((item: any) => {
+            const metadata = item.document.metadata;
             
-            const title = derivedData.title || structData.title || 'No Title Available';
-            const description = derivedData.snippets?.[0]?.snippet || 'No description available.';
-            const url = derivedData.link || structData.link || '#';
+            const title = metadata?.title || 'No Title Available';
+            const description = metadata?.snippets?.[0]?.text || 'No description available.';
+            const url = metadata?.uri || '#';
             
             return {
-                id: doc.id || `unknown-${Math.random()}`,
+                id: item.document.id || `unknown-${Math.random()}`,
                 title,
                 description,
                 url,
@@ -98,9 +81,9 @@ const discoverEngineFlow = ai.defineFlow(
         };
 
     } catch (error: any) {
-        console.error("Vertex AI Search API Error:", error.response?.data?.error || error.message, error);
+        console.error("Vertex AI Search API Error:", error.message || error);
         // Provide a more specific error message back to the client
-        const detail = error.response?.data?.error?.message || error.message;
+        const detail = error.message || 'An unknown error occurred while querying the Discovery Engine.';
         throw new Error(`Failed to query Discovery Engine: ${detail}`);
     }
   }
