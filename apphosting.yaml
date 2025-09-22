@@ -16,6 +16,8 @@ runConfig:
   env:
     - variable: GEMINI_API_KEY
       secret: GEMINI_API_KEY
+    - variable: VERTEX_AI_API_KEY
+      secret: VERTEX_AI_API_KEY
 
 headers:
   - key: "Cache-Control"

@@ -30,6 +30,7 @@ import {
   BookOpen,
   School,
   Brain,
+  Library,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
@@ -37,6 +38,7 @@ import { Logo } from './logo';
 const mainNavLinks = [
   { href: '/dashboard', icon: <Home className="h-5 w-5" />, label: 'Home' },
   { href: '/dashboard/marketing', icon: <LayoutGrid className="h-5 w-5" />, label: 'Apps' },
+  { href: '/dashboard/tool/prompt-library', icon: <Library className="h-5 w-5" />, label: 'Prompt Library' },
   { href: '/dashboard/flows', icon: <Workflow className="h-5 w-5" />, label: 'Flows' },
   { href: '/dashboard/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },
   { href: '/dashboard/assistant', icon: <Bot className="h-5 w-5" />, label: 'AI Assistant' },
