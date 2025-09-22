@@ -26,6 +26,7 @@ import {
   Workflow,
   Building,
   Target,
+  Users
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
@@ -39,6 +40,7 @@ const mainNavLinks = [
   { href: '/dashboard/projects', icon: <Building className="h-5 w-5" />, label: 'My Projects' },
   { href: '/dashboard/leads', icon: <Target className="h-5 w-5" />, label: 'Leads & CRM' },
   { href: '/dashboard/clients', icon: <Users2 className="h-5 w-5" />, label: 'Client Pages' },
+  { href: '/dashboard/directory', icon: <Users className="h-5 w-5" />, label: 'Contacts Directory' },
 ];
 
 const secondaryNavLinks = [
