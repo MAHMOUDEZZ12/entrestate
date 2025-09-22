@@ -72,9 +72,8 @@ export default function BlogPage() {
                         ))}
                     </div>
                     <CardTitle className="text-xl font-bold font-heading">{post.title}</CardTitle>
-                    <CardDescription>{post.date}</CardDescription>
                   </CardHeader>
-                  <CardContent className="flex-1 pt-2">
+                  <CardContent className="flex-1">
                     <p className="text-muted-foreground line-clamp-4">{post.description}</p>
                   </CardContent>
                   <CardFooter>
