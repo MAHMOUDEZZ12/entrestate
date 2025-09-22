@@ -56,7 +56,7 @@ const discoverEngineFlow = ai.defineFlow(
     const projectId = 'mtcmartechgooodstage-456-326b5';
     const location = 'global';
     // This is the production-ready Datastore ID for our knowledge base.
-    const datastoreId = '2908016390688473088'; 
+    const datastoreId = '2901569404259008512'; 
 
     const servingConfig = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${datastoreId}/servingConfigs/default_serving_config`;
 
