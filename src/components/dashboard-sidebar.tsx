@@ -39,6 +39,7 @@ const mainNavLinks = [
   { href: '/dashboard/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },
   { href: '/dashboard/assistant', icon: <Bot className="h-5 w-5" />, label: 'AI Assistant' },
   { href: '/dashboard/tool/projects-finder', icon: <Database className="h-5 w-5" />, label: 'Market Library' },
+  { href: '/dashboard/archive', icon: <Database className="h-5 w-5" />, label: 'Archive' },
   { href: '/dashboard/leads', icon: <Target className="h-5 w-5" />, label: 'Leads & CRM' },
   { href: '/dashboard/directory', icon: <Users className="h-5 w-5" />, label: 'Contacts Directory' },
 ];

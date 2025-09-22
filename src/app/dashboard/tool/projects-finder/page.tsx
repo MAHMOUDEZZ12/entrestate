@@ -13,7 +13,7 @@ import { ProjectCard } from '@/components/ui/project-card';
 import { useToast } from '@/hooks/use-toast';
 import { track } from '@/lib/events';
 import { Separator } from '@/components/ui/separator';
-import { useAuth } from '@/hooks/useAuth.tsx';
+import { useAuth } from '@/hooks/useAuth';
 
 export default function ProjectsFinderPage() {
   const { toast } = useToast();
