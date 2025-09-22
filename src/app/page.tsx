@@ -228,9 +228,9 @@ export default function HomePage() {
                  <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-6">
                     <BrainCircuit className="h-10 w-10" />
                  </div>
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Powered by Google AI</h2>
+                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Entrestate is a prime Google AI partner</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                   Entrestate is an AI-native platform, built from the ground up with Gemini, Google's most capable family of models. Every tool is a specialized AI flow, designed to understand, reason, and act on your behalf.
+                   As a prime partner, Entrestate leverages the full power of Gemini and Google's Intelligence Labs to build our AI-native operating system. We don't just use AI; we build with it at the deepest level to invent the future of real estate.
                 </p>
                 <div className="mt-8">
                     <Link href="/technology">
