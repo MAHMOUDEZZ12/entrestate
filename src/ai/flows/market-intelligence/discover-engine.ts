@@ -13,11 +13,7 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { google } from 'googleapis';
-import { GoogleAuth } from 'google-auth-library';
-
-
-const discoveryengine = google.discoveryengine('v1');
+import { googleAI } from '@genkit-ai/googleai';
 
 
 const DiscoverResultSchema = z.object({
@@ -48,46 +44,31 @@ const discoverEngineFlow = ai.defineFlow(
   async ({ query }) => {
     
     try {
-        const auth = new GoogleAuth({
-            scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-        });
-        const authClient = await auth.getClient();
-        google.options({ auth: authClient });
-
         const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
         if (!projectId) {
             throw new Error("Google Cloud Project ID is not configured in environment variables (NEXT_PUBLIC_FIREBASE_PROJECT_ID).");
         }
         
-        const location = 'global';
-        // This is the production-ready Datastore ID for our knowledge base.
-        const datastoreId = 'entrestate-kb_1722284949580'; 
-
-        const servingConfig = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${datastoreId}/servingConfigs/default_serving_config`;
-
-        const response = await discoveryengine.projects.locations.collections.dataStores.servingConfigs.search({
-            servingConfig: servingConfig,
-            requestBody: {
-                query: query,
-                pageSize: 10,
-                contentSearchSpec: {
-                  summarySpec: {
+        // Use the Genkit googleAI plugin's search capability, which handles authentication automatically.
+        const response = await googleAI.search({
+            datastore: `projects/${projectId}/locations/global/collections/default_collection/dataStores/entrestate-kb_1722284949580`,
+            query: query,
+            contentConfig: {
+                summarySpec: {
                     summaryResultCount: 5,
-                    includeCitations: true,
-                  },
-                   extractiveContentSpec: {
+                    ignoreAdversarialQuery: true,
+                },
+                extractiveContentSpec: {
                     maxExtractiveAnswerCount: 3,
-                  },
                 }
-            },
+            }
         });
         
-        const searchResults = response.data.results || [];
-        const formattedResults = searchResults.map(item => {
+        const formattedResults = response.results.map(item => {
             const doc = item.document?.derivedStructData;
             // Use optional chaining and provide default values to prevent crashes
             const title = (doc?.title as string) || (item.document?.structData?.title as string) || 'No Title';
-            const description = (item.document?.structData?.metaDescription as string) || doc?.snippets?.[0]?.snippet || 'No description available.';
+            const description = doc?.snippets?.[0]?.snippet || 'No description available.';
             const url = (doc?.link as string) || '#';
             
             return {
@@ -104,7 +85,7 @@ const discoverEngineFlow = ai.defineFlow(
         };
 
     } catch (error: any) {
-        console.error("Vertex AI Search API Error:", error.response?.data?.error || error.message);
+        console.error("Vertex AI Search API Error:", error.response?.data?.error || error.message, error);
         // Provide a more specific error message back to the client
         const detail = error.response?.data?.error?.message || error.message;
         throw new Error(`Failed to query Discovery Engine: ${detail}`);
