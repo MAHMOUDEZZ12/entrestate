@@ -19,7 +19,7 @@ export const CodeBlock = ({ children }: { children: React.ReactNode }) => {
 
     return (
         <div className="relative group">
-            <pre className="bg-muted/50 text-foreground p-4 rounded-lg text-sm overflow-x-auto border">
+            <pre className="bg-muted text-foreground p-4 rounded-lg text-xs font-mono overflow-x-auto border border-border/50">
             <code>{children}</code>
             </pre>
             <Button

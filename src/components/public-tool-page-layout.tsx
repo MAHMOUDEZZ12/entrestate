@@ -16,56 +16,67 @@ import { Input } from './ui/input';
 import { Label } from './ui/label';
 import { LandingHeader } from './landing-header';
 import { LandingFooter } from './landing-footer';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
+import { CodeBlock } from './code-block';
+
 
 interface PublicToolPageLayoutProps {
   feature: Feature;
 }
 
 
-const ToolIoSimulation = ({ feature }: { feature: Feature }) => {
-    const firstInput = feature.creationFields.find(f => f.type === 'text' || f.type === 'select');
-    
+const ToolShowcase = ({ feature }: { feature: Feature }) => {
+    // Simple examples. In a real app, these would be more detailed and specific.
+    const examples = [
+        {
+            title: "Generate a Luxury Ad",
+            description: "Create a high-end, professional ad for a luxury property.",
+            input: `{\n  "projectName": "Emaar Beachfront",\n  "focusArea": "Luxury amenities",\n  "toneOfVoice": "Luxury"\n}`,
+            outputImage: "https://picsum.photos/seed/tool-showcase-1/800/450"
+        },
+        {
+            title: "Create a Report",
+            description: "Generate an in-depth market report for a specific area.",
+            input: `{\n  "location": "Dubai Marina",\n  "propertyType": "Luxury Condos",\n  "reportType": "Investor"\n}`,
+            outputImage: "https://picsum.photos/seed/tool-showcase-2/800/450"
+        },
+        {
+            title: "Build a Landing Page",
+            description: "Quickly generate a landing page for a new development.",
+            input: `{\n  "projectName": "DAMAC Hills 2",\n  "projectDetails": "3-bedroom villas with lagoon access",\n  "brandingStyle": "Modern & Minimalist"\n}`,
+            outputImage: "https://picsum.photos/seed/tool-showcase-3/800/450"
+        }
+    ];
+
     return (
-        <div className="w-full space-y-4 font-sans">
-            {/* Example "Done" Input */}
-            <Card className="bg-background/80 backdrop-blur-sm">
-                <CardHeader>
-                    <CardTitle className="text-base font-semibold">Example Input</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                    <div className="space-y-1.5">
-                        <Label htmlFor="sim-input-1" className="text-xs font-normal text-muted-foreground">{firstInput?.name || 'Your Content'}</Label>
-                        <div className="w-full h-8 px-3 py-2 text-sm rounded-md border border-input bg-muted/50">
-                           {firstInput?.placeholder || 'Emaar Beachfront'}
-                        </div>
-                    </div>
-                     <div className="flex items-center justify-center pt-2">
-                        <div className="h-8 w-px bg-border"></div>
-                    </div>
-                </CardContent>
-            </Card>
-
-            <div className="flex justify-center -my-2">
-                <div className="p-2 bg-primary text-primary-foreground rounded-full shadow-lg z-10">
-                    <Sparkles className="h-5 w-5" />
-                </div>
-            </div>
-
-            {/* Example "Done" Output */}
-            <Card className="bg-gradient-to-br from-primary/10 to-transparent border-primary/20">
-                 <CardHeader>
-                    <CardTitle className="text-base font-semibold text-primary">AI-Generated Output</CardTitle>
-                </CardHeader>
-                <CardContent>
-                   <div className="aspect-video bg-muted/50 rounded-md flex items-center justify-center p-4">
-                       <div className="text-center">
-                           <h4 className="font-bold text-lg">"Invest in Paradise: Emaar Beachfront"</h4>
-                           <p className="text-sm text-muted-foreground mt-1">Stunning sea views, private beach access. Your exclusive waterfront lifestyle awaits.</p>
-                       </div>
-                   </div>
-                </CardContent>
-            </Card>
-        </div>
+        <Card className="bg-muted/30 border-border/50">
+            <CardContent className="p-6 md:p-10">
+                <Carousel>
+                    <CarouselContent>
+                        {examples.map((ex, index) => (
+                            <CarouselItem key={index}>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                    <div>
+                                        <h4 className="text-xl font-bold mb-2">{ex.title}</h4>
+                                        <p className="text-muted-foreground mb-4">{ex.description}</p>
+                                        <Label className="text-sm">Example Input</Label>
+                                        <CodeBlock>{ex.input}</CodeBlock>
+                                    </div>
+                                    <div>
+                                        <Label className="text-sm">Example Output</Label>
+                                        <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg">
+                                            <Image src={ex.outputImage} alt={ex.title} layout="fill" objectFit="cover" data-ai-hint="real estate marketing" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="left-2" />
+                    <CarouselNext className="right-2"/>
+                </Carousel>
+            </CardContent>
+        </Card>
     )
 }
 
@@ -112,35 +123,8 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, elegant process powered by AI.</p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div className="lg:sticky lg:top-24">
-                <ToolIoSimulation feature={feature} />
-            </div>
-            
-            <div className="space-y-16">
-              {feature.details.steps.map((step, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  viewport={{ once: true, amount: 0.5 }}
-                >
-                  <div className="flex items-start gap-6">
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="p-3 bg-primary/10 text-primary rounded-full w-fit">
-                        {React.cloneElement(step.icon, { className: 'h-6 w-6' })}
-                      </div>
-                    </div>
-                    <div>
-                      <h3 className="text-2xl font-bold font-heading mb-2">Step {i + 1}</h3>
-                      <p className="text-lg text-muted-foreground">{step.text}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
+          <ToolShowcase feature={feature} />
+
         </div>
       </section>
 
