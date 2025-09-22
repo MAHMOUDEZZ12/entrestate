@@ -4,19 +4,35 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
-import { Search, Sparkles, ArrowRight } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { ShinyButton } from '@/components/ui/shiny-button';
 
-// Helper for smooth scrolling
-const scrollToSection = (id: string) => {
-  const element = document.getElementById(id);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-};
+
+const products = [
+    {
+        name: "Listing Intelligence",
+        icon: <ListChecks className="h-8 w-8" />,
+        description: "From market analysis to crafting the perfect description, these apps give you an unfair advantage in showcasing your properties.",
+        href: "/solutions"
+    },
+    {
+        name: "Lead Gen Apps",
+        icon: <Target className="h-8 w-8" />,
+        description: "Go beyond basic ads. Find high-intent buyers and sellers with AI-powered targeting and creative generation.",
+        href: "/solutions"
+    },
+    {
+        name: "AI Co-Pilot",
+        icon: <Bot className="h-8 w-8" />,
+        description: "Your personal AI assistant that learns from your data to automate tasks, answer questions, and run campaigns.",
+        href: "/dashboard/assistant"
+    }
+]
 
 export default function HomePage() {
   const router = useRouter();
@@ -60,17 +76,47 @@ export default function HomePage() {
                         </form>
                      </div>
                 </div>
-                <Button variant="link" className="mt-6 text-muted-foreground group" onClick={() => scrollToSection('products')}>
-                  Or Explore Our Platforms
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </Button>
             </div>
           </div>
         </section>
         
-        <section id="products" className="py-20 text-center bg-muted/50">
-            <h2 className="text-3xl font-bold">More Content Here</h2>
-            <p className="text-muted-foreground">The rest of your landing page sections would follow.</p>
+        <section id="products" className="py-20 md:py-32 text-center bg-muted/50">
+           <div className="container mx-auto px-4">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">The Entrestate Flywheel</h2>
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                    A unified suite of intelligent tools designed to perfect your workflow, from listing to close.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                   {products.map((product) => (
+                       <Card key={product.name} className="text-left hover:border-primary/50 hover:shadow-lg hover:-translate-y-1 transition-all">
+                           <CardHeader>
+                               <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-3">{product.icon}</div>
+                               <CardTitle>{product.name}</CardTitle>
+                               <CardDescription>{product.description}</CardDescription>
+                           </CardHeader>
+                           <CardContent>
+                               <Link href={product.href}>
+                                   <Button variant="link" className="p-0">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                               </Link>
+                           </CardContent>
+                       </Card>
+                   ))}
+                </div>
+           </div>
+        </section>
+
+        <section className="py-20 md:py-32">
+            <div className="container mx-auto px-4 text-center">
+                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ready to Become a Super Agent?</h2>
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                   Train your assistant, explore the apps, and start closing faster today.
+                </p>
+                <div className="mt-8">
+                    <Link href="/signup">
+                        <ShinyButton>Start Your Free Trial <ArrowRight /></ShinyButton>
+                    </Link>
+                </div>
+            </div>
         </section>
       </main>
       <LandingFooter />
