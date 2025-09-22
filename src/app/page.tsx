@@ -139,7 +139,7 @@ export default function HomePage() {
                 The AI-Native Operating System for Real Estate
               </h1>
               <p className="mt-6 max-w-2xl text-lg md:text-xl text-foreground/70">
-                From intelligent public search to a complete suite of professional tools, Entrestate is the ecosystem that gives you an unparalleled advantage.
+                Pick one of the Sales AI models or hire a full customer service team in 3 shifts speaks all languages and realtors by nature! This is not a fancy product and no magic website needed, they come with their magic.
               </p>
                <div className="mt-10 w-full max-w-2xl">
                      <div className="relative group">
@@ -163,9 +163,9 @@ export default function HomePage() {
         <section id="pillars" className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 space-y-20">
                  <div className="text-center">
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Our Core Product Pillars</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Pick one of the Sales AI models or hire a full customer service team in 3 shifts speaks all languages and realtors by nature!</h2>
                     <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                        Three powerful, interconnected systems that form the foundation of our AI-native ecosystem.
+                        This is not a fancy product and no magic website needed, they come with their magic.
                     </p>
                 </div>
                 
@@ -328,5 +328,7 @@ export default function HomePage() {
     </>
   );
 }
+
+    
 
     
