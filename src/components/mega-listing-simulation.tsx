@@ -4,7 +4,9 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowRight, BadgeCheck, Building, User, Info, TrendingUp } from 'lucide-react';
+import { ArrowRight, BadgeCheck, Building, User, Info, TrendingUp, Calendar, Zap, CheckCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Separator } from './ui/separator';
 
 const rawListings = [
   { id: 1, source: 'Bayut', title: 'Marina View Apt', price: 'AED 2.5M', agent: 'John D.', status: 'Active' },
@@ -29,6 +31,11 @@ const unifiedListing = {
         agency: 'Prestige Properties',
         verified: true,
     },
+    projectDetails: {
+        developer: 'Emaar Properties',
+        handover: 'Ready',
+        status: 'Available',
+    },
     priceHistory: [
         { date: '2023-11', price: 'AED 2.45M' },
         { date: '2024-03', price: 'AED 2.48M' },
@@ -46,7 +53,7 @@ export const MegaListingSimulation = () => {
             onMouseLeave={() => setIsHovered(false)}
         >
             <div 
-                className="w-full overflow-hidden bg-transparent shadow-2xl bg-gradient-to-br from-muted/10 to-muted/50 rounded-2xl border border-border/20"
+                className="w-full overflow-hidden bg-gradient-to-br from-muted/10 to-muted/50 rounded-2xl border border-border/20 backdrop-blur-lg"
             >
               <div className="p-4 md:p-6">
                 <div 
@@ -113,7 +120,7 @@ export const MegaListingSimulation = () => {
                                                 <span>{unifiedListing.qualityScore}%</span>
                                             </div>
                                         </div>
-                                        <CardContent className="text-xs text-muted-foreground font-mono">{unifiedListing.ref}</CardContent>
+                                        <CardContent className="text-xs text-muted-foreground font-mono p-0">{unifiedListing.ref}</CardContent>
                                     </CardHeader>
                                     <CardContent className="p-4 pt-0 text-sm space-y-3">
                                         <div className="flex justify-between items-baseline p-3 bg-background/50 rounded-lg">
@@ -121,13 +128,36 @@ export const MegaListingSimulation = () => {
                                             <span className="font-bold text-2xl text-primary">{unifiedListing.price}</span>
                                         </div>
                                          <div className="flex justify-between items-center">
-                                            <span className="text-muted-foreground">Details:</span>
+                                            <span className="text-muted-foreground flex items-center gap-1"><Info className="h-4 w-4"/>Details:</span>
                                             <span className="font-semibold">{unifiedListing.type} / {unifiedListing.size}</span>
                                         </div>
                                         <div className="flex justify-between items-center">
                                             <span className="text-muted-foreground flex items-center gap-1"><User className="h-4 w-4"/>Official Agent:</span>
                                             <span className="font-semibold">{unifiedListing.officialAgent.name} ({unifiedListing.officialAgent.agency})</span>
                                         </div>
+                                        
+                                        <Separator />
+
+                                        <div>
+                                            <h4 className="font-semibold text-muted-foreground text-xs uppercase tracking-wider mb-2">Project Details</h4>
+                                            <div className="space-y-2">
+                                                <div className="flex justify-between items-center">
+                                                    <span className="text-muted-foreground flex items-center gap-1"><Building className="h-4 w-4"/>Developer:</span>
+                                                    <span className="font-semibold">{unifiedListing.projectDetails.developer}</span>
+                                                </div>
+                                                 <div className="flex justify-between items-center">
+                                                    <span className="text-muted-foreground flex items-center gap-1"><Calendar className="h-4 w-4"/>Handover:</span>
+                                                    <span className="font-semibold">{unifiedListing.projectDetails.handover}</span>
+                                                </div>
+                                                 <div className="flex justify-between items-center">
+                                                    <span className="text-muted-foreground flex items-center gap-1"><Zap className="h-4 w-4"/>Status:</span>
+                                                    <span className="font-semibold flex items-center gap-1"><CheckCircle className="h-4 w-4 text-green-500"/>{unifiedListing.projectDetails.status}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <Separator />
+                                        
                                         <div className="flex justify-between items-center">
                                             <span className="text-muted-foreground flex items-center gap-1"><TrendingUp className="h-4 w-4"/>Price Trend:</span>
                                             <div className="flex gap-2 font-mono text-xs">
@@ -146,3 +176,4 @@ export const MegaListingSimulation = () => {
         </div>
     );
 };
+
