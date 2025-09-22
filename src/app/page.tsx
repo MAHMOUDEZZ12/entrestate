@@ -4,7 +4,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
-import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit, Building, Users, User, Library, FileJson, Telescope, MessageCircle, Check } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit, Building, Users, User, Library, FileJson, Telescope, MessageCircle, Check, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 import { MegaListingSimulation } from '@/components/mega-listing-simulation';
 import { EstChatSimulation } from '@/components/est-chat-simulation';
 import { FlowSimulation } from '@/components/flow-simulation';
+import { EbramSimulation } from '@/components/ebram-simulation';
 
 
 const ChatBubble = ({ children, className }: { children: React.ReactNode, className?: string }) => (
@@ -178,9 +179,9 @@ export default function HomePage() {
                        </h3>
                        <p className="text-2xl font-semibold !leading-tight">We turned the untouched search bar into an unmatched search engine.</p>
                         <p className="text-lg text-muted-foreground whitespace-pre-line">
-                            This model switches the life on your website.
-We added a decentralized market library to it.
-Try our discovery search to see how it works!
+                            This model switch the life on you website. 
+We added a decentralized market libirary to it. 
+try our discovery search to see how it works!
                        </p>
                        <Link href="/discover/search">
                            <Button variant="outline" className="mt-6 shadow">let's Go <ArrowRight className="ml-2 h-4 w-4"/></Button>
@@ -250,6 +251,25 @@ Name a project, and click "list it" - this is literally how it works.
                    </div>
                     <div>
                         <MegaListingSimulation />
+                    </div>
+                </div>
+                
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                    <div className="space-y-4 text-left md:order-2">
+                       <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Shield className="h-8 w-8" /></div>
+                        <h3 className="text-3xl font-bold font-heading">
+                           <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">EBRAM JUDICIAL AI</span>
+                        </h3>
+                       <p className="text-2xl font-semibold !leading-tight">The Legal Nervous System. Every real estate system is incomplete without law, enforcement, and permanence.</p>
+                       <p className="text-lg text-muted-foreground whitespace-pre-line">
+                            Markets collapse when contracts are unclear, when disputes drag on, or when property lineage is lost. EBRAM's DNA is legal permanence. Once a property event enters EBRAM, it is undeniable, executable, and archived for 1,000 years.
+                       </p>
+                       <Link href={`/products/ebram-judicial-ai`}>
+                           <Button variant="outline" className="mt-6 shadow">Explore EBRAM <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                       </Link>
+                   </div>
+                   <div className="md:order-1">
+                        <EbramSimulation />
                    </div>
                 </div>
 
