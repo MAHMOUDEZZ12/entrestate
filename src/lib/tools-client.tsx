@@ -4,7 +4,7 @@ import React from 'react';
 import { appDetails as blogContent } from './blog-content';
 import * as LucideIcons from 'lucide-react';
 import { toast as sonnerToast } from "sonner";
-import { Copy, Download, Trash2, Eye, Link as LinkIcon } from 'lucide-react';
+import { Copy, Download, Trash2, Eye, Link as LinkIcon, FileJson } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -284,28 +284,28 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                 { id: 'commissionRate', name: 'Commission Rate (%)', type: 'number', placeholder: 'e.g., 2' },
                 { id: 'agentSplit', name: 'Your Split (%)', type: 'number', placeholder: 'e.g., 50', value: '50' },
             ];
-            tool.renderResult = (result, toast) => {
-                 const totalCommission = result.totalCommission;
-                const yourShare = result.yourShare;
-                 const brokerageShare = totalCommission - yourShare;
-                return (
-                    <div className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                     <Card>
+                        <CardHeader><CardTitle>Summary</CardTitle></CardHeader>
+                        <CardContent><p>{result.summary}</p></CardContent>
+                    </Card>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Card>
+                            <CardHeader><CardTitle className="text-lg">Total Commission</CardTitle></CardHeader>
+                            <CardContent><p className="text-2xl font-bold">AED {result.totalCommission.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p></CardContent>
+                        </Card>
                             <Card>
-                                <CardHeader><CardTitle className="text-lg">Total Commission</CardTitle></CardHeader>
-                                <CardContent><p className="text-2xl font-bold">AED {totalCommission.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p></CardContent>
-                            </Card>
-                             <Card>
-                                <CardHeader><CardTitle className="text-lg">Brokerage Share</CardTitle></CardHeader>
-                                <CardContent><p className="text-2xl font-bold">AED {brokerageShare.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p></CardContent>
-                            </Card>
-                        </div>
-                        <Card className="bg-primary/10 border-primary/20">
-                            <CardHeader><CardTitle className="text-xl text-primary">Your Take-Home</CardTitle></CardHeader>
-                            <CardContent><p className="text-3xl font-bold text-primary">AED {yourShare.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p></CardContent>
+                            <CardHeader><CardTitle className="text-lg">Brokerage Share</CardTitle></CardHeader>
+                            <CardContent><p className="text-2xl font-bold">AED {result.brokerageShare.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p></CardContent>
                         </Card>
                     </div>
-            )};
+                    <Card className="bg-primary/10 border-primary/20">
+                        <CardHeader><CardTitle className="text-xl text-primary">Your Take-Home</CardTitle></CardHeader>
+                        <CardContent><p className="text-3xl font-bold text-primary">AED {result.yourShare.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p></CardContent>
+                    </Card>
+                </div>
+            );
             break;
          case 'ugc-script-writer':
             tool.creationFields = [
@@ -713,7 +713,7 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                                     <div className="flex justify-between items-start">
                                         <div>
                                             <CardTitle className="flex items-center gap-2">
-                                                <User className="h-5 w-5"/>
+                                                <LucideIcons.User className="h-5 w-5"/>
                                                 {match.name}
                                             </CardTitle>
                                             <CardDescription>

@@ -52,7 +52,7 @@ export async function generateListing(
   return generateListingFlow(input);
 }
 
-const prompt = ai.definePrompt({
+const generateListingPrompt = ai.definePrompt({
   name: 'generateListingPrompt',
   input: {schema: GenerateListingInputSchema},
   output: {schema: GenerateListingOutputSchema},
@@ -79,7 +79,10 @@ const generateListingFlow = ai.defineFlow(
     outputSchema: GenerateListingOutputSchema,
   },
   async input => {
-    const {output} = await prompt(input);
-    return output!;
+    const {output} = await generateListingPrompt(input);
+    if (!output) {
+      throw new Error('Failed to generate listing content.');
+    }
+    return output;
   }
 );
