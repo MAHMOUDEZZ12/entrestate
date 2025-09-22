@@ -1,4 +1,6 @@
 
+'use server';
+
 import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, fail } from "@/lib/api-helpers";
 import type { Project } from "@/types";
