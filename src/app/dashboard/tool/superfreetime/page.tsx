@@ -2,7 +2,7 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { Key, Bomb, X, Search, Lightbulb, Briefcase, UserPlus, Clock, Copy, User } from 'lucide-react';
+import { Key, Bomb, X, Search, Lightbulb, Briefcase, UserPlus, Clock, Copy, User, Brain, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Confetti } from '@/components/confetti';
@@ -10,208 +10,164 @@ import { Card, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { secretCodes } from '@/lib/codes';
 import { PageHeader } from '@/components/ui/page-header';
 
+const gamePairs = [
+    { term: 'Developer', definition: 'Emaar' },
+    { term: 'Area', definition: 'Dubai Marina' },
+    { term: 'Status', definition: 'Off-Plan' },
+    { term: 'ROI', definition: '7.5%' },
+    { term: 'Handover', definition: 'Q4 2025' },
+    { term: 'Type', definition: 'Villa' },
+    { term: 'Developer', definition: 'Damac' },
+    { term: 'Area', definition: 'Downtown' },
+];
 
-const GRID_SIZE = 5;
-const TOTAL_CELLS = GRID_SIZE * GRID_SIZE;
-const MAX_ATTEMPTS = 3;
-const TIME_LIMIT_SECONDS = 180; // 3 minutes
-
-const generateGridState = () => {
-    const keyPosition = Math.floor(Math.random() * TOTAL_CELLS);
-    const grid = Array(TOTAL_CELLS).fill(null).map((_, index) => ({
-        id: index,
-        hasKey: index === keyPosition,
-        isClicked: false,
-        icon: 'initial' as 'initial' | 'key' | 'bomb'
-    }));
-
-    let hint = '';
-    const hintType = Math.floor(Math.random() * 4);
-    if (hintType === 0) {
-        hint = `You're on the right street. It's in one of the first three buildings on the left.`;
-    } else if (hintType === 1) {
-        hint = `You passed it. Turn back and check the houses on the odd-numbered side of the road.`;
-    } else if (hintType === 2) {
-        hint = `You are facing the office. Don't park. Next left after the 3rd board.`;
-    } else {
-        hint = `It's not in the main square. Check the alleyways on the south side.`;
+const shuffleArray = (array: any[]) => {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
-    
-    const secretCode = secretCodes[Math.floor(Math.random() * secretCodes.length)].code;
-
-    return { grid, hint, secretCode };
+    return array;
 }
 
-export default function SuperFreeTimePage() {
+const generateGridState = () => {
+    const cards = gamePairs.flatMap((pair, i) => [
+        { id: i * 2, pairId: i, type: 'term', content: pair.term, isFlipped: false, isMatched: false },
+        { id: i * 2 + 1, pairId: i, type: 'definition', content: pair.definition, isFlipped: false, isMatched: false }
+    ]);
+    return shuffleArray(cards);
+}
+
+export default function MarketMemoryPage() {
     const { toast } = useToast();
-    const [gameState, setGameState] = useState(generateGridState());
+    const [cards, setCards] = useState(generateGridState());
+    const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
+    const [isChecking, setIsChecking] = useState(false);
+    const [moves, setMoves] = useState(0);
     const [gameOver, setGameOver] = useState(false);
-    const [foundKey, setFoundKey] = useState(false);
-    const [attempts, setAttempts] = useState(0);
-    const [timeLeft, setTimeLeft] = useState(TIME_LIMIT_SECONDS);
-    const [showReward, setShowReward] = useState(false);
 
     useEffect(() => {
-        if (gameOver || timeLeft <= 0) {
-            if (timeLeft <= 0 && !gameOver) {
-                setGameOver(true);
+        if (flippedIndices.length === 2) {
+            setIsChecking(true);
+            const [firstIndex, secondIndex] = flippedIndices;
+            const firstCard = cards[firstIndex];
+            const secondCard = cards[secondIndex];
+
+            if (firstCard.pairId === secondCard.pairId) {
+                // Match
+                setTimeout(() => {
+                    setCards(prev => prev.map(card => 
+                        card.pairId === firstCard.pairId ? { ...card, isMatched: true } : card
+                    ));
+                    setFlippedIndices([]);
+                    setIsChecking(false);
+                }, 500);
+            } else {
+                // No match, flip back after a delay
+                setTimeout(() => {
+                    setCards(prev => prev.map((card, index) => 
+                        (index === firstIndex || index === secondIndex) ? { ...card, isFlipped: false } : card
+                    ));
+                    setFlippedIndices([]);
+                    setIsChecking(false);
+                }, 1500); // User sees the mismatch for 1.5s
             }
+            setMoves(prev => prev + 1);
+        }
+    }, [flippedIndices, cards]);
+    
+    useEffect(() => {
+        const allMatched = cards.every(card => card.isMatched);
+        if (allMatched && cards.length > 0) {
+            setGameOver(true);
+        }
+    }, [cards]);
+
+    const handleCardClick = (index: number) => {
+        if (isChecking || cards[index].isFlipped || flippedIndices.length >= 2) {
             return;
         }
 
-        const timer = setInterval(() => {
-            setTimeLeft(prevTime => prevTime - 1);
-        }, 1000);
-
-        return () => clearInterval(timer);
-    }, [gameOver, timeLeft]);
-
-    const handleCellClick = (id: number) => {
-        if (gameOver) return;
-
-        const newAttempts = attempts + 1;
-        setAttempts(newAttempts);
-
-        const newGrid = [...gameState.grid];
-        const cell = newGrid[id];
-        cell.isClicked = true;
-
-        if (cell.hasKey) {
-            cell.icon = 'key';
-            setFoundKey(true);
-            setGameOver(true);
-        } else {
-            cell.icon = 'bomb';
-            if (newAttempts >= MAX_ATTEMPTS) {
-                setGameOver(true);
-            }
-        }
-        
-        setGameState(prev => ({ ...prev, grid: newGrid }));
+        setFlippedIndices(prev => [...prev, index]);
+        setCards(prev => prev.map((card, i) => 
+            i === index ? { ...card, isFlipped: true } : card
+        ));
     };
-
-    const resetGame = () => {
-        setGameState(generateGridState());
-        setGameOver(false);
-        setFoundKey(false);
-        setAttempts(0);
-        setTimeLeft(TIME_LIMIT_SECONDS);
-        setShowReward(false);
-    };
-
-    const copyCode = () => {
-        navigator.clipboard.writeText(gameState.secretCode);
-        toast({
-            title: "Code Copied!",
-            description: "Your secret code has been copied to the clipboard.",
-        });
+    
+    const getWinningFact = () => {
+        const randomPair = gamePairs[Math.floor(Math.random() * gamePairs.length)];
+        return `Did you know? In areas like ${randomPair.definition}, properties from developer ${randomPair.term} often see a strong market performance.`;
     }
 
-    const attemptsLeft = MAX_ATTEMPTS - attempts;
-    const minutes = Math.floor(timeLeft / 60);
-    const seconds = timeLeft % 60;
+    const resetGame = () => {
+        setCards(generateGridState());
+        setFlippedIndices([]);
+        setIsChecking(false);
+        setMoves(0);
+        setGameOver(false);
+    };
+    
+    const handleShareFact = () => {
+        toast({
+            title: "Fact Shared!",
+            description: "Your market insight has been posted to the community board."
+        });
+        resetGame();
+    }
 
     return (
         <main className="p-4 md:p-10 space-y-8">
-            {foundKey && <Confetti />}
+            {gameOver && <Confetti />}
             <PageHeader 
-                icon={<Key className="h-8 w-8" />}
-                title="Find The Key"
-                description={`You have ${MAX_ATTEMPTS} chances to find the key using the hint below. Good luck!`}
+                icon={<Brain className="h-8 w-8" />}
+                title="Market Memory"
+                description={`Match the pairs to test your market knowledge. Total Moves: ${moves}`}
             />
 
             <div className="flex justify-center">
-                <Card className="bg-card/50 backdrop-blur-lg w-full max-w-md">
+                <Card className="bg-card/50 backdrop-blur-lg w-full max-w-xl">
                     <CardContent className="p-6">
-                        <div className="mb-4 text-center p-3 bg-muted/50 rounded-lg border flex items-center justify-center gap-3">
-                           <Lightbulb className="h-5 w-5 text-primary" />
-                           <p className="font-semibold text-foreground/80">{gameState.hint}</p>
-                        </div>
-                        <div className="grid grid-cols-5 gap-3 aspect-square">
-                            {gameState.grid.map(cell => (
+                        <div className="grid grid-cols-4 gap-4">
+                            {cards.map((card, index) => (
                                 <button
-                                    key={cell.id}
-                                    onClick={() => handleCellClick(cell.id)}
-                                    disabled={cell.isClicked || gameOver}
+                                    key={card.id}
+                                    onClick={() => handleCardClick(index)}
+                                    disabled={isChecking || card.isFlipped}
                                     className={cn(
-                                        "flex items-center justify-center rounded-lg border transition-all duration-300 aspect-square",
+                                        "flex items-center justify-center rounded-lg border aspect-square transition-all duration-300 transform-style-3d",
                                         "bg-muted/50 hover:bg-muted hover:border-primary/50",
-                                        cell.isClicked && cell.hasKey && "bg-green-500/20 border-green-500",
-                                        cell.isClicked && !cell.hasKey && "bg-destructive/20 border-destructive",
-                                        gameOver && !cell.isClicked && "opacity-50 cursor-not-allowed"
+                                        card.isFlipped && "rotate-y-180",
+                                        card.isMatched && "border-green-500 bg-green-500/10 opacity-70"
                                     )}
                                 >
-                                    {cell.isClicked ? (
-                                        cell.hasKey ? (
-                                            <Key className="h-8 w-8 text-green-400 animate-in zoom-in" />
-                                        ) : (
-                                            <Bomb className="h-8 w-8 text-destructive animate-in zoom-in" />
-                                        )
-                                    ) : (
-                                       <Search className="h-6 w-6 text-muted-foreground" />
-                                    )}
+                                    <div className={cn("absolute backface-hidden flex items-center justify-center w-full h-full", !card.isFlipped && "hidden")}>
+                                       <p className="text-center text-xs sm:text-sm font-semibold p-1">{card.content}</p>
+                                    </div>
+                                    <div className={cn("absolute backface-hidden", card.isFlipped && "hidden")}>
+                                       <Star className="h-6 w-6 text-muted-foreground" />
+                                    </div>
                                 </button>
                             ))}
-                        </div>
-                         <div className="mt-4 text-center flex justify-around text-sm text-muted-foreground">
-                            <p>Attempts left: {attemptsLeft > 0 ? attemptsLeft : 0}</p>
-                            <p className='flex items-center gap-1'><Clock className="h-4 w-4" /> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}</p>
                         </div>
                     </CardContent>
                 </Card>
             </div>
 
-
             <Dialog open={gameOver} onOpenChange={(open) => { if(!open) resetGame(); }}>
                 <DialogContent>
                     <DialogHeader className="text-center items-center">
-                            {foundKey ? (
-                            showReward ? (
-                                <>
-                                    <DialogTitle className="text-3xl font-bold text-primary">Your Secret Code!</DialogTitle>
-                                    <DialogDescription>
-                                        Login or register, then hand this code to your AI Assistant to unlock your secret reward. Good luck!
-                                    </DialogDescription>
-                                        <div className="my-4 p-4 bg-muted rounded-lg border border-dashed w-full flex items-center justify-between">
-                                        <span className="font-mono text-lg text-primary">{gameState.secretCode}</span>
-                                        <Button variant="ghost" size="icon" onClick={copyCode}><Copy className="h-4 w-4" /></Button>
-                                        </div>
-                                </>
-                            ) : (
-                                <>
-                                    <DialogTitle className="text-3xl font-bold text-green-400">You found it!</DialogTitle>
-                                    <DialogDescription>
-                                        You found the key in {attempts} {attempts === 1 ? 'attempt' : 'attempts'}.
-                                    </DialogDescription>
-                                </>
-                            )
-                            ) : (
-                            <DialogTitle className="text-3xl font-bold text-destructive">{timeLeft <= 0 ? "Time's up!" : "Game Over"}</DialogTitle>
-                            )}
-                        {!foundKey && (
-                            <DialogDescription>That was fun, let's get back to business.</DialogDescription>
-                        )}
+                        <DialogTitle className="text-3xl font-bold text-primary">Excellent Memory!</DialogTitle>
+                        <DialogDescription>
+                            You've matched all the pairs in {moves} moves. Here's a market fact for you:
+                        </DialogDescription>
+                        <div className="my-4 p-4 bg-muted rounded-lg border border-dashed w-full text-center">
+                           <p className="font-semibold text-foreground">{getWinningFact()}</p>
+                        </div>
                     </DialogHeader>
                     <DialogFooter className="justify-center sm:justify-center gap-2">
-                        {showReward ? (
-                            <Link href="/dashboard/assistant">
-                            <Button size="lg">Go to Assistant</Button>
-                            </Link>
-                        ) : (
-                        <>
-                            <Button onClick={resetGame} size="lg" variant="outline">One More Game</Button>
-                            {foundKey ? (
-                                <Button size="lg" onClick={() => setShowReward(true)}>Claim Your Prize</Button>
-                            ) : (
-                                <Link href="/dashboard">
-                                    <Button size="lg"><Briefcase className="mr-2 h-4 w-4"/> Let's Get To Business</Button>
-                                </Link>
-                            )}
-                        </>
-                        )}
+                        <Button onClick={resetGame} size="lg" variant="outline">Play Again</Button>
+                        <Button size="lg" onClick={handleShareFact}>Share Fact to Community</Button>
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
@@ -219,3 +175,13 @@ export default function SuperFreeTimePage() {
         </main>
     );
 }
+
+// Minimal CSS for 3D flip effect
+const style = document.createElement('style');
+style.innerHTML = `
+  .transform-style-3d { transform-style: preserve-3d; }
+  .rotate-y-180 { transform: rotateY(180deg); }
+  .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+`;
+document.head.appendChild(style);
+
