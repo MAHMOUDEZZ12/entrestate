@@ -11,7 +11,7 @@ import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { cn } from '@/lib/utils';
-import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PricingCard } from '@/components/pricing-card';
 import { pricingData, AppData, PlanData } from '@/lib/pricing-data';
 import { Checkbox } from '@/components/ui/checkbox';
