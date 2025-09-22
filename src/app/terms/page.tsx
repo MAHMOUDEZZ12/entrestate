@@ -12,7 +12,7 @@ import { LandingFooter } from '@/components/landing-footer';
 
 export default function TermsPage() {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <LandingHeader />
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
          <PageHeader 
@@ -55,6 +55,6 @@ export default function TermsPage() {
         </Card>
       </main>
       <LandingFooter />
-    </>
+    </div>
   );
 }

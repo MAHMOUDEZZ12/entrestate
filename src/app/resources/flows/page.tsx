@@ -9,6 +9,7 @@ import { ArrowRight, Plus, Workflow } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { tools } from '@/lib/tools-client';
 import { ResourcesHeader } from '@/components/resources-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 const flowLibrary = [
     {
@@ -86,6 +87,7 @@ export default function FlowLibraryPage() {
             </div>
         </div>
       </main>
+      <LandingFooter />
     </div>
   );
 }

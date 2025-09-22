@@ -75,7 +75,7 @@ const faqData = [
 
 export default function SolutionsPage() {
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <LandingHeader />
       <main className="flex-1 w-full">
          <PageHeader
@@ -150,6 +150,6 @@ export default function SolutionsPage() {
         </section>
       </main>
       <LandingFooter />
-    </>
+    </div>
   );
 }

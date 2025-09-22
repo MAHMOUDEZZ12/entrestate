@@ -5,6 +5,7 @@ import { DashboardSidebar } from '@/components/dashboard-sidebar';
 import { TabProvider } from '@/context/TabManagerContext';
 import { CreativeCanvas } from '@/components/creative-canvas';
 import { CanvasProvider } from '@/context/CanvasContext';
+import { DashboardFooter } from '@/components/dashboard-footer';
 
 export default function DashboardLayout({
   children,
@@ -21,6 +22,7 @@ export default function DashboardLayout({
             <main className="grid flex-1 items-start gap-4 sm:py-0 md:gap-8">
               {children}
             </main>
+            <DashboardFooter />
           </div>
           <CreativeCanvas />
         </div>
