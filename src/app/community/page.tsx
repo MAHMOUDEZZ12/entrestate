@@ -180,7 +180,7 @@ const NewNoteForm = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
                     <Textarea id="content" placeholder="Share your thoughts, questions, or requests..." rows={6} {...field} />
                     {errors.content && <p className="text-sm text-destructive">{errors.content.message}</p>}
                 </div>
-            )}
+            )} />
             
              {selectedType === 'Review' && (
                 <Controller name="notifyFirst" control={control} render={({ field }) => (
