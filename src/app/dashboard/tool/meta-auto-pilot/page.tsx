@@ -3,13 +3,16 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, Sparkles, Circle, CheckCircle, Play, Users, Wand2, Box } from 'lucide-react';
+import { Loader2, Sparkles, Circle, CheckCircle, Play, Users, Wand2, Box, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PageHeader } from '@/components/ui/page-header';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { track } from '@/lib/events';
 import { Label } from '@/components/ui/label';
+import { MetaAutoPilotInput } from '@/types';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useAuth } from '@/hooks/useAuth';
 
 type Status = 'pending' | 'running' | 'completed' | 'error';
 
@@ -29,13 +32,19 @@ const INITIAL_STEPS: Step[] = [
 
 export default function MetaAutoPilotPage() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [selectedProject, setSelectedProject] = useState('');
   const [selectedGoal, setSelectedGoal] = useState('');
   const [isExecuting, setIsExecuting] = useState(false);
   const [workflow, setWorkflow] = useState<Step[]>(INITIAL_STEPS);
   const [finalResult, setFinalResult] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleExecute = async () => {
+    if (!user) {
+      toast({ title: 'Not Authenticated', description: 'Please log in to run the Auto Pilot.', variant: 'destructive'});
+      return;
+    }
     if (!selectedProject || !selectedGoal) {
         toast({ title: 'Missing Information', description: 'Please select a project and a campaign goal.', variant: 'destructive'});
         return;
@@ -43,33 +52,46 @@ export default function MetaAutoPilotPage() {
 
     setIsExecuting(true);
     setFinalResult(null);
+    setError(null);
     setWorkflow(INITIAL_STEPS); // Reset workflow on new execution
     track('autopilot_execution_started', { projectId: selectedProject, goal: selectedGoal });
 
     // This is a simulation of the onDelta callback from the backend
     const runStep = (index: number) => {
       if (index >= workflow.length) {
-        // All steps visually complete, now we wait for the final API result
         return;
       }
       
       setWorkflow(prev => prev.map((step, i) => i === index ? { ...step, status: 'running' } : step));
       
+      // Simulate variable step time, but don't wait for the final API result here
       setTimeout(() => {
-        setWorkflow(prev => prev.map((step, i) => i === index ? { ...step, status: 'completed' } : step));
+        // Check if we are still executing before marking as completed
+        setWorkflow(prev => {
+            const currentStep = prev.find(s => s.status === 'running');
+            if (currentStep?.id === workflow[index].id) {
+                 return prev.map((step, i) => i === index ? { ...step, status: 'completed' } : step)
+            }
+            return prev;
+        });
         runStep(index + 1);
-      }, 1500 + Math.random() * 500); // Simulate variable step time
+      }, 1500 + Math.random() * 500); 
     };
 
     runStep(0);
 
     try {
+        const payload: MetaAutoPilotInput = { projectId: selectedProject, campaignGoal: selectedGoal };
+        const idToken = await user.getIdToken();
         const response = await fetch('/api/run', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${idToken}`
+            },
             body: JSON.stringify({
                 toolId: 'meta-auto-pilot',
-                payload: { projectId: selectedProject, campaignGoal: selectedGoal }
+                payload
             }),
         });
 
@@ -79,8 +101,11 @@ export default function MetaAutoPilotPage() {
         setFinalResult(data);
         track('autopilot_execution_succeeded', { projectId: selectedProject });
         toast({ title: 'Autopilot Complete!', description: 'Your campaign plan is ready for review.' });
+        // Ensure all steps are marked as completed on success
+        setWorkflow(prev => prev.map(step => ({...step, status: 'completed'})));
 
     } catch (e: any) {
+        setError(e.message);
         setWorkflow(prev => prev.map(step => ({...step, status: (step.status === 'pending' || step.status === 'running' ? 'error' : step.status) })));
         toast({ title: 'Execution Failed', description: e.message, variant: 'destructive' });
         track('autopilot_execution_failed', { projectId: selectedProject, error: e.message });
@@ -93,7 +118,7 @@ export default function MetaAutoPilotPage() {
     switch (status) {
       case 'running': return <Loader2 className="h-5 w-5 animate-spin text-primary" />;
       case 'completed': return <CheckCircle className="h-5 w-5 text-green-500" />;
-      case 'error': return <Circle className="h-5 w-5 text-destructive" />;
+      case 'error': return <AlertCircle className="h-5 w-5 text-destructive" />;
       default: return <Circle className="h-5 w-5 text-muted-foreground/50" />;
     }
   };
@@ -174,6 +199,13 @@ export default function MetaAutoPilotPage() {
                         <p className="text-sm text-muted-foreground">The campaign plan has been assembled and is ready to review. The final campaign plan ID is <span className="font-mono bg-muted px-1 py-0.5 rounded">{finalResult.finalCampaignId}</span>.</p>
                         <Button className="mt-4" size="sm" variant="outline">View Full Campaign Plan</Button>
                     </div>
+                )}
+                 {error && (
+                    <Alert variant="destructive" className="mt-4">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertTitle>Execution Failed</AlertTitle>
+                        <AlertDescription>{error}</AlertDescription>
+                    </Alert>
                 )}
             </CardContent>
         </Card>

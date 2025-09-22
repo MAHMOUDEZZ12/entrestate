@@ -1,4 +1,3 @@
-
 import { z } from 'zod';
 
 // Core market identity
@@ -137,3 +136,18 @@ export const GenerateVideoPresenterOutputSchema = z.object({
 });
 export type GenerateVideoPresenterInput = z.infer<typeof GenerateVideoPresenterInputSchema>;
 export type GenerateVideoPresenterOutput = z.infer<typeof GenerateVideoPresenterOutputSchema>;
+
+// Schemas for Meta Auto Pilot (`meta-auto-pilot`)
+export const MetaAutoPilotInputSchema = z.object({
+  projectId: z.string().describe('The ID of the project for the campaign.'),
+  campaignGoal: z.string().describe('The high-level goal of the campaign, e.g., "Lead Generation to Landing Page".'),
+});
+export const MetaAutoPilotOutputSchema = z.object({
+  status: z.string(),
+  finalCampaignId: z.string().optional(),
+  audienceStrategy: SuggestTargetingOptionsOutputSchema.optional(),
+  adCreative: z.any().optional(),
+  finalCampaignPlan: CreateMetaCampaignOutputSchema.optional(),
+});
+export type MetaAutoPilotInput = z.infer<typeof MetaAutoPilotInputSchema>;
+export type MetaAutoPilotOutput = z.infer<typeof MetaAutoPilotOutputSchema>;

@@ -1,4 +1,3 @@
-
 'use server';
 
 /**
@@ -13,77 +12,71 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { suggestTargetingOptions } from './suggest-targeting-options';
-import { generateAdFromBrochure } from './generate-ad-from-brochure';
-import { createMetaCampaign } from './create-meta-campaign';
+import { suggestTargetingOptions, SuggestTargetingOptionsOutput } from './suggest-targeting-options';
+import { generateAdFromBrochure, GenerateAdFromBrochureOutput } from './generate-ad-from-brochure';
+import { createMetaCampaign, CreateMetaCampaignOutput } from './create-meta-campaign';
 import { adminDb } from '@/lib/firebaseAdmin';
+import { MetaAutoPilotInputSchema, MetaAutoPilotOutputSchema, MetaAutoPilotInput, MetaAutoPilotOutput } from '@/types';
 
-export const MetaAutoPilotInputSchema = z.object({
-  projectId: z.string().describe('The ID of the project for the campaign.'),
-  campaignGoal: z.string().describe('The high-level goal of the campaign, e.g., "Lead Generation to Landing Page".'),
-});
-export type MetaAutoPilotInput = z.infer<typeof MetaAutoPilotInputSchema>;
-
-export const MetaAutoPilotOutputSchema = z.object({
-  status: z.string(),
-  finalCampaignId: z.string().optional(),
-  audienceStrategy: z.any().optional(),
-  adCreative: z.any().optional(),
-  finalCampaignPlan: z.any().optional(),
-});
-export type MetaAutoPilotOutput = z.infer<typeof MetaAutoPilotOutputSchema>;
 
 export async function runMetaAutoPilot(
   input: MetaAutoPilotInput,
   // This onDelta function is a pattern for streaming progress back to the client.
-  onDelta: (chunk: { step: string, status: 'running' | 'completed', data?: any }) => void
+  onDelta: (chunk: { step: string, status: 'running' | 'completed' | 'error', data?: any }) => void
 ): Promise<MetaAutoPilotOutput> {
 
-  // 1. Fetch Project Data using the authenticated service account
-  if (!adminDb) throw new Error("Firestore Admin DB not available.");
-  const projectDoc = await adminDb.collection('projects_catalog').doc(input.projectId).get();
-  if (!projectDoc.exists) throw new Error(`Project with ID "${input.projectId}" not found.`);
-  const projectData = projectDoc.data() as any;
+  try {
+    // 1. Fetch Project Data using the authenticated service account
+    onDelta({ step: 'data_fetch', status: 'running' });
+    if (!adminDb) throw new Error("Firestore Admin DB not available.");
+    const projectDoc = await adminDb.collection('projects_catalog').doc(input.projectId).get();
+    if (!projectDoc.exists) throw new Error(`Project with ID "${input.projectId}" not found.`);
+    const projectData = projectDoc.data() as any;
+    onDelta({ step: 'data_fetch', status: 'completed', data: projectData });
 
 
-  // 2. Suggest Targeting Options
-  onDelta({ step: 'audience', status: 'running' });
-  const audienceSuggestions = await suggestTargetingOptions({ projectId: input.projectId });
-  onDelta({ step: 'audience', status: 'completed', data: audienceSuggestions });
+    // 2. Suggest Targeting Options
+    onDelta({ step: 'audience', status: 'running' });
+    const audienceSuggestions: SuggestTargetingOptionsOutput = await suggestTargetingOptions({ projectId: input.projectId });
+    onDelta({ step: 'audience', status: 'completed', data: audienceSuggestions });
 
-  // 3. Generate Ad Creative
-  onDelta({ step: 'creative', status: 'running' });
-  const adCreative = await generateAdFromBrochure({
-      projectName: projectData.name,
-      focusArea: 'The luxury lifestyle and investment potential.',
-      toneOfVoice: 'Professional and aspirational',
-      // In a real scenario, you might fetch a brochure URI from the project data
-  });
-  onDelta({ step: 'creative', status: 'completed', data: adCreative });
+    // 3. Generate Ad Creative
+    onDelta({ step: 'creative', status: 'running' });
+    const adCreative: GenerateAdFromBrochureOutput = await generateAdFromBrochure({
+        projectName: projectData.name,
+        focusArea: 'The luxury lifestyle and investment potential.',
+        toneOfVoice: 'Professional and aspirational',
+    });
+    onDelta({ step: 'creative', status: 'completed', data: adCreative });
 
-  // 4. Create the final Campaign Structure
-  onDelta({ step: 'assembly', status: 'running' });
-  const finalCampaignPlan = await createMetaCampaign({
-      campaignGoal: input.campaignGoal,
-      projectBrochureDataUri: adCreative.adDesign, // Use the generated ad design as the 'brochure'
-      // The pilot can intelligently set budget/duration, or take them as input
-      budget: 500,
-      durationDays: 14,
-  });
-  onDelta({ step: 'assembly', status: 'completed', data: finalCampaignPlan });
+    // 4. Create the final Campaign Structure
+    onDelta({ step: 'assembly', status: 'running' });
+    const finalCampaignPlan: CreateMetaCampaignOutput = await createMetaCampaign({
+        campaignGoal: input.campaignGoal,
+        projectBrochureDataUri: adCreative.adDesign, // Use the generated ad design as the 'brochure'
+        budget: 500,
+        durationDays: 14,
+    });
+    onDelta({ step: 'assembly', status: 'completed', data: finalCampaignPlan });
 
-  // 5. Final Output
-  const result = {
-    status: 'Campaign Plan Assembled Successfully.',
-    finalCampaignId: finalCampaignPlan.publishedCampaignId,
-    audienceStrategy: audienceSuggestions,
-    adCreative: adCreative,
-    finalCampaignPlan: finalCampaignPlan,
-  };
-  
-  onDelta({ step: 'done', status: 'completed', data: result });
+    // 5. Final Output
+    const result: MetaAutoPilotOutput = {
+      status: 'Campaign Plan Assembled Successfully.',
+      finalCampaignId: finalCampaignPlan.publishedCampaignId,
+      audienceStrategy: audienceSuggestions,
+      adCreative: adCreative,
+      finalCampaignPlan: finalCampaignPlan,
+    };
+    
+    onDelta({ step: 'done', status: 'completed', data: result });
 
-  return result;
+    return result;
+
+  } catch (e: any) {
+    onDelta({ step: 'error', status: 'error', data: e.message });
+    // Re-throw the error to be caught by the API route handler
+    throw e;
+  }
 }
 
 // NOTE: This file is a conceptual representation. The actual implementation
@@ -92,7 +85,3 @@ export async function runMetaAutoPilot(
 // The `runMetaAutoPilot` function itself is a server-side orchestrator.
 // For the purpose of this simulation, we will call it from a standard API route
 // and await its full completion, though the UI will simulate the steps.
-
-
-
-
