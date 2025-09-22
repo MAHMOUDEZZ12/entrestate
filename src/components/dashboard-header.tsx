@@ -1,4 +1,5 @@
 
+
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { usePathname } from 'next/navigation';
 import { tools } from '@/lib/tools-client';
+import { DashboardSidebar } from './dashboard-sidebar';
 
 
 const breadcrumbNameMap: { [key: string]: string } = {
@@ -24,7 +26,13 @@ const breadcrumbNameMap: { [key: string]: string } = {
     '/dashboard/brand': 'Brand & Assets',
     '/dashboard/assistant': 'AI Command Center',
     '/dashboard/settings': 'Settings',
-    '/dashboard/dev-admin': 'Developer Admin'
+    '/dashboard/dev-admin': 'Developer Admin',
+    '/dashboard/flows': 'Flow Builder',
+    '/dashboard/clients': 'Client Pages',
+    '/dashboard/leads': 'Leads (CRM)',
+    '/dashboard/onboarding': 'Onboarding',
+    '/dashboard/system-health': 'System Health',
+    '/dashboard/projects': 'My Projects',
 };
 
 const getBreadcrumbName = (path: string) => {
@@ -34,7 +42,8 @@ const getBreadcrumbName = (path: string) => {
         const tool = tools.find(t => t.id === toolId);
         return tool?.title || 'Tool';
     }
-    return path.split('/').pop()?.replace(/-/g, ' ') || 'Page';
+    const name = path.split('/').pop()?.replace(/-/g, ' ') || 'Page';
+    return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
 
@@ -53,18 +62,8 @@ export function DashboardHeader() {
             <span className="sr-only">Toggle Menu</span>
           </Button>
         </SheetTrigger>
-        <SheetContent side="left" className="sm:max-w-xs">
-          <nav className="grid gap-6 text-lg font-medium">
-            <Link href="/dashboard" className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base">
-                <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-                <span className="sr-only">Entrestate</span>
-            </Link>
-            <Link href="/dashboard" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">Home</Link>
-            <Link href="/dashboard/marketing" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">Apps</Link>
-            <Link href="/dashboard/brand" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">Brand & Assets</Link>
-            <Link href="/dashboard/assistant" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">AI Assistant</Link>
-            <Link href="/dashboard/settings" className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground">Settings</Link>
-          </nav>
+        <SheetContent side="left" className="sm:max-w-xs p-0">
+          <DashboardSidebar />
         </SheetContent>
       </Sheet>
       
@@ -110,5 +109,7 @@ export function DashboardHeader() {
     </header>
   );
 }
+
+    
 
     

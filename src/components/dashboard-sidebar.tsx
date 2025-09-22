@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import Link from 'next/link';
@@ -23,6 +24,8 @@ import {
   Database,
   HeartPulse,
   Workflow,
+  Building,
+  Target,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
@@ -33,6 +36,9 @@ const mainNavLinks = [
   { href: '/dashboard/flows', icon: <Workflow className="h-5 w-5" />, label: 'Flows' },
   { href: '/dashboard/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },
   { href: '/dashboard/assistant', icon: <Bot className="h-5 w-5" />, label: 'AI Assistant' },
+  { href: '/dashboard/projects', icon: <Building className="h-5 w-5" />, label: 'My Projects' },
+  { href: '/dashboard/leads', icon: <Target className="h-5 w-5" />, label: 'Leads & CRM' },
+  { href: '/dashboard/clients', icon: <Users2 className="h-5 w-5" />, label: 'Client Pages' },
 ];
 
 const secondaryNavLinks = [
@@ -44,9 +50,10 @@ export function DashboardSidebar() {
   const pathname = usePathname();
 
   const renderLink = (link: { href: string; icon: React.ReactNode; label: string; }) => {
-    const isActive = pathname.startsWith(link.href) && (link.href !== '/dashboard' || pathname === '/dashboard');
+    const isActive = pathname === link.href;
     return (
         <Link
+          key={link.href}
           href={link.href}
           className={cn(
             'flex h-10 items-center gap-3 justify-start rounded-lg px-3 text-muted-foreground transition-colors hover:text-foreground',
@@ -66,12 +73,14 @@ export function DashboardSidebar() {
                 <Logo />
             </Link>
         </div>
-      <nav className="flex flex-col gap-2 p-4">
+      <nav className="flex flex-col gap-1 p-3">
         {mainNavLinks.map(renderLink)}
       </nav>
-      <nav className="mt-auto flex flex-col gap-2 p-4">
+      <nav className="mt-auto flex flex-col gap-1 p-3">
         {secondaryNavLinks.map(renderLink)}
       </nav>
     </aside>
   );
 }
+
+    

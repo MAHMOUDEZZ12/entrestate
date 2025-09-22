@@ -1,4 +1,5 @@
 
+
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -39,6 +40,8 @@ import { dealAnalyzer } from '@/ai/flows/market-intelligence/deal-analyzer';
 import { ugcScriptWriter } from '@/ai/flows/archy/ugc-script-writer';
 import { leaseReviewerFlow } from '@/ai/flows/ebram/lease-reviewer';
 import { chatbotCreatorFlow } from '@/ai/flows/ebram/chatbot-creator';
+import { runMetaAutoPilot } from '@/ai/flows/meta-pilot/meta-auto-pilot';
+import { getPaypalTransaction } from '@/ai/flows/developer-backend/get-paypal-transaction';
 
 const runToolSchema = z.object({
   toolId: z.string(),
@@ -72,7 +75,13 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'payment-planner': generatePaymentPlan,
     'brochure-translator': translateBrochure,
     'youtube-video-editor': editYoutubeVideo,
-    'commission-calculator': (payload) => Promise.resolve(payload),
+    'commission-calculator': (payload) => {
+        const { salePrice, commissionRate, agentSplit } = payload;
+        const totalCommission = (salePrice * commissionRate) / 100;
+        const yourShare = (totalCommission * agentSplit) / 100;
+        const brokerageShare = totalCommission - yourShare;
+        return Promise.resolve({ totalCommission, yourShare, brokerageShare });
+    },
     'lead-investigator': investigateLead,
     'keyword-planner': generateKeywordPlan,
     'ai-video-presenter': generateVideoPresenter,
@@ -81,6 +90,12 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'ugc-script-writer': ugcScriptWriter,
     'lease-reviewer': leaseReviewerFlow,
     'chatbot-creator': chatbotCreatorFlow,
+    'paypal-transaction': getPaypalTransaction,
+    'meta-auto-pilot': async (payload) => {
+      // The real-time updates are simulated on the client,
+      // so this endpoint can just run the whole flow and return the final result.
+      return await runMetaAutoPilot(payload, () => {});
+    },
 };
 
 export async function POST(req: NextRequest) {
@@ -110,3 +125,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
+
+    
