@@ -31,6 +31,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/products/mega-listing-pro-2',
     '/products/pro-search-eng-x3',
     '/sx3-mindmap',
+    '/dev',
+    '/dev/sitemap',
+    '/dev/system-health',
+    '/dev/archive',
+    '/dev/data-importer'
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),

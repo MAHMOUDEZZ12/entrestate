@@ -19,7 +19,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel } from '@/components/ui/select';
-import { tools } from '@/lib/tools-client';
+import { tools } from '@/lib/tools-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
@@ -234,8 +234,17 @@ export default function DevAdminPage() {
         }
     };
     
-    const handleUserAction = (userId: string, action: string) => {
-        toast({ title: 'Action Initiated', description: `Performing action "${action}" for user ${userId}.` });
+    const handleUserAction = (userId: string, userName: string, action: string) => {
+        const newLogEntry: ChangeLogEntry = {
+            id: `user-action-${Date.now()}`,
+            timestamp: new Date(),
+            toolId: 'user-management',
+            toolTitle: 'User Management',
+            description: `Admin action: ${action} for user ${userName} (ID: ${userId})`,
+            status: 'New',
+        };
+        setChangeLog(prev => [newLogEntry, ...prev]);
+        toast({ title: 'Action Logged', description: `Task "${action}" for user ${userName} has been logged for the AI to process.` });
     }
 
   return (
@@ -270,7 +279,7 @@ export default function DevAdminPage() {
                                 <SelectContent>
                                     <SelectGroup>
                                         <SelectLabel>Apps & Tools</SelectLabel>
-                                        {tools.filter(t => t.id !== 'superfreetime').map(tool => (
+                                        {tools.map(tool => (
                                             <SelectItem key={tool.id} value={tool.id}>{tool.title}</SelectItem>
                                         ))}
                                     </SelectGroup>
@@ -479,10 +488,10 @@ export default function DevAdminPage() {
                                                         </Button>
                                                     </DropdownMenuTrigger>
                                                     <DropdownMenuContent align="end">
-                                                        <DropdownMenuItem onClick={() => handleUserAction(user.id, 'edit')}>Edit User</DropdownMenuItem>
-                                                        <DropdownMenuItem onClick={() => handleUserAction(user.id, 'suspend')}>Suspend</DropdownMenuItem>
-                                                        <DropdownMenuItem onClick={() => handleUserAction(user.id, 'plan')}>Change Plan</DropdownMenuItem>
-                                                        <DropdownMenuItem className="text-destructive" onClick={() => handleUserAction(user.id, 'delete')}>Delete User</DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => handleUserAction(user.id, user.name, 'Edit User')}>Edit User</DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => handleUserAction(user.id, user.name, 'Suspend')}>Suspend</DropdownMenuItem>
+                                                        <DropdownMenuItem onClick={() => handleUserAction(user.id, user.name, 'Change Plan')}>Change Plan</DropdownMenuItem>
+                                                        <DropdownMenuItem className="text-destructive" onClick={() => handleUserAction(user.id, user.name, 'Delete User')}>Delete User</DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
                                             </TableCell>
