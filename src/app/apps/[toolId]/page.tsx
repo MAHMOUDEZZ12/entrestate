@@ -6,7 +6,7 @@ import { notFound, useParams } from 'next/navigation';
 import { tools } from '@/lib/tools-client';
 import { appDetails } from '@/lib/blog-content';
 import { pricingData } from '@/lib/pricing-data';
-import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
+import { PublicToolPageLayout } from '@/app/public-tool-page-layout';
 import { BrainCircuit, Clock2, CheckCircle, Upload, Sparkles, Download } from 'lucide-react';
 
 
