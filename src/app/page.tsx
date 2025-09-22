@@ -184,7 +184,7 @@ export default function HomePage() {
   };
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <LandingHeader />
       <main className="flex-1 w-full">
         {/* New Hero Section */}
@@ -498,6 +498,6 @@ Name a project, and click "list it" - this is literally how it works.
         </section>
       </main>
       <LandingFooter />
-    </>
+    </div>
   );
 }
