@@ -292,11 +292,11 @@ const serviceIntelligenceReport: { id: string; title: string; status: ServiceSta
         requirement: "Design and build a task queuing system for creative jobs."
     },
     {
-        id: "deal-analyzer",
-        title: "Deal Analyzer",
+        id: "paypal-transaction",
+        title: "PayPal Transaction",
         status: "Operational",
-        analysis: "The flow correctly calculates all financial metrics and the UI displays them clearly.",
-        requirement: "None. This service is fully functional."
+        analysis: "The flow is fully implemented and connects to the PayPal sandbox API to fetch transaction details.",
+        requirement: "Requires PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET environment variables to be set for production use."
     },
     {
         id: "keyword-planner",
