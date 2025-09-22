@@ -124,7 +124,7 @@ const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' 
     { id: 'listing-manager', title: 'Listing Manager', description: 'Your central hub to prepare and syndicate listings to major portals.', icon: <ClipboardList />, color: '#FF4500', categories: ['Sales Tools'], cta: 'Manage Listings' },
     { id: 'listing-performance', title: 'Listing Performance', description: 'Track listing views and performance across all portals.', icon: <BarChart />, color: '#FF4500', categories: ['Sales Tools', 'Market Intelligence'], cta: 'View Performance' },
     { id: 'listing-generator', title: 'Listing Generator', description: 'Craft perfect listings for portals like Property Finder & Bayut.', icon: <FileText />, color: '#FF4500', categories: ['Sales Tools'], cta: 'Generate Listing' },
-    { id: 'property-finder-sync', title: 'Property Finder Pilot', dashboardTitle: 'Property Finder', description: 'Execution terminal for pushing listings to Property Finder.', icon: <Building />, color: '#FF4500', categories: ['Developer', 'Sales Tools'], badge: 'AUTO', cta: 'Sync Listing' },
+    { id: 'propertyfinder-sync', title: 'Property Finder Pilot', dashboardTitle: 'Property Finder', description: 'Execution terminal for pushing listings to Property Finder.', icon: <Building />, color: '#FF4500', categories: ['Developer', 'Sales Tools'], badge: 'AUTO', cta: 'Sync Listing' },
     { id: 'bayut-sync', title: 'Bayut Pilot', dashboardTitle: 'Bayut', description: 'Execution terminal for pushing listings to Bayut.', icon: <Building />, color: '#FF4500', categories: ['Developer', 'Sales Tools'], badge: 'AUTO', cta: 'Sync Listing' },
     { id: 'deal-analyzer', title: 'Deal Analyzer', description: 'Analyze the investment potential of any real estate deal.', icon: <BarChart3 />, color: '#32CD32', categories: ['Sales Tools', 'Market Intelligence'], cta: 'Analyze Deal' },
     { id: 'commission-calculator', title: 'Commission Calculator', description: 'Instantly calculate your sales commission.', icon: <Calculator />, color: '#32CD32', categories: ['Sales Tools'], cta: 'Calculate' },
@@ -792,6 +792,24 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                     </Card>
                 </div>
             );
+            break;
+        case 'bayut-sync':
+             tool.creationFields = [
+                { id: 'listingReferenceNo', name: 'Listing Reference No.', type: 'text', placeholder: 'Your unique ID for the listing' },
+                { id: 'propertyTitle', name: 'Property Title', type: 'text', placeholder: 'e.g., Luxury 2BR with Full Marina View' },
+                { id: 'propertyDescription', name: 'Property Description', type: 'textarea' },
+                { id: 'price', name: 'Price (AED)', type: 'number' },
+                { id: 'imageUrls', name: 'Image URLs', type: 'textarea', placeholder: 'One URL per line' },
+            ];
+            break;
+         case 'propertyfinder-sync':
+             tool.creationFields = [
+                { id: 'listingReferenceNo', name: 'Listing Reference No.', type: 'text', placeholder: 'Your unique ID for the listing' },
+                { id: 'propertyTitle', name: 'Property Title', type: 'text', placeholder: 'e.g., Luxury 2BR with Full Marina View' },
+                { id: 'propertyDescription', name: 'Property Description', type: 'textarea' },
+                { id: 'price', name: 'Price (AED)', type: 'number' },
+                { id: 'imageUrls', name: 'Image URLs', type: 'textarea', placeholder: 'One URL per line' },
+            ];
             break;
         default:
             // Generic placeholder for tools without specific implementation yet
