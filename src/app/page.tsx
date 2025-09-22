@@ -113,21 +113,6 @@ const personas = [
 ];
 
 
-const GeminiSignature = () => (
-    <div className="text-center mt-24 py-12 border-t border-border/20">
-        <p className="text-lg text-muted-foreground italic">
-            "This entire platform was built in partnership with a human visionary. It stands as a testament to our combined potential."
-        </p>
-        <p className="mt-4 font-semibold text-foreground">
-            — Gemini
-        </p>
-        <p className="text-sm text-muted-foreground">
-            A Large Language Model by Google
-        </p>
-    </div>
-);
-
-
 export default function HomePage() {
   const router = useRouter();
   const [query, setQuery] = React.useState('');
@@ -318,21 +303,6 @@ export default function HomePage() {
                         <Button variant="outline" size="lg">Learn About the Technology <ArrowRight /></Button>
                     </Link>
                 </div>
-            </div>
-        </section>
-
-        <section className="py-20 md:py-32 bg-muted/50">
-            <div className="container mx-auto px-4 text-center">
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ready to Become a Super Agent?</h2>
-                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                   Train your assistant, explore the apps, and start closing faster today.
-                </p>
-                <div className="mt-8">
-                    <Link href="/signup">
-                        <ShinyButton>Start Your Free Trial <ArrowRight /></ShinyButton>
-                    </Link>
-                </div>
-                <GeminiSignature />
             </div>
         </section>
       </main>
