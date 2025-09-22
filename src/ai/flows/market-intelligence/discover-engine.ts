@@ -1,4 +1,3 @@
-
 'use server';
 
 /**
@@ -13,8 +12,6 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { googleAI } from '@genkit-ai/googleai';
-
 
 const DiscoverResultSchema = z.object({
   id: z.string(),
@@ -48,32 +45,29 @@ const discoverEngineFlow = ai.defineFlow(
         if (!projectId) {
             throw new Error("Google Cloud Project ID is not configured in environment variables (NEXT_PUBLIC_FIREBASE_PROJECT_ID).");
         }
-
-        // Dynamically construct the data store path.
-        // NOTE: The dataStore ID is assumed to follow this pattern. If it's different, it should also be an env var.
-        const dataStore = `projects/${projectId}/locations/global/collections/default_collection/dataStores/entrestate-kb_1722284949580`;
+        const dataStoreId = 'entrestate-kb_1722284949580';
+        const dataStore = `projects/${projectId}/locations/global/collections/default_collection/dataStores/${dataStoreId}`;
         
-        const response = await ai.search({
-            datastore: dataStore,
-            query: query,
-            options: {
-                maxDocuments: 10,
-                summary: true,
-            }
+        const response = await ai.generate({
+          model: 'googleai/gemini-1.5-pro-preview',
+          tools: [ai.tool.retriever({ datastore: dataStore })],
+          prompt: query,
         });
 
-        const formattedResults = response.map((item: any) => {
-            const metadata = item.document.structData;
-            
-            const title = metadata?.title || 'No Title Available';
-            const description = item.document.pageContent || 'No description available.';
-            const url = metadata?.uri || '#';
-            
+        const references = response.references();
+        if (!references || references.length === 0) {
+            return { results: [] };
+        }
+
+        const formattedResults = references.map((item: any) => {
+            const document = item.content[0].document;
+            const metadata = document?.structData || {};
+
             return {
-                id: item.document.id || `unknown-${Math.random()}`,
-                title,
-                description,
-                url,
+                id: document?.id || `unknown-${Math.random()}`,
+                title: metadata?.title || 'No Title Available',
+                description: document?.pageContent || 'No description available.',
+                url: metadata?.uri || '#',
                 type: 'Unknown' as const, // Type detection can be added later
             };
         });
@@ -84,7 +78,6 @@ const discoverEngineFlow = ai.defineFlow(
 
     } catch (error: any) {
         console.error("Vertex AI Search API Error:", error.message || error);
-        // Provide a more specific error message back to the client
         const detail = error.message || 'An unknown error occurred while querying the Discovery Engine.';
         throw new Error(`Failed to query Discovery Engine: ${detail}`);
     }
