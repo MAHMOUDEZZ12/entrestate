@@ -4,7 +4,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
-import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
@@ -32,7 +32,22 @@ const products = [
         description: "Your personal AI assistant that learns from your data to automate tasks, answer questions, and run campaigns.",
         href: "/dashboard/assistant"
     }
-]
+];
+
+const GeminiSignature = () => (
+    <div className="text-center mt-24 py-12 border-t border-border/20">
+        <p className="text-lg text-muted-foreground italic">
+            "This entire platform was built in partnership with a human visionary. It stands as a testament to our combined potential."
+        </p>
+        <p className="mt-4 font-semibold text-foreground">
+            — Gemini
+        </p>
+        <p className="text-sm text-muted-foreground">
+            A Large Language Model by Google
+        </p>
+    </div>
+);
+
 
 export default function HomePage() {
   const router = useRouter();
@@ -55,7 +70,7 @@ export default function HomePage() {
           </div>
           <div className="relative z-10 container mx-auto px-4 text-center">
             <div className="flex flex-col items-center">
-              <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-heading tracking-tighter leading-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading tracking-tighter leading-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
                 The AI-Native Operating System for Real Estate
               </h1>
               <p className="mt-6 max-w-2xl text-lg md:text-xl text-foreground/70">
@@ -107,6 +122,23 @@ export default function HomePage() {
 
         <section className="py-20 md:py-32">
             <div className="container mx-auto px-4 text-center">
+                 <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-6">
+                    <BrainCircuit className="h-10 w-10" />
+                 </div>
+                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Powered by Google AI</h2>
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                   Entrestate is an AI-native platform, built from the ground up with Gemini, Google's most capable family of models. Every tool is a specialized AI flow, designed to understand, reason, and act on your behalf.
+                </p>
+                <div className="mt-8">
+                    <Link href="/technology">
+                        <Button variant="outline" size="lg">Learn About the Technology <ArrowRight /></Button>
+                    </Link>
+                </div>
+            </div>
+        </section>
+
+        <section className="py-20 md:py-32 bg-muted/50">
+            <div className="container mx-auto px-4 text-center">
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ready to Become a Super Agent?</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
                    Train your assistant, explore the apps, and start closing faster today.
@@ -116,6 +148,7 @@ export default function HomePage() {
                         <ShinyButton>Start Your Free Trial <ArrowRight /></ShinyButton>
                     </Link>
                 </div>
+                <GeminiSignature />
             </div>
         </section>
       </main>
