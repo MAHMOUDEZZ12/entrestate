@@ -8,7 +8,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit
 } from 'lucide-react';
 import { toast as sonnerToast } from "sonner";
 import { Copy, Download, Trash2, Eye, Link as LinkIcon } from 'lucide-react';
@@ -111,7 +111,7 @@ const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' 
     { id: 'landing-pages', title: 'Landing Page Builder', dashboardTitle: 'Landing Pages', description: 'Launch high-converting landing pages in minutes.', icon: <Globe />, color: '#1E90FF', categories: ['Web', 'Lead Gen'], cta: 'Generate Page' },
     { id: 'rebranding', title: 'Automated Rebranding', description: 'Apply your brand identity to any brochure with text commands.', icon: <Palette />, color: '#1E90FF', categories: ['Editing', 'Creative'], cta: 'Rebrand Document' },
     { id: 'brochure-translator', title: 'Brochure Translator', description: 'Translate any brochure to multiple languages in seconds.', icon: <Languages />, color: '#1E90FF', categories: ['Editing'], cta: 'Translate Brochure' },
-    { id: 'pdf-editor', title: 'Visual PDF Editor (Deprecated)', dashboardTitle: 'PDF Editor', description: 'A legacy tool for simple PDF edits.', icon: <PenTool />, color: '#696969', categories: ['Editing'], badge: 'DEPRECATED', cta: 'Edit PDF' },
+    { id: 'pdf-editor', title: 'Visual PDF Editor (Deprecated)', dashboardTitle: 'PDF Editor', description: 'A legacy tool for simple PDF edits.', icon: <Edit />, color: '#696969', categories: ['Editing'], badge: 'DEPRECATED', cta: 'Edit PDF' },
     { id: 'pdf-editor-ai', title: 'PDF EDITOR AI', description: 'Edit PDF documents with AI-powered tools.', icon: <Wand2 />, color: '#1E90FF', categories: ['Editing', 'Creative'], cta: 'Edit with AI' },
     { id: 'images-hq-ai', title: 'Images HQ AI', description: 'Generate high-quality, royalty-free images for listings and ads.', icon: <ImageIcon />, color: '#1E90FF', categories: ['Creative'], cta: 'Generate Image' },
     { id: 'logo-creator-ai', title: 'Logo Creator AI', description: 'Create a professional logo for your brand in seconds.', icon: <Sparkles />, color: '#1E90FF', categories: ['Creative'], cta: 'Create Logo' },
@@ -123,7 +123,7 @@ const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' 
     { id: 'listing-generator', title: 'Listing Generator', description: 'Craft perfect listings for portals like Property Finder & Bayut.', icon: <FileText />, color: '#FF4500', categories: ['Sales Tools'], cta: 'Generate Listing' },
     { id: 'property-finder-sync', title: 'Property Finder Pilot', dashboardTitle: 'Property Finder', description: 'Execution terminal for pushing listings to Property Finder.', icon: <Building />, color: '#FF4500', categories: ['Developer', 'Sales Tools'], badge: 'AUTO', cta: 'Sync Listing' },
     { id: 'bayut-sync', title: 'Bayut Pilot', dashboardTitle: 'Bayut', description: 'Execution terminal for pushing listings to Bayut.', icon: <Building />, color: '#FF4500', categories: ['Developer', 'Sales Tools'], badge: 'AUTO', cta: 'Sync Listing' },
-    { id: 'ai-price-estimator', title: 'AI Price Estimator', description: 'Get an AI-powered price estimate for any property.', icon: <BarChart3 />, color: '#32CD32', categories: ['Sales Tools', 'Market Intelligence'], cta: 'Estimate Price' },
+    { id: 'deal-analyzer', title: 'Deal Analyzer', description: 'Analyze the investment potential of any real estate deal.', icon: <BarChart3 />, color: '#32CD32', categories: ['Sales Tools', 'Market Intelligence'], cta: 'Analyze Deal' },
     { id: 'commission-calculator', title: 'Commission Calculator', description: 'Instantly calculate your sales commission.', icon: <Calculator />, color: '#32CD32', categories: ['Sales Tools'], cta: 'Calculate' },
     { id: 'payment-planner', title: 'Payment Planner', description: 'Generate tailored payment plans for off-plan properties.', icon: <FileCheck />, color: '#32CD32', categories: ['Sales Tools'], cta: 'Create Plan' },
     { id: 'investor-matching', title: 'Investor Matching', description: 'Pair budgets with the right projects.', icon: <Handshake />, color: '#32CD32', categories: ['Sales Tools', 'Lead Gen'], cta: 'Find Matches' },
@@ -137,7 +137,6 @@ const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' 
     { id: 'projects-finder', title: 'Market Library', description: 'Search our intelligent library for verified projects.', icon: <Database />, color: '#00CED1', categories: ['Market Intelligence', 'Market Library'], cta: 'Search Library' },
     { id: 'market-reports', title: 'Market Reports', description: 'Generate PDF reports on market trends, pricing, and sentiment.', icon: <Newspaper />, color: '#00CED1', categories: ['Market Intelligence'], cta: 'Generate Report' },
     { id: 'market-trends', title: 'Market Trends Watcher', dashboardTitle: 'Market Trends', description: 'Identify emerging market trends before they become mainstream.', icon: <LineChart />, color: '#00CED1', categories: ['Market Intelligence'], cta: 'Analyze Trends' },
-    { id: 'deal-analyzer', title: 'Deal Analyzer', description: 'Analyze the investment potential of any real estate deal.', icon: <BarChart3 />, color: '#32CD32', categories: ['Sales Tools', 'Market Intelligence'], cta: 'Analyze Deal' },
     { id: 'keyword-planner', title: 'Keyword Planner', description: 'Generate strategic keyword plans for Google Ads.', icon: <KeyRound />, color: '#4B0082', categories: ['Ads', 'Marketing'], cta: 'Generate Plan' },
 
     // Core / Platform
