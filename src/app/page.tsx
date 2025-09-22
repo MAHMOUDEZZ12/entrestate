@@ -4,7 +4,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
-import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit, Building, Users, User, Library, FileJson, Telescope, MessageCircle, Check, Shield } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit, Building, Users, User, Library, FileJson, Telescope, MessageCircle, Check, Shield, Workflow, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
@@ -19,6 +19,7 @@ import { MegaListingSimulation } from '@/components/mega-listing-simulation';
 import { EstChatSimulation } from '@/components/est-chat-simulation';
 import { FlowSimulation } from '@/components/flow-simulation';
 import { ProSearchSimulation } from '@/components/pro-search-simulation';
+import { tools } from '@/lib/tools-client';
 
 
 const ChatBubble = ({ children, className }: { children: React.ReactNode, className?: string }) => (
@@ -84,6 +85,29 @@ const personas = [
         icon: <Building className="h-8 w-8" />,
         description: "Manage your project portfolio from a single dashboard. Track market trends and empower your sales network with cutting-edge marketing assets.",
         benefits: ["Portfolio Intelligence", "Automated Project Marketing", "Sales Network Enablement"]
+    }
+];
+
+const flowLibraryExamples = [
+    {
+        title: "Full Listing Syndication",
+        description: "Generate a perfect listing description and automatically publish it to both Property Finder and Bayut in one click.",
+        apps: ["Listing Generator", "Property Finder Pilot", "Bayut Pilot"],
+    },
+    {
+        title: "Automated Lead Nurturing",
+        description: "When a new lead is captured, automatically investigate their profile and send a personalized welcome message via WhatsApp.",
+        apps: ["CRM Memory Assistant", "Lead Investigator AI", "WhatsApp Manager"],
+    },
+    {
+        title: "Ad Campaign from a Brochure",
+        description: "Upload a project brochure, and the AI will generate ad copy, create an audience, and launch a campaign on Meta.",
+        apps: ["Insta Ads Designer", "Audience Creator", "Meta Auto Pilot"],
+    },
+    {
+        title: "Client Offer Package",
+        description: "Select multiple properties, generate data-driven price estimates for each, and build a beautiful side-by-side comparison PDF for your client.",
+        apps: ["Market Library", "AI Price Estimator", "Multi-Offer Builder"],
     }
 ];
 
@@ -197,7 +221,7 @@ try our discovery search to see how it works!
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><MessageCircle className="h-8 w-8" /></div>
                         <h3 className="text-3xl font-bold font-heading">
                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">ESTCHAT X3</span>
-                        </h3>
+                       </h3>
                        <p className="text-2xl font-semibold !leading-tight">The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.</p>
                        <p className="text-lg text-muted-foreground whitespace-pre-line">
                             Imagine hiring a super agent with 15 years market experience.
@@ -257,14 +281,19 @@ Name a project, and click "list it" - this is literally how it works.
                                     <CardHeader>
                                         <div className="flex justify-between items-start">
                                             <p className="text-5xl font-bold text-primary/20">{step.step}</p>
-                                            <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                                            <div className="p-3 bg-primary/10 text-primary rounded-lg backdrop-blur-sm border border-primary/20">
                                                 {step.icon}
                                             </div>
                                         </div>
                                         <CardTitle className="pt-4 text-2xl">{step.title}</CardTitle>
                                     </CardHeader>
                                     <CardContent className="flex-grow">
-                                        <p className="text-muted-foreground">{step.description}</p>
+                                        <motion.p 
+                                            style={{opacity: useTransform(scrollYProgress, [0.15 + (index * 0.3), 0.25 + (index * 0.3)], [0, 1])}}
+                                            className="text-muted-foreground"
+                                        >
+                                            {step.description}
+                                        </motion.p>
                                     </CardContent>
                                     <CardFooter>
                                         <Link href={step.cta.href} className="w-full">
@@ -286,9 +315,9 @@ Name a project, and click "list it" - this is literally how it works.
         <section className="py-20 md:py-32 text-center bg-gradient-to-t from-background to-primary/5">
             <div className="container mx-auto px-4">
                 <div className="text-center">
-                    <h2 className="text-3xl md:text-5xl font-bold font-heading tracking-tighter">Unlock Your Workflow with AI</h2>
+                    <h2 className="text-3xl md:text-5xl font-bold font-heading tracking-tighter">Unlock Creative Click-to-Action Workflows</h2>
                     <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                        Connect your apps into powerful, automated workflows that run 24/7. Stop repetitive tasks and start focusing on what matters: closing deals.
+                        NO time + NO mistakes X AI Magic = Full Perfection
                     </p>
                 </div>
                 
@@ -300,6 +329,33 @@ Name a project, and click "list it" - this is literally how it works.
                             Explore the Flow Library <ArrowRight />
                         </ShinyButton>
                     </Link>
+                </div>
+                 <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                    {flowLibraryExamples.map(flow => {
+                        const flowApps = flow.apps.map(appName => tools.find(t => t.title === appName)).filter(Boolean);
+                        return (
+                            <Card key={flow.title} className="text-left bg-card/80 backdrop-blur-lg border border-border/20 h-full flex flex-col">
+                                <CardHeader>
+                                    <CardTitle className="text-lg">{flow.title}</CardTitle>
+                                </CardHeader>
+                                <CardContent className="flex-grow">
+                                    <p className="text-sm text-muted-foreground">{flow.description}</p>
+                                </CardContent>
+                                <CardFooter>
+                                    <div className="flex items-center gap-2">
+                                        {flowApps.map((app, index) => app && (
+                                            <React.Fragment key={app.id}>
+                                                 <div className="p-2 rounded-full text-white" style={{backgroundColor: app.color}}>
+                                                    {React.cloneElement(app.icon, { className: 'h-4 w-4' })}
+                                                </div>
+                                                {index < flowApps.length - 1 && <Plus className="h-4 w-4 text-muted-foreground" />}
+                                            </React.Fragment>
+                                        ))}
+                                    </div>
+                                </CardFooter>
+                            </Card>
+                        )
+                    })}
                 </div>
             </div>
         </section>
