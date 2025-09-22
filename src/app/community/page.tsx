@@ -29,8 +29,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
 
 const noteSchema = z.object({
     title: z.string().min(5, 'Title must be at least 5 characters.'),
@@ -253,47 +251,31 @@ export default function CommunityPage() {
             </Dialog>
         </PageHeader>
         <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20">
-            <Tabs defaultValue="all" className="w-full">
-                <TabsList className="grid w-full grid-cols-3 sm:grid-cols-7 mb-8">
-                    <TabsTrigger value="all">All</TabsTrigger>
-                    <TabsTrigger value="Connection">Connections</TabsTrigger>
-                    <TabsTrigger value="Investor Request">Investors</TabsTrigger>
-                    <TabsTrigger value="Opinion">Opinions</TabsTrigger>
-                    <TabsTrigger value="Review">Reviews</TabsTrigger>
-                    <TabsTrigger value="Question">Questions</TabsTrigger>
-                    <TabsTrigger value="Self Intro">Intros</TabsTrigger>
-                </TabsList>
-                
-                {(['all', ...noteTypes] as const).map(tab => (
-                     <TabsContent key={tab} value={tab.replace(/\s/g, '')}>
-                        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-                            {mockNotes.filter(note => tab === 'all' || note.type === tab).map((note) => (
-                            <Card 
-                                key={note.id} 
-                                className="bg-card/80 backdrop-blur-lg break-inside-avoid-column border-b-4"
-                                style={{'--card-border-color': typeColors[note.type], borderColor: 'var(--card-border-color)'} as React.CSSProperties}
-                            >
-                                <CardHeader>
-                                <div className="flex items-center justify-between">
-                                    <Badge style={{ backgroundColor: typeColors[note.type]}} className="text-white">{note.type}</Badge>
-                                    <div className="text-sm text-muted-foreground flex items-center gap-1">
-                                        <User className="h-4 w-4" /> {note.author}
-                                    </div>
-                                </div>
-                                <CardTitle className="pt-2">{note.title}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                <p className="text-muted-foreground">{note.content}</p>
-                                </CardContent>
-                                <CardFooter>
-                                <Button variant="outline" size="sm">View Note &amp; Comments ({note.comments})</Button>
-                                </CardFooter>
-                            </Card>
-                            ))}
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+                {mockNotes.map((note) => (
+                <Card 
+                    key={note.id} 
+                    className="bg-card/80 backdrop-blur-lg break-inside-avoid-column border-b-4"
+                    style={{'--card-border-color': typeColors[note.type], borderColor: 'var(--card-border-color)'} as React.CSSProperties}
+                >
+                    <CardHeader>
+                    <div className="flex items-center justify-between">
+                        <Badge style={{ backgroundColor: typeColors[note.type]}} className="text-white">{note.type}</Badge>
+                        <div className="text-sm text-muted-foreground flex items-center gap-1">
+                            <User className="h-4 w-4" /> {note.author}
                         </div>
-                    </TabsContent>
+                    </div>
+                    <CardTitle className="pt-2">{note.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                    <p className="text-muted-foreground">{note.content}</p>
+                    </CardContent>
+                    <CardFooter>
+                    <Button variant="outline" size="sm">View Note &amp; Comments ({note.comments})</Button>
+                    </CardFooter>
+                </Card>
                 ))}
-            </Tabs>
+            </div>
         </div>
       </main>
       <LandingFooter />
