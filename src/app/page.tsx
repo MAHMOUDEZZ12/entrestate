@@ -117,7 +117,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="pillars" className="py-20 md:py-32 bg-muted/30">
+        <section id="pillars" className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 space-y-20">
                  <div className="text-center">
                     <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Our Core Product Pillars</h2>
@@ -194,7 +194,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section className="py-20 md:py-32 bg-muted/30">
+        <section className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">An Operating System for Every Role</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
