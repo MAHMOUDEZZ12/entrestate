@@ -5,7 +5,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Code, GitBranch, Cpu, Component, Wind, BrainCircuit, Network } from 'lucide-react';
-import { tools } from '@/lib/tools-data';
+import { tools } from '@/lib/tools-client';
 import { Badge } from '@/components/ui/badge';
 import { CodeBlock } from '@/components/code-block';
 import { PageHeader } from '@/components/ui/page-header';
