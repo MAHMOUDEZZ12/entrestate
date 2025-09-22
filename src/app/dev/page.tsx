@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
-import { PlusCircle, Bot, GitCommit, AlertTriangle, GanttChartSquare, RotateCw, Loader2, Sparkles, CheckCircle, MessageSquare, Undo, Copy, Database, BrainCircuit, Activity, BarChart2, Users, MoreHorizontal, HeartPulse, GitMerge } from 'lucide-react';
+import { PlusCircle, Bot, GitCommit, AlertTriangle, GanttChartSquare, RotateCw, Loader2, Sparkles, CheckCircle, MessageSquare, Undo, Copy, Database, BrainCircuit, Activity, BarChart2, Users, MoreHorizontal, HeartPulse, GitMerge, Key } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -534,7 +534,21 @@ export default function DevAdminPage() {
                             </Link>
                         </CardContent>
                     </Card>
-                     <Card className="md:col-span-2">
+                    <Card>
+                         <CardHeader>
+                            <CardTitle>Keys & API Monitoring</CardTitle>
+                            <CardDescription>Check the status of external API keys and connections.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                             <Link href="/dev/keys">
+                                <Button variant="secondary" className="w-full">
+                                    <Key className="mr-2 h-4 w-4" />
+                                    View API Status
+                                </Button>
+                            </Link>
+                        </CardContent>
+                    </Card>
+                     <Card className="md:col-span-full">
                          <CardHeader>
                             <CardTitle>AI Prompt Usage</CardTitle>
                             <CardDescription>Placeholder for analytics on prompt and token usage.</CardDescription>

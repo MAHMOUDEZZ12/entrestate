@@ -35,7 +35,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/dev/sitemap',
     '/dev/system-health',
     '/dev/archive',
-    '/dev/data-importer'
+    '/dev/data-importer',
+    '/dev/keys'
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
