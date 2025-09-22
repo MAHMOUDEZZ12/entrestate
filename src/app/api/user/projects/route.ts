@@ -1,26 +1,9 @@
 
 'use server';
 
-import { adminDb, adminAuth } from "@/lib/firebaseAdmin";
-import { ok, fail, bad } from "@/lib/api-helpers";
+import { adminDb } from "@/lib/firebaseAdmin";
+import { ok, fail, bad, getUidFromRequest } from "@/lib/api-helpers";
 import type { Project } from "@/types";
-
-async function getUidFromRequest(req: Request): Promise<string | null> {
-    if (!adminAuth) {
-        return null;
-    }
-    try {
-        const idToken = req.headers.get('Authorization')?.split('Bearer ')[1];
-        if (!idToken) {
-            return null;
-        }
-        const decodedToken = await adminAuth.verifyIdToken(idToken);
-        return decodedToken.uid;
-    } catch (error) {
-        console.error("Error verifying ID token:", error);
-        return null;
-    }
-}
 
 export async function GET(req: Request) {
   if (!adminDb) {

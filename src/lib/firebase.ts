@@ -1,8 +1,8 @@
 
 import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getAnalytics, isSupported } from "firebase/analytics";
+import { getAuth, Auth } from "firebase/auth";
+import { getFirestore, Firestore } from "firebase/firestore";
+import { getAnalytics, isSupported, Analytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -14,44 +14,27 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-// Initialize Firebase for client-side (browser) usage
-function getClientApp(): FirebaseApp | null {
-    if (typeof window === 'undefined') {
-        return null; // Don't initialize on the server
-    }
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
+let db: Firestore | null = null;
+let analytics: Analytics | null = null;
 
-    if (getApps().length) {
-        return getApp();
-    }
-    
-    const isFirebaseConfigValid = firebaseConfig.apiKey &&
-                                  firebaseConfig.authDomain &&
-                                  firebaseConfig.projectId;
+if (typeof window !== 'undefined') {
+  const isFirebaseConfigValid = firebaseConfig.apiKey &&
+                                firebaseConfig.projectId;
 
-    if (!isFirebaseConfigValid) {
-        console.error("Firebase client configuration is missing or incomplete. Please check your environment variables.");
-        return null;
-    }
-    
-    return initializeApp(firebaseConfig);
-}
-
-const app = getClientApp();
-
-// Initialize Analytics if supported
-let analytics;
-if (app) {
+  if (isFirebaseConfigValid) {
+    app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
     isSupported().then(supported => {
         if (supported) {
-            analytics = getAnalytics(app);
+            analytics = getAnalytics(app as FirebaseApp);
         }
     });
+  } else {
+    console.warn("Firebase client configuration is missing or incomplete. Firebase services will be unavailable.");
+  }
 }
 
-// Export the Firestore and Auth instances
-export const db = app ? getFirestore(app) : undefined;
-export const auth = app ? getAuth(app) : undefined;
-
-if (typeof window !== 'undefined' && !app) {
-    console.warn("Firebase client was not initialized. This may be expected if config is missing.");
-}
+export { app, auth, db, analytics };

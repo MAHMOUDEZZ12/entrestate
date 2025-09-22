@@ -1,26 +1,8 @@
 
 'use server';
 
-import { adminDb, adminAuth } from "@/lib/firebaseAdmin";
-import { ok, fail, bad } from "@/lib/api-helpers";
-
-async function getUidFromRequest(req: Request): Promise<string | null> {
-    if (!adminAuth) {
-        console.error("Firebase Admin Auth is not initialized. Cannot verify ID token.");
-        return null;
-    }
-    try {
-        const idToken = req.headers.get('Authorization')?.split('Bearer ')[1];
-        if (!idToken) {
-            return null;
-        }
-        const decodedToken = await adminAuth.verifyIdToken(idToken);
-        return decodedToken.uid;
-    } catch (error) {
-        console.error("Error verifying ID token:", error);
-        return null;
-    }
-}
+import { adminDb } from "@/lib/firebaseAdmin";
+import { ok, fail, bad, getUidFromRequest } from "@/lib/api-helpers";
 
 export async function GET(req: Request) {
   if (!adminDb) {
@@ -34,6 +16,7 @@ export async function GET(req: Request) {
     const userDoc = await userDocRef.get();
     
     if (!userDoc.exists) {
+        // Return an empty profile object if the user doc doesn't exist yet
         return ok({});
     }
 
