@@ -37,6 +37,7 @@ import { generateVideoPresenter } from '@/ai/flows/archy/generate-video-presente
 import { discoverEngine } from '@/ai/flows/market-intelligence/discover-engine';
 import { dealAnalyzer } from '@/ai/flows/market-intelligence/deal-analyzer';
 import { ugcScriptWriter } from '@/ai/flows/archy/ugc-script-writer';
+import { leaseReviewerFlow } from '@/ai/flows/ebram/lease-reviewer';
 import { chatbotCreatorFlow } from '@/ai/flows/ebram/chatbot-creator';
 import { runMetaAutoPilot } from '@/ai/flows/meta-pilot/meta-auto-pilot';
 import { getPaypalTransaction } from '@/ai/flows/developer-backend/get-paypal-transaction';
@@ -86,6 +87,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'discover-engine': discoverEngine,
     'deal-analyzer': dealAnalyzer,
     'ugc-script-writer': ugcScriptWriter,
+    'lease-reviewer': leaseReviewerFlow,
     'chatbot-creator': chatbotCreatorFlow,
     'paypal-transaction': getPaypalTransaction,
     'meta-auto-pilot': async (payload) => {
