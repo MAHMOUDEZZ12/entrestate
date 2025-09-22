@@ -162,9 +162,9 @@ export default function HomePage() {
 
         <section id="pillars" className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 space-y-20">
-                 <div className="text-left">
+                 <div className="max-w-3xl">
                     <h2 className="text-4xl md:text-5xl font-bold tracking-tight drop-shadow-md">Pick one of the Sales AI models or hire a full team in 3 shifts, multi languages, and realtors by nature!</h2>
-                    <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
+                    <p className="mt-4 text-lg text-muted-foreground">
                         This is not a fancy product and no magic website needed, they come with their magic.
                     </p>
                 </div>
@@ -214,7 +214,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section id="how-it-works" className="py-20 md:py-32 bg-background bg-secondary" ref={workflowRef}>
+        <section id="how-it-works" className="py-20 md:py-32 bg-background" ref={workflowRef}>
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Path to a 10x Workflow</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
