@@ -25,6 +25,11 @@ export const pricingData: {
     plans: PlanData[];
 } = {
     "apps": [
+        // Core Products
+        { "name": "PRO SEARCH ENG. x3", "description": "The triple-engine of discovery: Fast, Smart, and Deep Search.", "price_monthly": 190, "category": "Intelligence" },
+        { "name": "ESTCHAT X3", "description": "The conversational frontline for your website, social media, and CRM.", "price_monthly": 149, "category": "CRM" },
+        { "name": "MEGA LISTING PRO 2", "description": "The unified market registry to consolidate and verify all listings.", "price_monthly": 68, "category": "Sales" },
+
         // Marketing & Ads
         { "name": "Insta Ads Designer", "description": "Create perfect ads for Instagram Stories & Feed.", "price_monthly": 15, "category": "Ads" },
         { "name": "Reel Ads", "description": "Generate engaging video ads for Instagram Reels.", "price_monthly": 20, "category": "Ads" },

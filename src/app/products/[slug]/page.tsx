@@ -6,7 +6,7 @@ import { useParams, notFound } from 'next/navigation';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { PageHeader } from '@/components/ui/page-header';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight, Bot, Check, FileJson, MessageCircle, Telescope, Shield, Cpu, Workflow, BarChart } from 'lucide-react';
@@ -50,7 +50,8 @@ const productsData: {[key: string]: any} = {
         { tier: 'Enterprise', description: 'Full regulatory dashboard integration, cross-market intelligence, white-label licensing.' },
     ],
     simulation: <EstChatSimulation />,
-    cta: { text: "Name your SuperAgent", href: "/login" }
+    cta: { text: "Name your SuperAgent", href: "/login" },
+    price: 149,
   },
   'mega-listing-pro-2': {
     title: 'MEGA LISTING PRO 2',
@@ -82,7 +83,8 @@ const productsData: {[key: string]: any} = {
         { tier: 'Enterprise', description: 'White-label registry for governments and real estate authorities.' },
     ],
     simulation: <MegaListingSimulation />,
-    cta: { text: "Use it to stop blaming Portals", href: "/login" }
+    cta: { text: "Use it to stop blaming Portals", href: "/login" },
+    price: 68,
   },
   'pro-search-eng-x3': {
     title: 'PRO SEARCH ENG. x3',
@@ -115,39 +117,8 @@ const productsData: {[key: string]: any} = {
         { tier: 'Phase 3', description: 'Unlock Deep Search with premium investor dashboards.' },
     ],
     simulation: <ProSearchSimulation />,
-    cta: { text: "let's Go", href: "/login" }
-  },
-  'ebram-judicial-ai': {
-    title: 'EBRAM JUDICIAL AI',
-    icon: <Shield className="h-8 w-8" />,
-    tagline: 'The Legal Nervous System',
-    vision: 'Every real estate system is incomplete without law, enforcement, and permanence. Markets collapse when contracts are unclear, when disputes drag on, or when property lineage is lost.',
-    dna: 'Its DNA is legal permanence. Once a property event enters EBRAM, it is undeniable, executable, and archived for 1,000 years.',
-    productCore: [
-      'Records every action on a property (sale, mortgage, lease, inheritance).',
-      'Automates contracts by converting discussions and agreements into enforceable smart contracts.',
-      'Enforces through binding digital rulings recognized by sovereign authorities.',
-      'Archives full lineage of ownership, ensuring every property has a transparent 1,000-year memory.'
-    ],
-    techStack: {
-      'Language Layer': 'EBRAM syntax (declarative + procedural rules).',
-      'Execution Engine': 'Converts EBRAM scripts into smart contracts deployed on the blockchain layer.',
-      'Database': 'Firestore for live property state. BigQuery for historical lineage. Blockchain anchor for immutability.',
-      'Interface': 'Judicial Console for regulators. Contract Builder for brokers/developers. Inheritance & Family Rights Module for citizens.'
-    },
-    useCases: [
-      { persona: 'The Citizen / Buyer', query: 'Buys a property', experience: 'EBRAM auto-generates the purchase contract, ownership certificate, and legal obligations.' },
-      { persona: 'The Broker', query: 'Mediates a rental', experience: 'EBRAM creates a binding lease with built-in compliance and automatic expiry.' },
-      { persona: 'The Regulator', query: 'Enforces a dispute', experience: 'EBRAM runs the contract history and issues a sovereign ruling in seconds.' },
-      { persona: 'The Family / Heirs', query: 'Inheritance transfer', experience: 'EBRAM applies Sharia inheritance rules + national law automatically, ensuring fairness and speed.' },
-    ],
-    growthPath: [
-        { tier: 'Phase 1', description: 'Automate rentals and sales.' },
-        { tier: 'Phase 2', description: 'Extend to inheritance and family law.' },
-        { tier: 'Phase 3', description: 'Launch as Judicial AI across sectors (beyond real estate).' },
-    ],
-    simulation: null,
-    cta: { text: "Get Started", href: "/login" }
+    cta: { text: "let's Go", href: "/login" },
+    price: 190,
   }
 };
 
@@ -205,6 +176,29 @@ export default function ProductPage() {
                 ))}
              </div>
         </section>
+        
+        {product.price && (
+             <section>
+                <Card className="max-w-md mx-auto text-center border-2 border-primary ring-4 ring-primary/10 shadow-2xl">
+                    <CardHeader>
+                        <CardTitle className="text-2xl">Get {product.title} Standalone</CardTitle>
+                        <CardDescription>Add this powerful tool to your arsenal.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="text-5xl font-bold font-heading">${product.price}</p>
+                        <p className="text-muted-foreground">per month</p>
+                    </CardContent>
+                    <CardFooter>
+                         <Link href="/login" className="w-full">
+                            <Button size="lg" className="w-full">
+                                Get Started
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                        </Link>
+                    </CardFooter>
+                </Card>
+            </section>
+        )}
 
         <section>
             <h2 className="text-3xl font-bold text-center mb-8">Technology & Architecture</h2>
