@@ -1111,13 +1111,13 @@ export const appDetails = {
       "cta": "Explore App"
     },
     {
-      "name": "CRM Memory Assistant",
+      "name": "CRM Memory",
       "hero": "CRM Memory — The core data store that remembers every client interaction.",
       "full_description": "CRM Memory stores lead and client data, interaction history, deal stages, documents, and AI-annotated notes. It acts as the single source of truth for customer lifecycle and feeds other suite apps with contextual data.",
       "level_of_knowledge_required": "Low. Basic CRM concepts apply; onboarding templates simplify setup.",
       "difference_vs_native": "Unlike generic CRMs, CRM Memory is deeply integrated with the suite to supply enriched audiences, match investors, and power automated flows.",
       "flow": "Ingest leads from campaigns and listing inquiries. Enrich with Lead Investigator AI and Market Library context. Drive automations in WhatsApp Manager and Meta Auto Pilot.",
-      "chain": "Meta Auto Pilot → CRM Memory Assistant → WhatsApp Manager",
+      "chain": "Meta Auto Pilot → CRM Memory → WhatsApp Manager",
       "expected_results": "Cleaner data, better lead follow-up, and measurable increases in conversion due to context-rich interactions; reduces lead leakage and improves attribution.",
       "features": [
         "Full interaction timeline",

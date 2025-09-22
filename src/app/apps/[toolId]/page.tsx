@@ -14,7 +14,7 @@ const mergeToolData = (toolId: string) => {
     const toolData = tools.find(t => t.id === toolId);
     if (!toolData) return null;
 
-    const detailsContent = appDetails.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === toolId.toLowerCase());
+    const detailsContent = appDetails.apps.find(app => app.name.toLowerCase().replace(/\\s/g, '-') === toolId.toLowerCase());
     
     if (!detailsContent) {
       // Fallback if no specific details are found
