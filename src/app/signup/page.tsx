@@ -116,7 +116,9 @@ export default function AuthPage() {
           <div className="flex items-center justify-center py-12 px-4">
             <div className="mx-auto w-full max-w-sm space-y-6">
               <div className="grid gap-2 text-center">
-                <Logo className="mb-4 justify-center" />
+                <div className="mb-4 flex justify-center">
+                  <Logo />
+                </div>
                 <h1 className="text-3xl font-bold">Get Started</h1>
                 <p className="text-balance text-muted-foreground">
                   Create an account to begin your journey.

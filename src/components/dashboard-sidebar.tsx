@@ -62,7 +62,9 @@ export function DashboardSidebar() {
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r bg-background sm:flex">
         <div className="flex h-16 items-center border-b px-6">
-            <Logo />
+            <Link href="/dashboard">
+                <Logo />
+            </Link>
         </div>
       <nav className="flex flex-col gap-2 p-4">
         {mainNavLinks.map(renderLink)}
