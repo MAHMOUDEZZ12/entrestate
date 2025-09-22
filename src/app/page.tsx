@@ -259,6 +259,27 @@ export default function HomePage() {
                 </div>
             </div>
         </section>
+        
+        <section className="py-20 md:py-32 text-center bg-gradient-to-t from-background to-primary/5">
+            <div className="container mx-auto px-4">
+                <div className="text-center">
+                    <h2 className="text-3xl md:text-5xl font-bold font-heading tracking-tighter">Unlock Your Workflow with AI</h2>
+                    <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                        Connect your apps into powerful, automated workflows that run 24/7. Stop repetitive tasks and start focusing on what matters: closing deals.
+                    </p>
+                </div>
+                
+                <FlowSimulation />
+
+                 <div className="mt-12">
+                    <Link href="/resources/flows">
+                        <ShinyButton>
+                            Explore the Flow Library <ArrowRight />
+                        </ShinyButton>
+                    </Link>
+                </div>
+            </div>
+        </section>
 
         <section className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 text-center">
@@ -299,27 +320,6 @@ export default function HomePage() {
                           </Card>
                         </motion.div>
                    ))}
-                </div>
-            </div>
-        </section>
-        
-        <section className="py-20 md:py-32 text-center bg-gradient-to-t from-background to-primary/5">
-            <div className="container mx-auto px-4">
-                <div className="text-center">
-                    <h2 className="text-3xl md:text-5xl font-bold font-heading tracking-tighter">Unlock Your Workflow with AI</h2>
-                    <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                        Connect your apps into powerful, automated workflows that run 24/7. Stop repetitive tasks and start focusing on what matters: closing deals.
-                    </p>
-                </div>
-                
-                <FlowSimulation />
-
-                 <div className="mt-12">
-                    <Link href="/resources/flows">
-                        <ShinyButton>
-                            Explore the Flow Library <ArrowRight />
-                        </ShinyButton>
-                    </Link>
                 </div>
             </div>
         </section>
