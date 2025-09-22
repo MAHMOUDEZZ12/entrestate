@@ -16,6 +16,8 @@ import { Badge } from '@/components/ui/badge';
 import { motion } from "framer-motion";
 import { cn } from '@/lib/utils';
 import { MegaListingSimulation } from '@/components/mega-listing-simulation';
+import { ProSearchSimulation } from '@/components/pro-search-simulation';
+import { EstChatSimulation } from '@/components/est-chat-simulation';
 
 
 const ChatBubble = ({ children, className }: { children: React.ReactNode, className?: string }) => (
@@ -98,7 +100,7 @@ export default function HomePage() {
               </p>
                <div className="mt-10 w-full max-w-2xl">
                      <div className="relative group">
-                         <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-full blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-gradient-pulse"></div>
+                         <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-full blur opacity-75 group-hover:opacity-100 transition-duration-1000 group-hover:duration-200 animate-gradient-pulse"></div>
                          <form onSubmit={handleSearch} className="relative z-10">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                             <Input 
@@ -134,20 +136,7 @@ export default function HomePage() {
                        </Link>
                    </div>
                    <div>
-                       <Card className="w-full max-w-lg mx-auto overflow-hidden shadow-2xl bg-card/80 backdrop-blur-lg">
-                           <CardHeader className="p-4 border-b flex-col items-start h-auto">
-                               <div className="flex justify-between w-full items-center">
-                                    <CardTitle className="text-base">Deep Search Query</CardTitle>
-                                    <Badge variant="default">In-Use</Badge>
-                               </div>
-                               <p className="text-sm text-muted-foreground font-mono">"JVC Area expected rental ROI in 2029"</p>
-                           </CardHeader>
-                           <CardContent className="p-4">
-                                <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center p-4">
-                                   <Image src="https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.appspot.com/o/jvc-2029-roi.png?alt=media&token=1d09e53b-e1c8-4734-a212-386f671c504a" alt="Search results for JVC 2029 ROI" width={800} height={600} className="rounded" data-ai-hint="predictive analytics chart" />
-                                </div>
-                           </CardContent>
-                       </Card>
+                       <ProSearchSimulation />
                    </div>
                 </div>
 
@@ -161,24 +150,7 @@ export default function HomePage() {
                        </Link>
                    </div>
                    <div className="md:order-1">
-                        <Card className="w-full max-w-sm mx-auto h-[480px] flex flex-col bg-card/80 backdrop-blur-lg shadow-2xl">
-                           <CardHeader className="p-3 border-b flex-row items-center justify-between space-y-0">
-                               <div className="flex items-center gap-2">
-                                    <div className="relative">
-                                       <User className="h-6 w-6 text-muted-foreground" />
-                                       <span className="absolute bottom-0 right-0 block h-2 w-2 rounded-full bg-green-500 ring-2 ring-card" />
-                                   </div>
-                                   <p className="font-semibold text-sm">Live Chat</p>
-                               </div>
-                                <Badge variant="default">In-Use</Badge>
-                           </CardHeader>
-                           <CardContent className="p-3 flex-1 flex flex-col gap-2 justify-end">
-                              <ChatBubble className="bg-muted self-start">Hi! I'm looking for a 2BR villa in Dubai Hills.</ChatBubble>
-                              <ChatBubble className="bg-primary text-primary-foreground self-end">I have 3 top options for you. Would you like to see the comparison?</ChatBubble>
-                              <ChatBubble className="bg-muted self-start">Yes, please. And what's the typical service charge there?</ChatBubble>
-                              <ChatBubble className="bg-primary text-primary-foreground self-end">Generating comparison... Service charges in Dubai Hills average AED 4-6 per sq. ft. annually.</ChatBubble>
-                           </CardContent>
-                       </Card>
+                        <EstChatSimulation />
                    </div>
                 </div>
 
@@ -275,3 +247,5 @@ export default function HomePage() {
     </>
   );
 }
+
+    
