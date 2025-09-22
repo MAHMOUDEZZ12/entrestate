@@ -20,10 +20,10 @@ const discoveryengine = google.discoveryengine('v1');
 
 const DiscoverResultSchema = z.object({
   id: z.string(),
-  title: z.string(),
-  description: z.string(),
-  url: z.string().optional(),
-  type: z.enum(['Project', 'Market Report', 'Article']).describe("The type of result."),
+  title: z.string().describe("The title of the search result document."),
+  description: z.string().describe("A summary or snippet of the document content."),
+  url: z.string().url().describe("The full URL to the original document source."),
+  type: z.enum(['Project', 'Market Report', 'Article', 'Unknown']).describe("The type of result."),
 });
 
 export const DiscoverEngineInputSchema = z.object({
@@ -32,7 +32,7 @@ export const DiscoverEngineInputSchema = z.object({
 export type DiscoverEngineInput = z.infer<typeof DiscoverEngineInputSchema>;
 
 export const DiscoverEngineOutputSchema = z.object({
-  results: z.array(z.any()),
+  results: z.array(DiscoverResultSchema),
 });
 export type DiscoverEngineOutput = z.infer<typeof DiscoverEngineOutputSchema>;
 
@@ -53,10 +53,10 @@ const discoverEngineFlow = ai.defineFlow(
     const authClient = await auth.getClient();
     google.options({ auth: authClient });
 
-    const projectId = 'mtcmartechgooodstage-456-326b5';
+    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'mtcmartechgooodstage-456-326b5';
     const location = 'global';
     // This is the production-ready Datastore ID for our knowledge base.
-    const datastoreId = '2901569404259008512'; 
+    const datastoreId = '2908016390688473088'; 
 
     const servingConfig = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${datastoreId}/servingConfigs/default_serving_config`;
 
@@ -68,7 +68,7 @@ const discoverEngineFlow = ai.defineFlow(
                 pageSize: 10,
                 contentSearchSpec: {
                   summarySpec: {
-                    summaryResultCount: 3,
+                    summaryResultCount: 5,
                     includeCitations: true,
                   },
                    extractiveContentSpec: {
@@ -78,8 +78,20 @@ const discoverEngineFlow = ai.defineFlow(
             },
         });
         
+        const searchResults = response.data.results || [];
+        const formattedResults = searchResults.map(item => {
+            const doc = item.document?.derivedStructData;
+            return {
+                id: item.document?.id || 'unknown-id',
+                title: doc?.title as string || 'No Title',
+                description: item.document?.structData?.metaDescription as string || doc?.snippets?.[0]?.snippet || 'No description available.',
+                url: doc?.link || '#',
+                type: 'Unknown' as const, // Type detection can be added later
+            };
+        });
+
         return {
-            results: response.data.results || [],
+            results: formattedResults,
         };
 
     } catch (error: any) {
