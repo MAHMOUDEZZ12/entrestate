@@ -47,25 +47,24 @@ const discoverEngineFlow = ai.defineFlow(
   },
   async ({ query }) => {
     
-    // Use Application Default Credentials for authentication in Google Cloud environments
-    const auth = new GoogleAuth({
-        scopes: ['https://www.googleapis.com/auth/cloud-platform'],
-    });
-
-    const authClient = await auth.getClient();
-    google.options({ auth: authClient });
-
-    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
-    if (!projectId) {
-        throw new Error("Google Cloud Project ID is not configured.");
-    }
-    const location = 'global';
-    // This is the production-ready Datastore ID for our knowledge base.
-    const datastoreId = 'entrestate-kb_1722284949580'; 
-
-    const servingConfig = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${datastoreId}/servingConfigs/default_serving_config`;
-
     try {
+        const auth = new GoogleAuth({
+            scopes: ['https://www.googleapis.com/auth/cloud-platform'],
+        });
+        const authClient = await auth.getClient();
+        google.options({ auth: authClient });
+
+        const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+        if (!projectId) {
+            throw new Error("Google Cloud Project ID is not configured in environment variables (NEXT_PUBLIC_FIREBASE_PROJECT_ID).");
+        }
+        
+        const location = 'global';
+        // This is the production-ready Datastore ID for our knowledge base.
+        const datastoreId = 'entrestate-kb_1722284949580'; 
+
+        const servingConfig = `projects/${projectId}/locations/${location}/collections/default_collection/dataStores/${datastoreId}/servingConfigs/default_serving_config`;
+
         const response = await discoveryengine.projects.locations.collections.dataStores.servingConfigs.search({
             servingConfig: servingConfig,
             requestBody: {
@@ -86,11 +85,16 @@ const discoverEngineFlow = ai.defineFlow(
         const searchResults = response.data.results || [];
         const formattedResults = searchResults.map(item => {
             const doc = item.document?.derivedStructData;
+            // Use optional chaining and provide default values to prevent crashes
+            const title = (doc?.title as string) || (item.document?.structData?.title as string) || 'No Title';
+            const description = (item.document?.structData?.metaDescription as string) || doc?.snippets?.[0]?.snippet || 'No description available.';
+            const url = (doc?.link as string) || '#';
+            
             return {
-                id: item.document?.id || 'unknown-id',
-                title: doc?.title as string || 'No Title',
-                description: item.document?.structData?.metaDescription as string || doc?.snippets?.[0]?.snippet || 'No description available.',
-                url: doc?.link || '#',
+                id: item.document?.id || `unknown-${Math.random()}`,
+                title,
+                description,
+                url,
                 type: 'Unknown' as const, // Type detection can be added later
             };
         });
@@ -100,8 +104,10 @@ const discoverEngineFlow = ai.defineFlow(
         };
 
     } catch (error: any) {
-        console.error("Vertex AI Search API Error:", error.response?.data || error.message);
-        throw new Error(`Failed to query Vertex AI Search: ${error.message}`);
+        console.error("Vertex AI Search API Error:", error.response?.data?.error || error.message);
+        // Provide a more specific error message back to the client
+        const detail = error.response?.data?.error?.message || error.message;
+        throw new Error(`Failed to query Discovery Engine: ${detail}`);
     }
   }
 );
