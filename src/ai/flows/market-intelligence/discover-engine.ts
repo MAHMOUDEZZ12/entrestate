@@ -51,20 +51,22 @@ const discoverEngineFlow = ai.defineFlow(
 
         // Dynamically construct the data store path.
         // NOTE: The dataStore ID is assumed to follow this pattern. If it's different, it should also be an env var.
-        const dataStore = googleAI.dataStore(`projects/${projectId}/locations/global/collections/default_collection/dataStores/entrestate-kb_1722284949580`);
+        const dataStore = `projects/${projectId}/locations/global/collections/default_collection/dataStores/entrestate-kb_1722284949580`;
         
-        const response = await googleAI.search(dataStore, query, {
-            contentConfig: {
-                summary: true,
+        const response = await ai.search({
+            datastore: dataStore,
+            query: query,
+            options: {
                 maxDocuments: 10,
+                summary: true,
             }
         });
 
         const formattedResults = response.map((item: any) => {
-            const metadata = item.document.metadata;
+            const metadata = item.document.structData;
             
             const title = metadata?.title || 'No Title Available';
-            const description = metadata?.snippets?.[0]?.text || 'No description available.';
+            const description = item.document.pageContent || 'No description available.';
             const url = metadata?.uri || '#';
             
             return {
