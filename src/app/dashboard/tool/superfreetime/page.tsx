@@ -46,6 +46,8 @@ export default function MarketMemoryPage() {
     const [isChecking, setIsChecking] = useState(false);
     const [moves, setMoves] = useState(0);
     const [gameOver, setGameOver] = useState(false);
+    const [wonGame, setWonGame] = useState(false);
+    const [points, setPoints] = useState(100); // Mock user points
 
     useEffect(() => {
         if (flippedIndices.length === 2) {
@@ -66,9 +68,6 @@ export default function MarketMemoryPage() {
             } else {
                 // No match, flip back after a delay
                 setTimeout(() => {
-                    setCards(prev => prev.map((card, index) => 
-                        (index === firstIndex || index === secondIndex) ? { ...card, isFlipped: false } : card
-                    ));
                     setFlippedIndices([]);
                     setIsChecking(false);
                 }, 1500); // User sees the mismatch for 1.5s
@@ -80,45 +79,36 @@ export default function MarketMemoryPage() {
     useEffect(() => {
         const allMatched = cards.every(card => card.isMatched);
         if (allMatched && cards.length > 0) {
+            setWonGame(true);
+            setGameOver(true);
+            setPoints(prev => prev + 50); // Award points
+        } else if (moves >= 15 && !allMatched) { // Example losing condition
+            setWonGame(false);
             setGameOver(true);
         }
-    }, [cards]);
+    }, [cards, moves]);
 
     const handleCardClick = (index: number) => {
         if (isChecking || cards[index].isFlipped || flippedIndices.length >= 2) {
             return;
         }
 
-        setFlippedIndices(prev => [...prev, index]);
-        setCards(prev => prev.map((card, i) => 
-            i === index ? { ...card, isFlipped: true } : card
-        ));
+        const newFlipped = [...flippedIndices, index];
+        setFlippedIndices(newFlipped);
     };
     
-    const getWinningFact = () => {
-        const randomPair = gamePairs[Math.floor(Math.random() * gamePairs.length)];
-        return `Did you know? In areas like ${randomPair.definition}, properties from developer ${randomPair.term} often see a strong market performance.`;
-    }
-
     const resetGame = () => {
         setCards(generateGridState());
         setFlippedIndices([]);
         setIsChecking(false);
         setMoves(0);
         setGameOver(false);
+        setWonGame(false);
     };
-    
-    const handleShareFact = () => {
-        toast({
-            title: "Fact Shared!",
-            description: "Your market insight has been posted to the community board."
-        });
-        resetGame();
-    }
 
     return (
         <main className="p-4 md:p-10 space-y-8">
-            {gameOver && <Confetti />}
+            {wonGame && gameOver && <Confetti />}
             <PageHeader 
                 icon={<Brain className="h-8 w-8" />}
                 title="Market Memory"
@@ -133,18 +123,18 @@ export default function MarketMemoryPage() {
                                 <button
                                     key={card.id}
                                     onClick={() => handleCardClick(index)}
-                                    disabled={isChecking || card.isFlipped}
+                                    disabled={isChecking || card.isFlipped || gameOver}
                                     className={cn(
                                         "flex items-center justify-center rounded-lg border aspect-square transition-all duration-300 transform-style-3d",
-                                        "bg-muted/50 hover:bg-muted hover:border-primary/50",
-                                        card.isFlipped && "rotate-y-180",
+                                        !card.isFlipped && "bg-muted/50 hover:bg-muted hover:border-primary/50",
+                                        card.isFlipped && !card.isMatched && "bg-card border-primary/50",
                                         card.isMatched && "border-green-500 bg-green-500/10 opacity-70"
                                     )}
                                 >
-                                    <div className={cn("absolute backface-hidden flex items-center justify-center w-full h-full", !card.isFlipped && "hidden")}>
+                                   <div className={cn("flex items-center justify-center w-full h-full", !card.isFlipped && "hidden")}>
                                        <p className="text-center text-xs sm:text-sm font-semibold p-1">{card.content}</p>
                                     </div>
-                                    <div className={cn("absolute backface-hidden", card.isFlipped && "hidden")}>
+                                    <div className={cn(card.isFlipped && "hidden")}>
                                        <Star className="h-6 w-6 text-muted-foreground" />
                                     </div>
                                 </button>
@@ -157,17 +147,35 @@ export default function MarketMemoryPage() {
             <Dialog open={gameOver} onOpenChange={(open) => { if(!open) resetGame(); }}>
                 <DialogContent>
                     <DialogHeader className="text-center items-center">
-                        <DialogTitle className="text-3xl font-bold text-primary">Excellent Memory!</DialogTitle>
-                        <DialogDescription>
-                            You've matched all the pairs in {moves} moves. Here's a market fact for you:
-                        </DialogDescription>
-                        <div className="my-4 p-4 bg-muted rounded-lg border border-dashed w-full text-center">
-                           <p className="font-semibold text-foreground">{getWinningFact()}</p>
-                        </div>
+                        {wonGame ? (
+                            <>
+                                <DialogTitle className="text-3xl font-bold text-primary">Excellent Memory!</DialogTitle>
+                                <DialogDescription>
+                                    You've earned <span className="font-bold text-foreground">50 Market IQ Points</span> for your expertise.
+                                </DialogDescription>
+                                <div className="my-4 p-4 bg-muted rounded-lg border border-dashed w-full text-center">
+                                   <p className="text-sm text-muted-foreground">New Balance</p>
+                                   <p className="font-bold text-2xl text-primary">{points} IQ Points</p>
+                                </div>
+                            </>
+                        ) : (
+                           <>
+                            <DialogTitle className="text-3xl font-bold text-destructive">Game Over</DialogTitle>
+                            <DialogDescription>That was a good attempt. Let's get back to business.</DialogDescription>
+                           </>
+                        )}
                     </DialogHeader>
                     <DialogFooter className="justify-center sm:justify-center gap-2">
                         <Button onClick={resetGame} size="lg" variant="outline">Play Again</Button>
-                        <Button size="lg" onClick={handleShareFact}>Share Fact to Community</Button>
+                        {wonGame ? (
+                            <Link href="/pricing">
+                                <Button size="lg">Redeem Points</Button>
+                            </Link>
+                        ) : (
+                             <Link href="/dashboard">
+                                <Button size="lg"><Briefcase className="mr-2 h-4 w-4"/> Let's Get To Business</Button>
+                            </Link>
+                        )}
                     </DialogFooter>
                 </DialogContent>
             </Dialog>
