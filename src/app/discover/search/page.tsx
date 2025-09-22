@@ -16,7 +16,7 @@ function SearchResultsComponent() {
   return (
     <div className="w-full">
         <PageHeader
-            title={`Search Results for "${query}"`}
+            title={query ? `Search Results for "${query}"` : 'Discover'}
             description="Powered by the native Entrestate Discovery Engine."
             icon={<Search className="h-8 w-8" />}
         />
@@ -32,7 +32,7 @@ export default function SearchResultsPage() {
         <div className="flex min-h-screen flex-col bg-background">
             <LandingHeader />
             <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-20">
-                <Suspense fallback={<Loader2 className="h-8 w-8 animate-spin mx-auto" />}>
+                <Suspense fallback={<div className="flex w-full justify-center items-center h-64"><Loader2 className="h-8 w-8 animate-spin mx-auto text-primary" /></div>}>
                     <SearchResultsComponent />
                 </Suspense>
             </main>
