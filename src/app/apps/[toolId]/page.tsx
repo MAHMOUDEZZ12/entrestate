@@ -5,6 +5,7 @@ import React from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { tools } from '@/lib/tools-client';
 import { appDetails } from '@/lib/blog-content';
+import { pricingData } from '@/lib/pricing-data';
 import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
 import { BrainCircuit, Clock2, CheckCircle, Upload, Sparkles, Download } from 'lucide-react';
 
@@ -15,11 +16,13 @@ const mergeToolData = (toolId: string) => {
     if (!toolData) return null;
 
     const detailsContent = appDetails.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === toolId.toLowerCase());
+    const priceInfo = pricingData.apps.find(app => app.name === toolData.title);
     
     if (!detailsContent) {
       // Fallback if no specific details are found
       return {
         ...(toolData as any),
+        price: priceInfo?.price_monthly || 0,
         longDescription: toolData.description,
         details: {
           steps: [
@@ -63,6 +66,7 @@ const mergeToolData = (toolId: string) => {
     
     return {
         ...(toolData as any),
+        price: priceInfo?.price_monthly || 0,
         longDescription: detailsContent?.full_description || toolData.description,
         details: newDetails,
     };

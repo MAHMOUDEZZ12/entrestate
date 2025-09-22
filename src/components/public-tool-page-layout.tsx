@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2 } from 'lucide-react';
+import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Feature } from '@/lib/tools-client';
 import Image from 'next/image';
@@ -18,10 +18,11 @@ import { LandingHeader } from './landing-header';
 import { LandingFooter } from './landing-footer';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
 import { CodeBlock } from './code-block';
+import { PurchaseDialog } from './ui/purchase-dialog';
 
 
 interface PublicToolPageLayoutProps {
-  feature: Feature;
+  feature: Feature & { price: number };
 }
 
 
@@ -107,13 +108,21 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
           <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-foreground/70">
             {feature.longDescription}
           </p>
-          <div className="mt-8">
+          <div className="mt-8 flex items-center justify-center gap-4">
             <Link href="/login">
                 <ShinyButton>
-                    Get Started with {feature.title.split(" ")[0]}
+                    Get Started Free
                     <ArrowRight />
                 </ShinyButton>
             </Link>
+            {feature.price > 0 && (
+                <PurchaseDialog tool={feature}>
+                    <Button variant="outline" size="lg">
+                        <CreditCard className="mr-2 h-4 w-4" />
+                        Buy for ${feature.price}/mo
+                    </Button>
+                </PurchaseDialog>
+            )}
           </div>
         </div>
       </section>
