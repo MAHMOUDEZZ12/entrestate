@@ -1,4 +1,5 @@
 
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Code, GitBranch, Cpu, Component, Wind, BrainCircuit, Network } from 'lucide-react';
@@ -77,7 +78,7 @@ export default function DocumentationPage() {
             </section>
 
             <section>
-            <h2 className="text-3xl font-bold mb-8 text-center">AI Flows & Features</h2>
+            <h2 className="text-3xl font-bold mb-8 text-center">AI Flows &amp; Features</h2>
             <div className="space-y-12">
                 {tools.map((tool) => {
                 // Schemas would need to be imported or passed in a different way
@@ -110,7 +111,7 @@ export default function DocumentationPage() {
             </section>
 
             <section className="mt-20">
-                <h2 className="text-3xl font-bold mb-8 text-center">Connections & Integrations</h2>
+                <h2 className="text-3xl font-bold mb-8 text-center">Connections &amp; Integrations</h2>
                 <Card className="bg-card/50 backdrop-blur-lg border-primary/10 overflow-hidden">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-3 text-2xl text-primary">
@@ -124,7 +125,7 @@ export default function DocumentationPage() {
                     <CardContent className="space-y-6 prose prose-lg dark:prose-invert max-w-none">
                         <h3>Authentication-Based Connections (OAuth)</h3>
                         <p>
-                            For services like <strong>Meta (Facebook & Instagram)</strong> and <strong>Google (Gmail & YouTube)</strong>, we use OAuth 2.0. This is the industry standard for secure authorization. When you connect these accounts, you will be redirected to their official login page. You grant our application specific, limited permissions (e.g., "post on my behalf" or "read my DMs"). We never see or store your password. This method is highly secure and gives you full control to revoke access at any time from your Google or Facebook account settings.
+                            For services like <strong>Meta (Facebook &amp; Instagram)</strong> and <strong>Google (Gmail &amp; YouTube)</strong>, we use OAuth 2.0. This is the industry standard for secure authorization. When you connect these accounts, you will be redirected to their official login page. You grant our application specific, limited permissions (e.g., "post on my behalf" or "read my DMs"). We never see or store your password. This method is highly secure and gives you full control to revoke access at any time from your Google or Facebook account settings.
                         </p>
                         
                         <h3>API Key-Based Connections</h3>
@@ -146,3 +147,5 @@ export default function DocumentationPage() {
     </div>
   );
 }
+
+    

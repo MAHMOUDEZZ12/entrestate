@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -180,7 +181,7 @@ export default function MarketPage() {
                 </CardHeader>
                 <CardContent>
                     <div className="text-2xl font-bold">{kpiData.marketSentiment}</div>
-                    <p className="text-xs text-muted-foreground">Based on news & social analysis</p>
+                    <p className="text-xs text-muted-foreground">Based on news &amp; social analysis</p>
                 </CardContent>
             </Card>
         </div>
@@ -276,3 +277,5 @@ export default function MarketPage() {
     </div>
   );
 }
+
+    

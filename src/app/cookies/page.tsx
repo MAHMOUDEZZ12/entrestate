@@ -1,4 +1,5 @@
 
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
@@ -47,3 +48,5 @@ export default function CookiesPage() {
     </div>
   );
 }
+
+    

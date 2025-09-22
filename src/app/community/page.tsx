@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState } from 'react';
@@ -285,7 +286,7 @@ export default function CommunityPage() {
                                 <p className="text-muted-foreground">{note.content}</p>
                                 </CardContent>
                                 <CardFooter>
-                                <Button variant="outline" size="sm">View Note & Comments ({note.comments})</Button>
+                                <Button variant="outline" size="sm">View Note &amp; Comments ({note.comments})</Button>
                                 </CardFooter>
                             </Card>
                             ))}
@@ -299,3 +300,5 @@ export default function CommunityPage() {
     </div>
   );
 }
+
+    

@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState } from 'react';
@@ -57,7 +58,7 @@ export default function PricingPage() {
       <LandingHeader />
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
         <PageHeader
-          title="Plans & Pricing"
+          title="Plans &amp; Pricing"
           description="Choose the perfect toolkit for your real estate ambitions. From individual apps to the full AI-powered ecosystem."
           icon={<Wallet className="h-8 w-8" />}
         />
@@ -127,3 +128,5 @@ export default function PricingPage() {
     </div>
   );
 }
+
+    

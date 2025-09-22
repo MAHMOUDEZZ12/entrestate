@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React from 'react';
@@ -201,7 +202,7 @@ export default function ProductPage() {
         )}
 
         <section>
-            <h2 className="text-3xl font-bold text-center mb-8">Technology & Architecture</h2>
+            <h2 className="text-3xl font-bold text-center mb-8">Technology &amp; Architecture</h2>
             <Card className="bg-card/50">
                 <CardContent className="p-8 space-y-4">
                     {Object.entries(product.techStack).map(([key, value]) => (
@@ -216,7 +217,7 @@ export default function ProductPage() {
 
 
          <section>
-             <h2 className="text-3xl font-bold text-center mb-8">Personas & Use Cases</h2>
+             <h2 className="text-3xl font-bold text-center mb-8">Personas &amp; Use Cases</h2>
              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {product.useCases.map((useCase: any, index: number) => (
                     <Card key={index} className="bg-muted/50">
@@ -271,3 +272,5 @@ export default function ProductPage() {
     </div>
   );
 }
+
+    

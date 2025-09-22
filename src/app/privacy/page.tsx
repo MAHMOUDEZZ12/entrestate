@@ -1,4 +1,5 @@
 
+
 'use client';
 import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
@@ -28,7 +29,7 @@ export default function PrivacyPage() {
               <ul>
                 <li><strong>Personal Data:</strong> Information that can be used to identify you, such as your name, email address, phone number, and billing information when you register for an account or subscribe to our services.</li>
                 <li><strong>Usage Data:</strong> Information on how you access and use the Entrestate platform, including page views, features used, and interactions with our AI tools. This helps us optimize your experience.</li>
-                <li><strong>Client Data & Assets:</strong> Any proprietary documents (e.g., brochures, client lists) you upload to train your AI assistant are treated with the highest confidentiality. This data is firewalled and NEVER used to train external AI models or shared with third parties. It is exclusively used to enhance *your* private AI co-pilot.</li>
+                <li><strong>Client Data &amp; Assets:</strong> Any proprietary documents (e.g., brochures, client lists) you upload to train your AI assistant are treated with the highest confidentiality. This data is firewalled and NEVER used to train external AI models or shared with third parties. It is exclusively used to enhance *your* private AI co-pilot.</li>
               </ul>
 
               <h2>How We Use Your Information</h2>
@@ -82,3 +83,5 @@ export default function PrivacyPage() {
     </div>
   );
 }
+
+    
