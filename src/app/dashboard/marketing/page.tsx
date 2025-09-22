@@ -2,23 +2,12 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import {
-  ArrowRight, Bot, BrainCircuit, CheckCircle, Plus, Sparkles, Upload, Megaphone,
-  User, ShieldQuestion, Search, MessageCircle, PenTool, Clock2, Wallet, BadgeCheck,
-  ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate
+  LayoutTemplate
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import {
-  Accordion, AccordionContent, AccordionItem, AccordionTrigger
-} from '@/components/ui/accordion';
-import { Separator } from '@/components/ui/separator';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Feature, tools as features, FilterCategory } from '@/lib/tools-client';
-import { Card, CardContent } from '@/components/ui/card';
-import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { PageHeader } from '@/components/ui/page-header';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
 
