@@ -1,4 +1,3 @@
-
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -39,7 +38,9 @@ const breadcrumbNameMap: { [key: string]: string } = {
     '/community': 'Community Notes',
     '/resources/flows': 'Flow Library',
     '/resources': 'Resources',
-    '/dashboard/archive': 'Developer Archive'
+    '/dashboard/archive': 'Developer Archive',
+    '/dashboard/data-importer': 'Data Importer',
+    '/dashboard/tool/projects-finder': 'Market Library',
 };
 
 const getBreadcrumbName = (path: string) => {
@@ -76,18 +77,13 @@ export function DashboardHeader() {
       
       <Breadcrumb className="hidden md:flex">
         <BreadcrumbList>
-            <BreadcrumbItem>
-                <BreadcrumbLink asChild>
-                    <Link href="/dashboard">Dashboard</Link>
-                </BreadcrumbLink>
-            </BreadcrumbItem>
-            {pathSegments.slice(1).map((segment, index) => {
-                const href = `/${pathSegments.slice(0, index + 2).join('/')}`;
-                const isLast = index === pathSegments.length - 2;
+            {pathSegments.map((segment, index) => {
+                const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
+                const isLast = index === pathSegments.length - 1;
                 const name = getBreadcrumbName(href);
                 return (
                     <React.Fragment key={href}>
-                        <BreadcrumbSeparator />
+                        {index > 0 && <BreadcrumbSeparator />}
                         <BreadcrumbItem>
                             {isLast ? (
                                 <BreadcrumbPage className="capitalize">{name}</BreadcrumbPage>

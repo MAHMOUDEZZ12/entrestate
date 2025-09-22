@@ -727,6 +727,35 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                 </div>
             );
             break;
+        case 'lease-reviewer':
+            tool.creationFields = [
+                { id: 'leaseDocumentUri', name: 'Lease Document', type: 'file', description: 'Upload the lease agreement (PDF, DOCX).' },
+                { id: 'userRole', name: 'I am the...', type: 'select', options: ['Tenant', 'Landlord', 'Agent'], description: 'The AI will analyze from this perspective.' },
+            ];
+            tool.renderResult = (result, toast) => (
+                 <div className="space-y-4">
+                    <Card className="bg-primary/10 border-primary/20">
+                        <CardHeader><CardTitle>Overall Summary</CardTitle></CardHeader>
+                        <CardContent><p>{result.overallSummary}</p></CardContent>
+                    </Card>
+                    <h3 className="font-semibold text-lg pt-2">Clause-by-Clause Analysis:</h3>
+                    {result.analysis.map((item: any, index: number) => (
+                        <Card key={index}>
+                            <CardHeader>
+                                <CardTitle className="text-lg flex justify-between items-center">
+                                    {item.clause}
+                                    <Badge variant={item.riskLevel === 'High' ? 'destructive' : 'secondary'}>{item.riskLevel} Risk</Badge>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="italic text-muted-foreground">"{item.summary}"</p>
+                                <p className="mt-2"><strong className="text-primary">Recommendation:</strong> {item.recommendation}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            );
+            break;
         default:
             // Generic placeholder for tools without specific implementation yet
             tool.creationFields = [
