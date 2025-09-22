@@ -20,7 +20,7 @@ const flowLibrary = [
     {
         title: "Automated Lead Nurturing",
         description: "When a new lead is captured, automatically investigate their profile and send a personalized welcome message via WhatsApp.",
-        apps: ["CRM Memory", "Lead Investigator AI", "WhatsApp Manager"],
+        apps: ["CRM Memory Assistant", "Lead Investigator AI", "WhatsApp Manager"],
         cta: "Use This Flow"
     },
     {

@@ -7,12 +7,12 @@ import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
 import { ArrowRight, Rss } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { blogContent } from '@/lib/blog-content';
+import { appDetails } from '@/lib/blog-content';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 
 // Convert the blogContent object into an array of posts
-const posts = Object.entries(blogContent.apps).map(([slug, content]) => ({
+const posts = appDetails.apps.map(content => ({
     slug: content.name.toLowerCase().replace(/\s/g, '-'),
     title: content.hero,
     description: content.full_description,

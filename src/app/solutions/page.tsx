@@ -21,7 +21,7 @@ const solutionCategories = [
         name: "Listing Intelligence",
         icon: <ListChecks className="h-8 w-8 text-primary" />,
         description: "From market analysis to crafting the perfect description, these apps give you an unfair advantage in showcasing your properties.",
-        apps: tools.filter(t => ['market-reports', 'ai-price-estimator', 'listing-generator', 'aerial-view-generator'].includes(t.id))
+        apps: tools.filter(t => ['market-reports', 'deal-analyzer', 'listing-generator', 'aerial-view-generator'].includes(t.id))
     },
     {
         name: "Lead Gen Apps",

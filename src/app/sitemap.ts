@@ -1,6 +1,8 @@
 
 import { MetadataRoute } from 'next';
 import { tools } from '@/lib/tools-client';
+import { appDetails } from '@/lib/blog-content';
+
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = 'https://entrestate.com'; // Replace with your actual domain
@@ -46,6 +48,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly' as const,
       priority: 0.9,
   }));
+  
+  const blogRoutes = appDetails.apps.map(app => ({
+      url: `${siteUrl}/blog/${app.name.toLowerCase().replace(/\s/g, '-')}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly' as const,
+      priority: 0.7,
+  }));
 
   const toolRoutes = tools.map((tool) => ({
     url: `${siteUrl}/dashboard/tool/${tool.id}`,
@@ -62,5 +71,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
 
-  return [...staticRoutes, ...productRoutes, ...toolRoutes, ...appRoutes];
+  return [...staticRoutes, ...productRoutes, ...blogRoutes, ...toolRoutes, ...appRoutes];
 }

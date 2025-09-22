@@ -15,7 +15,7 @@ const communityLinks = [
     icon: <BookOpen className="h-8 w-8 text-primary" />,
     title: 'Documentation',
     description: 'Dive deep into the technical details of our tools and APIs. Get started with our comprehensive guides.',
-    href: '/community/documentation',
+    href: '/documentation',
     cta: 'Read the Docs',
   },
   {

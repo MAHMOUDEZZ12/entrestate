@@ -6,8 +6,6 @@ import { Poppins, PT_Sans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { CookieConsent } from '@/components/cookie-consent';
 import { ThemeProvider } from '@/components/theme-switcher';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { AuthProvider } from '@/hooks/useAuth.tsx';
 
 const fontSans = PT_Sans({ 

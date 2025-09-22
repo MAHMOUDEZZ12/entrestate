@@ -1,22 +1,4 @@
 
-export type BlogContent = {
-    [key: string]: { 
-        title: string; 
-        intro: string; 
-        sections: { 
-            heading: string; 
-            body: string 
-        }[];
-        cta: string;
-    } 
-};
-
-// This content is now derived from the detailed app data below.
-// The original structure is kept for potential future use, but the primary
-// source of truth for app page content is now `appDetails`.
-export const blogContent: { [key: string]: BlogContent[string] } = {};
-
-
 export const appDetails = {
   "apps": [
     {
@@ -191,13 +173,13 @@ export const appDetails = {
       "cta": "Explore App"
     },
     {
-      "name": "Instagram Admin",
+      "name": "Instagram Admin AI",
       "hero": "Instagram Admin — Schedules posts and handles replies on Instagram.",
       "full_description": "Instagram Admin centralizes content scheduling, comment management, DMs, and analytics. It provides queue management, approval flows, reply templates, sentiment tagging, and SLA automation for response times.",
       "level_of_knowledge_required": "Zero. Scheduling and reply templates make it approachable for teams of any size.",
       "difference_vs_native": "Native Creator Studio provides scheduling but limited team workflows. Instagram Admin adds multi-user approvals, reply automation, sentiment analysis, and campaign tagging tied to CRM Memory.",
       "flow": "Plan content in Story Planner or Landing Page Builder. Schedule posts via Instagram Admin. Monitor replies and route leads to CRM Memory. Feed performance into Market Reports.",
-      "chain": "Story Planner → Instagram Admin → CRM Memory",
+      "chain": "Story Planner → Instagram Admin AI → CRM Memory",
       "expected_results": "Improved engagement response times (automated replies reduce response time by 60–90%) and increased consistency of posting which improves audience retention over time.",
       "features": [
         "Post scheduling and calendar",
@@ -230,7 +212,7 @@ export const appDetails = {
       "level_of_knowledge_required": "Zero. Templates and smart animation presets remove the need for motion-design expertise.",
       "difference_vs_native": "Native story creation on Instagram is manual and single-frame. Story Planner supports multi-frame story arcs, animation easing presets, and ad-ready export naming conventions.",
       "flow": "Choose story sequence template (teaser, walkthrough, listing). Add frames, apply animation presets, and assign CTAs. Export frames as ad sets to Insta Ads Designer or schedule via Instagram Admin.",
-      "chain": "Insta Ads Designer → Story Planner → Instagram Admin",
+      "chain": "Insta Ads Designer → Story Planner → Instagram Admin AI",
       "expected_results": "Story-driven ad sequences typically increase completion rates and higher intent interactions. Expect 20–50% higher swipe-up / CTA interaction when using story arcs vs static frames.",
       "features": [
         "Multi-frame storyboard editor",
@@ -250,7 +232,7 @@ export const appDetails = {
       ],
       "integrations": [
         "Insta Ads Designer",
-        "Instagram Admin",
+        "Instagram Admin AI",
         "Reel Ads",
         "Meta Auto Pilot"
       ],
@@ -1129,13 +1111,13 @@ export const appDetails = {
       "cta": "Explore App"
     },
     {
-      "name": "CRM Memory",
+      "name": "CRM Memory Assistant",
       "hero": "CRM Memory — The core data store that remembers every client interaction.",
       "full_description": "CRM Memory stores lead and client data, interaction history, deal stages, documents, and AI-annotated notes. It acts as the single source of truth for customer lifecycle and feeds other suite apps with contextual data.",
       "level_of_knowledge_required": "Low. Basic CRM concepts apply; onboarding templates simplify setup.",
       "difference_vs_native": "Unlike generic CRMs, CRM Memory is deeply integrated with the suite to supply enriched audiences, match investors, and power automated flows.",
       "flow": "Ingest leads from campaigns and listing inquiries. Enrich with Lead Investigator AI and Market Library context. Drive automations in WhatsApp Manager and Meta Auto Pilot.",
-      "chain": "Meta Auto Pilot → CRM Memory → WhatsApp Manager",
+      "chain": "Meta Auto Pilot → CRM Memory Assistant → WhatsApp Manager",
       "expected_results": "Cleaner data, better lead follow-up, and measurable increases in conversion due to context-rich interactions; reduces lead leakage and improves attribution.",
       "features": [
         "Full interaction timeline",
@@ -1162,13 +1144,13 @@ export const appDetails = {
       "cta": "Explore App"
     },
     {
-      "name": "Assistant",
+      "name": "AI Assistant",
       "hero": "Assistant — Your personal, trainable AI partner.",
       "full_description": "Assistant is a trainable AI that learns from your CRM Memory, Market Library, and usage patterns to provide contextually-aware assistance: drafting messages, creating briefs, suggesting optimizations, and answering queries about your inventory and market.",
       "level_of_knowledge_required": "Zero. Interact in natural language; the assistant learns and improves over time.",
       "difference_vs_native": "Generic chatbots lack domain memory. Assistant uses suite context to provide accurate, actionable responses tied to real data.",
       "flow": "Grant read permissions to CRM Memory and Market Library (opt-in). Ask natural language questions or request workflows. Assistant executes or generates content, which can be pushed to other apps.",
-      "chain": "CRM Memory → Assistant → Campaign Builder",
+      "chain": "CRM Memory → AI Assistant → Campaign Builder",
       "expected_results": "Faster content generation, fewer back-and-forths, and more consistent operational decisions; reduces routine task time by up to 60–80%.",
       "features": [
         "Trainable on your data",

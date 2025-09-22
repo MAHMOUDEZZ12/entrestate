@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -9,7 +10,7 @@ export default function AcademyPage() {
   return (
     <div className="flex flex-col">
       <PageHeader
-        title="WhatsMAP Academy"
+        title="Entrestate Academy"
         description="Learn the strategies and workflows of top-performing real estate professionals. (Coming Soon)"
         icon={<School className="h-8 w-8" />}
       />

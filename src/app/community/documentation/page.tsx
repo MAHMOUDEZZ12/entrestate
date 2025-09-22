@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -10,7 +11,7 @@ export default function DocumentationPage() {
     <div className="flex flex-col">
       <PageHeader
         title="Documentation"
-        description="Your comprehensive guide to every tool, feature, and workflow in the WhatsMAP ecosystem. (Coming Soon)"
+        description="Your comprehensive guide to every tool, feature, and workflow in the Entrestate ecosystem. (Coming Soon)"
         icon={<BookOpen className="h-8 w-8" />}
       />
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20">
@@ -18,7 +19,7 @@ export default function DocumentationPage() {
             <CardContent className="p-8 md:p-12">
                 <h2 className="text-3xl font-bold font-heading">We're writing the book.</h2>
                 <p className="mt-4 text-lg text-muted-foreground">
-                    Our team is currently documenting every feature to provide you with a clear, searchable, and comprehensive guide to mastering WhatsMAP.
+                    Our team is currently documenting every feature to provide you with a clear, searchable, and comprehensive guide to mastering Entrestate.
                 </p>
             </CardContent>
         </Card>
