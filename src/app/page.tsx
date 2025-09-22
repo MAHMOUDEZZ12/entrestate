@@ -164,7 +164,7 @@ export default function HomePage() {
             <div className="container mx-auto px-4 space-y-20">
                  <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-4xl md:text-5xl font-bold tracking-tight drop-shadow-md">
-                        Pick one of the Sales AI models
+                        <span className="text-6xl bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Pick one of the Sales AI models</span>
                         <br />
                         <span className="text-3xl md:text-4xl text-foreground/80">or hire a full team in 3 shifts, multi languages, and realtors by nature!</span>
                     </h2>
