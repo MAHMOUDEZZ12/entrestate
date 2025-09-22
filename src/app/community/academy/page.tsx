@@ -4,7 +4,7 @@
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { School, CheckCircle, Video, Workflow, Building, Landmark, LineChart, Award, Sparkles, BookOpen, Bot } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
@@ -65,16 +65,19 @@ export default function AcademyPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {curriculumBranches.map(branch => (
-                <Card key={branch.title} className="text-center hover:shadow-lg transition-shadow">
+                <Card key={branch.title} className="text-center hover:shadow-lg transition-shadow flex flex-col">
                     <CardHeader>
                         <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
                             {branch.icon}
                         </div>
                         <CardTitle>{branch.title}</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="flex-grow">
                         <p className="text-muted-foreground">{branch.description}</p>
                     </CardContent>
+                    <CardFooter>
+                        <Button variant="secondary" className="w-full" disabled>Coming Soon</Button>
+                    </CardFooter>
                 </Card>
             ))}
         </div>
