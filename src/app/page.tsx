@@ -58,7 +58,7 @@ const workflowSteps = [
         description: "Launch campaigns, generate leads, and close deals faster with AI-powered insights and assets, all perfectly on-brand.",
         icon: <Sparkles className="h-8 w-8" />,
         cta: {
-            text: "Start Your Free Trial",
+            text: "Get Started",
             href: "/login",
             isShiny: true
         }
@@ -90,14 +90,16 @@ const personas = [
 export default function HomePage() {
   const router = useRouter();
   const [query, setQuery] = React.useState('');
-  const workflowRef = React.useRef(null);
+  
+  const workflowRef = React.useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: workflowRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
 
-  const pathLength = useTransform(scrollYProgress, [0.1, 0.4], [0, 1]);
-
+  const y1 = useTransform(scrollYProgress, [0.2, 0.6], ["0%", "-10%"]);
+  const y2 = useTransform(scrollYProgress, [0.2, 0.8], ["0%", "10%"]);
+  const y3 = useTransform(scrollYProgress, [0.2, 0.9], ["0%", "-15%"]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -211,46 +213,48 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section id="how-it-works" className="py-20 md:py-32 bg-secondary">
+        <section id="how-it-works" className="py-20 md:py-32 bg-secondary" ref={workflowRef}>
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Path to a 10x Workflow</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
                     Transform hours of manual work into an intelligent, automated process.
                 </p>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-                    {workflowSteps.map((step, index) => (
-                         <motion.div 
-                            key={step.step}
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.2 }}
-                            viewport={{ once: true, amount: 0.5 }}
-                          >
-                            <Card className="text-left bg-card h-full flex flex-col">
-                                <CardHeader>
-                                    <div className="flex justify-between items-start">
-                                        <p className="text-5xl font-bold text-primary/20">{step.step}</p>
-                                        <div className="p-3 bg-primary/10 text-primary rounded-lg">
-                                            {step.icon}
+                <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 items-start max-w-5xl mx-auto">
+                    {(['y1', 'y2', 'y3'] as const).map((y, index) => {
+                        const step = workflowSteps[index];
+                        const motionY = index === 0 ? y1 : index === 1 ? y2 : y3;
+                        return (
+                             <motion.div 
+                                key={step.step}
+                                style={{ y: motionY }}
+                                className="md:even:pt-12 md:odd:pb-12"
+                              >
+                                <Card className="text-left bg-card/80 backdrop-blur-sm border h-full flex flex-col shadow-lg">
+                                    <CardHeader>
+                                        <div className="flex justify-between items-start">
+                                            <p className="text-5xl font-bold text-primary/20">{step.step}</p>
+                                            <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                                                {step.icon}
+                                            </div>
                                         </div>
-                                    </div>
-                                    <CardTitle className="pt-4 text-2xl">{step.title}</CardTitle>
-                                </CardHeader>
-                                <CardContent className="flex-grow">
-                                    <p className="text-muted-foreground">{step.description}</p>
-                                </CardContent>
-                                <CardFooter>
-                                     <Link href={step.cta.href}>
-                                        {step.cta.isShiny ? (
-                                            <ShinyButton>{step.cta.text} <ArrowRight /></ShinyButton>
-                                        ) : (
-                                            <Button variant="secondary" className="w-full">{step.cta.text} <ArrowRight className="ml-2"/></Button>
-                                        )}
-                                    </Link>
-                                </CardFooter>
-                            </Card>
-                        </motion.div>
-                    ))}
+                                        <CardTitle className="pt-4 text-2xl">{step.title}</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="flex-grow">
+                                        <p className="text-muted-foreground">{step.description}</p>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <Link href={step.cta.href} className="w-full">
+                                            {step.cta.isShiny ? (
+                                                <ShinyButton className="w-full">{step.cta.text} <ArrowRight /></ShinyButton>
+                                            ) : (
+                                                <Button variant="secondary" className="w-full">{step.cta.text} <ArrowRight className="ml-2"/></Button>
+                                            )}
+                                        </Link>
+                                    </CardFooter>
+                                </Card>
+                            </motion.div>
+                        )
+                    })}
                 </div>
             </div>
         </section>
@@ -307,7 +311,7 @@ export default function HomePage() {
                  <div className="mt-8">
                     <Link href="/login">
                         <ShinyButton>
-                            Start Your Free Trial <ArrowRight />
+                            Get Started <ArrowRight />
                         </ShinyButton>
                     </Link>
                 </div>
@@ -322,3 +326,4 @@ export default function HomePage() {
     
 
     
+
