@@ -51,8 +51,10 @@ const discoverEngineFlow = ai.defineFlow(
         const dataStoreId = 'entrestate-kb_1722284949580';
         const dataStore = `projects/${projectId}/locations/global/collections/default_collection/dataStores/${dataStoreId}`;
         
+        const llm = googleAI('gemini-1.5-pro-preview');
+
         const response = await ai.generate({
-          model: googleAI('gemini-1.5-pro-preview'),
+          model: llm,
           tools: [ai.tool.retriever({ datastore })],
           prompt: query,
         });
@@ -67,12 +69,21 @@ const discoverEngineFlow = ai.defineFlow(
             const document = item.content[0].document;
             const metadata = document?.structData || {};
 
+            let type: 'Project' | 'Market Report' | 'Article' | 'Unknown' = 'Unknown';
+            if (metadata?.uri?.includes('project')) {
+                type = 'Project';
+            } else if (metadata?.uri?.includes('report')) {
+                type = 'Market Report';
+            } else if (metadata?.uri?.includes('article') || metadata?.uri?.includes('blog')) {
+                type = 'Article';
+            }
+
             return {
                 id: document?.id || `unknown-${Math.random()}`,
                 title: metadata?.title || 'No Title Available',
                 description: document?.pageContent || 'No description available.',
                 url: metadata?.uri || '#',
-                type: 'Unknown' as const, // Type detection can be added later
+                type: type,
             };
         });
 
