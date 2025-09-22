@@ -26,6 +26,7 @@ import {
 import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
+import { CodeBlock } from '@/components/code-block';
 
 export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
 export type BadgeType = 'NEW' | 'AUTO' | 'DEPRECATED';
@@ -226,6 +227,50 @@ export const tools: Feature[] = mergeToolData().map(tool => {
     // This switch populates the `creationFields` for each tool,
     // effectively defining the form for each tool's dashboard page.
     switch (tool.id) {
+        case 'lease-reviewer':
+            tool.creationFields = [
+                { id: 'leaseDocumentUri', name: 'Lease Document', type: 'file', description: 'Upload the lease agreement (PDF, DOCX).' },
+                { id: 'userRole', name: 'I am the...', type: 'select', options: ['Tenant', 'Landlord', 'Agent'], description: 'The AI will analyze from this perspective.' },
+            ];
+            tool.renderResult = (result, toast) => (
+                 <div className="space-y-4">
+                    <Card className="bg-primary/10 border-primary/20">
+                        <CardHeader><CardTitle>Overall Summary</CardTitle></CardHeader>
+                        <CardContent><p>{result.overallSummary}</p></CardContent>
+                    </Card>
+                    <h3 className="font-semibold text-lg pt-2">Clause-by-Clause Analysis:</h3>
+                    {result.analysis.map((item: any, index: number) => (
+                        <Card key={index}>
+                            <CardHeader>
+                                <CardTitle className="text-lg flex justify-between items-center">
+                                    {item.clause}
+                                    <Badge variant={item.riskLevel === 'High' ? 'destructive' : 'secondary'}>{item.riskLevel} Risk</Badge>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="italic text-muted-foreground">"{item.summary}"</p>
+                                <p className="mt-2"><strong className="text-primary">Recommendation:</strong> {item.recommendation}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            );
+            break;
+        case 'chatbot-creator':
+            tool.creationFields = [
+                 { id: 'projectName', name: 'Project Name', type: 'text', placeholder: 'e.g., Emaar Beachfront', description: "The name of the project the chatbot will represent." },
+                 { id: 'welcomeMessage', name: 'Welcome Message (Optional)', type: 'textarea', placeholder: 'e.g., "Welcome to Emaar Beachfront! How can I help you today?"' },
+                 { id: 'primaryColor', name: 'Primary Color (Optional)', type: 'text', placeholder: '#007bff', description: 'A hex color code for the chatbot widget.' },
+                 { id: 'allowedDomains', name: 'Allowed Domains (Optional)', type: 'textarea', placeholder: 'example.com\nanother-site.net', description: "One domain per line. If empty, the chatbot can run anywhere." },
+            ];
+            tool.renderResult = (result, toast) => (
+                 <div className="space-y-4">
+                    <h3 className="font-semibold">Embed Code:</h3>
+                    <p className="text-sm text-muted-foreground">Copy and paste this snippet into the `<body>` of your website.</p>
+                    <CodeBlock>{result.embedCode.trim()}</CodeBlock>
+                </div>
+            );
+            break;
         case 'ai-brand-creator':
             tool.creationFields = [
                 { id: 'command', name: 'Command', type: 'text', placeholder: 'e.g., "Set up my brand from the uploaded files."' },
@@ -273,7 +318,7 @@ export const tools: Feature[] = mergeToolData().map(tool => {
             tool.renderResult = (result, toast) => {
                  const totalCommission = result.totalCommission;
                 const yourShare = result.yourShare;
-                 const brokerageShare = result.brokerageShare;
+                 const brokerageShare = totalCommission - yourShare;
                 return (
                     <div className="space-y-4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -724,35 +769,6 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                             <p><strong>Date:</strong> {new Date(result.create_time).toLocaleString()}</p>
                         </CardContent>
                     </Card>
-                </div>
-            );
-            break;
-        case 'lease-reviewer':
-            tool.creationFields = [
-                { id: 'leaseDocumentUri', name: 'Lease Document', type: 'file', description: 'Upload the lease agreement (PDF, DOCX).' },
-                { id: 'userRole', name: 'I am the...', type: 'select', options: ['Tenant', 'Landlord', 'Agent'], description: 'The AI will analyze from this perspective.' },
-            ];
-            tool.renderResult = (result, toast) => (
-                 <div className="space-y-4">
-                    <Card className="bg-primary/10 border-primary/20">
-                        <CardHeader><CardTitle>Overall Summary</CardTitle></CardHeader>
-                        <CardContent><p>{result.overallSummary}</p></CardContent>
-                    </Card>
-                    <h3 className="font-semibold text-lg pt-2">Clause-by-Clause Analysis:</h3>
-                    {result.analysis.map((item: any, index: number) => (
-                        <Card key={index}>
-                            <CardHeader>
-                                <CardTitle className="text-lg flex justify-between items-center">
-                                    {item.clause}
-                                    <Badge variant={item.riskLevel === 'High' ? 'destructive' : 'secondary'}>{item.riskLevel} Risk</Badge>
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="italic text-muted-foreground">"{item.summary}"</p>
-                                <p className="mt-2"><strong className="text-primary">Recommendation:</strong> {item.recommendation}</p>
-                            </CardContent>
-                        </Card>
-                    ))}
                 </div>
             );
             break;
