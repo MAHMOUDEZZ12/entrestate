@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -38,7 +39,7 @@ export async function runMetaAutoPilot(
   onDelta: (chunk: { step: string, status: 'running' | 'completed', data?: any }) => void
 ): Promise<MetaAutoPilotOutput> {
 
-  // 1. Fetch Project Data
+  // 1. Fetch Project Data using the authenticated service account
   if (!adminDb) throw new Error("Firestore Admin DB not available.");
   const projectDoc = await adminDb.collection('projects_catalog').doc(input.projectId).get();
   if (!projectDoc.exists) throw new Error(`Project with ID "${input.projectId}" not found.`);
@@ -91,4 +92,5 @@ export async function runMetaAutoPilot(
 // The `runMetaAutoPilot` function itself is a server-side orchestrator.
 // For the purpose of this simulation, we will call it from a standard API route
 // and await its full completion, though the UI will simulate the steps.
+
 
