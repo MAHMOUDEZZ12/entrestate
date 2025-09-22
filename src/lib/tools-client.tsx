@@ -27,6 +27,8 @@ import Link from 'next/link';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 import { CodeBlock } from '@/components/code-block';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
 export type BadgeType = 'NEW' | 'AUTO' | 'DEPRECATED';
@@ -138,7 +140,7 @@ const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' 
     { id: 'projects-finder', title: 'Market Library', description: 'Search our intelligent library for verified projects.', icon: <Database />, color: '#00CED1', categories: ['Market Intelligence', 'Market Library'], cta: 'Search Library' },
     { id: 'market-reports', title: 'Market Reports', description: 'Generate PDF reports on market trends, pricing, and sentiment.', icon: <Newspaper />, color: '#00CED1', categories: ['Market Intelligence'], cta: 'Generate Report' },
     { id: 'market-trends', title: 'Market Trends Watcher', dashboardTitle: 'Market Trends', description: 'Identify emerging market trends before they become mainstream.', icon: <LineChart />, color: '#00CED1', categories: ['Market Intelligence'], cta: 'Analyze Trends' },
-    { id: 'keyword-planner', title: 'Keyword Planner', description: 'Generate strategic keyword plans for Google Ads.', icon: <KeyRound />, color: '#4B0082', categories: ['Ads', 'Marketing'], cta: 'Generate Plan' },
+    { id: 'keyword-planner', title: 'Keyword Planner', description: 'Generate strategic keyword plans for Google Ads.', icon: <KeyRound />, color: '#4B0082', categories: ['Ads', 'Marketing'], badge: 'NEW', cta: 'Generate Plan' },
 
     // Core / Platform
     { id: 'ai-brand-creator', title: 'AI Brand Creator', dashboardTitle: 'Brand Creator', description: 'Configure your brand kit by analyzing uploaded documents.', icon: <Wand2 />, color: '#6A0DAD', categories: ['CRM'], cta: 'Create Brand' },
