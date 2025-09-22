@@ -18,6 +18,7 @@ import Image from 'next/image';
 import { track } from '@/lib/events';
 import type { Project } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
+import { Textarea } from '@/components/ui/textarea';
 
 const MOCK_DEVELOPERS = ['Emaar', 'Damac', 'Sobha', 'Nakheel', 'Meraas', 'Aldar'];
 
@@ -120,7 +121,7 @@ function OnboardingComponent() {
     const finishOnboarding = () => {
         track('onboarding_completed');
         toast({ title: "Setup Complete!", description: "Welcome to your new dashboard. Let's start by exploring the market." });
-        router.push('/discover');
+        router.push('/dashboard');
     }
     
     const handleSaveCard = () => {
@@ -136,9 +137,40 @@ function OnboardingComponent() {
         nextStep();
     }
     
-    const handleSaveBrand = () => {
+     const handleSaveBrand = async () => {
+        if (!user) {
+            toast({ title: "Not Authenticated", description: "You must be logged in to save your brand.", variant: "destructive" });
+            return;
+        }
         track('onboarding_brand_saved', { hasLogo: !!draft.brandKit.logoUrl, primaryColor: draft.brandKit.colors.primary });
-        nextStep();
+        setIsLoading(true);
+        try {
+            const idToken = await user.getIdToken();
+            const payload = {
+                companyName: draft.brandKit.contact.name, // Assuming name is company name for this context
+                brandKit: {
+                    logoUrl: draft.brandKit.logoUrl,
+                    colors: draft.brandKit.colors,
+                    contact: draft.brandKit.contact
+                }
+            };
+            const response = await fetch('/api/user/profile', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${idToken}`
+                 },
+                body: JSON.stringify(payload),
+            });
+            if (!response.ok) throw new Error("Failed to save brand.");
+            
+            toast({ title: "Brand Kit Saved!", description: "Your brand is now ready to be used by the AI."});
+            nextStep();
+        } catch (error: any) {
+            toast({ title: "Error Saving Brand", description: error.message, variant: "destructive" });
+        } finally {
+            setIsLoading(false);
+        }
     }
     
     const handleFinalizeShortlist = async () => {
@@ -387,19 +419,21 @@ function OnboardingComponent() {
                              </div>
                              <div className="space-y-2">
                                 <Label>Contact Info</Label>
-                                <div className="grid md:grid-cols-2 gap-4">
-                                    <Input type="text" placeholder="Your Name" />
-                                    <Input type="email" placeholder="Email Address" />
-                                    <Input type="tel" placeholder="Phone Number" />
-                                    <Input type="url" placeholder="WhatsApp Link (optional)" />
-                                </div>
+                                <Textarea value={`${draft.brandKit.contact.name}\n${draft.brandKit.contact.phone}\n${draft.brandKit.contact.email}`} onChange={(e) => {
+                                    const [name, phone, email] = e.target.value.split('\n');
+                                    updateDraft({ brandKit: {...draft.brandKit, contact: { ...draft.brandKit.contact, name: name || '', phone: phone || '', email: email || '' }}})
+                                }}
+                                placeholder="Your Name&#10;Phone Number&#10;Email Address" rows={3} />
                              </div>
                         </CardContent>
                         <CardFooter className="flex justify-between">
                              <Button variant="ghost" onClick={prevStep}><ArrowLeft /> Back</Button>
                             <div className="flex gap-2">
                                  <Button variant="outline" onClick={nextStep}>Skip for now</Button>
-                                 <Button onClick={handleSaveBrand}>Save Brand</Button>
+                                 <Button onClick={handleSaveBrand} disabled={isLoading}>
+                                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : null}
+                                    Save Brand
+                                 </Button>
                             </div>
                         </CardFooter>
                     </Card>
@@ -463,7 +497,7 @@ function OnboardingComponent() {
                              <p className="text-xs text-muted-foreground">You can always change your plan later. No charges until you confirm.</p>
                         </CardContent>
                         <CardFooter>
-                           <Button onClick={finishOnboarding} className="w-full md:w-auto mx-auto" variant="secondary">Finish Setup & Go to Discover</Button>
+                           <Button onClick={finishOnboarding} className="w-full md:w-auto mx-auto" variant="secondary">Finish Setup & Go to Dashboard</Button>
                         </CardFooter>
                     </Card>
                  );
@@ -491,3 +525,5 @@ export default function OnboardingPage() {
         </div>
     )
 }
+
+    

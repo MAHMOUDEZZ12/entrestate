@@ -10,14 +10,12 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Palette, Upload, Save, CheckCircle, BrainCircuit, FileText, ImageIcon, FileSpreadsheet, Download, Trash2, Loader2 } from 'lucide-react';
+import { Palette, Upload, Save, BrainCircuit, FileText, ImageIcon, FileSpreadsheet, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 import { PageHeader } from '@/components/ui/page-header';
-import { Separator } from '@/components/ui/separator';
-import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '@/hooks/useAuth';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const brandSchema = z.object({
   companyName: z.string().min(2, 'Company name is required.'),
@@ -62,20 +60,31 @@ export default function BrandPage() {
   });
 
   useEffect(() => {
-    // Load user profile/brand data when user is available
     if (user) {
-      // Mock fetching data. In a real app, this would be an API call.
-      const mockUserData = {
-        companyName: 'My Real Estate Agency',
-        logoUrl: null,
-        primaryColor: '#008080',
-        secondaryColor: '#CC6633',
-        contactInfo: 'Jane Doe\n+971 50 123 4567\njane.doe@agency.com',
-      };
-      reset(mockUserData);
-      if (mockUserData.logoUrl) {
-          setLogoPreview(mockUserData.logoUrl);
-      }
+        const fetchUserData = async () => {
+            try {
+                const idToken = await user.getIdToken();
+                const response = await fetch('/api/user/profile', {
+                    headers: { 'Authorization': `Bearer ${idToken}` }
+                });
+                const data = await response.json();
+                if (data.ok && data.data) {
+                    const userData = data.data;
+                    const contact = userData.brandKit?.contact;
+                    reset({
+                        companyName: userData.companyName || '',
+                        primaryColor: userData.brandKit?.colors?.primary || '#008080',
+                        secondaryColor: userData.brandKit?.colors?.accent || '#CC6633',
+                        contactInfo: contact ? `${contact.name || ''}\n${contact.phone || ''}\n${contact.email || ''}` : '',
+                        logoUrl: userData.brandKit?.logoUrl || null,
+                    });
+                    if (userData.brandKit?.logoUrl) {
+                        setLogoPreview(userData.brandKit.logoUrl);
+                    }
+                }
+            } catch(e) { console.error("Failed to fetch user profile", e); }
+        }
+        fetchUserData();
     }
   }, [user, reset]);
 
@@ -87,6 +96,7 @@ export default function BrandPage() {
     }
     try {
         const idToken = await user.getIdToken();
+        const [name, phone, email] = data.contactInfo.split('\n');
         const payload = {
             companyName: data.companyName,
             brandKit: {
@@ -95,12 +105,7 @@ export default function BrandPage() {
                     primary: data.primaryColor,
                     accent: data.secondaryColor,
                 },
-                contact: {
-                    // This is a simplified parsing. A real app might have separate fields.
-                    name: data.contactInfo.split('\n')[0],
-                    phone: data.contactInfo.split('\n')[1],
-                    email: data.contactInfo.split('\n')[2],
-                }
+                contact: { name, phone, email }
             }
         };
 
@@ -164,6 +169,22 @@ export default function BrandPage() {
       });
       setIsTraining(false);
   }
+  
+    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const uploadedFiles = event.target.files;
+        if (uploadedFiles && uploadedFiles.length > 0) {
+            const newFiles = Array.from(uploadedFiles).map((file, index) => ({
+                id: Date.now() + index,
+                name: file.name,
+                type: file.type.split('/')[1]?.toUpperCase() || 'FILE',
+                icon: <FileText className="h-10 w-10 text-muted-foreground" />,
+                size: `${(file.size / 1024).toFixed(2)} KB`,
+            }));
+            setFiles(prev => [...prev, ...newFiles]);
+            toast({ title: `${newFiles.length} file(s) uploaded successfully.`});
+        }
+    };
+
 
   return (
     <main className="p-4 md:p-10 space-y-8">
@@ -184,11 +205,54 @@ export default function BrandPage() {
                 </CardHeader>
                 <form onSubmit={handleSubmit(onSubmit)}>
                 <CardContent className="space-y-6">
-                    {/* Form fields for company name, logo, colors, contact info */}
+                   <div className="space-y-2">
+                        <Label htmlFor="companyName">Company Name</Label>
+                        <Controller name="companyName" control={control} render={({ field }) => <Input id="companyName" {...field} />} />
+                        {errors.companyName && <p className="text-destructive text-sm">{errors.companyName.message}</p>}
+                    </div>
+                    
+                    <div className="space-y-2">
+                        <Label>Company Logo</Label>
+                         <div className="flex items-center gap-4">
+                            <div className="relative flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed rounded-lg cursor-pointer bg-muted/20 hover:border-primary transition-colors">
+                                <input id="logo-upload" type="file" accept="image/*" className="sr-only" onChange={(e) => handleLogoFileChange(e.target.files)} ref={fileInputRef} />
+                                <label htmlFor="logo-upload" className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                                {logoPreview ? (
+                                    <Image src={logoPreview} alt="Logo preview" fill={true} className="object-contain rounded-md p-2" />
+                                ) : (
+                                    <div className="text-center text-muted-foreground">
+                                    <Upload className="mx-auto h-8 w-8 mb-1" />
+                                    <p className="text-xs">Upload Logo</p>
+                                    </div>
+                                )}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="grid md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                            <Label htmlFor="primaryColor">Primary Color</Label>
+                            <Controller name="primaryColor" control={control} render={({ field }) => <Input id="primaryColor" {...field} />} />
+                            {errors.primaryColor && <p className="text-destructive text-sm">{errors.primaryColor.message}</p>}
+                        </div>
+                        <div className="space-y-2">
+                            <Label htmlFor="secondaryColor">Accent Color</Label>
+                            <Controller name="secondaryColor" control={control} render={({ field }) => <Input id="secondaryColor" {...field} />} />
+                             {errors.secondaryColor && <p className="text-destructive text-sm">{errors.secondaryColor.message}</p>}
+                        </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                        <Label htmlFor="contactInfo">Contact Info</Label>
+                        <Controller name="contactInfo" control={control} render={({ field }) => <Textarea id="contactInfo" {...field} rows={4} placeholder="Your Name&#10;Phone Number&#10;Email Address"/>} />
+                        {errors.contactInfo && <p className="text-destructive text-sm">{errors.contactInfo.message}</p>}
+                    </div>
+
                 </CardContent>
                 <CardFooter className="flex justify-end">
                     <Button type="submit" size="lg" disabled={isSubmitting}>
-                        {isSubmitting ? 'Saving...' : <><Save className="mr-2 h-4 w-4" /> Save Brand</>}
+                        {isSubmitting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <><Save className="mr-2 h-4 w-4" /> Save Brand</>}
                     </Button>
                 </CardFooter>
                 </form>
@@ -203,9 +267,9 @@ export default function BrandPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="space-y-4">
+                    <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
                         {files.map(file => (
-                            <div key={file.id} className="flex items-center gap-4">
+                            <div key={file.id} className="flex items-center gap-4 p-2 rounded-md bg-muted/50">
                                 <Checkbox 
                                     id={`file-${file.id}`} 
                                     onCheckedChange={(checked) => {
@@ -214,8 +278,8 @@ export default function BrandPage() {
                                 />
                                 {file.icon}
                                 <div>
-                                    <p className="font-semibold">{file.name}</p>
-                                    <p className="text-sm text-muted-foreground">{file.size}</p>
+                                    <p className="font-semibold text-sm">{file.name}</p>
+                                    <p className="text-xs text-muted-foreground">{file.size}</p>
                                 </div>
                             </div>
                         ))}
@@ -224,7 +288,7 @@ export default function BrandPage() {
                         <Upload className="mr-2 h-4 w-4" />
                         Upload New File
                     </Button>
-                    <Input ref={fileInputRef} type="file" className="hidden" multiple />
+                    <Input ref={fileInputRef} type="file" className="hidden" multiple onChange={handleFileUpload} />
                 </CardContent>
                 <CardFooter>
                     <Button onClick={handleTrainAssistant} disabled={selectedFiles.length === 0 || isTraining} className="w-full">

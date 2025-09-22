@@ -191,7 +191,7 @@ export default function FlowsPage() {
                                         {stepToUpdate === step.id && <AppSelectionModal installedApps={installedApps} onSelectApp={(app) => handleSelectAppForStep(step.id, app)} />}
                                     </Dialog>
                                 </Reorder.Item>
-                                {index < currentFlow.length && (
+                                {index < currentFlow.length -1 && (
                                     <div className="h-8 w-px bg-border my-1 self-center" />
                                 )}
                                </React.Fragment>
@@ -224,3 +224,5 @@ export default function FlowsPage() {
     </div>
   );
 }
+
+    
