@@ -113,13 +113,13 @@ export default function AuthPage() {
         <LandingHeader />
         <main className="flex-1">
             <div className="w-full lg:grid lg:min-h-[calc(100vh-128px)] lg:grid-cols-2">
-            <div className="flex items-center justify-center py-12">
-                <div className="mx-auto grid w-[350px] gap-6">
+            <div className="flex items-center justify-center py-12 px-4">
+                <div className="mx-auto w-full max-w-sm space-y-6">
                 <div className="grid gap-2 text-center">
                     <Logo className="mb-4 justify-center" />
-                    <h1 className="text-3xl font-bold">Welcome Back</h1>
+                    <h1 className="text-3xl font-bold">Welcome</h1>
                     <p className="text-balance text-muted-foreground">
-                    Enter your details to access your account
+                    Enter your details to access your account or create a new one.
                     </p>
                 </div>
                 

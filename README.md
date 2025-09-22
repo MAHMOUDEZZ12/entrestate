@@ -1,6 +1,6 @@
-# Super Sales Suite (S3) — AI-Native Real Estate Ecosystem
+# Entrestate — AI-Native Real Estate Ecosystem
 
-Welcome to the Super Sales Suite, an AI-native operating system designed to give real estate professionals an unparalleled advantage. This platform integrates market intelligence, creative tooling, and campaign automation into a single, seamless cockpit.
+Welcome to Entrestate, an AI-native operating system designed to give real estate professionals an unparalleled advantage. This platform integrates market intelligence, creative tooling, and campaign automation into a single, seamless cockpit.
 
 ![Executive Brain Map](https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.appspot.com/o/executive_brain_map.png?alt=media&token=167a5704-ca13-43e6-997c-9b73715d31f0)
 
@@ -40,8 +40,8 @@ The system is built on a modular, event-driven architecture designed for scalabi
 
 1.  **Clone the repository:**
     ```bash
-    git clone https://github.com/your-repo/super-sales-suite.git
-    cd super-sales-suite
+    git clone https://github.com/your-repo/entrestate.git
+    cd entrestate
     ```
 
 2.  **Install dependencies:**

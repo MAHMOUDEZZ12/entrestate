@@ -46,45 +46,30 @@ export function DashboardSidebar() {
   const renderLink = (link: { href: string; icon: React.ReactNode; label: string; }) => {
     const isActive = pathname.startsWith(link.href) && (link.href !== '/dashboard' || pathname === '/dashboard');
     return (
-      <TooltipProvider key={link.href}>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Link
-              href={link.href}
-              className={cn(
-                'relative flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8'
-              )}
-            >
-              {isActive && (
-                <span className="absolute left-0 h-6 w-1 rounded-r-full bg-primary" />
-              )}
-              {link.icon}
-              <span className="sr-only">{link.label}</span>
-            </Link>
-          </TooltipTrigger>
-          <TooltipContent side="right">{link.label}</TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+        <Link
+          href={link.href}
+          className={cn(
+            'flex h-10 items-center gap-3 justify-start rounded-lg px-3 text-muted-foreground transition-colors hover:text-foreground',
+             isActive && 'bg-primary/10 text-primary'
+          )}
+        >
+          {React.cloneElement(link.icon as React.ReactElement, { className: 'h-5 w-5' })}
+          <span className="">{link.label}</span>
+        </Link>
     );
   }
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-40 hidden w-14 flex-col border-r bg-background sm:flex">
-      <nav className="flex flex-col items-center gap-4 px-2 sm:py-4">
-        <Link
-          href="/dashboard"
-          className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
-        >
-          <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
-          <span className="sr-only">Entrestate</span>
-        </Link>
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r bg-background sm:flex">
+        <div className="flex h-16 items-center border-b px-6">
+            <Logo />
+        </div>
+      <nav className="flex flex-col gap-2 p-4">
         {mainNavLinks.map(renderLink)}
       </nav>
-      <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
+      <nav className="mt-auto flex flex-col gap-2 p-4">
         {secondaryNavLinks.map(renderLink)}
       </nav>
     </aside>
   );
 }
-
-    

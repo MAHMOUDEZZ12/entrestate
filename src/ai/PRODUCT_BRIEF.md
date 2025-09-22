@@ -1,20 +1,20 @@
-# Super Seller Suite (S3) - Product & Technical Brief
+# Entrestate - Product & Technical Brief
 
-This document outlines the core vision, data sources, and technical capabilities of the Super Seller Suite. It serves as the primary training and reference material for all AI-driven development.
+This document outlines the core vision, data sources, and technical capabilities of the Entrestate platform. It serves as the primary training and reference material for all AI-driven development.
 
 ## 1. Core Product Vision: The "Entrestate" Real Estate Engine
 
-Super Seller Suite (S3) is architected to be more than just a collection of tools; it is an **intelligent, end-to-end real estate market intelligence engine**, codenamed **Entrestate**.
+Entrestate is architected to be more than just a collection of tools; it is an **intelligent, end-to-end real estate market intelligence engine**.
 
-Our primary mission is to build a sophisticated system that can ingest, analyze, and act upon a vast range of real estate data, as outlined in the `DATA_INGESTION_POLICY.yml`. While this engine will power the Super Seller Suite application for individual agents and brokerages, the core technology is designed to be productized as a standalone **SaaS offering**.
+Our primary mission is to build a sophisticated system that can ingest, analyze, and act upon a vast range of real estate data, as outlined in the `DATA_INGESTION_POLICY.yml`. While this engine will power the Entrestate application for individual agents and brokerages, the core technology is designed to be productized as a standalone **SaaS offering**.
 
 ### Standalone SaaS Product: Entrestate Search
 
-The ultimate goal is to leverage our data and AI capabilities to launch a new, separate product: a real estate search engine that will disrupt traditional listing sites (like Bayut, Property Finder, Zillow). This search engine will offer both a web interface and a chat-based experience, providing unparalleled market intelligence to consumers, investors, and other real estate companies. It will be powered by the same Vertex AI Search backend we are building for S3.
+The ultimate goal is to leverage our data and AI capabilities to launch a new, separate product: a real estate search engine that will disrupt traditional listing sites (like Bayut, Property Finder, Zillow). This search engine will offer both a web interface and a chat-based experience, providing unparalleled market intelligence to consumers, investors, and other real estate companies. It will be powered by the same Vertex AI Search backend we are building for the main app.
 
-### S3 Application: The Premier Use Case
+### Entrestate Application: The Premier Use Case
 
-The Super Seller Suite application serves as the first and primary implementation of this engine. It provides real estate professionals with:
+The Entrestate application serves as the first and primary implementation of this engine. It provides real estate professionals with:
 - **Onboarding & Intelligence**: Using our search engine to provide market insights from day one.
 - **App & Tool Integration**: A suite of powerful, AI-driven tools that all draw from the central intelligence engine.
 - **Workflow Automation**: AI agents ("Pilots") that can orchestrate complex workflows across multiple tools.

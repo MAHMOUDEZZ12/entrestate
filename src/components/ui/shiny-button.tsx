@@ -13,7 +13,7 @@ export const ShinyButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ c
         className={cn(
           "relative overflow-hidden group",
           "text-lg py-7 px-8",
-          "bg-primary text-primary-foreground hover:bg-primary/90",
+          "bg-gradient-to-r from-primary via-primary to-accent text-primary-foreground hover:shadow-2xl hover:shadow-primary/30 transition-shadow duration-300",
           className
         )}
       >
@@ -22,12 +22,10 @@ export const ShinyButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ c
           className={cn(
             "absolute inset-0 block",
             "bg-[radial-gradient(150%_150%_at_50%_100%,hsl(var(--primary-foreground))_20%,transparent_80%)]",
-            "opacity-0 transition-opacity duration-500 group-hover:opacity-40"
+            "opacity-0 transition-opacity duration-500 group-hover:opacity-30"
           )}
         />
       </Button>
     )
 });
 ShinyButton.displayName = "ShinyButton";
-
-    
