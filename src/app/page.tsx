@@ -162,9 +162,9 @@ export default function HomePage() {
 
         <section id="pillars" className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 space-y-20">
-                 <div className="text-center">
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Pick one of the Sales AI models or hire a full customer service team in 3 shifts speaks all languages and realtors by nature!</h2>
-                    <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                 <div className="text-left">
+                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight drop-shadow-md">Pick one of the Sales AI models or hire a full customer service team in 3 shifts speaks all languages and realtors by nature!</h2>
+                    <p className="mt-4 max-w-2xl text-lg text-muted-foreground">
                         This is not a fancy product and no magic website needed, they come with their magic.
                     </p>
                 </div>
@@ -328,7 +328,3 @@ export default function HomePage() {
     </>
   );
 }
-
-    
-
-    
