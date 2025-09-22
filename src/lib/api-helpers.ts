@@ -1,4 +1,6 @@
 
+'use server';
+
 import type { Market } from "@/types";
 import { adminAuth } from "./firebaseAdmin";
 
@@ -8,9 +10,11 @@ export function ok<T>(data: T, init: number = 200) {
 export function bad(message = "Bad Request", init: number = 400) {
   return Response.json({ ok: false, error: message }, { status: init });
 }
-export function fail(e: any, code = 500) {
-  console.error(e);
-  return Response.json({ ok: false, error: String(e?.message || e) }, { status: code });
+export function fail(error: any, code = 500) {
+  console.error('[API FAIL]', error);
+  // Avoid leaking detailed internal errors to the client
+  const message = typeof error === 'string' ? error : (error?.message || "An internal server error occurred.");
+  return Response.json({ ok: false, error: message }, { status: code });
 }
 
 /**

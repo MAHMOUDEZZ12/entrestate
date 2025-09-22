@@ -418,13 +418,23 @@ function OnboardingComponent() {
                                     <Input type="text" placeholder="#FFFFFF" value={draft.brandKit.colors.accent} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit, colors: {...draft.brandKit.colors, accent: e.target.value}}})} />
                                 </div>
                              </div>
-                             <div className="space-y-2">
-                                <Label>Contact Info</Label>
-                                <Textarea value={`${draft.brandKit.contact.name}\n${draft.brandKit.contact.phone}\n${draft.brandKit.contact.email}`} onChange={(e) => {
-                                    const [name, phone, email] = e.target.value.split('\n');
-                                    updateDraft({ brandKit: {...draft.brandKit, contact: { ...draft.brandKit.contact, name: name || '', phone: phone || '', email: email || '' }}})
-                                }}
-                                placeholder="Your Name&#10;Phone Number&#10;Email Address" rows={3} />
+                             <div className="grid md:grid-cols-2 gap-4">
+                                 <div className="space-y-2">
+                                    <Label>Your Name</Label>
+                                    <Input value={draft.brandKit.contact.name} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit, contact: {...draft.brandKit.contact, name: e.target.value}}})} placeholder="e.g., John Doe" />
+                                 </div>
+                                 <div className="space-y-2">
+                                    <Label>Company Name</Label>
+                                    <Input placeholder="e.g., Luxe Properties" />
+                                 </div>
+                                  <div className="space-y-2">
+                                    <Label>Phone Number</Label>
+                                    <Input value={draft.brandKit.contact.phone} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit, contact: {...draft.brandKit.contact, phone: e.target.value}}})} placeholder="e.g., +971 50 123 4567" />
+                                 </div>
+                                  <div className="space-y-2">
+                                    <Label>Email Address</Label>
+                                    <Input type="email" value={draft.brandKit.contact.email} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit, contact: {...draft.brandKit.contact, email: e.target.value}}})} placeholder="e.g., john.doe@luxe.com" />
+                                 </div>
                              </div>
                         </CardContent>
                         <CardFooter className="flex justify-between">
