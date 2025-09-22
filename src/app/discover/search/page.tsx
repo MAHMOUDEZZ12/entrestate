@@ -6,8 +6,8 @@ import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { PageHeader } from '@/components/ui/page-header';
 import { Search, Loader2 } from 'lucide-react';
-import DiscoverSearch from '@/components/discover-search';
 import { useSearchParams } from 'next/navigation';
+import DiscoverSearch from '@/components/discover-search';
 
 function SearchResultsComponent() {
   const searchParams = useSearchParams();

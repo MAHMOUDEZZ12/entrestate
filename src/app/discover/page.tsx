@@ -7,7 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Search, Sparkles } from 'lucide-react';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
-import { GoogleCX } from 'react-google-cx';
 
 const DiscoverPage = () => {
     const [query, setQuery] = useState('');
