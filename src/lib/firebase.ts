@@ -1,5 +1,5 @@
 
-import { initializeApp, getApps, getApp } from "firebase/app";
+import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getAnalytics, isSupported } from "firebase/analytics";
@@ -15,7 +15,11 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase for client-side (browser) usage
-function getClientApp() {
+function getClientApp(): FirebaseApp | null {
+    if (typeof window === 'undefined') {
+        return null; // Don't initialize on the server
+    }
+
     if (getApps().length) {
         return getApp();
     }
@@ -26,7 +30,6 @@ function getClientApp() {
 
     if (!isFirebaseConfigValid) {
         console.error("Firebase client configuration is missing or incomplete. Please check your environment variables.");
-        // Return null or throw an error to prevent further issues if config is bad
         return null;
     }
     
@@ -37,7 +40,7 @@ const app = getClientApp();
 
 // Initialize Analytics if supported
 let analytics;
-if (app && typeof window !== 'undefined') {
+if (app) {
     isSupported().then(supported => {
         if (supported) {
             analytics = getAnalytics(app);
@@ -49,6 +52,6 @@ if (app && typeof window !== 'undefined') {
 export const db = app ? getFirestore(app) : undefined;
 export const auth = app ? getAuth(app) : undefined;
 
-if (!app) {
-    console.warn("Firebase client was not initialized. This may be expected during server-side rendering or if config is missing.");
+if (typeof window !== 'undefined' && !app) {
+    console.warn("Firebase client was not initialized. This may be expected if config is missing.");
 }

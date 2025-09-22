@@ -26,10 +26,10 @@ export async function GET(req: Request) {
 
     if (query) {
       all = all.filter((p: Project) => 
-        p.name.toLowerCase().includes(query) ||
-        p.developer.toLowerCase().includes(query) ||
-        (p.area && p.area.toLowerCase().includes(query)) ||
-        (p.status && p.status.toLowerCase().includes(query)) ||
+        (p.name || '').toLowerCase().includes(query) ||
+        (p.developer || '').toLowerCase().includes(query) ||
+        (p.area || '').toLowerCase().includes(query) ||
+        (p.status || '').toLowerCase().includes(query) ||
         (p.unitTypes && p.unitTypes.some(u => u.toLowerCase().includes(query)))
       );
     }
