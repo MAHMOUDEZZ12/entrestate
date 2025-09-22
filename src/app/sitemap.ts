@@ -20,7 +20,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/about',
     '/documentation',
     '/cookies',
-    '/superfreetime',
     '/blog',
     '/market',
     '/community',

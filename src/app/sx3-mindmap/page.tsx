@@ -137,3 +137,4 @@ export default function SX3MindMapPage() {
     </div>
   );
 }
+

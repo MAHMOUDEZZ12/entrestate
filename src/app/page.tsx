@@ -198,7 +198,7 @@ export default function HomePage() {
                            </CardHeader>
                            <CardContent className="p-4">
                                 <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center p-4 relative">
-                                   <Image src="https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.appspot.com/o/listing-grid-final.png?alt=media&token=42514a34-2e67-4a00-b99b-430c45184288" alt="A preview of a unified property listing" fill className="rounded object-contain" data-ai-hint="property listing grid" />
+                                   <Image src="https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.appspot.com/o/listing-grid-final.png?alt=media&token=42514a34-2e67-4a00-b99b-430c45184288" alt="A preview of a unified property listing" fill={true} className="rounded object-contain" data-ai-hint="property listing grid" />
                                 </div>
                            </CardContent>
                        </Card>
