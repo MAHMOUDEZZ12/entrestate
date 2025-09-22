@@ -1,3 +1,4 @@
+
 export const secretCodes = [
     {
         code: 'SUPERLEAD2025',
@@ -15,8 +16,8 @@ export const secretCodes = [
         action: { type: 'generate_full_brand_kit' }
     },
     {
-        code: 'LOL',
-        reward: 'You found the meta-joke! Your reward is a virtual high-five and 100 bonus Market IQ points.',
+        code: 'FOUNDIT',
+        reward: 'You found the key! Your reward is a virtual high-five and 100 bonus Market IQ points.',
         action: { type: 'add_market_iq_points', points: 100 }
     }
 ];
