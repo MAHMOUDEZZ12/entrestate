@@ -4,7 +4,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
-import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit, Building, Users, User, Library } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
@@ -33,6 +33,46 @@ const products = [
         href: "/dashboard/assistant"
     }
 ];
+
+const workflowSteps = [
+    {
+        step: 1,
+        title: "Build Your Library",
+        description: "Connect your project data, upload brochures, and set up your brand kit. Your AI uses this as its single source of truth.",
+        icon: <Library className="h-10 w-10" />,
+    },
+    {
+        step: 2,
+        title: "Command Your AI",
+        description: "Use our suite of apps to run automated workflows, or direct your AI co-pilot with simple, natural language commands.",
+        icon: <Bot className="h-10 w-10" />,
+    },
+     {
+        step: 3,
+        title: "Dominate Your Market",
+        description: "Launch campaigns, generate leads, and close deals faster with AI-powered insights and assets, all perfectly on-brand.",
+        icon: <Sparkles className="h-10 w-10" />,
+    }
+];
+
+const personas = [
+    {
+        title: "The Individual Agent",
+        icon: <User className="h-8 w-8" />,
+        description: "Become a 'Super Agent.' Automate your marketing, manage your leads, and access market intelligence that puts you ahead of the competition.",
+    },
+    {
+        title: "The Brokerage",
+        icon: <Users className="h-8 w-8" />,
+        description: "Equip your entire team with a unified platform. Ensure brand consistency, streamline workflows, and get a birds-eye view of your agency's performance.",
+    },
+    {
+        title: "The Developer",
+        icon: <Building className="h-8 w-8" />,
+        description: "Manage your project portfolio, track market trends, and empower your sales network with cutting-edge, AI-generated marketing assets.",
+    }
+];
+
 
 const GeminiSignature = () => (
     <div className="text-center mt-24 py-12 border-t border-border/20">
@@ -120,7 +160,31 @@ export default function HomePage() {
            </div>
         </section>
 
-        <section className="py-20 md:py-32">
+        <section id="how-it-works" className="py-20 md:py-32">
+            <div className="container mx-auto px-4 text-center">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">A Radically Simple Workflow</h2>
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                    Transform hours of manual work into a simple, three-step process powered by AI.
+                </p>
+                <div className="relative mt-16">
+                    <div className="absolute top-1/2 left-0 w-full h-0.5 bg-border -translate-y-1/2 hidden md:block" />
+                    <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12">
+                        {workflowSteps.map(step => (
+                            <div key={step.step} className="flex flex-col items-center text-center">
+                                <div className="p-4 bg-primary text-primary-foreground rounded-full mb-4 border-4 border-background">
+                                    {step.icon}
+                                </div>
+                                <h3 className="text-xl font-bold font-heading">{step.title}</h3>
+                                <p className="mt-2 text-muted-foreground">{step.description}</p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section className="py-20 md:py-32 bg-muted/50">
             <div className="container mx-auto px-4 text-center">
                  <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-6">
                     <Bot className="h-10 w-10" />
@@ -133,6 +197,28 @@ export default function HomePage() {
                     <Link href="/dashboard/assistant">
                         <Button variant="outline" size="lg">Meet Your Co-Pilot <ArrowRight /></Button>
                     </Link>
+                </div>
+            </div>
+        </section>
+
+        <section className="py-20 md:py-32">
+            <div className="container mx-auto px-4 text-center">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Built for the Modern Professional</h2>
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                    Whether you're a solo agent or a large developer, Entrestate is your competitive edge.
+                </p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                   {personas.map((persona) => (
+                       <Card key={persona.title} className="text-center bg-card/50">
+                           <CardHeader className="items-center">
+                               <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-3">{persona.icon}</div>
+                               <CardTitle>{persona.title}</CardTitle>
+                           </CardHeader>
+                           <CardContent>
+                                <p className="text-muted-foreground">{persona.description}</p>
+                           </CardContent>
+                       </Card>
+                   ))}
                 </div>
             </div>
         </section>
