@@ -1,4 +1,5 @@
 
+'use client';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 
@@ -7,24 +8,19 @@ const LOGO_URL_LIGHT = 'https://firebasestorage.googleapis.com/v0/b/mtcmartechgo
 
 
 export const Logo = ({ className }: { className?: string }) => (
-  <div className={cn("inline-flex items-center gap-3 group h-10", className)}>
-    {/* Light mode logo */}
+  <div className={cn("relative inline-block h-8 w-[140px]", className)}>
     <Image 
         src={LOGO_URL_LIGHT}
         alt="Entrestate Logo"
-        width={140}
-        height={32}
-        className="object-contain h-8 w-auto dark:hidden"
+        fill
+        className="object-contain dark:hidden"
         priority
     />
-    {/* Dark mode logo */}
-     <Image 
-        src={LOGO_URL_DARK}
-        alt="Entrestate Logo"
-        width={140}
-        height={32}
-        className="object-contain h-8 w-auto hidden dark:block"
-        priority
+    <div 
+        className="hidden dark:block h-full w-full bg-contain bg-no-repeat"
+        style={{ backgroundImage: `url(${LOGO_URL_DARK})` }}
+        role="img"
+        aria-label="Entrestate Logo"
     />
   </div>
 );
