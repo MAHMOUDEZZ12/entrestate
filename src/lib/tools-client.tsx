@@ -229,6 +229,18 @@ export const tools: Feature[] = mergeToolData().map(tool => {
     // This switch populates the `creationFields` for each tool,
     // effectively defining the form for each tool's dashboard page.
     switch (tool.id) {
+        case 'brochure-translator':
+            tool.creationFields = [
+                { id: 'brochureDataUri', name: 'Brochure to Translate', type: 'file', description: 'Upload the PDF document you want to translate.' },
+                { id: 'targetLanguage', name: 'Target Language', type: 'text', placeholder: 'e.g., Arabic, Chinese, Spanish', description: 'The language to translate the brochure into.' },
+            ];
+            tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                    <h3 className="font-semibold">Translated Brochure:</h3>
+                    <iframe src={result.translatedBrochureDataUri} className="w-full h-96 rounded-md border" title="Translated Brochure Preview" />
+                </div>
+            );
+            break;
         case 'lease-reviewer':
             tool.creationFields = [
                 { id: 'leaseDocumentUri', name: 'Lease Document', type: 'file', description: 'Upload the lease agreement (PDF, DOCX).' },
