@@ -1,4 +1,5 @@
 
+
 import { z } from 'zod';
 
 // Core market identity
@@ -31,9 +32,9 @@ export interface UserLibrary {
 
 // Brand kit stored with user
 export interface BrandKit {
-  logoUrl?: string;
+  logoUrl?: string | null;
   colors?: { primary?: string; accent?: string };
-  contact?: { name?: string; phone?: string; email?: string; whatsappUrl?: string };
+  contact?: { name?: string; phone?: string; email?: string };
 }
 
 // Onboarding draft (saved/resumed)
@@ -41,6 +42,7 @@ export interface OnboardingDraft {
   city?: string;
   country?: string;
   devFocus?: string[];
+  firstPass?: Record<string, "relevant" | "not">;
   scanSelected?: string[];
   shortlist?: string[];
   brandKit?: BrandKit;

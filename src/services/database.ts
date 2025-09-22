@@ -8,38 +8,43 @@
  * needing to refactor the entire application.
  */
 
+'use server';
+
 import { adminDb } from '@/lib/firebaseAdmin';
 import { fail } from '@/lib/api-helpers';
+import type { Project, BrandKit } from '@/types';
 
-if (!adminDb) {
-  console.warn('Firestore Admin is not initialized. Database service will not be available.');
-}
 
 /**
  * Fetches a single project document from the projects_catalog collection.
  * @param projectId The ID of the project to fetch.
  * @returns The project data object or null if not found.
  */
-export async function getProjectById(projectId: string): Promise<any | null> {
+export async function getProjectById(projectId: string): Promise<Project | null> {
   if (!adminDb) {
-      throw new Error("Database service is unavailable.");
+    console.error("Database service is unavailable because Firestore Admin is not initialized.");
+    throw new Error("Database service is unavailable.");
   }
   try {
-    console.log(`Fetching project ${projectId} from Firestore...`);
     const projectDocRef = adminDb.collection('projects_catalog').doc(projectId);
     const projectDoc = await projectDocRef.get();
 
     if (projectDoc.exists) {
-        return { id: projectDoc.id, ...projectDoc.data() };
+        return { id: projectDoc.id, ...projectDoc.data() } as Project;
     } else {
         console.warn(`Project with ID "${projectId}" not found in projects_catalog.`);
         return null;
     }
   } catch (error) {
     console.error(`Error fetching project ${projectId}:`, error);
-    // In a real app, you might want more sophisticated error handling
     throw fail(error);
   }
+}
+
+interface UserProfileData {
+    companyName?: string;
+    brandKit?: BrandKit;
+    // Add any other user profile fields here
 }
 
 /**
@@ -48,12 +53,12 @@ export async function getProjectById(projectId: string): Promise<any | null> {
  * @param data The data to save. This will be merged with existing data.
  * @returns A promise that resolves when the data is saved.
  */
-export async function saveUserData(userId: string, data: any): Promise<void> {
+export async function saveUserData(userId: string, data: UserProfileData): Promise<void> {
     if (!adminDb) {
+        console.error("Database service is unavailable because Firestore Admin is not initialized.");
         throw new Error("Database service is unavailable.");
     }
     try {
-        console.log(`Saving data for user ${userId}...`);
         const userDocRef = adminDb.collection('users').doc(userId);
         await userDocRef.set(data, { merge: true });
     } catch (error) {

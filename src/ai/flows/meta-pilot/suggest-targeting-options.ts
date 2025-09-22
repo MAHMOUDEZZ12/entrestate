@@ -13,7 +13,7 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'zod';
 import { SuggestTargetingOptionsInputSchema, SuggestTargetingOptionsOutputSchema, SuggestTargetingOptionsInput, SuggestTargetingOptionsOutput } from '@/types';
-import { adminDb } from '@/lib/firebaseAdmin';
+import { getProjectById } from '@/services/database';
 
 
 /**
@@ -72,15 +72,11 @@ const suggestTargetingOptionsFlow = ai.defineFlow(
     outputSchema: SuggestTargetingOptionsOutputSchema,
   },
   async (input) => {
-    // Fetch real project data from Firestore
-    if (!adminDb) {
-      throw new Error("Firestore Admin DB is not available.");
+    // Fetch real project data using the database service
+    const projectData = await getProjectById(input.projectId);
+    if (!projectData) {
+        throw new Error(`Project with ID "${input.projectId}" not found.`);
     }
-    const projectDoc = await adminDb.collection('projects_catalog').doc(input.projectId).get();
-    if (!projectDoc.exists) {
-        throw new Error(`Project with ID "${input.projectId}" not found in the Market Library.`);
-    }
-    const projectData = projectDoc.data();
 
     // Pass the real data to the prompt
     const { output } = await prompt({

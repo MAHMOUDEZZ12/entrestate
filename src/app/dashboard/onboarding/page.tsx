@@ -16,12 +16,25 @@ import { cn } from '@/lib/utils';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import Image from 'next/image';
 import { track } from '@/lib/events';
-import type { Project } from '@/types';
+import type { Project, OnboardingDraft } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
-import { Textarea } from '@/components/ui/textarea';
+import { saveUserData } from '@/services/database';
 import Link from 'next/link';
 
 const MOCK_DEVELOPERS = ['Emaar', 'Damac', 'Sobha', 'Nakheel', 'Meraas', 'Aldar'];
+
+const INITIAL_DRAFT: OnboardingDraft = {
+    city: 'Dubai',
+    country: 'UAE',
+    devFocus: [],
+    firstPass: {},
+    scanSelected: [],
+    shortlist: [],
+    brandKit: { logoUrl: null, colors: { primary: '#36454F', accent: '#98FF98' }, contact: { name: '', phone: '', email: '' } },
+    connections: {},
+    payment: { status: 'skipped' },
+    progress: { step: 1, ts: Date.now() },
+};
 
 function OnboardingComponent() {
     const router = useRouter();
@@ -34,18 +47,7 @@ function OnboardingComponent() {
     const [suggestedProjects, setSuggestedProjects] = useState<Project[]>([]);
     const [scannedProjects, setScannedProjects] = useState<Project[]>([]);
 
-    const [draft, setDraft] = useState({
-        city: 'Dubai',
-        country: 'UAE',
-        devFocus: [] as string[],
-        firstPass: {} as Record<string, 'relevant' | 'not'>,
-        scanSelected: [] as string[],
-        shortlist: [] as string[],
-        brandKit: { logoUrl: null as string | null, colors: { primary: '#36454F', accent: '#98FF98' }, contact: { name: '', phone: '', email: '', whatsappUrl: '' } },
-        connections: {} as Record<string, 'connected'|'skipped'>,
-        payment: { status: 'skipped' } as { status: 'added'|'skipped' },
-        progress: { step: 1, ts: Date.now() },
-    });
+    const [draft, setDraft] = useState<OnboardingDraft>(INITIAL_DRAFT);
     
     const [logoPreview, setLogoPreview] = React.useState<string | null>(null);
 
@@ -67,7 +69,7 @@ function OnboardingComponent() {
     useEffect(() => {
         if (step === 4 && scannedProjects.length === 0 && user) {
             setIsLoading(true);
-            const devQuery = draft.devFocus.length > 0 ? `q=${draft.devFocus.join(',')}` : 'q=emaar,damac,sobha,nakheel,meraas,aldar';
+            const devQuery = draft.devFocus && draft.devFocus.length > 0 ? `q=${draft.devFocus.join(',')}` : 'q=emaar,damac,sobha,nakheel,meraas,aldar';
             fetch(`/api/projects/scan?${devQuery}&limit=12`)
                 .then(res => res.json())
                 .then(data => {
@@ -78,7 +80,7 @@ function OnboardingComponent() {
         }
     }, [step, draft.devFocus, scannedProjects.length, user]);
 
-    const updateDraft = (data: Partial<typeof draft>) => {
+    const updateDraft = (data: Partial<OnboardingDraft>) => {
         setDraft(prev => ({ ...prev, ...data, progress: { step, ts: Date.now() } }));
     };
     
@@ -89,18 +91,19 @@ function OnboardingComponent() {
           reader.onloadend = () => {
             const result = reader.result as string;
             setLogoPreview(result);
-            updateDraft({ brandKit: { ...draft.brandKit, logoUrl: result }});
+            updateDraft({ brandKit: { ...draft.brandKit!, logoUrl: result }});
           };
           reader.readAsDataURL(file);
         }
     };
 
     const toggleDeveloper = (dev: string) => {
-        const newDevs = draft.devFocus.includes(dev)
-            ? draft.devFocus.filter(d => d !== dev)
-            : [...draft.devFocus, dev];
+        const currentDevs = draft.devFocus || [];
+        const newDevs = currentDevs.includes(dev)
+            ? currentDevs.filter(d => d !== dev)
+            : [...currentDevs, dev];
         updateDraft({ devFocus: newDevs });
-        track('onboarding_developer_toggled', { developer: dev, selected: !draft.devFocus.includes(dev) });
+        track('onboarding_developer_toggled', { developer: dev, selected: !currentDevs.includes(dev) });
     };
     
     const handleFirstPass = (projectName: string, status: 'relevant' | 'not') => {
@@ -108,7 +111,7 @@ function OnboardingComponent() {
         track('onboarding_project_rated', { project: projectName, rating: status });
     };
 
-    const isStep1Complete = draft.devFocus.length > 0 && Object.keys(draft.firstPass).length === suggestedProjects.length && suggestedProjects.length > 0;
+    const isStep1Complete = (draft.devFocus?.length || 0) > 0 && Object.keys(draft.firstPass || {}).length === suggestedProjects.length && suggestedProjects.length > 0;
 
     const nextStep = () => {
         track('onboarding_step_completed', { step });
@@ -143,27 +146,14 @@ function OnboardingComponent() {
             toast({ title: "Not Authenticated", description: "You must be logged in to save your brand.", variant: "destructive" });
             return;
         }
-        track('onboarding_brand_saved', { hasLogo: !!draft.brandKit.logoUrl, primaryColor: draft.brandKit.colors.primary });
+        track('onboarding_brand_saved', { hasLogo: !!draft.brandKit?.logoUrl, primaryColor: draft.brandKit?.colors?.primary });
         setIsLoading(true);
         try {
-            const idToken = await user.getIdToken();
             const payload = {
-                companyName: draft.brandKit.contact.name, // Assuming name is company name for this context
-                brandKit: {
-                    logoUrl: draft.brandKit.logoUrl,
-                    colors: draft.brandKit.colors,
-                    contact: draft.brandKit.contact
-                }
+                companyName: draft.brandKit?.contact?.name,
+                brandKit: draft.brandKit,
             };
-            const response = await fetch('/api/user/profile', {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${idToken}`
-                 },
-                body: JSON.stringify(payload),
-            });
-            if (!response.ok) throw new Error("Failed to save brand.");
+            await saveUserData(user.uid, payload);
             
             toast({ title: "Brand Kit Saved!", description: "Your brand is now ready to be used by the AI."});
             nextStep();
@@ -179,8 +169,9 @@ function OnboardingComponent() {
             toast({ title: "Please log in", description: "You must be logged in to save projects.", variant: "destructive" });
             return;
         }
-        const selectedProjectObjects = scannedProjects.filter(p => draft.scanSelected.includes(p.id));
-        track('onboarding_shortlist_finalized', { projects: draft.scanSelected, count: draft.scanSelected.length });
+        const selectedIds = draft.scanSelected || [];
+        const selectedProjectObjects = scannedProjects.filter(p => selectedIds.includes(p.id));
+        track('onboarding_shortlist_finalized', { projects: selectedIds, count: selectedIds.length });
 
         setIsLoading(true);
         try {
@@ -230,8 +221,8 @@ function OnboardingComponent() {
                                     {MOCK_DEVELOPERS.map(dev => (
                                         <button key={dev}
                                             onClick={() => toggleDeveloper(dev)}
-                                            aria-pressed={draft.devFocus.includes(dev)}
-                                            className={cn("rounded-full border px-3 py-1 text-sm transition-colors", draft.devFocus.includes(dev) ? 'border-primary bg-primary/20 text-primary' : 'border-border hover:bg-muted/50')}>
+                                            aria-pressed={draft.devFocus?.includes(dev)}
+                                            className={cn("rounded-full border px-3 py-1 text-sm transition-colors", draft.devFocus?.includes(dev) ? 'border-primary bg-primary/20 text-primary' : 'border-border hover:bg-muted/50')}>
                                             {dev}
                                         </button>
                                     ))}
@@ -352,11 +343,12 @@ function OnboardingComponent() {
                                             key={proj.id} 
                                             project={proj} 
                                             selectable 
-                                            selected={draft.scanSelected.includes(proj.id)}
+                                            selected={draft.scanSelected?.includes(proj.id)}
                                             onToggle={() => {
-                                                const newSelection = draft.scanSelected.includes(proj.id)
-                                                    ? draft.scanSelected.filter(p => p !== proj.id)
-                                                    : [...draft.scanSelected, proj.id];
+                                                const currentSelection = draft.scanSelected || [];
+                                                const newSelection = currentSelection.includes(proj.id)
+                                                    ? currentSelection.filter(p => p !== proj.id)
+                                                    : [...currentSelection, proj.id];
                                                 updateDraft({ scanSelected: newSelection });
                                             }}
                                         />
@@ -370,7 +362,7 @@ function OnboardingComponent() {
                                  <Button variant="outline" onClick={nextStep}>Skip</Button>
                                  <Button onClick={handleFinalizeShortlist} disabled={isLoading}>
                                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : null}
-                                    Use Selected ({draft.scanSelected.length})
+                                    Use Selected ({(draft.scanSelected || []).length})
                                 </Button>
                             </div>
                         </CardFooter>
@@ -411,29 +403,25 @@ function OnboardingComponent() {
                              <div className="grid md:grid-cols-2 gap-4">
                                 <div className="space-y-2">
                                     <Label>Primary Color</Label>
-                                    <Input type="text" placeholder="#000000" value={draft.brandKit.colors.primary} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit, colors: {...draft.brandKit.colors, primary: e.target.value}}})} />
+                                    <Input type="text" placeholder="#000000" value={draft.brandKit?.colors?.primary} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, colors: {...draft.brandKit!.colors, primary: e.target.value}}})} />
                                 </div>
                                  <div className="space-y-2">
                                     <Label>Accent Color</Label>
-                                    <Input type="text" placeholder="#FFFFFF" value={draft.brandKit.colors.accent} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit, colors: {...draft.brandKit.colors, accent: e.target.value}}})} />
+                                    <Input type="text" placeholder="#FFFFFF" value={draft.brandKit?.colors?.accent} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, colors: {...draft.brandKit!.colors, accent: e.target.value}}})} />
                                 </div>
                              </div>
                              <div className="grid md:grid-cols-2 gap-4">
                                  <div className="space-y-2">
-                                    <Label>Your Name</Label>
-                                    <Input value={draft.brandKit.contact.name} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit, contact: {...draft.brandKit.contact, name: e.target.value}}})} placeholder="e.g., John Doe" />
-                                 </div>
-                                 <div className="space-y-2">
-                                    <Label>Company Name</Label>
-                                    <Input placeholder="e.g., Luxe Properties" />
+                                    <Label>Your Name / Company Name</Label>
+                                    <Input value={draft.brandKit?.contact?.name} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, contact: {...draft.brandKit!.contact, name: e.target.value}}})} placeholder="e.g., John Doe / Luxe Properties" />
                                  </div>
                                   <div className="space-y-2">
                                     <Label>Phone Number</Label>
-                                    <Input value={draft.brandKit.contact.phone} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit, contact: {...draft.brandKit.contact, phone: e.target.value}}})} placeholder="e.g., +971 50 123 4567" />
+                                    <Input value={draft.brandKit?.contact?.phone} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, contact: {...draft.brandKit!.contact, phone: e.target.value}}})} placeholder="e.g., +971 50 123 4567" />
                                  </div>
                                   <div className="space-y-2">
                                     <Label>Email Address</Label>
-                                    <Input type="email" value={draft.brandKit.contact.email} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit, contact: {...draft.brandKit.contact, email: e.target.value}}})} placeholder="e.g., john.doe@luxe.com" />
+                                    <Input type="email" value={draft.brandKit?.contact?.email} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, contact: {...draft.brandKit!.contact, email: e.target.value}}})} placeholder="e.g., john.doe@luxe.com" />
                                  </div>
                              </div>
                         </CardContent>
