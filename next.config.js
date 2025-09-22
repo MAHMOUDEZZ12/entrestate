@@ -35,6 +35,12 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'www.bayut.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'firebasestorage.googleapis.com',
         port: '',
         pathname: '/**',
