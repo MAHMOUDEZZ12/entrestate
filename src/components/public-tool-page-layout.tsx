@@ -108,7 +108,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             {feature.longDescription}
           </p>
           <div className="mt-8">
-            <Link href="/signup">
+            <Link href="/login">
                 <ShinyButton>
                     Get Started with {feature.title.split(" ")[0]}
                     <ArrowRight />

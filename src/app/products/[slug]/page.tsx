@@ -129,7 +129,7 @@ export default function ProductPage() {
                 Our core products form the backbone of the Entrestate ecosystem. Get started and experience the future of real estate technology.
             </p>
             <div className="mt-8">
-                <Link href="/signup">
+                <Link href="/login">
                     <ShinyButton>
                         Start Your Free Trial <ArrowRight />
                     </ShinyButton>

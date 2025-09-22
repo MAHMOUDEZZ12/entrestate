@@ -36,7 +36,7 @@ export function ResourcesHeader() {
            <Link href="/login">
               <Button variant="ghost">Log In</Button>
           </Link>
-          <Link href="/signup">
+          <Link href="/login">
               <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
           </Link>
         </div>

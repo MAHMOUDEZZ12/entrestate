@@ -41,7 +41,7 @@ export default function AboutPage() {
                   </p>
 
                   <div className="text-center mt-12">
-                      <Link href="/signup">
+                      <Link href="/login">
                           <Button size="lg">Join Us in Building the Future</Button>
                       </Link>
                   </div>
@@ -53,5 +53,3 @@ export default function AboutPage() {
     </div>
   );
 }
-
-    
