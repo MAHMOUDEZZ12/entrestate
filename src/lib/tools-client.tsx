@@ -229,6 +229,27 @@ export const tools: Feature[] = mergeToolData().map(tool => {
     // This switch populates the `creationFields` for each tool,
     // effectively defining the form for each tool's dashboard page.
     switch (tool.id) {
+        case 'ai-video-presenter':
+            tool.creationFields = [
+                { id: 'characterDescription', name: 'Character Description', type: 'text', placeholder: 'e.g., A professional female real estate agent in her 30s, wearing a blue blazer', description: 'Describe the presenter you want the AI to create.' },
+                { id: 'characterImageUri', name: 'Or Upload Character Image (Optional)', type: 'file', description: 'Upload a photo to use as the presenter. The AI will animate this image.' },
+                { id: 'script', name: 'Script', type: 'textarea', placeholder: 'Enter the script for the presenter to speak here.', description: 'The text the AI presenter will say.' },
+            ];
+            tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                    <h3 className="font-semibold">Generated Video Presenter:</h3>
+                    <video controls src={result.videoUrl} className="w-full rounded-lg border bg-black" />
+                    <h3 className="font-semibold mt-4">Generated Audio:</h3>
+                    <audio controls src={result.audioDataUri} className="w-full" />
+                    <a href={result.audioDataUri} download="presenter_audio.wav">
+                        <Button variant="outline" className="w-full">
+                            <Download className="mr-2 h-4 w-4" />
+                            Download Audio (WAV)
+                        </Button>
+                    </a>
+                </div>
+            );
+            break;
         case 'brochure-translator':
             tool.creationFields = [
                 { id: 'brochureDataUri', name: 'Brochure to Translate', type: 'file', description: 'Upload the PDF document you want to translate.' },
