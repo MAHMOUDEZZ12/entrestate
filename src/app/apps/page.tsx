@@ -4,26 +4,32 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  ArrowRight, Sparkles, LayoutTemplate
+  ArrowRight, Sparkles, LayoutTemplate, CreditCard
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Feature, tools as features, FilterCategory } from '@/lib/tools-client';
+import { Feature, tools as allTools, FilterCategory } from '@/lib/tools-client';
 import { Card, CardContent } from '@/components/ui/card';
 import { Tooltip, TooltipProvider, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { PageHeader } from '@/components/ui/page-header';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
+import { pricingData } from '@/lib/pricing-data';
+import { Badge } from '@/components/ui/badge';
 
-const filterCategories: FilterCategory[] = [
-    'All', 'Marketing', 'Lead Gen', 'Creative', 'Sales Tools', 'Social & Comms', 
-    'Web', 'Editing', 'Ads', 'Market Intelligence', 'CRM', 'Developer'
-];
+// Merge pricing data into tools
+const features = allTools.map(tool => {
+  const priceInfo = pricingData.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === tool.id.toLowerCase());
+  return {
+    ...tool,
+    price: priceInfo?.price_monthly || 0,
+  };
+});
 
 const FeatureCard = ({
   feature,
 }: {
-  feature: Feature;
+  feature: Feature & { price: number };
 }) => {
   return (
     <Card 
@@ -37,28 +43,36 @@ const FeatureCard = ({
             >
                 {React.cloneElement(feature.icon, { className: 'h-8 w-8' })}
             </div>
-             {(feature.badge) && (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger>
-                     <span className={cn(
-                        `px-2 py-0.5 text-xs font-semibold text-white rounded-full transition-all duration-200`,
-                         feature.badge === 'NEW' ? 'bg-blue-500' : 
-                         feature.badge === 'AUTO' ? 'bg-orange-500' : 'bg-gray-500'
-                     )}>
-                        {feature.badge}
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>{
-                        feature.badge === 'NEW' ? 'This is a brand new feature!' : 
-                        feature.badge === 'AUTO' ? 'This is an automated workflow pilot.' : 
-                        'This feature is deprecated.'
-                    }</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+            <div className="flex flex-col items-end gap-2">
+                 {(feature.badge) && (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <span className={cn(
+                            `px-2 py-0.5 text-xs font-semibold text-white rounded-full transition-all duration-200`,
+                            feature.badge === 'NEW' ? 'bg-blue-500' : 
+                            feature.badge === 'AUTO' ? 'bg-orange-500' : 'bg-gray-500'
+                        )}>
+                            {feature.badge}
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent side="top">
+                        <p>{
+                            feature.badge === 'NEW' ? 'This is a brand new feature!' : 
+                            feature.badge === 'AUTO' ? 'This is an automated workflow pilot.' : 
+                            'This feature is deprecated.'
+                        }</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                )}
+                 {feature.price > 0 && (
+                    <Badge variant="secondary" className="flex items-center gap-1.5">
+                       <CreditCard className="h-3 w-3" />
+                       ${feature.price}/mo
+                    </Badge>
+                )}
+            </div>
         </div>
         <h2 className="text-2xl font-bold font-heading text-foreground mb-2">{feature.title}</h2>
         <p className="text-lg text-foreground/70 flex-grow">{feature.description}</p>
