@@ -136,7 +136,7 @@ export const ProSearchSimulation = () => {
                  <div className="space-y-2">
                     <AnimatePresence>
                         {results.map((r, i) => (
-                           <ResultCard key={query + r.title + i} {...r} />
+                           <ResultCard key={`${queryIndex}-${i}`} {...r} />
                         ))}
                     </AnimatePresence>
                 </div>
