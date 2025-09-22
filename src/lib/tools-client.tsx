@@ -134,7 +134,7 @@ const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' 
     { id: 'lead-investigator', title: 'Lead Investigator AI', dashboardTitle: 'Lead Investigator', description: 'Find social profiles and professional history for any lead.', icon: <FileSearch />, color: '#FFA500', categories: ['CRM', 'Lead Gen'], cta: 'Investigate Lead' },
 
     // Market Intelligence
-    { id: 'market-library', title: 'Market Library', description: 'Search our intelligent library for verified projects.', icon: <Database />, color: '#00CED1', categories: ['Market Intelligence'], cta: 'Search Library' },
+    { id: 'projects-finder', title: 'Market Library', description: 'Search our intelligent library for verified projects.', icon: <Database />, color: '#00CED1', categories: ['Market Intelligence', 'Market Library'], cta: 'Search Library' },
     { id: 'market-reports', title: 'Market Reports', description: 'Generate PDF reports on market trends, pricing, and sentiment.', icon: <Newspaper />, color: '#00CED1', categories: ['Market Intelligence'], cta: 'Generate Report' },
     { id: 'market-trends', title: 'Market Trends Watcher', dashboardTitle: 'Market Trends', description: 'Identify emerging market trends before they become mainstream.', icon: <LineChart />, color: '#00CED1', categories: ['Market Intelligence'], cta: 'Analyze Trends' },
     { id: 'deal-analyzer', title: 'Deal Analyzer', description: 'Analyze the investment potential of any real estate deal.', icon: <BarChart3 />, color: '#32CD32', categories: ['Sales Tools', 'Market Intelligence'], cta: 'Analyze Deal' },
@@ -144,8 +144,12 @@ const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' 
     { id: 'ai-brand-creator', title: 'AI Brand Creator', dashboardTitle: 'Brand Creator', description: 'Configure your brand kit by analyzing uploaded documents.', icon: <Wand2 />, color: '#6A0DAD', categories: ['CRM'], cta: 'Create Brand' },
     { id: 'crm-assistant', title: 'CRM Memory Assistant', dashboardTitle: 'CRM Memory', description: 'The core data store that remembers every client interaction.', icon: <BrainCircuit />, color: '#6A0DAD', categories: ['CRM'], cta: 'Query Memory' },
     { id: 'ai-assistant', title: 'AI Assistant', description: 'Your personal, trainable AI partner.', icon: <Bot />, color: '#6A0DAD', categories: ['CRM'], cta: 'Chat with Assistant' },
-    { id: 'embeddable-site-assistant', title: 'Embeddable Site Assistant', dashboardTitle: 'Site Assistant', description: 'Add a market-aware AI chatbot to any website.', icon: <BotMessageSquare />, color: '#6A0DAD', categories: ['Web', 'Lead Gen'], cta: 'Create Bot' },
-
+    
+    // Enterprise / Secret Tools
+    { id: 'lease-reviewer', title: 'Lease Reviewer', description: 'Upload a lease agreement and let the AI analyze it for risks and non-standard clauses.', icon: <FileSearch />, color: '#4682B4', categories: ['Sales Tools', 'Developer'], badge: 'NEW', cta: 'Review Lease' },
+    { id: 'chatbot-creator', title: 'Embeddable Site Assistant', dashboardTitle: 'Site Assistant', description: 'Add a market-aware AI chatbot to any website.', icon: <BotMessageSquare />, color: '#6A0DAD', categories: ['Web', 'Lead Gen'], badge: 'NEW', cta: 'Create Bot' },
+    { id: 'data-importer', title: 'Data Importer', description: 'Manage your search context by importing and exporting XML data.', icon: <Upload />, color: '#708090', categories: ['Developer'], badge: 'NEW', cta: 'Import Data' },
+    
     // Developer Tools
     { id: 'vm-creator', title: 'VM Creator', description: 'A utility for developers to provision Google Cloud virtual machines.', icon: <Terminal />, color: '#333333', categories: ['Developer'], cta: 'Create VM' },
     { id: 'creative-execution-terminal', title: 'Creative Execution Terminal', dashboardTitle: 'Execution Terminal', description: 'The execution engine for complex creative tasks.', icon: <Terminal />, color: '#333333', categories: ['Developer'], cta: 'Run Job' },
@@ -204,7 +208,7 @@ const mergeToolData = (): Feature[] => {
         return {
             ...(tool as any),
             longDescription: detailsContent?.full_description || tool.description,
-            isPage: ['bayut-sync', 'property-finder-sync', 'listing-manager', 'listing-performance', 'market-trends', 'youtube-video-editor', 'pdf-editor', 'chatbot-creator', 'keyword-planner', 'projects-finder', 'market-reports', 'deal-analyzer', 'ugc-script-writer', 'ai-video-presenter', 'meta-auto-pilot', 'campaign-builder', 'lease-reviewer', 'tiktok-editor', 'reel-ads', 'crm-assistant', 'whatsapp-manager', 'multi-offer-builder', 'automated-rebranding', 'ai-price-estimator', 'commission-calculator', 'payment-planner', 'listing-generator'].includes(tool.id),
+            isPage: true, // All tools now use the dynamic page
             href: `/dashboard/tool/${tool.id}`,
             guideHref: `/apps/${tool.id}`,
             mindMapCategory: tool.categories.includes('Ads') ? 'Meta Pilot (Campaign Automation)' :
@@ -267,21 +271,26 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                 { id: 'agentSplit', name: 'Your Split (%)', type: 'number', placeholder: 'e.g., 50', value: '50' },
             ];
             tool.renderResult = (result, toast) => {
-                const salePrice = parseFloat(result.salePrice);
-                const commissionRate = parseFloat(result.commissionRate);
-                const agentSplit = parseFloat(result.agentSplit);
-                const totalCommission = salePrice * (commissionRate / 100);
-                const yourShare = totalCommission * (agentSplit / 100);
+                 const totalCommission = result.totalCommission;
+                const yourShare = result.yourShare;
+                 const brokerageShare = result.brokerageShare;
                 return (
-                <div className="space-y-4">
-                    <Card>
-                        <CardHeader><CardTitle>Commission Breakdown</CardTitle></CardHeader>
-                        <CardContent className="space-y-2">
-                             <p><strong>Total Commission:</strong> AED {totalCommission.toLocaleString()}</p>
-                             <p><strong>Your Share:</strong> AED {yourShare.toLocaleString()}</p>
-                        </CardContent>
-                    </Card>
-                </div>
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <Card>
+                                <CardHeader><CardTitle className="text-lg">Total Commission</CardTitle></CardHeader>
+                                <CardContent><p className="text-2xl font-bold">AED {totalCommission.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p></CardContent>
+                            </Card>
+                             <Card>
+                                <CardHeader><CardTitle className="text-lg">Brokerage Share</CardTitle></CardHeader>
+                                <CardContent><p className="text-2xl font-bold">AED {brokerageShare.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p></CardContent>
+                            </Card>
+                        </div>
+                        <Card className="bg-primary/10 border-primary/20">
+                            <CardHeader><CardTitle className="text-xl text-primary">Your Take-Home</CardTitle></CardHeader>
+                            <CardContent><p className="text-3xl font-bold text-primary">AED {yourShare.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</p></CardContent>
+                        </Card>
+                    </div>
             )};
             break;
          case 'ugc-script-writer':

@@ -37,9 +37,6 @@ import { generateVideoPresenter } from '@/ai/flows/archy/generate-video-presente
 import { discoverEngine } from '@/ai/flows/market-intelligence/discover-engine';
 import { dealAnalyzer } from '@/ai/flows/market-intelligence/deal-analyzer';
 import { ugcScriptWriter } from '@/ai/flows/archy/ugc-script-writer';
-import { instagramContentCreatorFlow } from '@/ai/flows/meta-pilot/instagram-content-creator';
-import { marketReportFlow } from '@/ai/flows/market-intelligence/market-reports';
-import { investorMatchingFlow } from '@/ai/flows/market-intelligence/investor-matching';
 import { leaseReviewerFlow } from '@/ai/flows/ebram/lease-reviewer';
 import { chatbotCreatorFlow } from '@/ai/flows/ebram/chatbot-creator';
 
@@ -55,10 +52,10 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'rebranding': rebrandBrochure,
     'pdf-editor': editPdf,
     'landing-pages': generateLandingPage,
-    'instagram-content-creator': instagramContentCreatorFlow,
-    'investor-matching': investorMatchingFlow,
+    'instagram-content-creator': generateSocialPost,
+    'investor-matching': matchInvestors,
     'ai-brand-creator': aiBrandCreator,
-    'market-reports': marketReportFlow,
+    'market-reports': generateMarketReport,
     'market-trends': getMarketTrends,
     'listing-generator': generateListing,
     'story-planner': generateStory,
