@@ -407,5 +407,3 @@ Name a project, and click "list it" - this is literally how it works.
     </>
   );
 }
-
-    
