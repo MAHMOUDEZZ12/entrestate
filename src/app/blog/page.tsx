@@ -13,7 +13,7 @@ import { LandingFooter } from '@/components/landing-footer';
 import { tools } from '@/lib/tools-client';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-
+import type { FilterCategory } from '@/lib/tools-client';
 
 const posts = appDetails.apps.map(content => {
     const tool = tools.find(t => t.id === content.name.toLowerCase().replace(/\s/g, '-'));
@@ -27,7 +27,16 @@ const posts = appDetails.apps.map(content => {
     };
 });
 
+const allCategories = ['All', ...new Set(posts.flatMap(p => p.categories))] as FilterCategory[];
+
+
 export default function BlogPage() {
+    const [activeFilter, setActiveFilter] = React.useState<FilterCategory>('All');
+
+    const filteredPosts = activeFilter === 'All' 
+        ? posts
+        : posts.filter(p => p.categories.includes(activeFilter));
+
   return (
     <div className="flex flex-col min-h-screen">
       <LandingHeader />
@@ -38,8 +47,20 @@ export default function BlogPage() {
           icon={<Rss className="h-8 w-8" />}
         />
         <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20">
+            <div className="flex justify-center flex-wrap gap-2 mb-12">
+                {allCategories.map(category => (
+                     <Button 
+                        key={category}
+                        variant={activeFilter === category ? "default" : "outline"}
+                        onClick={() => setActiveFilter(category)}
+                        className="rounded-full"
+                    >
+                        {category}
+                    </Button>
+                ))}
+            </div>
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
-            {posts.map((post) => (
+            {filteredPosts.map((post) => (
               <Link href={`/blog/${post.slug}`} key={post.slug} className="block break-inside-avoid">
                 <Card className="flex flex-col bg-card/80 backdrop-blur-lg hover:-translate-y-1 transition-transform duration-300 hover:shadow-xl border-b-4"
                       style={{'--card-border-color': post.color, borderColor: 'var(--card-border-color)'} as React.CSSProperties} >

@@ -2,11 +2,10 @@
 'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
-import { ArrowRight, MessageSquarePlus, User, Check, Plus, Users2 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { MessageSquarePlus, User, Users2 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Badge } from '@/components/ui/badge';
@@ -29,6 +28,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 
 const noteSchema = z.object({
@@ -80,6 +80,14 @@ const mockNotes = [
     type: "Self Intro",
     content: "Hi everyone, I'm Michael, a senior broker at Prestige Properties specializing in luxury villas in Emirates Hills and Palm Jumeirah. Happy to connect with fellow real estate professionals!",
     comments: 5,
+  },
+  {
+    id: 5,
+    title: "Question: Best tool for rebranding brochures?",
+    author: "Sarah Lee",
+    type: "Question",
+    content: "I have a bunch of old brochures I need to update with my new logo and contact info. Which app is the best for this? Automated Rebranding or the PDF Editor?",
+    comments: 4,
   }
 ];
 
@@ -235,27 +243,43 @@ export default function CommunityPage() {
             </Dialog>
         </PageHeader>
         <div className="w-full max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-20">
-          <div className="space-y-6">
-            {mockNotes.map((note) => (
-              <Card key={note.id} className="bg-card/80 backdrop-blur-lg">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                     <Badge>{note.type}</Badge>
-                     <div className="text-sm text-muted-foreground flex items-center gap-1">
-                        <User className="h-4 w-4" /> {note.author}
-                     </div>
-                  </div>
-                  <CardTitle className="pt-2">{note.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{note.content}</p>
-                </CardContent>
-                <CardFooter>
-                  <Button variant="outline" size="sm">View Note & Comments ({note.comments})</Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+            <Tabs defaultValue="all" className="w-full">
+                <TabsList className="grid w-full grid-cols-3 sm:grid-cols-7 mb-8">
+                    <TabsTrigger value="all">All</TabsTrigger>
+                    <TabsTrigger value="Connection">Connections</TabsTrigger>
+                    <TabsTrigger value="Investor Request">Investors</TabsTrigger>
+                    <TabsTrigger value="Opinion">Opinions</TabsTrigger>
+                    <TabsTrigger value="Review">Reviews</TabsTrigger>
+                    <TabsTrigger value="Question">Questions</TabsTrigger>
+                    <TabsTrigger value="Self Intro">Intros</TabsTrigger>
+                </TabsList>
+                
+                {(['all', ...noteTypes] as const).map(tab => (
+                     <TabsContent key={tab} value={tab.replace(/\s/g, '')}>
+                        <div className="space-y-6">
+                            {mockNotes.filter(note => tab === 'all' || note.type === tab).map((note) => (
+                            <Card key={note.id} className="bg-card/80 backdrop-blur-lg">
+                                <CardHeader>
+                                <div className="flex items-center justify-between">
+                                    <Badge>{note.type}</Badge>
+                                    <div className="text-sm text-muted-foreground flex items-center gap-1">
+                                        <User className="h-4 w-4" /> {note.author}
+                                    </div>
+                                </div>
+                                <CardTitle className="pt-2">{note.title}</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                <p className="text-muted-foreground">{note.content}</p>
+                                </CardContent>
+                                <CardFooter>
+                                <Button variant="outline" size="sm">View Note & Comments ({note.comments})</Button>
+                                </CardFooter>
+                            </Card>
+                            ))}
+                        </div>
+                    </TabsContent>
+                ))}
+            </Tabs>
         </div>
       </main>
       <LandingFooter />
