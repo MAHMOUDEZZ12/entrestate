@@ -26,6 +26,11 @@ const features = allTools.map(tool => {
   };
 });
 
+const filterCategories: FilterCategory[] = [
+    'All', 'Marketing', 'Lead Gen', 'Creative', 'Sales Tools', 'Social & Comms', 
+    'Web', 'Editing', 'Ads', 'Market Intelligence', 'CRM', 'Developer'
+];
+
 const FeatureCard = ({
   feature,
 }: {
