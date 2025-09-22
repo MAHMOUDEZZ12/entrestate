@@ -5,7 +5,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
-import { ArrowRight, BookOpen, GitBranch, Users2, Sparkles, Workflow, Bot } from 'lucide-react';
+import { ArrowRight, BookOpen, GitBranch, Users2, Sparkles, Workflow, Bot, School } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ResourcesHeader } from '@/components/resources-header';
 
@@ -16,6 +16,13 @@ const resourceLinks = [
     description: 'Explore pre-built automation templates that connect your apps into powerful workflows. The fastest way to put your AI to work.',
     href: '/resources/flows',
     cta: 'Browse Flows',
+  },
+   {
+    icon: <School className="h-8 w-8 text-primary" />,
+    title: 'Market Academy',
+    description: 'Become a certified expert. Our academy offers courses on mastering the market, from developer relations to AI strategy.',
+    href: '/community/academy',
+    cta: 'View Curriculum',
   },
   {
     icon: <BookOpen className="h-8 w-8 text-primary" />,
@@ -44,7 +51,7 @@ export default function ResourcesPage() {
             icon={<BookOpen className="h-8 w-8" />}
         />
         <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20">
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {resourceLinks.map((link) => (
                 <Card key={link.title} className="flex flex-col bg-card/80 backdrop-blur-lg">
                 <CardHeader>
