@@ -48,12 +48,21 @@ type NoteFormValues = z.infer<typeof noteSchema>;
 
 const noteTypes = ['Connection', 'Investor Request', 'Opinion', 'Review', 'Question', 'Self Intro'] as const;
 
+const typeColors: { [key: string]: string } = {
+  'Connection': 'hsl(var(--primary))',
+  'Investor Request': 'hsl(var(--accent))',
+  'Opinion': 'hsl(210, 40%, 50%)',
+  'Review': 'hsl(140, 40%, 50%)',
+  'Question': 'hsl(45, 90%, 50%)',
+  'Self Intro': 'hsl(300, 50%, 60%)',
+}
+
 const mockNotes = [
   {
     id: 1,
     title: "Looking for a direct sales contact at Emaar",
     author: "John Doe",
-    type: "Connection",
+    type: "Connection" as const,
     content: "Our agency is looking to establish a direct line with the sales team at Emaar for bulk deals. Can anyone provide a senior contact?",
     comments: 3,
   },
@@ -61,7 +70,7 @@ const mockNotes = [
     id: 2,
     title: "Investor seeking ready 2BR in Dubai Marina",
     author: "Jane Smith",
-    type: "Investor Request",
+    type: "Investor Request" as const,
     content: "Budget: AED 2.5M. Looking for a ready, tenanted 2-bedroom apartment in Dubai Marina with a high ROI. Service charges must be reasonable.",
     comments: 8,
   },
@@ -69,7 +78,7 @@ const mockNotes = [
     id: 3,
     title: "Opinion: Is the off-plan market overheating?",
     author: "Alex Johnson",
-    type: "Opinion",
+    type: "Opinion" as const,
     content: "With the recent influx of new projects, are we heading towards an oversupply situation in the off-plan market by 2026? What are your thoughts?",
     comments: 15,
   },
@@ -77,7 +86,7 @@ const mockNotes = [
     id: 4,
     title: "Self Introduction - Michael from Prestige Properties",
     author: "Michael Chen",
-    type: "Self Intro",
+    type: "Self Intro" as const,
     content: "Hi everyone, I'm Michael, a senior broker at Prestige Properties specializing in luxury villas in Emirates Hills and Palm Jumeirah. Happy to connect with fellow real estate professionals!",
     comments: 5,
   },
@@ -85,7 +94,7 @@ const mockNotes = [
     id: 5,
     title: "Question: Best tool for rebranding brochures?",
     author: "Sarah Lee",
-    type: "Question",
+    type: "Question" as const,
     content: "I have a bunch of old brochures I need to update with my new logo and contact info. Which app is the best for this? Automated Rebranding or the PDF Editor?",
     comments: 4,
   }
@@ -242,7 +251,7 @@ export default function CommunityPage() {
                 </DialogContent>
             </Dialog>
         </PageHeader>
-        <div className="w-full max-w-4xl mx-auto px-4 md:px-6 py-12 md:py-20">
+        <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20">
             <Tabs defaultValue="all" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 sm:grid-cols-7 mb-8">
                     <TabsTrigger value="all">All</TabsTrigger>
@@ -256,12 +265,16 @@ export default function CommunityPage() {
                 
                 {(['all', ...noteTypes] as const).map(tab => (
                      <TabsContent key={tab} value={tab.replace(/\s/g, '')}>
-                        <div className="space-y-6">
+                        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
                             {mockNotes.filter(note => tab === 'all' || note.type === tab).map((note) => (
-                            <Card key={note.id} className="bg-card/80 backdrop-blur-lg">
+                            <Card 
+                                key={note.id} 
+                                className="bg-card/80 backdrop-blur-lg break-inside-avoid-column border-b-4"
+                                style={{'--card-border-color': typeColors[note.type], borderColor: 'var(--card-border-color)'} as React.CSSProperties}
+                            >
                                 <CardHeader>
                                 <div className="flex items-center justify-between">
-                                    <Badge>{note.type}</Badge>
+                                    <Badge style={{ backgroundColor: typeColors[note.type]}} className="text-white">{note.type}</Badge>
                                     <div className="text-sm text-muted-foreground flex items-center gap-1">
                                         <User className="h-4 w-4" /> {note.author}
                                     </div>
