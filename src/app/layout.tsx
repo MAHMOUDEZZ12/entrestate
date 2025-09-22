@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Entrestate — AI-Native Real Estate Ecosystem',
     description: 'The future of real estate is here. Intelligent, persona-driven search and a complete suite of professional AI tools.',
-    images: ['/og-image.png'],
+    images: ['https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.appspot.com/o/og-image.png?alt=media&token=c27f8045-8c67-48f8-81e0-35a39985b546'],
   },
 };
 
