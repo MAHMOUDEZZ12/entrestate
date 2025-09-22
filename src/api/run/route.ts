@@ -40,6 +40,7 @@ import { ugcScriptWriter } from '@/ai/flows/archy/ugc-script-writer';
 import { leaseReviewerFlow } from '@/ai/flows/ebram/lease-reviewer';
 import { chatbotCreatorFlow } from '@/ai/flows/ebram/chatbot-creator';
 import { runMetaAutoPilot } from '@/ai/flows/meta-pilot/meta-auto-pilot';
+import { getPaypalTransaction } from '@/ai/flows/developer-backend/get-paypal-transaction';
 
 const runToolSchema = z.object({
   toolId: z.string(),
@@ -88,6 +89,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'ugc-script-writer': ugcScriptWriter,
     'lease-reviewer': leaseReviewerFlow,
     'chatbot-creator': chatbotCreatorFlow,
+    'paypal-transaction': getPaypalTransaction,
     'meta-auto-pilot': async (payload) => {
       // The real-time updates are simulated on the client,
       // so this endpoint can just run the whole flow and return the final result.

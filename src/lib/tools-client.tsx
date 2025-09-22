@@ -8,7 +8,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard
 } from 'lucide-react';
 import { toast as sonnerToast } from "sonner";
 import { Copy, Download, Trash2, Eye, Link as LinkIcon } from 'lucide-react';
@@ -153,6 +153,7 @@ const toolsData: Omit<Feature, 'details' | 'longDescription' | 'creationFields' 
     { id: 'vm-creator', title: 'VM Creator', description: 'A utility for developers to provision Google Cloud virtual machines.', icon: <Terminal />, color: '#333333', categories: ['Developer'], cta: 'Create VM' },
     { id: 'creative-execution-terminal', title: 'Creative Execution Terminal', dashboardTitle: 'Execution Terminal', description: 'The execution engine for complex creative tasks.', icon: <Terminal />, color: '#333333', categories: ['Developer'], cta: 'Run Job' },
     { id: 'superfreetime', title: 'Super Free Time', description: 'A secret tool for some fun.', icon: <KeyRound />, color: '#FFD700', categories: [], cta: 'Play' },
+    { id: 'paypal-transaction', title: 'PayPal Transaction', description: 'A developer tool to fetch details for a PayPal transaction.', icon: <CreditCard />, color: '#003087', categories: ['Developer'], cta: 'Fetch Transaction' },
 ];
 
 // Function to merge data with details
@@ -705,6 +706,26 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                     )}
                 </div>
             )
+            break;
+        case 'paypal-transaction':
+            tool.creationFields = [
+                 { id: 'transactionId', name: 'Transaction ID', type: 'text', placeholder: 'Enter the PayPal transaction or order ID' },
+            ];
+            tool.renderResult = (result, toast) => (
+                 <div className="space-y-4">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Transaction: {result.id}</CardTitle>
+                            <CardDescription>Status: <Badge>{result.status}</Badge></CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <p><strong>Amount:</strong> {result.amount.value} {result.amount.currency_code}</p>
+                            <p><strong>Payer:</strong> {result.payer.name.given_name} {result.payer.name.surname} ({result.payer.email_address})</p>
+                            <p><strong>Date:</strong> {new Date(result.create_time).toLocaleString()}</p>
+                        </CardContent>
+                    </Card>
+                </div>
+            );
             break;
         default:
             // Generic placeholder for tools without specific implementation yet
