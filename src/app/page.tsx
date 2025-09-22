@@ -13,6 +13,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { ShinyButton } from '@/components/ui/shiny-button';
 import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Badge } from '@/components/ui/badge';
 
 
 const products = [
@@ -43,7 +44,7 @@ const productPillars = [
         icon: <Telescope className="h-8 w-8" />,
         description: "The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.",
         visualizations: [
-            { src: "https://picsum.photos/seed/search-results/800/600", hint: "search results" },
+            { src: "https://picsum.photos/seed/damac-2025-search/800/600", hint: "search results page for Damac 2025 projects" },
             { src: "https://picsum.photos/seed/search-map/800/600", hint: "map view" },
             { src: "https://picsum.photos/seed/search-dashboard/800/600", hint: "analytics dashboard" },
         ],
@@ -54,9 +55,9 @@ const productPillars = [
         icon: <MessageCircle className="h-8 w-8" />,
         description: "The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.",
         visualizations: [
-            { src: "https://picsum.photos/seed/chat-widget/800/600", hint: "chat widget" },
-            { src: "https://picsum.photos/seed/chat-dm/800/600", hint: "direct message" },
-            { src: "https://picsum.photos/seed/chat-crm/800/600", hint: "CRM dashboard" },
+            { src: "https://picsum.photos/seed/chat-widget/800/600", hint: "website chat widget" },
+            { src: "https://picsum.photos/seed/chat-dm/800/600", hint: "instagram direct message" },
+            { src: "https://picsum.photos/seed/chat-crm/800/600", hint: "CRM dashboard with chat" },
         ],
     },
     {
@@ -65,9 +66,9 @@ const productPillars = [
         icon: <FileJson className="h-8 w-8" />,
         description: "The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.",
         visualizations: [
-            { src: "https://picsum.photos/seed/listing-grid/800/600", hint: "listing grid" },
-            { src: "https://picsum.photos/seed/listing-duplicates/800/600", hint: "duplicate detection" },
-            { src: "https://picsum.photos/seed/listing-archive/800/600", hint: "data archive" },
+            { src: "https://picsum.photos/seed/listing-grid/800/600", hint: "property listing grid" },
+            { src: "https://picsum.photos/seed/listing-duplicates/800/600", hint: "duplicate detection UI" },
+            { src: "https://picsum.photos/seed/listing-archive/800/600", hint: "data archive interface" },
         ],
     },
 ];
@@ -221,6 +222,7 @@ export default function HomePage() {
                                                     <Card>
                                                         <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
                                                             <Image src={vis.src} alt={`${pillar.name} visualization ${index + 1}`} layout="fill" objectFit="cover" data-ai-hint={vis.hint} />
+                                                            <Badge className="absolute top-2 right-2">In-Use</Badge>
                                                         </CardContent>
                                                     </Card>
                                                 </div>
@@ -262,7 +264,6 @@ export default function HomePage() {
                 </div>
             </div>
         </section>
-
 
         <section className="py-20 md:py-32">
             <div className="container mx-auto px-4 text-center">
