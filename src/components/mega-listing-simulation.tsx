@@ -180,5 +180,3 @@ export const MegaListingSimulation = () => {
         </div>
     );
 };
-
-    

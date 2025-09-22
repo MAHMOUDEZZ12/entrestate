@@ -1,5 +1,4 @@
 
-
 'use client';
 import Link from 'next/link';
 import { Facebook, Twitter, Linkedin } from 'lucide-react';
@@ -59,7 +58,7 @@ export function LandingFooter() {
           </div>
 
           <div className="col-span-1">
-            <h4 className="text-lg font-semibold font-heading mb-4">Legal &amp; Social</h4>
+            <h4 className="text-lg font-semibold font-heading mb-4">Legal & Social</h4>
             <nav className="flex flex-col space-y-2 mb-6">
               <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</Link>
               <Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</Link>
@@ -83,5 +82,3 @@ export function LandingFooter() {
     </footer>
   );
 }
-
-    

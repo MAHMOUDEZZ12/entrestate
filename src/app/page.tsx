@@ -103,7 +103,7 @@ export default function HomePage() {
 We added a decentralized market library to it. 
 Try our discovery search to see how it works!
                        </p>
-                       <Link href="/discover/search">
+                       <Link href="/products/pro-search-eng-x3">
                            <Button variant="outline" className="mt-6 shadow">Let's Go <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
