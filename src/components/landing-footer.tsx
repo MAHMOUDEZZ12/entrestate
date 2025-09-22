@@ -20,7 +20,7 @@ export function LandingFooter() {
                 The AI-Native Operating System for Real Estate.
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                &copy; {currentYear} Entrestate by mtc. All rights reserved.
+                &copy; {currentYear} Entrestate — A Gemini Partnership.
                 </p>
             </div>
           </div>
