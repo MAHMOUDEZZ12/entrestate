@@ -69,7 +69,7 @@ export default function ListingManagerPage() {
                     title: "Asset Request Sent",
                     description: `The selected project is missing HQ images. An admin request has been sent to source them. Check the Dev Admin log for details.`,
                     duration: 10000,
-                    action: <Link href="/dashboard/dev-admin"><Button size="sm">View Log</Button></Link>
+                    action: <Link href="/dev"><Button size="sm">View Log</Button></Link>
                 });
             } else {
                 setAssetsOk(true);
@@ -115,7 +115,7 @@ export default function ListingManagerPage() {
         toast({
             title: "Portal Submitted for Review",
             description: `Thank you! "${portalName}" has been added to our queue. An admin will review it shortly.`,
-            action: <Link href="/dashboard/dev-admin"><Button size="sm">View Log</Button></Link>
+            action: <Link href="/dev"><Button size="sm">View Log</Button></Link>
         });
         setPortalName('');
         setPortalScreenshot(null);
@@ -171,7 +171,7 @@ export default function ListingManagerPage() {
                                         <AlertTriangle className="h-4 w-4" />
                                         <AlertTitle>Missing Assets</AlertTitle>
                                         <AlertDescription>
-                                            This project is missing required high-quality images. An admin request has been logged. You can check its status on the <Link href="/dashboard/dev-admin" className="underline font-semibold">Dev Admin</Link> page.
+                                            This project is missing required high-quality images. An admin request has been logged. You can check its status on the <Link href="/dev" className="underline font-semibold">Dev Admin</Link> page.
                                         </AlertDescription>
                                     </Alert>
                                 )}

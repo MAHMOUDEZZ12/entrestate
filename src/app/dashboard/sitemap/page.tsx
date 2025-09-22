@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { GitMerge, Globe, LayoutDashboard, Users, BookOpen } from 'lucide-react';
+import { GitMerge, Globe, LayoutDashboard, Users, BookOpen, GanttChartSquare } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
@@ -39,6 +39,9 @@ const structure = {
     ],
     resources: [
         { name: 'Flow Library', path: '/resources/flows' },
+    ],
+    dev: [
+        { name: 'Developer Dashboard', path: '/dev' },
     ]
 };
 
@@ -78,6 +81,7 @@ export default function SitemapPage() {
         <SectionCard title="Dashboard" icon={<LayoutDashboard />} pages={structure.dashboard} />
         <SectionCard title="Community Hub" icon={<Users />} pages={structure.community} />
         <SectionCard title="Resources" icon={<BookOpen />} pages={structure.resources} />
+        <SectionCard title="Developer" icon={<GanttChartSquare />} pages={structure.dev} />
       </main>
     </div>
   );

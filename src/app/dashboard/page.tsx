@@ -93,7 +93,7 @@ export default function DashboardPage() {
         title="Home"
         description="Your workspace. Launch apps, run flows, and manage your real estate universe."
       >
-        <Link href="/dashboard/dev-admin">
+        <Link href="/dev">
           <Button variant="outline">
             <GanttChartSquare className="mr-2 h-4 w-4" />
             Dev Admin
