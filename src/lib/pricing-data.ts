@@ -1,118 +1,86 @@
 
-export const pricingData = {
-  "site": {
-    "brand": "SellerSuite",
-    "domain_primary": "sellersuite.ae",
-    "personal_hub_path": "/me",
-    "currency": "USD",
-    "billing_cycle": "monthly",
-    "notes": "No free tier. Low entry price. AI usage billed via credits & addons."
-  },
-  "pricing_plans": [
-    {
-      "plan_id": "any_app_monthly",
-      "name": "Any App",
-      "price_usd_monthly": 4.60,
-      "price_display": "$4.60 / month",
-      "short_tagline": "Pick one app. Start now.",
-      "description": "Full access to any single SellerSuite app.",
-      "features": [
-        "1 selected app unlocked",
-        "Standard support",
-        "Single user"
-      ],
-      "limits": {
-        "apps_allowed": 1,
-        "copilots_allowed": 0,
-        "credits_included": 0,
-        "users_allowed": 1
-      },
-      "recommended": false,
-      "cta_text": "Start Any App",
-      "payment_provider_price_id": null
-    },
-    {
-      "plan_id": "any_copilot_monthly",
-      "name": "Any CoPilot",
-      "price_usd_monthly": 9.30,
-      "price_display": "$9.30 / month",
-      "short_tagline": "One CoPilot with AI automation.",
-      "description": "AI-powered CoPilot for a vertical (e.g., Listing, Meta).",
-      "features": [
-        "Up to 5 apps bundled",
-        "AI automation & workflows",
-        "Priority support"
-      ],
-      "limits": {
-        "apps_allowed": 5,
-        "copilots_allowed": 1,
-        "credits_included": 10,
-        "users_allowed": 1
-      },
-      "recommended": true,
-      "cta_text": "Activate CoPilot",
-      "payment_provider_price_id": null
-    },
-    {
-      "plan_id": "pro_all_monthly",
-      "name": "PRO ALL",
-      "price_usd_monthly": 91.00,
-      "price_display": "$91.00 / month",
-      "short_tagline": "Unlock everything. All apps. All copilots.",
-      "description": "Full ecosystem with unlimited access, credits, and priority onboarding.",
-      "features": [
-        "Unlimited apps & copilots",
-        "500 credits/month included",
-        "Priority support & training",
-        "Team seats available"
-      ],
-      "limits": {
-        "apps_allowed": "unlimited",
-        "copilots_allowed": "unlimited",
-        "credits_included": 500,
-        "users_allowed": "configurable"
-      },
-      "recommended": false,
-      "cta_text": "Go PRO ALL",
-      "payment_provider_price_id": null
-    }
-  ],
-  "addons": [
-    {
-      "addon_id": "ai_video_presenter",
-      "name": "AI Video Presenter",
-      "price_usd": 4.66,
-      "price_display": "$4.66 / video",
-      "type": "pay_per_use",
-      "description": "Generate professional AI presenter videos with studio-quality voices.",
-      "limits": {
-        "unit": "video",
-        "per_unit_price": 4.66
-      },
-      "cta_text": "Create AI Video"
-    }
-  ],
-  "special_rules": {
-    "assistant_free_rule": {
-      "feature_name": "SellerSuite Assistant",
-      "description": "Free unlock when user activates 5+ apps.",
-      "unlock_condition": {
-        "apps_opened_count": { "min": 5 }
-      },
-      "value": "Free unlimited Assistant usage",
-      "notes": "Acts as engagement reward & upsell path toward PRO ALL."
-    }
-  },
-  "ui_copy": {
-    "pricing_section_title": "Choose your plan",
-    "pricing_section_subtitle": "No free tier. Pick one app, unlock AI CoPilot, or go PRO ALL.",
-    "addon_title": "On-Demand Addons",
-    "special_title": "Unlockable Features"
-  },
-  "firebase_metadata": {
-    "collection": "pricing",
-    "document_id": "plans_v1",
-    "last_updated": "2025-09-21T12:00:00Z",
-    "version": "1.1"
-  }
+import { Sparkles, Building, Bot } from 'lucide-react';
+import React from 'react';
+
+export interface AppData {
+    name: string;
+    description: string;
+    price_monthly: number;
+    category: 'Marketing' | 'Sales' | 'Creative' | 'Intelligence';
 }
+
+export interface PlanData {
+    id: string;
+    name: string;
+    tagline: string;
+    price_monthly: number;
+    popular: boolean;
+    features: string[];
+}
+
+export const pricingData: {
+    apps: AppData[];
+    plans: PlanData[];
+} = {
+    "apps": [
+        { "name": "Insta Ads Designer", "description": "Create perfect ads for Instagram Stories & Feed.", "price_monthly": 15, "category": "Marketing" },
+        { "name": "Reel Ads", "description": "Generate engaging video ads for Instagram Reels.", "price_monthly": 20, "category": "Marketing" },
+        { "name": "UGC Script Writer", "description": "Generate authentic, user-generated content style scripts.", "price_monthly": 10, "category": "Creative" },
+        { "name": "AI YouTube Video Editor", "description": "Edit any video to be YouTube-ready.", "price_monthly": 25, "category": "Creative" },
+        { "name": "Landing Page Builder", "description": "Launch high-converting landing pages in minutes.", "price_monthly": 20, "category": "Web" },
+        { "name": "Automated Rebranding", "description": "Apply your brand identity to any brochure.", "price_monthly": 15, "category": "Creative" },
+        { "name": "Brochure Translator", "description": "Translate brochures to multiple languages in seconds.", "price_monthly": 15, "category": "Creative" },
+        { "name": "Listing Generator", "description": "Craft perfect listings for portals like Property Finder & Bayut.", "price_monthly": 10, "category": "Sales" },
+        { "name": "Deal Analyzer", "description": "Analyze the investment potential of any real estate deal.", "price_monthly": 20, "category": "Intelligence" },
+        { "name": "Market Reports", "description": "Generate PDF reports on market trends, pricing, and sentiment.", "price_monthly": 25, "category": "Intelligence" },
+        { "name": "WhatsApp Manager", "description": "Send personalized broadcasts and drip campaigns.", "price_monthly": 15, "category": "Sales" },
+        { "name": "AI Video Presenter", "description": "Create a lifelike AI presenter for your project pitch.", "price_monthly": 30, "category": "Creative" }
+    ],
+    "plans": [
+        {
+            "id": "seller",
+            "name": "Seller",
+            "tagline": "For the individual agent focused on closing deals.",
+            "price_monthly": 49,
+            "popular": false,
+            "features": [
+                "Generate & manage listings",
+                "Automate outreach via WhatsApp",
+                "Analyze deal profitability",
+                "Create AI video presenters",
+                "Craft landing pages for your listings",
+                "Translate brochures for international clients"
+            ]
+        },
+        {
+            "id": "marketer",
+            "name": "Marketer",
+            "tagline": "For the marketing pro running multi-channel campaigns.",
+            "price_monthly": 79,
+            "popular": true,
+            "features": [
+                "Everything in Seller, plus:",
+                "Full Meta Ads suite (Insta & Reel Ads)",
+                "AI-powered ad campaign generation",
+                "Advanced audience creation tools",
+                "UGC & professional script writing",
+                "Automated YouTube video editing"
+            ]
+        },
+        {
+            "id": "ceo",
+            "name": "CEO",
+            "tagline": "For brokerages and developers managing teams & portfolios.",
+            "price_monthly": 149,
+            "popular": false,
+            "features": [
+                "Everything in Marketer, plus:",
+                "Full Market Intelligence suite",
+                "Automated portal syndication (Property Finder & Bayut)",
+                "Team management & collaboration features",
+                "Centralized brand control",
+                "Priority support & onboarding"
+            ]
+        }
+    ]
+};
