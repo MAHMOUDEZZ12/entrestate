@@ -31,6 +31,7 @@ import {
   School,
   Brain,
   Library,
+  GitMerge,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
@@ -52,6 +53,7 @@ const secondaryNavLinks = [
     { href: '/community/academy', icon: <School className="h-5 w-5" />, label: 'Market Academy' },
     { href: '/resources/flows', icon: <BookOpen className="h-5 w-5" />, label: 'Resources' },
     { href: '/dashboard/system-health', icon: <HeartPulse className="h-5 w-5" />, label: 'System Health' },
+    { href: '/dashboard/sitemap', icon: <GitMerge className="h-5 w-5" />, label: 'Sitemap' },
     { href: '/dashboard/tool/superfreetime', icon: <Brain className="h-5 w-5" />, label: 'Market Memory' },
     { href: '/dashboard/settings', icon: <Settings className="h-5 w-5" />, label: 'Settings' }
 ];
