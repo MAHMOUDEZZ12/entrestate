@@ -3,16 +3,16 @@
 
 import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Instagram, MessageCircle, Bot, DollarSign, ListChecks } from 'lucide-react';
+import { Edit, LayoutTemplate, Video, Sparkles, BrainCircuit, ListChecks } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card } from './ui/card';
 
 const nodeData = [
-  { id: 'trigger', icon: <Instagram className="h-8 w-8" />, label: 'New Lead from Ad', type: 'Trigger' },
-  { id: 'enrich', icon: <Bot className="h-8 w-8" />, label: 'Enrich Lead Profile', type: 'Action' },
-  { id: 'condition', icon: <DollarSign className="h-8 w-8" />, label: 'If Budget > $500k', type: 'Condition' },
-  { id: 'add-to-crm', icon: <ListChecks className="h-8 w-8" />, label: 'Add to Investor CRM', type: 'Action' },
-  { id: 'notify', icon: <MessageCircle className="h-8 w-8" />, label: 'Send WhatsApp Alert', type: 'Action' },
+  { id: 'trigger', icon: <Edit className="h-8 w-8" />, label: 'Edit PDF Brochure', type: 'Trigger' },
+  { id: 'landing-page', icon: <LayoutTemplate className="h-8 w-8" />, label: 'Create Landing Page', type: 'Action' },
+  { id: 'reel-ad', icon: <Video className="h-8 w-8" />, label: 'Design Reel Ad', type: 'Action' },
+  { id: 'launch', icon: <Sparkles className="h-8 w-8" />, label: 'Launch Meta Campaign', type: 'Action' },
+  { id: 'capture', icon: <BrainCircuit className="h-8 w-8" />, label: 'Capture Leads to CRM', type: 'Action' },
 ];
 
 const Node = ({ node }: { node: typeof nodeData[0] }) => (
@@ -45,7 +45,7 @@ const Connector = ({
   className?: string;
 }) => (
   <motion.svg
-    className={cn("absolute", className)}
+    className={cn("absolute z-[-1]", className)}
     width={orientation === 'horizontal' ? "100%" : "2"}
     height={orientation === 'horizontal' ? "2" : "100%"}
     viewBox={orientation === 'horizontal' ? "0 0 100 2" : "0 0 2 100"}
@@ -71,47 +71,41 @@ export const FlowSimulation = () => {
         offset: ['start end', 'end start'],
     });
 
-    const pathLength1 = useTransform(scrollYProgress, [0.2, 0.28], [0, 1]);
-    const pathLength2 = useTransform(scrollYProgress, [0.28, 0.36], [0, 1]);
-    const pathLength3 = useTransform(scrollYProgress, [0.36, 0.44], [0, 1]);
-    const pathLength4 = useTransform(scrollYProgress, [0.44, 0.52], [0, 1]);
-    const pathLength5 = useTransform(scrollYProgress, [0.52, 0.60], [0, 1]);
-    const pathLength6 = useTransform(scrollYProgress, [0.60, 0.68], [0, 1]);
-    const pathLength7 = useTransform(scrollYProgress, [0.68, 0.76], [0, 1]);
+    // Adjust timings for a faster feel
+    const pathLength1 = useTransform(scrollYProgress, [0.25, 0.32], [0, 1]);
+    const pathLength2 = useTransform(scrollYProgress, [0.32, 0.39], [0, 1]);
+    const pathLength3 = useTransform(scrollYProgress, [0.39, 0.46], [0, 1]);
+    const pathLength4 = useTransform(scrollYProgress, [0.46, 0.53], [0, 1]);
 
 
     return (
         <div ref={targetRef} className="relative mt-16 w-full max-w-4xl mx-auto h-[700px]">
-            {/* Step 1 */}
+            {/* Step 1: Trigger */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2"><Node node={nodeData[0]} /></div>
             
             {/* Connector to Step 2 */}
-            <div className="absolute top-[96px] left-1/2 w-px h-20"><Connector orientation="vertical" pathLength={pathLength1} /></div>
-            <div className="absolute top-[176px] left-[calc(25%+1px)] w-1/4 h-px"><Connector orientation="horizontal" pathLength={pathLength2} /></div>
-            <div className="absolute top-[176px] left-1/4 w-px h-20"><Connector orientation="vertical" pathLength={pathLength3} /></div>
+            <div className="absolute top-[96px] left-1/2 w-px h-[60px]"><Connector orientation="vertical" pathLength={pathLength1} /></div>
 
-            {/* Step 2 */}
-            <div className="absolute top-64 left-1/4 -translate-x-1/2"><Node node={nodeData[1]} /></div>
-            
+            {/* Step 2: Create Landing Page */}
+            <div className="absolute top-[156px] left-1/2 -translate-x-1/2"><Node node={nodeData[1]} /></div>
+
             {/* Connector to Step 3 */}
-            <div className="absolute top-[360px] left-1/4 w-px h-20"><Connector orientation="vertical" pathLength={pathLength4} /></div>
-            <div className="absolute top-[440px] left-[calc(25%+1px)] w-1/2 h-px"><Connector orientation="horizontal" pathLength={pathLength5} /></div>
-             <div className="absolute top-[360px] right-1/4 w-px h-20"><Connector orientation="vertical" pathLength={pathLength5} /></div>
+            <div className="absolute top-[252px] left-1/2 w-px h-[60px]"><Connector orientation="vertical" pathLength={pathLength2} /></div>
             
-            {/* Step 3 */}
-            <div className="absolute top-[328px] right-1/4 translate-x-1/2"><Node node={nodeData[2]} /></div>
+            {/* Step 3: Design Reel Ad */}
+            <div className="absolute top-[312px] left-1/2 -translate-x-1/2"><Node node={nodeData[2]} /></div>
             
             {/* Connector to Step 4 */}
-            <div className="absolute top-[440px] right-1/4 w-px h-20"><Connector orientation="vertical" pathLength={pathLength6} /></div>
-            
-            {/* Step 4 */}
-            <div className="absolute top-[520px] right-1/4 translate-x-1/2"><Node node={nodeData[3]} /></div>
-            
+            <div className="absolute top-[408px] left-1/2 w-px h-[60px]"><Connector orientation="vertical" pathLength={pathLength3} /></div>
+
+            {/* Step 4: Launch Meta Campaign */}
+            <div className="absolute top-[468px] left-1/2 -translate-x-1/2"><Node node={nodeData[3]} /></div>
+
             {/* Connector to Step 5 */}
-            <div className="absolute top-[616px] right-1/4 w-px h-20"><Connector orientation="vertical" pathLength={pathLength7} /></div>
+            <div className="absolute top-[564px] left-1/2 w-px h-[60px]"><Connector orientation="vertical" pathLength={pathLength4} /></div>
             
-            {/* Step 5 */}
-            <div className="absolute bottom-0 right-1/4 translate-x-1/2"><Node node={nodeData[4]} /></div>
+            {/* Step 5: Capture Leads */}
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2"><Node node={nodeData[4]} /></div>
         </div>
     );
 };
