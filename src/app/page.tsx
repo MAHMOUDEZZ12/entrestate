@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React from 'react';
@@ -63,8 +64,14 @@ const productPillars = [
                     <CarouselItem>
                         <div className="p-1">
                             <Card>
+                                <CardHeader>
+                                  <div className="flex items-center gap-2 text-sm text-muted-foreground p-2 bg-muted rounded-md">
+                                    <Search className="h-4 w-4" />
+                                    <span>JVC Area expected rental ROI in 2029</span>
+                                  </div>
+                                </CardHeader>
                                 <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
-                                    <Image src="https://picsum.photos/seed/damac-2025-search/800/600" alt="Search results for Damac 2025 projects" layout="fill" objectFit="cover" data-ai-hint="search results page for Damac 2025 projects" />
+                                    <Image src="https://picsum.photos/seed/jvc-2029-roi/800/600" alt="Search results for JVC 2029 ROI" layout="fill" objectFit="cover" data-ai-hint="predictive analytics chart" />
                                     <Badge className="absolute top-2 right-2">In-Use</Badge>
                                 </CardContent>
                             </Card>
@@ -74,7 +81,7 @@ const productPillars = [
                         <div className="p-1">
                             <Card>
                                 <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
-                                    <Image src="https://picsum.photos/seed/search-map/800/600" alt="Map view of search results" layout="fill" objectFit="cover" data-ai-hint="map view" />
+                                    <Image src="https://picsum.photos/seed/search-map/800/600" alt="Map view of search results" layout="fill" objectFit="cover" data-ai-hint="map view real estate" />
                                      <Badge className="absolute top-2 right-2">In-Use</Badge>
                                 </CardContent>
                             </Card>
@@ -93,7 +100,7 @@ const productPillars = [
         description: "The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.",
          visual: (
             <div className="w-full max-w-sm mx-auto p-1">
-                 <Card className="h-[208px] sm:h-[238px] flex flex-col bg-muted/30">
+                 <Card className="h-[280px] sm:h-[300px] flex flex-col bg-muted/30">
                     <CardHeader className="p-3 border-b flex-row items-center justify-between space-y-0">
                         <div className="flex items-center gap-2">
                              <div className="relative">
@@ -107,6 +114,8 @@ const productPillars = [
                     <CardContent className="p-3 flex-1 flex flex-col gap-2 justify-end">
                        <ChatBubble className="bg-card self-start">Hi! I'm looking for a 2BR villa in Dubai Hills.</ChatBubble>
                        <ChatBubble className="bg-primary text-primary-foreground self-end">I have 3 top options for you. Would you like to see the comparison?</ChatBubble>
+                       <ChatBubble className="bg-card self-start">Yes, please. And what's the typical service charge there?</ChatBubble>
+                       <ChatBubble className="bg-primary text-primary-foreground self-end">Generating comparison... Service charges in Dubai Hills average AED 4-6 per sq. ft. annually.</ChatBubble>
                     </CardContent>
                 </Card>
             </div>
@@ -124,7 +133,7 @@ const productPillars = [
                         <div className="p-1">
                             <Card>
                                 <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
-                                    <Image src="https://picsum.photos/seed/listing-grid/800/600" alt="Property listing grid" layout="fill" objectFit="cover" data-ai-hint="property listing grid" />
+                                    <Image src="https://picsum.photos/seed/listing-form/800/600" alt="A real estate listing data form being filled out" layout="fill" objectFit="cover" data-ai-hint="data form UI" />
                                     <Badge className="absolute top-2 right-2">In-Use</Badge>
                                 </CardContent>
                             </Card>
@@ -134,8 +143,18 @@ const productPillars = [
                         <div className="p-1">
                             <Card>
                                 <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
-                                    <Image src="https://picsum.photos/seed/listing-duplicates/800/600" alt="Duplicate detection UI" layout="fill" objectFit="cover" data-ai-hint="duplicate detection UI" />
-                                     <Badge className="absolute top-2 right-2">In-Use</Badge>
+                                    <Image src="https://picsum.photos/seed/listing-preview/800/600" alt="A preview of a property listing" layout="fill" objectFit="cover" data-ai-hint="property listing preview" />
+                                    <Badge className="absolute top-2 right-2">In-Use</Badge>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </CarouselItem>
+                    <CarouselItem>
+                        <div className="p-1">
+                            <Card>
+                                <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
+                                    <Image src="https://picsum.photos/seed/listing-grid-final/800/600" alt="The final listing appearing in a grid of properties" layout="fill" objectFit="cover" data-ai-hint="property grid UI" />
+                                    <Badge className="absolute top-2 right-2">In-Use</Badge>
                                 </CardContent>
                             </Card>
                         </div>
@@ -343,17 +362,19 @@ export default function HomePage() {
         
         <section className="py-20 md:py-32 bg-background">
           <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Ready to Become a Super Agent?</h2>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              Train your assistant, explore the apps, and start closing faster today.
-            </p>
-            <div className="mt-8">
-              <Link href="/signup">
-                <ShinyButton>
-                  Start Your Free Trial <ArrowRight />
-                </ShinyButton>
-              </Link>
-            </div>
+             <div className="max-w-2xl mx-auto">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Get Started with the Future of Real Estate</h2>
+                <p className="mt-4 text-lg text-muted-foreground">
+                    Launch your AI co-pilot, explore the app store, and transform your workflow today. No credit card required to start.
+                </p>
+                <div className="mt-8">
+                  <Link href="/signup">
+                    <ShinyButton>
+                      Start Your Free Trial <ArrowRight />
+                    </ShinyButton>
+                  </Link>
+                </div>
+             </div>
           </div>
         </section>
 
@@ -362,3 +383,4 @@ export default function HomePage() {
     </>
   );
 }
+
