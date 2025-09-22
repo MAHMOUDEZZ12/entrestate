@@ -20,10 +20,6 @@ export const Logo = ({ className }: { className?: string }) => (
                 fill="currentColor"
             />
             <path
-                d="M153.24 0H163.62V78H153.24V0Z"
-                fill="currentColor"
-            />
-            <path
                 d="M211.77 0V10.38H183.15V78H172.77V10.38H144.15V0H211.77Z"
                 fill="currentColor"
             />
