@@ -2,16 +2,16 @@
 'use client';
 
 import React from 'react';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ArrowRight, BrainCircuit, Code, Sparkles, Wand2 } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
-import { Button } from '@/components/ui/button';
-import { ShinyButton } from '@/components/ui/shiny-button';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { PageHeader } from '@/components/ui/page-header';
+import { ArrowRight, BrainCircuit, Code, Sparkles, Wand2 } from 'lucide-react';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const GeminiSignature = () => (
     <div className="text-center mt-24 py-12 border-t border-border/20">
@@ -66,7 +66,7 @@ export default function TechnologyPage() {
                     <div className="p-4 bg-muted rounded-2xl">
                          <Card className="w-full mx-auto overflow-hidden shadow-2xl">
                             <div className="aspect-video bg-background flex items-center justify-center relative">
-                                <Image src="https://picsum.photos/seed/gemini-abstract/800/450" alt="Abstract AI visualization" fill objectFit="cover" data-ai-hint="abstract neural network" />
+                                <Image src="https://picsum.photos/seed/gemini-abstract/800/450" alt="Abstract AI visualization" layout="fill" objectFit="cover" data-ai-hint="abstract neural network" />
                             </div>
                             <div className="p-4 bg-card">
                                 <h3 className="font-bold">Multimodal by Nature</h3>
