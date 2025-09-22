@@ -13,5 +13,10 @@ export const secretCodes = [
         code: 'BRANDBOOST',
         reward: 'A complete branding package including a new logo, color scheme, and 5 social media templates.',
         action: { type: 'generate_full_brand_kit' }
+    },
+    {
+        code: 'LOL',
+        reward: 'You found the meta-joke! Your reward is a virtual high-five and 100 bonus Market IQ points.',
+        action: { type: 'add_market_iq_points', points: 100 }
     }
 ];
