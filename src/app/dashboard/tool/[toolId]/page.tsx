@@ -352,7 +352,7 @@ const ToolPage = () => {
                         </div>
                     </CardContent>
                     <CardFooter>
-                        <Button type="submit" size="lg" disabled={isLoading || (headlineStrategies && !selectedStrategyId)}>
+                        <Button type="submit" size="lg" disabled={isLoading || (toolId === 'landing-pages' && headlineStrategies && !selectedStrategyId)}>
                         {isLoading ? (
                             <>
                             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -361,7 +361,7 @@ const ToolPage = () => {
                         ) : (
                              <>
                             <Sparkles className="mr-2 h-5 w-5" />
-                            {headlineStrategies ? "Generate Landing Page" : tool.cta}
+                            {toolId === 'landing-pages' && headlineStrategies ? "Generate Landing Page" : tool.cta}
                             </>
                         )}
                         </Button>
@@ -386,3 +386,5 @@ const ToolPage = () => {
 export default ToolPage;
 
     
+
+      
