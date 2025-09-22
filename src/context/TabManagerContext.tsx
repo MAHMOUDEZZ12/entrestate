@@ -22,9 +22,9 @@ const TabManagerContext = createContext<TabManagerContextType | undefined>(undef
 const navMap: {[key: string]: string} = {
     '/dashboard': 'Home',
     '/dashboard/marketing': 'Apps',
-    '/dashboard/tool/projects-finder': 'Projects Library',
+    '/dashboard/tool/projects-finder': 'Market Library',
     '/dashboard/brand': 'Brand & Assets',
-    '/dashboard/clients': 'Clients',
+    '/dashboard/clients': 'Client Pages',
     '/dashboard/leads': 'Leads (CRM)',
     '/dashboard/assistant': 'AI Assistant',
     '/dashboard/settings': 'Settings',
@@ -37,7 +37,8 @@ const getLabelForPath = (path: string): string => {
         const tool = tools.find(t => t.id === toolId);
         return tool?.title || 'Tool';
     }
-    return 'Page';
+    const name = path.split('/').pop()?.replace(/-/g, ' ') || 'Page';
+    return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
 
@@ -47,21 +48,25 @@ export const TabProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const pathname = usePathname();
   const router = useRouter();
 
+  // This effect synchronizes the URL with the tab state on initial load and on navigation.
   useEffect(() => {
-    // On initial load, set the first tab
-    if (pathname.startsWith('/dashboard') && openTabs.length === 0) {
-        const initialTab = { href: pathname, label: getLabelForPath(pathname) };
-        setOpenTabs([initialTab]);
-        setActiveTab(initialTab);
+    if (pathname.startsWith('/dashboard')) {
+        const currentTab = openTabs.find(tab => tab.href === pathname);
+        if (!currentTab) {
+            // If the tab doesn't exist, add it.
+            const newTab = { href: pathname, label: getLabelForPath(pathname) };
+            setOpenTabs(prev => {
+                // Avoid adding duplicates if another effect is running
+                if (prev.some(t => t.href === newTab.href)) return prev;
+                return [...prev, newTab]
+            });
+            setActiveTab(newTab);
+        } else {
+            // If it exists, just set it as active.
+            setActiveTab(currentTab);
+        }
     }
-  }, [pathname, openTabs.length]);
-
-  useEffect(() => {
-    const currentTab = openTabs.find(tab => tab.href === pathname);
-    if (currentTab) {
-      setActiveTab(currentTab);
-    }
-  }, [pathname, openTabs]);
+  }, [pathname]); // Rerun whenever the path changes
 
 
   const addTab = useCallback((newTab: Tab) => {
@@ -84,6 +89,10 @@ export const TabProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
     
     setOpenTabs(remainingTabs);
+
+    if(remainingTabs.length === 0) {
+        router.push('/dashboard');
+    }
   }, [openTabs, pathname, router]);
 
   const value = { openTabs, activeTab, addTab, removeTab };

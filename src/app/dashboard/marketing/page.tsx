@@ -73,8 +73,8 @@ export default function MarketingDashboardPage() {
             icon={<LayoutTemplate />}
         />
 
-        <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg py-4 mb-8">
-            <div className="flex justify-center overflow-x-auto pb-4 -mx-4 px-4 no-scrollbar">
+        <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-lg py-4 mb-8 -mx-4 md:-mx-6 lg:-mx-8 px-4 md:px-6 lg:px-8">
+            <div className="flex justify-center overflow-x-auto pb-4 no-scrollbar">
                 <div className="flex gap-2 md:gap-4 flex-nowrap">
                   {filterCategories.map(category => (
                     <Button
