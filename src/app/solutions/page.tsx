@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React from 'react';
@@ -46,7 +45,7 @@ const solutionsData = [
       "Keeping the sales network equipped with the latest assets.",
       "Gauging market sentiment and pricing new launches."
     ],
-    solutionApps: ["Market Reports", "Project Pipeline", "AI Video Presenter", "Landing Page Builder", "Bayut Pilot"]
+    solutionApps: ["Market Reports", "Market Library", "AI Video Presenter", "Landing Page Builder", "Bayut Pilot"]
   }
 ];
 
@@ -86,10 +85,10 @@ export default function SolutionsPage() {
           />
         
         <div className="container mx-auto px-4 py-16 md:py-24 space-y-24">
-          {solutionsData.map((solution) => (
+          {solutionsData.map((solution, index) => (
             <section key={solution.persona} id={solution.persona.toLowerCase().replace(/\s/g, '-')}>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                  <div className="space-y-6">
+                  <div className={cn("space-y-6", index % 2 !== 0 && "lg:order-2")}>
                       <div className="p-4 bg-primary/10 text-primary rounded-2xl w-fit">
                         {solution.icon}
                       </div>
@@ -109,7 +108,7 @@ export default function SolutionsPage() {
                           </Button>
                       </Link>
                   </div>
-                  <div>
+                  <div className={cn(index % 2 !== 0 && "lg:order-1")}>
                       <Card className="bg-card/50 backdrop-blur-lg border-primary/10 shadow-xl shadow-primary/10">
                           <CardHeader>
                               <CardTitle>Your Solution Bundle</CardTitle>
