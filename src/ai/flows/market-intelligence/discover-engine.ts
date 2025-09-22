@@ -1,4 +1,3 @@
-
 'use server';
 
 /**
@@ -46,6 +45,7 @@ const discoverEnginePrompt = ai.definePrompt({
     - Insta Ads Designer (toolId: 'insta-ads-designer'): Designs Instagram ads from a brochure.
     - Market Reports (toolId: 'market-reports'): Generates in-depth PDF reports for a location.
     - Landing Page Builder (toolId: 'landing-pages'): Creates a web page for a property.
+    - AI Video Presenter (toolId: 'ai-video-presenter'): Creates a video of an AI avatar speaking a script.
     - Market Library (toolId: 'projects-finder'): Search for projects in our database.
 
     Available Projects (Examples, use projectId if you recommend one):
@@ -55,7 +55,8 @@ const discoverEnginePrompt = ai.definePrompt({
     **Your Task:**
 
     1.  **Analyze Intent:** Determine what the user is trying to accomplish.
-        - Are they trying to *create* something? Suggest a 'Tool'.
+        - Are they trying to *create* something visual or creative (e.g., "make a video", "design an ad")? Suggest a 'Creative' action and the most appropriate toolId.
+        - Are they trying to use a specific *app* or function? Suggest a 'Tool'.
         - Are they looking for a specific *property*? Suggest a 'Project'.
         - Are they asking about a *location's performance*? Suggest a 'Market' analysis.
     2.  **Generate Results:** Create a list of 1-3 relevant results.
@@ -65,6 +66,7 @@ const discoverEnginePrompt = ai.definePrompt({
     - If query is "create an ad for Emaar Beachfront", suggest the 'insta-ads-designer' tool and mention it can use the project's brochure.
     - If query is "damac hills 2", suggest the 'damac-hills-2' project and maybe the 'market-reports' tool for that area.
     - If query is "prices in Downtown Dubai", suggest a 'Market' analysis for "Downtown Dubai".
+    - If query is "make a video pitch for my new listing", suggest a 'Creative' action with toolId 'ai-video-presenter'.
 
     Now, analyze the user's query and provide your suggested results.
     `,
