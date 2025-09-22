@@ -30,10 +30,10 @@ const DiscoverPage = () => {
                         <Sparkles className="h-12 w-12" />
                     </div>
                     <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-foreground/60">
-                        Discover Your Next Move
+                        The Entrestate Discovery Engine
                     </h1>
                     <p className="text-lg md:text-xl text-foreground/60 max-w-3xl mx-auto">
-                        This is more than a search bar. Ask for a project, a service, or a market trend, and get intelligent, actionable results.
+                        This is more than a search bar. This is our most exclusive product. Ask for a project, a service, or a market trend, and get intelligent, actionable results from across the entire real estate web.
                     </p>
                 </div>
 
