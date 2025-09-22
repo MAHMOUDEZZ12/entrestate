@@ -178,7 +178,7 @@ export default function HomePage() {
                           <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">PRO SEARCH ENG. x3</span>
                        </h3>
                        <p className="text-2xl font-semibold !leading-tight">We turned the untouched search bar into unmatched search engine</p>
-                       <p className="text-lg text-muted-foreground">
+                        <p className="text-lg text-muted-foreground">
                             This model switch the life on you website.<br/>
                             We added a decentralized market libirary to it.<br/>
                             try our discovery search to see how it works!
@@ -222,7 +222,7 @@ export default function HomePage() {
                         <p className="text-2xl font-semibold !leading-tight">From Listings to MEGA PRO Listings</p>
                        <p className="text-lg text-muted-foreground">
                             You don’t need more listings, you need a perfect listing manager<br/>
-                            Listing is a little far byond a good images, It’s a word sensitive<br/>
+                            Listing is a little far byond a good images, It’s a word sensitive <br/>
                             and require not less than a stock market attention<br/>
                             name a project, and click list it this is litterly how it works.
                        </p>
@@ -230,7 +230,11 @@ export default function HomePage() {
                            <Button variant="outline" className="mt-6 shadow">Use it to stop blaming Portals <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
-                   <div>
+                    <div>
+                        <div className="text-left mb-4">
+                            <h4 className="text-lg font-semibold">Project Overview</h4>
+                            <p className="text-sm text-muted-foreground">The AI engine consolidates messy, duplicate listings from multiple portals into one verified, perfect source of truth.</p>
+                        </div>
                         <MegaListingSimulation />
                    </div>
                 </div>
