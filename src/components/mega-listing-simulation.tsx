@@ -9,13 +9,13 @@ import { cn } from '@/lib/utils';
 import { Separator } from './ui/separator';
 
 const rawListings = [
-  { id: 1, source: 'Bayut', title: 'Marina View Apt', price: 'AED 2.5M', agent: 'John D.', status: 'Active' },
-  { id: 2, source: 'P.Finder', title: '2BR Marina', price: 'AED 2,550,000', agent: 'Jane S.', status: 'Active' },
-  { id: 3, source: 'Dubizzle', title: 'Stunning View Apt', price: '2.5M AED', agent: 'Self-listed', status: 'Active' },
-  { id: 4, source: 'Broker Site', title: 'Exclusive Marina 2 Bed', price: 'AED 2.49M', agent: 'Michael B.', status: 'Active' },
-  { id: 5, source: 'P.Finder', title: 'Luxury Apt', price: 'AED 2,500,000', agent: 'Jane S.', status: 'Under Offer' },
-  { id: 6, source: 'Facebook', title: '2BR For Sale Dubai Marina', price: 'Call for price', agent: 'Unknown', status: 'Active' },
-  { id: 7, source: 'Prop.ae', title: 'High Floor 2-Bed', price: 'AED 2.51M', agent: 'Prop.ae Broker', status: 'Active' },
+  { id: 1, source: 'Bayut', title: 'Marina View Apt', price: 'AED 2.5M', agent: 'John D.', status: 'Active', size: '1,318 sqft' },
+  { id: 2, source: 'P.Finder', title: '2BR Marina', price: 'AED 2,550,000', agent: 'Jane S.', status: 'Active', size: '1,320 sqft' },
+  { id: 3, source: 'Dubizzle', title: 'Stunning View Apt', price: '2.5M AED', agent: 'Self-listed', status: 'Active', size: '1,300 sqft' },
+  { id: 4, source: 'Broker Site', title: 'Exclusive Marina 2 Bed', price: 'AED 2.49M', agent: 'Michael B.', status: 'Active', size: '1,318 sqft' },
+  { id: 5, source: 'P.Finder', title: 'Luxury Apt', price: 'AED 2,500,000', agent: 'Jane S.', status: 'Under Offer', size: '1,318 sqft' },
+  { id: 6, source: 'Facebook', title: '2BR For Sale Dubai Marina', price: 'Call for price', agent: 'Unknown', status: 'Active', size: 'N/A' },
+  { id: 7, source: 'Prop.ae', title: 'High Floor 2-Bed', price: 'AED 2.51M', agent: 'Prop.ae Broker', status: 'Active', size: '1,325 sqft' },
 ];
 
 const unifiedListing = {
@@ -90,6 +90,10 @@ export const MegaListingSimulation = () => {
                                              <div className="flex justify-between items-center text-[10px] text-muted-foreground/70 pt-1">
                                                 <span>{listing.agent}</span>
                                                 <span>{listing.status}</span>
+                                            </div>
+                                             <div className="flex justify-between items-center text-[10px] text-muted-foreground/70">
+                                                <span>ID: {listing.id}</span>
+                                                <span>{listing.size}</span>
                                             </div>
                                         </div>
                                     </motion.div>
@@ -176,3 +180,5 @@ export const MegaListingSimulation = () => {
         </div>
     );
 };
+
+    

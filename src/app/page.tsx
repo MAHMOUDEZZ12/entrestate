@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 import { MegaListingSimulation } from '@/components/mega-listing-simulation';
 import { EstChatSimulation } from '@/components/est-chat-simulation';
 import { FlowSimulation } from '@/components/flow-simulation';
+import { ProSearchSimulation } from '@/components/pro-search-simulation';
 
 
 const ChatBubble = ({ children, className }: { children: React.ReactNode, className?: string }) => (
@@ -170,7 +171,7 @@ export default function HomePage() {
                     </p>
                 </div>
                 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                    <div className="space-y-4 text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Telescope className="h-8 w-8" /></div>
                        <h3 className="text-3xl font-bold font-heading">
@@ -187,30 +188,11 @@ try our discovery search to see how it works!
                        </Link>
                    </div>
                    <div>
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Three Engines in One</CardTitle>
-                                <CardDescription>Our search goes beyond keywords, offering layers of discovery for every need.</CardDescription>
-                            </CardHeader>
-                            <CardContent className="space-y-4">
-                                <div>
-                                    <h4 className="font-semibold">Fast Search</h4>
-                                    <p className="text-sm text-muted-foreground">Instant, keyword-driven results for quick lookups.</p>
-                                </div>
-                                <div>
-                                    <h4 className="font-semibold">Smart Search</h4>
-                                    <p className="text-sm text-muted-foreground">AI-powered semantic search that understands intent and context.</p>
-                                </div>
-                                <div>
-                                    <h4 className="font-semibold">Deep Search</h4>
-                                    <p className="text-sm text-muted-foreground">Historical and predictive analytics for true market intelligence.</p>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <ProSearchSimulation />
                    </div>
-                </div>
+                </Card>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                     <div className="space-y-4 text-left md:order-2">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><MessageCircle className="h-8 w-8" /></div>
                         <h3 className="text-3xl font-bold font-heading">
@@ -229,9 +211,9 @@ Use it in social media, Landing pages, company site, or QR code on businesscard.
                    <div className="md:order-1">
                         <EstChatSimulation />
                    </div>
-                </div>
+                </Card>
 
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
+                 <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                     <div className="space-y-4 text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><FileJson className="h-8 w-8" /></div>
                         <h3 className="text-3xl font-bold font-heading">
@@ -251,7 +233,7 @@ Name a project, and click "list it" - this is literally how it works.
                     <div>
                         <MegaListingSimulation />
                     </div>
-                </div>
+                </Card>
             </div>
         </section>
 
@@ -369,3 +351,5 @@ Name a project, and click "list it" - this is literally how it works.
     </>
   );
 }
+
+    
