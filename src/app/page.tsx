@@ -43,9 +43,9 @@ const productPillars = [
         icon: <Telescope className="h-8 w-8" />,
         description: "The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.",
         visualizations: [
-            { src: "https://picsum.photos/seed/search-ui/800/600", hint: "real estate search results page" },
-            { src: "https://picsum.photos/seed/search-map/800/600", hint: "map view with property pins" },
-            { src: "https://picsum.photos/seed/search-analytics/800/600", hint: "data analytics dashboard graph" },
+            { src: "https://picsum.photos/seed/search-results/800/600", hint: "search results" },
+            { src: "https://picsum.photos/seed/search-map/800/600", hint: "map view" },
+            { src: "https://picsum.photos/seed/search-dashboard/800/600", hint: "analytics dashboard" },
         ],
     },
     {
@@ -54,9 +54,9 @@ const productPillars = [
         icon: <MessageCircle className="h-8 w-8" />,
         description: "The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.",
         visualizations: [
-            { src: "https://picsum.photos/seed/chat-widget/800/600", hint: "modern website chat widget" },
-            { src: "https://picsum.photos/seed/chat-ig/800/600", hint: "instagram direct message interface" },
-            { src: "https://picsum.photos/seed/chat-crm/800/600", hint: "crm dashboard with chat logs" },
+            { src: "https://picsum.photos/seed/chat-widget/800/600", hint: "chat widget" },
+            { src: "https://picsum.photos/seed/chat-dm/800/600", hint: "direct message" },
+            { src: "https://picsum.photos/seed/chat-crm/800/600", hint: "CRM dashboard" },
         ],
     },
     {
@@ -65,9 +65,9 @@ const productPillars = [
         icon: <FileJson className="h-8 w-8" />,
         description: "The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.",
         visualizations: [
-            { src: "https://picsum.photos/seed/listing-grid/800/600", hint: "grid of property listings" },
-            { src: "https://picsum.photos/seed/listing-dupe/800/600", hint: "duplicate detection interface" },
-            { src: "https://picsum.photos/seed/listing-archive/800/600", hint: "data archive historical records" },
+            { src: "https://picsum.photos/seed/listing-grid/800/600", hint: "listing grid" },
+            { src: "https://picsum.photos/seed/listing-duplicates/800/600", hint: "duplicate detection" },
+            { src: "https://picsum.photos/seed/listing-archive/800/600", hint: "data archive" },
         ],
     },
 ];
@@ -228,7 +228,7 @@ export default function HomePage() {
                                         ))}
                                     </CarouselContent>
                                     <CarouselPrevious className="left-2" />
-                                    <CarouselNext className="right-2" />
+                                    <CarouselNext className="right-2"/>
                                 </Carousel>
                                <Link href={`/products/${pillar.slug}`} className="mt-4">
                                    <Button variant="outline" className="w-full">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
