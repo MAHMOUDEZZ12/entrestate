@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 import { MegaListingSimulation } from '@/components/mega-listing-simulation';
 import { ProSearchSimulation } from '@/components/pro-search-simulation';
 import { EstChatSimulation } from '@/components/est-chat-simulation';
+import { FlowSimulation } from '@/components/flow-simulation';
 
 
 const ChatBubble = ({ children, className }: { children: React.ReactNode, className?: string }) => (
@@ -213,7 +214,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section id="how-it-works" className="py-20 md:py-32 bg-secondary" ref={workflowRef}>
+        <section id="how-it-works" className="py-20 md:py-32 bg-background" ref={workflowRef}>
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Path to a 10x Workflow</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -259,7 +260,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section className="py-20 md:py-32 bg-background">
+        <section className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">An Operating System for Every Role</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
@@ -304,14 +305,19 @@ export default function HomePage() {
         
         <section className="py-20 md:py-32 text-center bg-gradient-to-t from-background to-primary/5">
             <div className="container mx-auto px-4">
-                <h2 className="text-3xl md:text-5xl font-bold font-heading tracking-tighter">Unlock Your Workflow with AI</h2>
-                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    Connect your apps into powerful, automated workflows that run 24/7. Stop repetitive tasks and start focusing on what matters: closing deals.
-                </p>
-                 <div className="mt-8">
+                <div className="text-center">
+                    <h2 className="text-3xl md:text-5xl font-bold font-heading tracking-tighter">Unlock Your Workflow with AI</h2>
+                    <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                        Connect your apps into powerful, automated workflows that run 24/7. Stop repetitive tasks and start focusing on what matters: closing deals.
+                    </p>
+                </div>
+                
+                <FlowSimulation />
+
+                 <div className="mt-12">
                     <Link href="/resources/flows">
                         <ShinyButton>
-                            Explore Flows <ArrowRight />
+                            Explore the Flow Library <ArrowRight />
                         </ShinyButton>
                     </Link>
                 </div>
@@ -322,3 +328,5 @@ export default function HomePage() {
     </>
   );
 }
+
+    
