@@ -2,43 +2,49 @@
 'use client';
 
 import React from 'react';
-import { Card, CardHeader, CardContent } from './ui/card';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Badge } from './ui/badge';
-import { User } from 'lucide-react';
+import { Bot, User } from 'lucide-react';
 
-const ChatBubble = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+const ChatBubble = ({ children, from, delay }: { children: React.ReactNode, from: 'user' | 'bot', delay: number }) => (
     <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.2 }}
+        initial={{ opacity: 0, y: 20, x: from === 'user' ? 20 : -20 }}
+        whileInView={{ opacity: 1, y: 0, x: 0 }}
+        transition={{ duration: 0.4, delay }}
         viewport={{ once: true, amount: 0.8 }}
-        className={cn("text-sm p-2 px-3 rounded-2xl max-w-[80%]", className)}
+        className={cn(
+            "flex items-end gap-2 max-w-[85%]",
+            from === 'user' ? 'self-end' : 'self-start'
+        )}
     >
-        {children}
+        {from === 'bot' && (
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+                <Bot className="h-5 w-5" />
+            </div>
+        )}
+        <div className={cn(
+            "relative text-sm p-3 rounded-2xl",
+            from === 'user'
+                ? 'bg-primary text-primary-foreground rounded-br-none'
+                : 'bg-muted rounded-bl-none'
+        )}>
+            {children}
+        </div>
+         {from === 'user' && (
+            <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
+                <User className="h-5 w-5" />
+            </div>
+        )}
     </motion.div>
 );
 
 export const EstChatSimulation = () => {
     return (
-        <Card className="w-full max-w-sm mx-auto h-[480px] flex flex-col bg-card/80 backdrop-blur-lg shadow-2xl">
-            <CardHeader className="p-3 border-b flex-row items-center justify-between space-y-0">
-                <div className="flex items-center gap-2">
-                    <div className="relative">
-                        <User className="h-6 w-6 text-muted-foreground" />
-                        <span className="absolute bottom-0 right-0 block h-2 w-2 rounded-full bg-green-500 ring-2 ring-card" />
-                    </div>
-                    <p className="font-semibold text-sm">Live Chat</p>
-                </div>
-                <Badge variant="default">In-Use</Badge>
-            </CardHeader>
-            <CardContent className="p-3 flex-1 flex flex-col gap-2 justify-end">
-                <ChatBubble className="bg-muted self-start">Hi! I'm looking for a 2BR villa in Dubai Hills.</ChatBubble>
-                <ChatBubble className="bg-primary text-primary-foreground self-end">I have 3 top options for you. Would you like to see the comparison?</ChatBubble>
-                <ChatBubble className="bg-muted self-start">Yes, please. And what's the typical service charge there?</ChatBubble>
-                <ChatBubble className="bg-primary text-primary-foreground self-end">Generating comparison... Service charges in Dubai Hills average AED 4-6 per sq. ft. annually.</ChatBubble>
-            </CardContent>
-        </Card>
+        <div className="w-full max-w-md mx-auto h-[480px] flex flex-col gap-4 p-4">
+            <ChatBubble from="user" delay={0.2}>Hi! I'm looking for a 2BR villa in Dubai Hills with a budget of AED 3M.</ChatBubble>
+            <ChatBubble from="bot" delay={0.8}>Of course. I see two premium off-plan options: one by Emaar and one by Sobha. The Sobha option has a slightly better projected ROI based on recent trends.</ChatBubble>
+            <ChatBubble from="user" delay={1.4}>Interesting. Can you generate a comparison PDF for me and my client?</ChatBubble>
+            <ChatBubble from="bot" delay={2.0}>Certainly. I've just generated the comparison document and placed it in your Creative Canvas. I can also send it via WhatsApp. What would you prefer?</ChatBubble>
+        </div>
     );
 };

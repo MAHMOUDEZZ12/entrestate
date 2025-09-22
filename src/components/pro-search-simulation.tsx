@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -79,7 +80,7 @@ const DeepSearchResult = () => (
 
 export const ProSearchSimulation = () => {
     return (
-        <Card className="w-full max-w-md mx-auto overflow-hidden shadow-2xl bg-card/80 backdrop-blur-lg border-primary/20">
+        <Card className="w-full max-w-md mx-auto overflow-hidden shadow-2xl bg-card/80 backdrop-blur-lg border-primary/20 group hover:shadow-primary/20 transition-shadow duration-300">
             <CardHeader className="p-3 border-b flex-col items-start h-auto">
                 <CardTitle className="text-sm">PRO SEARCH ENG. x3</CardTitle>
                 <p className="text-xs text-muted-foreground font-mono">"Damac properties lagons"</p>
@@ -96,7 +97,7 @@ export const ProSearchSimulation = () => {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
-                        className="mt-3 min-h-[220px]"
+                        className="mt-3 min-h-[220px] transition-all duration-300 group-hover:scale-[1.02]"
                     >
                         <TabsContent value="fast" className="m-0"><FastSearchResult /></TabsContent>
                         <TabsContent value="smart" className="m-0"><SmartSearchResult /></TabsContent>
