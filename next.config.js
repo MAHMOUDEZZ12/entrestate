@@ -53,6 +53,15 @@ const nextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/signup',
+        destination: '/login',
+        permanent: true,
+      },
+    ]
+  },
 };
 
 module.exports = nextConfig
