@@ -17,8 +17,8 @@ const DiscoverPage = () => {
         e.preventDefault();
         if (!query.trim()) return;
         
-        // Navigate to the dynamic results page
-        router.push(`/discover/${encodeURIComponent(query.trim())}`);
+        // Navigate to the new search results page
+        router.push(`/discover/search?q=${encodeURIComponent(query.trim())}`);
     };
 
     return (
@@ -45,7 +45,7 @@ const DiscoverPage = () => {
                             <Input 
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                placeholder='e.g., "create an ad for Emaar Beachfront"' 
+                                placeholder='e.g., "Emaar Beachfront price trends"' 
                                 className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-lg"
                             />
                         </form>
