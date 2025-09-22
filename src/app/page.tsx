@@ -4,7 +4,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
-import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit, Building, Users, User, Library, FileJson, Telescope, MessageCircle } from 'lucide-react';
+import { Search, Sparkles, ArrowRight, Bot, Target, ListChecks, BrainCircuit, Building, Users, User, Library, FileJson, Telescope, MessageCircle, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
@@ -14,6 +14,8 @@ import { ShinyButton } from '@/components/ui/shiny-button';
 import Image from 'next/image';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Badge } from '@/components/ui/badge';
+import { motion } from "framer-motion";
+import { cn } from '@/lib/utils';
 
 
 const products = [
@@ -37,58 +39,131 @@ const products = [
     }
 ];
 
+const ChatBubble = ({ children, className }: { children: React.ReactNode, className?: string }) => (
+    <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.3 }}
+        className={cn("text-sm p-2 px-3 rounded-2xl max-w-[80%]", className)}
+    >
+        {children}
+    </motion.div>
+);
+
+
 const productPillars = [
     {
         name: "PRO SEARCH ENG. x3",
         slug: "pro-search-eng-x3",
         icon: <Telescope className="h-8 w-8" />,
         description: "The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.",
-        visualizations: [
-            { src: "https://picsum.photos/seed/damac-2025-search/800/600", hint: "search results page for Damac 2025 projects" },
-            { src: "https://picsum.photos/seed/search-map/800/600", hint: "map view" },
-            { src: "https://picsum.photos/seed/search-dashboard/800/600", hint: "analytics dashboard" },
-        ],
+        visual: (
+            <Carousel className="w-full max-w-xs mx-auto">
+                <CarouselContent>
+                    <CarouselItem>
+                        <div className="p-1">
+                            <Card>
+                                <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
+                                    <Image src="https://picsum.photos/seed/damac-2025-search/800/600" alt="Search results for Damac 2025 projects" layout="fill" objectFit="cover" data-ai-hint="search results page for Damac 2025 projects" />
+                                    <Badge className="absolute top-2 right-2">In-Use</Badge>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </CarouselItem>
+                     <CarouselItem>
+                        <div className="p-1">
+                            <Card>
+                                <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
+                                    <Image src="https://picsum.photos/seed/search-map/800/600" alt="Map view of search results" layout="fill" objectFit="cover" data-ai-hint="map view" />
+                                     <Badge className="absolute top-2 right-2">In-Use</Badge>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </CarouselItem>
+                </CarouselContent>
+                <CarouselPrevious className="left-2" />
+                <CarouselNext className="right-2"/>
+            </Carousel>
+        ),
     },
     {
         name: "ESTCHAT X3",
         slug: "estchat-x3",
         icon: <MessageCircle className="h-8 w-8" />,
         description: "The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.",
-        visualizations: [
-            { src: "https://picsum.photos/seed/chat-widget/800/600", hint: "website chat widget" },
-            { src: "https://picsum.photos/seed/chat-dm/800/600", hint: "instagram direct message" },
-            { src: "https://picsum.photos/seed/chat-crm/800/600", hint: "CRM dashboard with chat" },
-        ],
+         visual: (
+            <div className="w-full max-w-xs mx-auto p-1">
+                 <Card className="h-[208px] flex flex-col">
+                    <CardHeader className="p-3 border-b flex-row items-center justify-between space-y-0">
+                        <div className="flex items-center gap-2">
+                             <div className="relative">
+                                <User className="h-6 w-6 text-muted-foreground" />
+                                <span className="absolute bottom-0 right-0 block h-2 w-2 rounded-full bg-green-500 ring-2 ring-card" />
+                            </div>
+                            <p className="font-semibold text-sm">Live Chat</p>
+                        </div>
+                         <Badge variant="secondary">In-Use</Badge>
+                    </CardHeader>
+                    <CardContent className="p-3 flex-1 flex flex-col gap-2 justify-end">
+                       <ChatBubble className="bg-muted self-start">Hi! I'm looking for a 2BR villa in Dubai Hills.</ChatBubble>
+                       <ChatBubble className="bg-primary text-primary-foreground self-end">I have 3 top options for you. Would you like to see the comparison?</ChatBubble>
+                    </CardContent>
+                </Card>
+            </div>
+        ),
     },
     {
         name: "MEGA LISTING PRO 2",
         slug: "mega-listing-pro-2",
         icon: <FileJson className="h-8 w-8" />,
         description: "The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.",
-        visualizations: [
-            { src: "https://picsum.photos/seed/listing-grid/800/600", hint: "property listing grid" },
-            { src: "https://picsum.photos/seed/listing-duplicates/800/600", hint: "duplicate detection UI" },
-            { src: "https://picsum.photos/seed/listing-archive/800/600", hint: "data archive interface" },
-        ],
+        visual: (
+             <Carousel className="w-full max-w-xs mx-auto">
+                <CarouselContent>
+                    <CarouselItem>
+                        <div className="p-1">
+                            <Card>
+                                <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
+                                    <Image src="https://picsum.photos/seed/listing-grid/800/600" alt="Property listing grid" layout="fill" objectFit="cover" data-ai-hint="property listing grid" />
+                                    <Badge className="absolute top-2 right-2">In-Use</Badge>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </CarouselItem>
+                     <CarouselItem>
+                        <div className="p-1">
+                            <Card>
+                                <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
+                                    <Image src="https://picsum.photos/seed/listing-duplicates/800/600" alt="Duplicate detection UI" layout="fill" objectFit="cover" data-ai-hint="duplicate detection UI" />
+                                     <Badge className="absolute top-2 right-2">In-Use</Badge>
+                                </CardContent>
+                            </Card>
+                        </div>
+                    </CarouselItem>
+                </CarouselContent>
+                <CarouselPrevious className="left-2" />
+                <CarouselNext className="right-2"/>
+            </Carousel>
+        ),
     },
 ];
 
 const workflowSteps = [
     {
         step: 1,
-        title: "Build Your Library",
-        description: "Connect your project data, upload brochures, and set up your brand kit. Your AI uses this as its single source of truth.",
+        title: "Build Your Knowledge Base",
+        description: "Your private library is the brain of the operation. Upload projects, brochures, and brand assets to give your AI a single source of truth.",
         icon: <Library className="h-10 w-10" />,
     },
     {
         step: 2,
-        title: "Command Your AI",
-        description: "Use our suite of apps to run automated workflows, or direct your AI co-pilot with simple, natural language commands.",
+        title: "Deploy Intelligent Apps",
+        description: "Activate specialized AI tools from our App Store. Each one is a 'superpower' designed to automate a specific part of your workflow.",
         icon: <Bot className="h-10 w-10" />,
     },
      {
         step: 3,
-        title: "Dominate Your Market",
+        title: "Execute & Dominate",
         description: "Launch campaigns, generate leads, and close deals faster with AI-powered insights and assets, all perfectly on-brand.",
         icon: <Sparkles className="h-10 w-10" />,
     }
@@ -98,17 +173,20 @@ const personas = [
     {
         title: "The Individual Agent",
         icon: <User className="h-8 w-8" />,
-        description: "Become a 'Super Agent.' Automate your marketing, manage your leads, and access market intelligence that puts you ahead of the competition.",
+        description: "Become a 'Super Agent.' Automate marketing, access market intelligence that puts you ahead, and manage leads with an AI that never sleeps.",
+        benefits: ["Launch Ads in Minutes", "Personalized Client Outreach", "24/7 AI Assistant"]
     },
     {
         title: "The Brokerage",
         icon: <Users className="h-8 w-8" />,
-        description: "Equip your entire team with a unified platform. Ensure brand consistency, streamline workflows, and get a birds-eye view of your agency's performance.",
+        description: "Equip your team with a unified OS. Ensure brand consistency, streamline workflows, and get a bird's-eye view of your agency's performance.",
+        benefits: ["Standardized Workflows", "Team Performance Analytics", "Centralized Brand Control"]
     },
     {
         title: "The Developer",
         icon: <Building className="h-8 w-8" />,
-        description: "Manage your project portfolio, track market trends, and empower your sales network with cutting-edge, AI-generated marketing assets.",
+        description: "Manage your project portfolio from a single dashboard. Track market trends and empower your sales network with cutting-edge marketing assets.",
+        benefits: ["Portfolio Intelligence", "Automated Project Marketing", "Sales Network Enablement"]
     }
 ];
 
@@ -199,24 +277,7 @@ export default function HomePage() {
                                <CardDescription>{pillar.description}</CardDescription>
                            </CardHeader>
                            <CardContent className="flex-grow flex flex-col justify-end">
-                                <Carousel className="w-full max-w-xs mx-auto">
-                                    <CarouselContent>
-                                        {pillar.visualizations.map((vis, index) => (
-                                            <CarouselItem key={index}>
-                                                <div className="p-1">
-                                                    <Card>
-                                                        <CardContent className="flex aspect-video items-center justify-center p-0 relative rounded-lg overflow-hidden">
-                                                            <Image src={vis.src} alt={`${pillar.name} visualization ${index + 1}`} layout="fill" objectFit="cover" data-ai-hint={vis.hint} />
-                                                            <Badge className="absolute top-2 right-2">In-Use</Badge>
-                                                        </CardContent>
-                                                    </Card>
-                                                </div>
-                                            </CarouselItem>
-                                        ))}
-                                    </CarouselContent>
-                                    <CarouselPrevious className="left-2" />
-                                    <CarouselNext className="right-2"/>
-                                </Carousel>
+                                {pillar.visual}
                                <Link href={`/products/${pillar.slug}`} className="mt-4">
                                    <Button variant="outline" className="w-full">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
                                </Link>
@@ -229,9 +290,9 @@ export default function HomePage() {
 
         <section id="how-it-works" className="py-20 md:py-32 bg-muted/50">
             <div className="container mx-auto px-4 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">A Radically Simple Workflow</h2>
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Path to a 10x Workflow</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    Transform hours of manual work into a simple, three-step process powered by AI.
+                    Transform hours of manual work into an intelligent, automated process.
                 </p>
                 <div className="relative mt-16">
                     <div className="absolute top-1/2 left-0 w-full h-0.5 bg-border -translate-y-1/2 hidden md:block" />
@@ -252,36 +313,30 @@ export default function HomePage() {
 
         <section className="py-20 md:py-32">
             <div className="container mx-auto px-4 text-center">
-                 <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-6">
-                    <Bot className="h-10 w-10" />
-                 </div>
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your AI Co-Pilot</h2>
-                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    At the heart of Entrestate is your personal AI assistant. Train it on your data, command it with natural language, and let it run complex workflows for you. It's not an add-on; it's the core of the experience.
-                </p>
-                <div className="mt-8">
-                    <Link href="/dashboard/assistant">
-                        <Button variant="outline" size="lg">Meet Your Co-Pilot <ArrowRight /></Button>
-                    </Link>
-                </div>
-            </div>
-        </section>
-
-        <section className="py-20 md:py-32 bg-muted/50">
-            <div className="container mx-auto px-4 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Built for the Modern Professional</h2>
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tight">An Operating System for Every Role</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
                     Whether you're a solo agent or a large developer, Entrestate is your competitive edge.
                 </p>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
                    {personas.map((persona) => (
-                       <Card key={persona.title} className="text-center bg-card/50">
+                       <Card key={persona.title} className="text-center bg-card/50 flex flex-col">
                            <CardHeader className="items-center">
                                <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit mb-3">{persona.icon}</div>
                                <CardTitle>{persona.title}</CardTitle>
+                                <CardDescription>{persona.description}</CardDescription>
                            </CardHeader>
+                           <CardContent className="flex-grow">
+                                <ul className="text-left space-y-2 text-sm">
+                                    {persona.benefits.map(benefit => (
+                                        <li key={benefit} className="flex items-center gap-2">
+                                            <Check className="h-4 w-4 text-green-500" />
+                                            <span>{benefit}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                           </CardContent>
                            <CardContent>
-                                <p className="text-muted-foreground">{persona.description}</p>
+                                <Button variant="secondary" className="w-full">Learn More</Button>
                            </CardContent>
                        </Card>
                    ))}
@@ -289,22 +344,6 @@ export default function HomePage() {
             </div>
         </section>
         
-        <section className="py-20 md:py-32">
-            <div className="container mx-auto px-4 text-center">
-                 <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-6">
-                    <BrainCircuit className="h-10 w-10" />
-                 </div>
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Entrestate is a prime Google AI partner</h2>
-                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                   As a prime partner, Entrestate leverages the full power of Gemini and Google's Intelligence Labs to build our AI-native operating system. We don't just use AI; we build with it at the deepest level to invent the future of real estate.
-                </p>
-                <div className="mt-8">
-                    <Link href="/technology">
-                        <Button variant="outline" size="lg">Learn About the Technology <ArrowRight /></Button>
-                    </Link>
-                </div>
-            </div>
-        </section>
       </main>
       <LandingFooter />
     </>
