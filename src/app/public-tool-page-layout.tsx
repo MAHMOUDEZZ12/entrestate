@@ -8,17 +8,17 @@ import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard } from 'luci
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Feature } from '@/lib/tools-client';
 import Image from 'next/image';
-import { ShinyButton } from './ui/shiny-button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
+import { ShinyButton } from '@/components/ui/shiny-button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { LandingHeader } from './landing-header';
-import { LandingFooter } from './landing-footer';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { CodeBlock } from '@/components/code-block';
-import { PurchaseDialog } from './ui/purchase-dialog';
+import { PurchaseDialog } from '@/components/ui/purchase-dialog';
 
 
 interface PublicToolPageLayoutProps {
