@@ -16,6 +16,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { googleAI } from '@genkit-ai/googleai';
 
 /**
  * Defines the schema for the input of the video editing flow.
@@ -58,25 +59,6 @@ export async function editYoutubeVideo(input: EditYouTubeVideoInput): Promise<Ed
   return editYoutubeVideoFlow(input);
 }
 
-const editYoutubeVideoPrompt = ai.definePrompt({
-  name: 'editYoutubeVideoPrompt',
-  input: {schema: EditYouTubeVideoInputSchema},
-  output: {schema: EditYouTubeVideoOutputSchema},
-  prompt: `You are an expert video editor. Your task is to edit the provided video to make it engaging and ready for YouTube, based on the user's instructions.
-
-  Source Video: {{media url=sourceVideo}}
-
-  General Editing Instructions:
-  {{{editingInstructions}}}
-
-  {{#if deepEditInstructions}}
-  Deep Edit Instructions (apply these specific changes):
-  {{{deepEditInstructions}}}
-  {{/if}}
-
-  Apply the changes as requested. This may include trimming clips, adding text overlays, applying color correction, adding background music, and arranging sequences. Return the newly edited video as a data URI.
-  `,
-});
 
 const editYoutubeVideoFlow = ai.defineFlow(
   {
@@ -84,15 +66,44 @@ const editYoutubeVideoFlow = ai.defineFlow(
     inputSchema: EditYouTubeVideoInputSchema,
     outputSchema: EditYouTubeVideoOutputSchema,
   },
-  async input => {
-    // In a real implementation, this would call a video editing model.
-    // For now, we'll simulate the process and return the original video.
-    // This allows us to build and test the full UI workflow.
-    console.log("Simulating video edit with instructions:", input.editingInstructions);
-    await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate processing time
+  async (input) => {
+    let { operation } = await ai.generate({
+      model: googleAI.model('veo-2.0-generate-001'),
+      prompt: [
+        { media: { url: input.sourceVideo } },
+        { text: `You are an expert video editor. Edit this source video according to the following instructions to make it ready for YouTube.
+
+        General Instructions: ${input.editingInstructions}
+        
+        Specific Edits: ${input.deepEditInstructions || 'None'}
+        
+        Return the final edited video.` }
+      ],
+      config: {
+        durationSeconds: 8,
+        aspectRatio: '16:9',
+      }
+    });
+
+    if (!operation) throw new Error("Video editing process did not start correctly.");
+
+    while(!operation.done) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        operation = await ai.checkOperation(operation);
+    }
+    
+    if (operation.error) throw new Error(`Video editing failed: ${operation.error.message}`);
+    
+    const video = operation.output?.message?.content.find(p => !!p.media);
+    if (!video || !video.media?.url) throw new Error("Edited video not found in operation result.");
+
+    const fetch = (await import('node-fetch')).default;
+    const videoDownloadResponse = await fetch(`${video.media!.url}&key=${process.env.GEMINI_API_KEY}`);
+    const videoBuffer = await videoDownloadResponse.arrayBuffer();
+    const videoDataUri = `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
     
     return {
-        editedVideoDataUri: input.sourceVideo,
+        editedVideoDataUri: videoDataUri,
     };
   }
 );

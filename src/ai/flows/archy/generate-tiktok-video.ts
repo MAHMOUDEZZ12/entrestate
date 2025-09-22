@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -15,6 +16,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { googleAI } from '@genkit-ai/googleai';
 
 /**
  * Defines the schema for the input of the TikTok video generation flow.
@@ -46,11 +48,7 @@ export type GenerateTikTokVideoOutput = z.infer<typeof GenerateTikTokVideoOutput
  * @returns {Promise<GenerateTikTokVideoOutput>} A promise that resolves with the video data.
  */
 export async function generateTikTokVideo(input: GenerateTikTokVideoInput): Promise<GenerateTikTokVideoOutput> {
-  // Placeholder for real implementation
-  console.log('Generating TikTok video for project:', input.projectId);
-  return Promise.resolve({
-    tiktokVideoDataUri: 'data:video/mp4;base64,',
-  });
+  return generateTikTokVideoFlow(input);
 }
 
 const generateTikTokVideoFlow = ai.defineFlow(
@@ -60,6 +58,42 @@ const generateTikTokVideoFlow = ai.defineFlow(
     outputSchema: GenerateTikTokVideoOutputSchema,
   },
   async (input) => {
-    return generateTikTokVideo(input);
+     let { operation } = await ai.generate({
+      model: googleAI.model('veo-2.0-generate-001'),
+      prompt: `Create a TikTok-style video for a real estate project.
+      
+      Project: ${input.projectId}
+      Audio Vibe: ${input.sound}
+      Text Overlays (one per scene):
+      ${input.textOverlays}
+
+      The video should use fast cuts, punchy text animations that appear on screen with the beat, and have a modern, authentic feel. The video must be vertical (9:16) and no longer than 20 seconds.
+      `,
+      config: {
+        durationSeconds: 8,
+        aspectRatio: '9:16',
+      }
+    });
+
+    if (!operation) throw new Error("Video generation did not return an operation.");
+
+    while(!operation.done) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        operation = await ai.checkOperation(operation);
+    }
+    
+    if (operation.error) throw new Error(`Video generation failed: ${operation.error.message}`);
+    
+    const video = operation.output?.message?.content.find(p => !!p.media);
+    if (!video || !video.media?.url) throw new Error("Generated video not found in operation result.");
+
+    const fetch = (await import('node-fetch')).default;
+    const videoDownloadResponse = await fetch(`${video.media!.url}&key=${process.env.GEMINI_API_KEY}`);
+    const videoBuffer = await videoDownloadResponse.arrayBuffer();
+    const videoDataUri = `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+
+    return {
+      tiktokVideoDataUri: videoDataUri,
+    };
   }
 );

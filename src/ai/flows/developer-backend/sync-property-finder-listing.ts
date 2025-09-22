@@ -13,6 +13,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { Builder } from 'xml2js';
+import fetch from 'node-fetch';
 
 /**
  * Zod schema for a single image URL.
@@ -66,6 +67,8 @@ const syncPropertyFinderListingFlow = ai.defineFlow(
   },
   async (input) => {
     const apiKey = process.env.PROPERTY_FINDER_API_KEY;
+    const apiEndpoint = 'https://www.propertyfinder.ae/en/api/v2/broker/upload'; // Placeholder endpoint, replace with real one
+
     if (!apiKey) {
       throw new Error("Property Finder API key is not configured in environment variables.");
     }
@@ -92,26 +95,33 @@ const syncPropertyFinderListingFlow = ai.defineFlow(
     const builder = new Builder({ rootName: 'list' });
     const xml = builder.buildObject({ property: [listingObject.property] }); // Wrap in property array for correct list format
 
-    // Make the API call to Property Finder
     try {
-        // This is a placeholder for the actual fetch call.
-        // The Property Finder API endpoint and exact fetch implementation
-        // would be required for a live integration.
-      console.log('--- XML Payload to be sent to Property Finder ---');
-      console.log(xml);
-      console.log('--------------------------------------------------');
+        const response = await fetch(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml',
+                'Authorization': `Bearer ${apiKey}`,
+            },
+            body: xml,
+        });
 
-      // Fake a successful response for demonstration purposes
-      const fakeApiResponse = {
-        status: 'success',
-        message: `Listing ${input.listingReferenceNo} has been successfully updated.`,
-        reference_no: input.listingReferenceNo,
-      };
+        const responseText = await response.text();
 
+        if (!response.ok) {
+            // Attempt to parse XML error response, but fall back to text
+            try {
+                const { parseStringPromise } = await import('xml2js');
+                const errorResult = await parseStringPromise(responseText);
+                throw new Error(errorResult?.response?.message || `Property Finder API Error: ${response.statusText}`);
+            } catch(e) {
+                 throw new Error(responseText || `Property Finder API Error: ${response.statusText}`);
+            }
+        }
+        
       return {
-        success: fakeApiResponse.status === 'success',
-        message: fakeApiResponse.message,
-        referenceNumber: fakeApiResponse.reference_no,
+        success: true,
+        message: `Listing ${input.listingReferenceNo} has been successfully updated.`,
+        referenceNumber: input.listingReferenceNo,
       };
 
     } catch (error: any) {

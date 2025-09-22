@@ -60,7 +60,7 @@ const syncBayutListingFlow = ai.defineFlow(
   },
   async (input) => {
     const apiKey = process.env.BAYUT_API_KEY;
-    const apiEndpoint = 'https://api.bayut.com/v1/properties'; // Placeholder endpoint
+    const apiEndpoint = 'https://api.bayut.com/v1/properties'; // Placeholder endpoint, replace with real one
 
     if (!apiKey) {
       throw new Error("Bayut API key is not configured in environment variables.");
@@ -82,35 +82,25 @@ const syncBayutListingFlow = ai.defineFlow(
 
     // Make the API call to Bayut
     try {
-        // This is a placeholder for the actual fetch call.
-        // const response = await fetch(apiEndpoint, {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         'Authorization': `Bearer ${apiKey}`,
-        //     },
-        //     body: JSON.stringify(listingPayload),
-        // });
-        // const responseData = await response.json();
-        // if (!response.ok) {
-        //     throw new Error(responseData.message || 'Bayut API Error');
-        // }
+        const response = await fetch(apiEndpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`,
+            },
+            body: JSON.stringify(listingPayload),
+        });
 
-      console.log('--- JSON Payload to be sent to Bayut ---');
-      console.log(JSON.stringify(listingPayload, null, 2));
-      console.log('-------------------------------------------');
+        const responseData = await response.json() as any;
 
-      // Fake a successful response for demonstration purposes
-      const fakeApiResponse = {
-        status: 200,
-        message: `Listing ${input.listingReferenceNo} has been successfully created/updated on Bayut.`,
-        data: { reference: input.listingReferenceNo }
-      };
+        if (!response.ok) {
+            throw new Error(responseData.message || `Bayut API Error: ${response.statusText}`);
+        }
 
       return {
-        success: fakeApiResponse.status === 200,
-        message: fakeApiResponse.message,
-        referenceNumber: fakeApiResponse.data.reference,
+        success: response.ok,
+        message: responseData.message || `Listing ${input.listingReferenceNo} has been successfully created/updated on Bayut.`,
+        referenceNumber: responseData.data?.reference || input.listingReferenceNo,
       };
 
     } catch (error: any) {

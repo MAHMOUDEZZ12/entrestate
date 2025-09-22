@@ -16,12 +16,13 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { googleAI } from '@genkit-ai/googleai';
 
 /**
  * Defines the schema for the input of the reel generation flow.
  */
 export const GenerateReelInputSchema = z.object({
-  projectId: z.string().describe('The ID of the project to use for assets.'),
+  projectId: z.string().describe('The ID of the project to use for assets. In a real app, you would use this to fetch images.'),
   sellingPoints: z.string().describe('Key selling points for text overlays, separated by newlines.'),
   vibe: z.string().describe('The desired vibe for the reel, influencing music and editing style.'),
 });
@@ -47,11 +48,7 @@ export type GenerateReelOutput = z.infer<typeof GenerateReelOutputSchema>;
  * @returns {Promise<GenerateReelOutput>} A promise that resolves with the generated reel data.
  */
 export async function generateReel(input: GenerateReelInput): Promise<GenerateReelOutput> {
-  // Placeholder for real implementation
-  console.log('Generating reel for project:', input.projectId);
-  return Promise.resolve({
-    reelVideoDataUri: 'data:video/mp4;base64,',
-  });
+  return generateReelFlow(input);
 }
 
 
@@ -62,7 +59,41 @@ const generateReelFlow = ai.defineFlow(
     outputSchema: GenerateReelOutputSchema,
   },
   async (input) => {
-    return generateReel(input);
+    
+    let { operation } = await ai.generate({
+      model: googleAI.model('veo-2.0-generate-001'),
+      prompt: `Create a modern, fast-paced Instagram Reel for a real estate project.
+      
+      Vibe: ${input.vibe}
+      Key Selling Points (as text overlays): ${input.sellingPoints}
+
+      Use quick cuts, dynamic transitions, and engaging text animations. The video should be vertical (9:16) and around 15-30 seconds long.
+      `,
+      config: {
+        durationSeconds: 8,
+        aspectRatio: '9:16',
+      }
+    });
+
+    if (!operation) throw new Error("Video generation did not return an operation.");
+
+    while(!operation.done) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        operation = await ai.checkOperation(operation);
+    }
+    
+    if (operation.error) throw new Error(`Video generation failed: ${operation.error.message}`);
+    
+    const video = operation.output?.message?.content.find(p => !!p.media);
+    if (!video || !video.media?.url) throw new Error("Generated video not found in operation result.");
+
+    const fetch = (await import('node-fetch')).default;
+    const videoDownloadResponse = await fetch(`${video.media!.url}&key=${process.env.GEMINI_API_KEY}`);
+    const videoBuffer = await videoDownloadResponse.arrayBuffer();
+    const videoDataUri = `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+    
+    return {
+      reelVideoDataUri: videoDataUri,
+    };
   }
 );
-

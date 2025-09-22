@@ -16,7 +16,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import wav from 'wav';
+import { googleAI } from '@genkit-ai/googleai';
 
 /**
  * Defines the schema for the input of the brochure rebranding flow.
@@ -152,14 +152,13 @@ const generateLogoFlow = ai.defineFlow(
       ),
     }),
   },
-  async input => {
-    console.log(`Simulating logo generation for: ${input.companyName}`);
-    // In a real implementation, you would use a text-to-image model.
-    // For now, we return a placeholder data URI to demonstrate the feature.
-    const response = await fetch(`https://placehold.co/400x200/png?text=${encodeURIComponent(input.companyName)}`);
-    const buffer = await response.arrayBuffer();
-    const b64 = Buffer.from(buffer).toString('base64');
-    return { logoDataUri: `data:image/png;base64,${b64}` };
+  async (input) => {
+    const { media } = await ai.generate({
+      model: googleAI.model('imagen-4.0-fast-generate-001'),
+      prompt: `Create a clean, professional, minimalist logo for a real estate company named "${input.companyName}". Use a color palette of ${input.colors}. The logo should be on a transparent background.`
+    });
+    if (!media?.url) throw new Error("Failed to generate character image.");
+    return { logoDataUri: media.url };
   }
 );
 
@@ -170,26 +169,31 @@ const rebrandBrochureFlow = ai.defineFlow(
     inputSchema: RebrandBrochureInputSchema,
     outputSchema: RebrandBrochureOutputSchema,
   },
-  async input => {
-    // This flow is now simplified. In a real scenario, it would contain
-    // the logic to interpret instructions and apply them to the brochure.
-    // For now, it acts as a placeholder that returns the original brochure.
-    console.log("Simulating brochure rebranding with instructions:", input.deepEditInstructions);
-    
-    let generatedLogoUri: string | undefined;
-    if (!input.companyLogoDataUri && input.deepEditInstructions?.includes("logo")) {
+  async (input) => {
+    let logoUri = input.companyLogoDataUri;
+
+    // Generate a logo if one wasn't provided but is mentioned in the instructions.
+    if (!logoUri && input.deepEditInstructions?.toLowerCase().includes("logo")) {
       const logoResult = await generateLogoFlow({
-          companyName: input.companyName,
-          colors: input.colors,
+        companyName: input.companyName,
+        colors: input.colors,
       });
-      generatedLogoUri = logoResult.logoDataUri;
+      logoUri = logoResult.logoDataUri;
     }
 
-    // Simulate returning the rebranded brochure
-    // In a real case, you'd use a model to apply changes.
+    const { output } = await rebrandBrochurePrompt({
+        ...input,
+        companyLogoDataUri: logoUri, // Pass the potentially new logo URI to the prompt
+    });
+
+    if (!output) {
+      throw new Error("Failed to generate rebranded brochure.");
+    }
+    
+    // Ensure the generated logo URI is included in the final output if it was created.
     return {
-      rebrandedBrochureDataUri: input.brochureDataUri,
-      logoDataUri: generatedLogoUri,
+      rebrandedBrochureDataUri: output.rebrandedBrochureDataUri,
+      logoDataUri: logoUri,
     };
   }
 );

@@ -108,6 +108,7 @@ const aiBrandCreatorPrompt = ai.definePrompt({
   name: 'aiBrandCreatorPrompt',
   input: {schema: AIBrandCreatorInputSchema},
   output: {schema: AIBrandCreatorOutputSchema},
+  model: 'gemini-1.5-pro-preview',
   prompt: `You are an expert system administrator for the Super Seller Suite. Your task is to configure the user's workspace based on their command and the documents they provide.
 
   User Command: "{{{command}}}"

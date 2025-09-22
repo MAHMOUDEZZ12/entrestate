@@ -39,6 +39,26 @@ export const GenerateMultiOfferOutputSchema = z.object({
 });
 export type GenerateMultiOfferOutput = z.infer<typeof GenerateMultiOfferOutputSchema>;
 
+const generateMultiOfferPrompt = ai.definePrompt({
+    name: 'generateMultiOfferPrompt',
+    input: { schema: GenerateMultiOfferInputSchema },
+    output: { schema: GenerateMultiOfferOutputSchema },
+    model: 'gemini-1.5-pro-preview',
+    prompt: `You are a real estate analyst creating a comparison document.
+    Generate a professional, clean, side-by-side comparison PDF document based on the following information.
+    The PDF should have a title, a brief summary for the client, and a table comparing the properties based on the specified terms.
+
+    Client Info: {{{clientInfo}}}
+    Properties:
+    {{{properties}}}
+    
+    Terms to Compare:
+    {{{terms}}}
+
+    Return the final document as a PDF data URI.
+    `
+});
+
 
 /**
  * An AI flow that generates a multi-offer comparison document.
@@ -47,11 +67,7 @@ export type GenerateMultiOfferOutput = z.infer<typeof GenerateMultiOfferOutputSc
  * @returns {Promise<GenerateMultiOfferOutput>} A promise that resolves with the document data.
  */
 export async function generateMultiOffer(input: GenerateMultiOfferInput): Promise<GenerateMultiOfferOutput> {
-  // Placeholder for real implementation
-  console.log(`Generating offer package for client: ${input.clientInfo}`);
-  return Promise.resolve({
-    offerPackageDataUri: 'data:application/pdf;base64,',
-  });
+  return generateMultiOfferFlow(input);
 }
 
 const generateMultiOfferFlow = ai.defineFlow(
@@ -61,6 +77,10 @@ const generateMultiOfferFlow = ai.defineFlow(
     outputSchema: GenerateMultiOfferOutputSchema,
   },
   async (input) => {
-    return generateMultiOffer(input);
+    const { output } = await generateMultiOfferPrompt(input);
+    if (!output) {
+      throw new Error("Failed to generate multi-offer document.");
+    }
+    return output;
   }
 );

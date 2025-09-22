@@ -16,6 +16,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { googleAI } from '@genkit-ai/googleai';
 
 /**
  * Defines the schema for the input of the story generation flow.
@@ -46,12 +47,7 @@ export type GenerateStoryOutput = z.infer<typeof GenerateStoryOutputSchema>;
  * @returns {Promise<GenerateStoryOutput>} A promise that resolves with the generated story video data.
  */
 export async function generateStory(input: GenerateStoryInput): Promise<GenerateStoryOutput> {
-  // This is a placeholder. In a real implementation, we would use the
-  // projectId to fetch images and then pass them to a video generation model.
-  console.log('Generating story for project:', input.projectId);
-  return Promise.resolve({
-    storyVideoDataUri: 'data:video/mp4;base64,', // Placeholder data URI
-  });
+  return generateStoryFlow(input);
 }
 
 const generateStoryFlow = ai.defineFlow(
@@ -61,7 +57,41 @@ const generateStoryFlow = ai.defineFlow(
     outputSchema: GenerateStoryOutputSchema,
   },
   async input => {
-    // Placeholder logic. A real implementation would involve more steps.
-    return generateStory(input);
+    let { operation } = await ai.generate({
+      model: googleAI.model('veo-2.0-generate-001'),
+      prompt: `Create a short, animated social media story for a real estate project.
+      
+      Project: ${input.projectId}
+      Vibe: ${input.vibe}
+      Final Call to Action: "${input.callToAction}"
+
+      Animate a sequence of 3-5 images with modern transitions and text overlays. The final frame should feature the call to action prominently. The video should be vertical (9:16) and about 15 seconds long.
+      `,
+      config: {
+        durationSeconds: 8,
+        aspectRatio: '9:16',
+      }
+    });
+
+    if (!operation) throw new Error("Video generation did not return an operation.");
+
+    while(!operation.done) {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        operation = await ai.checkOperation(operation);
+    }
+    
+    if (operation.error) throw new Error(`Video generation failed: ${operation.error.message}`);
+    
+    const video = operation.output?.message?.content.find(p => !!p.media);
+    if (!video || !video.media?.url) throw new Error("Generated video not found in operation result.");
+
+    const fetch = (await import('node-fetch')).default;
+    const videoDownloadResponse = await fetch(`${video.media!.url}&key=${process.env.GEMINI_API_KEY}`);
+    const videoBuffer = await videoDownloadResponse.arrayBuffer();
+    const videoDataUri = `data:video/mp4;base64,${Buffer.from(videoBuffer).toString('base64')}`;
+
+    return {
+      storyVideoDataUri: videoDataUri,
+    };
   }
 );

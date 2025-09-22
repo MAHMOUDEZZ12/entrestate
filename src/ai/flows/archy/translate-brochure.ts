@@ -84,7 +84,7 @@ const translateBrochurePrompt = ai.definePrompt({
   1.  Translate all text content accurately into the target language.
   2.  Maintain the original font styles, sizes, and colors.
   3.  Keep all images and logos in their original positions.
-  4.  Ensure the layout of the translated text flows correctly within the existing design.
+  4.  Ensure the layout of the translated text flows correctly within the existing design, adjusting font sizes slightly if necessary to fit the space.
   
   Return the fully translated document as a new PDF data URI.
   `,
