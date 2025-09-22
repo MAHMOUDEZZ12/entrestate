@@ -133,6 +133,22 @@ export default function SettingsPage() {
                     ))}
                 </RadioGroup>
               </div>
+              <div className="grid md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                      <Label htmlFor="primaryColor">Primary Color</Label>
+                      <div className="relative">
+                          <Input id="primaryColor" defaultValue="#1a8a8a" className="pl-12" />
+                          <input type="color" defaultValue="#1a8a8a" className="absolute left-2 top-1/2 -translate-y-1/2 h-7 w-8 cursor-pointer rounded-sm border-none bg-transparent p-0" />
+                      </div>
+                  </div>
+                  <div className="space-y-2">
+                      <Label htmlFor="accentColor">Accent Color</Label>
+                      <div className="relative">
+                          <Input id="accentColor" defaultValue="#f58025" className="pl-12" />
+                           <input type="color" defaultValue="#f58025" className="absolute left-2 top-1/2 -translate-y-1/2 h-7 w-8 cursor-pointer rounded-sm border-none bg-transparent p-0" />
+                      </div>
+                  </div>
+              </div>
                <div className="space-y-2">
                 <Label htmlFor="font-size">Font Size</Label>
                 <Select defaultValue="100">
@@ -318,3 +334,5 @@ export default function SettingsPage() {
     </main>
   );
 }
+
+    

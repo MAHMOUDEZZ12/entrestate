@@ -233,12 +233,22 @@ export default function BrandPage() {
                     <div className="grid md:grid-cols-2 gap-4">
                         <div className="space-y-2">
                             <Label htmlFor="primaryColor">Primary Color</Label>
-                            <Controller name="primaryColor" control={control} render={({ field }) => <Input id="primaryColor" {...field} />} />
+                            <Controller name="primaryColor" control={control} render={({ field }) => (
+                               <div className="relative">
+                                    <Input id="primaryColor" {...field} className="pl-12" />
+                                    <input type="color" value={field.value} onChange={field.onChange} className="absolute left-2 top-1/2 -translate-y-1/2 h-7 w-8 cursor-pointer rounded-sm border-none bg-transparent p-0" />
+                               </div>
+                            )} />
                             {errors.primaryColor && <p className="text-destructive text-sm">{errors.primaryColor.message}</p>}
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="secondaryColor">Accent Color</Label>
-                            <Controller name="secondaryColor" control={control} render={({ field }) => <Input id="secondaryColor" {...field} />} />
+                            <Controller name="secondaryColor" control={control} render={({ field }) => (
+                                <div className="relative">
+                                    <Input id="secondaryColor" {...field} className="pl-12" />
+                                     <input type="color" value={field.value} onChange={field.onChange} className="absolute left-2 top-1/2 -translate-y-1/2 h-7 w-8 cursor-pointer rounded-sm border-none bg-transparent p-0" />
+                                </div>
+                            )} />
                              {errors.secondaryColor && <p className="text-destructive text-sm">{errors.secondaryColor.message}</p>}
                         </div>
                     </div>
@@ -302,5 +312,7 @@ export default function BrandPage() {
     </main>
   );
 }
+
+    
 
     
