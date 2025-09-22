@@ -125,6 +125,14 @@ export default function HomePage() {
   const y1 = useTransform(scrollYProgress, [0.2, 0.6], ["0%", "-10%"]);
   const y2 = useTransform(scrollYProgress, [0.2, 0.8], ["0%", "10%"]);
   const y3 = useTransform(scrollYProgress, [0.2, 0.9], ["0%", "-15%"]);
+  
+  const flowSectionRef = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress: flowSectionScrollY } = useScroll({
+      target: flowSectionRef,
+      offset: ["start end", "end start"]
+  });
+  const connectorPathLength = useTransform(flowSectionScrollY, [0.6, 0.8], [0, 1]);
+
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -312,7 +320,7 @@ Name a project, and click "list it" - this is literally how it works.
             </div>
         </section>
         
-        <section className="py-20 md:py-32 text-center bg-gradient-to-t from-background to-primary/5">
+        <section ref={flowSectionRef} className="py-20 md:py-32 text-center bg-gradient-to-t from-background to-primary/5">
             <div className="container mx-auto px-4">
                 <div className="text-center">
                     <h2 className="text-3xl md:text-5xl font-bold font-heading tracking-tighter">Unlock Creative Click-to-Action Workflows</h2>
@@ -323,39 +331,49 @@ Name a project, and click "list it" - this is literally how it works.
                 
                 <FlowSimulation />
 
-                 <div className="mt-12">
+                 <div className="relative mt-8">
+                     <motion.div
+                        className="absolute bottom-full left-1/2 -translate-x-1/2 h-16 w-px bg-gradient-to-b from-primary/0 via-primary/50 to-primary/0"
+                        style={{ pathLength: connectorPathLength }}
+                    >
+                         <motion.div className="h-full w-full bg-gradient-to-b from-transparent via-primary to-transparent" style={{scaleY: connectorPathLength}} />
+                    </motion.div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+                        {flowLibraryExamples.map(flow => {
+                            const flowApps = flow.apps.map(appName => tools.find(t => t.title === appName)).filter(Boolean);
+                            return (
+                                <Card key={flow.title} className="text-left bg-card/80 backdrop-blur-lg border border-border/20 h-full flex flex-col hover:border-primary/50 hover:-translate-y-1 transition-all duration-300">
+                                    <CardHeader>
+                                        <CardTitle className="text-lg">{flow.title}</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="flex-grow">
+                                        <p className="text-sm text-muted-foreground">{flow.description}</p>
+                                    </CardContent>
+                                    <CardFooter>
+                                        <div className="flex items-center gap-2">
+                                            {flowApps.map((app, index) => app && (
+                                                <React.Fragment key={app.id}>
+                                                    <div className="p-2 rounded-full bg-muted">
+                                                        {React.cloneElement(app.icon, { className: 'h-4 w-4 text-muted-foreground' })}
+                                                    </div>
+                                                    {index < flowApps.length - 1 && <Plus className="h-4 w-4 text-muted-foreground" />}
+                                                </React.Fragment>
+                                            ))}
+                                        </div>
+                                    </CardFooter>
+                                </Card>
+                            )
+                        })}
+                    </div>
+                </div>
+
+                <div className="mt-16">
                     <Link href="/resources/flows">
                         <ShinyButton>
                             Explore the Flow Library <ArrowRight />
                         </ShinyButton>
                     </Link>
-                </div>
-                 <div className="mt-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-                    {flowLibraryExamples.map(flow => {
-                        const flowApps = flow.apps.map(appName => tools.find(t => t.title === appName)).filter(Boolean);
-                        return (
-                            <Card key={flow.title} className="text-left bg-card/80 backdrop-blur-lg border border-border/20 h-full flex flex-col">
-                                <CardHeader>
-                                    <CardTitle className="text-lg">{flow.title}</CardTitle>
-                                </CardHeader>
-                                <CardContent className="flex-grow">
-                                    <p className="text-sm text-muted-foreground">{flow.description}</p>
-                                </CardContent>
-                                <CardFooter>
-                                    <div className="flex items-center gap-2">
-                                        {flowApps.map((app, index) => app && (
-                                            <React.Fragment key={app.id}>
-                                                 <div className="p-2 rounded-full text-white" style={{backgroundColor: app.color}}>
-                                                    {React.cloneElement(app.icon, { className: 'h-4 w-4' })}
-                                                </div>
-                                                {index < flowApps.length - 1 && <Plus className="h-4 w-4 text-muted-foreground" />}
-                                            </React.Fragment>
-                                        ))}
-                                    </div>
-                                </CardFooter>
-                            </Card>
-                        )
-                    })}
                 </div>
             </div>
         </section>
