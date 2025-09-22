@@ -3,65 +3,55 @@
 
 import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Library, Bot, Sparkles, Workflow } from 'lucide-react';
+import { Library, Bot, Sparkles } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card } from './ui/card';
-import { tools } from '@/lib/tools-client';
 
-const flowSteps = [
+const workflowSteps = [
     {
-        id: 'edit-pdf',
         step: "01",
-        title: "Edit a Brochure",
-        description: "Start by making a quick change to an existing project brochure.",
+        title: "Build Your Knowledge Base",
+        description: "Your private library is the brain of the operation. Upload projects, brochures, and brand assets to give your AI a single source of truth.",
+        icon: <Library className="h-8 w-8" />,
+        color: "hsl(var(--primary))"
     },
     {
-        id: 'landing-pages',
         step: "02",
-        title: "Generate a Landing Page",
-        description: "Instantly create a beautiful, high-converting landing page from the brochure.",
+        title: "Deploy Intelligent Apps",
+        description: "Activate specialized AI tools from our App Store. Each one is a 'superpower' designed to automate a specific part of your workflow.",
+        icon: <Bot className="h-8 w-8" />,
+        color: "hsl(var(--primary))"
     },
-    {
-        id: 'reel-ads',
+     {
         step: "03",
-        title: "Design a Reel Ad",
-        description: "Generate a captivating video ad to drive traffic to your new page.",
-    },
-    {
-        id: 'meta-auto-pilot',
-        step: "04",
-        title: "Launch a Campaign",
-        description: "The Meta Pilot connects the ad to the landing page and launches the campaign.",
-    },
-    {
-        id: 'crm-assistant',
-        step: "05",
-        title: "Capture Leads",
-        description: "Finally, all incoming leads are automatically captured and organized in your CRM.",
+        title: "Execute & Dominate",
+        description: "Launch campaigns, generate leads, and close deals faster with AI-powered insights and assets, all perfectly on-brand.",
+        icon: <Sparkles className="h-8 w-8" />,
+        color: "hsl(var(--primary))"
     }
-].map(step => {
-    const tool = tools.find(t => t.id === step.id);
-    return {
-        ...step,
-        icon: tool?.icon || <Workflow className="h-8 w-8" />,
-        color: tool?.color || 'hsl(var(--primary))',
-    };
-});
+];
 
-
-const Node = ({ node, opacity, scale }: { node: typeof flowSteps[0], opacity: any, scale: any }) => (
+const Node = ({ node, opacity, scale }: { node: typeof workflowSteps[0], opacity: any, scale: any }) => (
   <motion.div
     style={{ opacity, scale }}
-    className="w-full max-w-sm mx-auto"
+    className="w-full"
   >
     <Card className="bg-card/60 backdrop-blur-lg border-2 shadow-lg w-full" style={{ borderColor: `${node.color}40` }}>
       <div className="flex items-start gap-4 p-6">
-        <div className="p-3 rounded-xl text-white backdrop-blur-sm border" style={{ backgroundColor: `${node.color}30`, borderColor: `${node.color}40` }}>
+        <div className="p-3 rounded-xl backdrop-blur-sm border" style={{ backgroundColor: `${node.color}30`, borderColor: `${node.color}40` }}>
           {React.cloneElement(node.icon, {style: {color: node.color}})}
         </div>
         <div className="text-left flex-1">
             <p className="text-sm font-semibold" style={{color: node.color}}>{node.step}</p>
             <p className="text-xl font-bold font-heading leading-tight">{node.title}</p>
+            <motion.p 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-muted-foreground text-sm mt-1"
+            >
+                {node.description}
+            </motion.p>
         </div>
       </div>
     </Card>
@@ -116,16 +106,16 @@ export const FlowSimulation = () => {
         return { opacity, scale, pathLength };
     };
 
-    const animatedSteps = flowSteps.map((step, index) => ({
+    const animatedSteps = workflowSteps.map((step, index) => ({
         ...step,
-        animations: createScrollTransforms(index, flowSteps.length),
+        animations: createScrollTransforms(index, workflowSteps.length),
     }));
 
 
     return (
-        <div ref={targetRef} className="relative mt-16 w-full max-w-sm mx-auto flex flex-col items-center space-y-8 min-h-[1200px]">
+        <div ref={targetRef} className="relative mt-16 w-full max-w-sm mx-auto flex flex-col items-center space-y-8 min-h-[700px]">
            {animatedSteps.map((step, index) => (
-               <div key={step.id} className="w-full h-48 flex items-center relative">
+               <div key={step.step} className="w-full h-48 flex items-center relative">
                    {index > 0 && (
                        <div className="absolute bottom-full left-0 w-full h-[32px]">
                            <Connector pathLength={animatedSteps[index-1].animations.pathLength} color={step.color} />
