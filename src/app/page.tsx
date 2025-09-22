@@ -100,14 +100,14 @@ const flowLibraryExamples = [
         apps: ["CRM Memory Assistant", "Lead Investigator AI", "WhatsApp Manager"],
     },
     {
-        title: "Ad Campaign from a Brochure",
-        description: "Upload a project brochure, and the AI will generate ad copy, create an audience, and launch a campaign on Meta.",
+        title: "Meta Campaign Flow",
+        description: "Generate ad copy, create an audience, and launch a campaign on Meta from a single brochure.",
         apps: ["Insta Ads Designer", "Audience Creator", "Meta Auto Pilot"],
     },
     {
-        title: "Client Offer Package",
-        description: "Select multiple properties, generate data-driven price estimates for each, and build a beautiful side-by-side comparison PDF for your client.",
-        apps: ["Market Library", "AI Price Estimator", "Multi-Offer Builder"],
+        title: "Multi Projects Brochure",
+        description: "Select multiple properties and generate a beautiful side-by-side comparison PDF for your client.",
+        apps: ["Market Library", "Multi-Offer Builder"],
     }
 ];
 
@@ -127,11 +127,6 @@ export default function HomePage() {
   const y3 = useTransform(scrollYProgress, [0.2, 0.9], ["0%", "-15%"]);
   
   const flowSectionRef = React.useRef<HTMLDivElement>(null);
-  const { scrollYProgress: flowSectionScrollY } = useScroll({
-      target: flowSectionRef,
-      offset: ["start end", "end start"]
-  });
-  const connectorPathLength = useTransform(flowSectionScrollY, [0.6, 0.8], [0, 1]);
 
 
   const handleSearch = (e: React.FormEvent) => {
@@ -337,7 +332,8 @@ Name a project, and click "list it" - this is literally how it works.
 
                  <div className="relative mt-8">
                      <motion.div
-                        className="absolute bottom-full left-1/2 -translate-x-1/2 h-16 w-px bg-gradient-to-b from-primary/0 via-primary/50 to-primary"
+                        className="absolute bottom-full left-1/2 -translate-x-1/2 h-16 w-px"
+                        style={{ background: 'linear-gradient(to top, hsl(var(--primary)), transparent)'}}
                     />
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
