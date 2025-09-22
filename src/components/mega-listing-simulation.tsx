@@ -31,17 +31,14 @@ export const MegaListingSimulation = () => {
 
     return (
         <div 
-            className="relative w-full max-w-2xl mx-auto group"
+            className="relative w-full max-w-lg mx-auto group"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-             <h3 className={cn("absolute -top-6 left-4 font-semibold text-center text-muted-foreground/50 text-sm mb-2 transition-all duration-300", isHovered && "text-transparent [text-shadow:0_0_8px_hsl(var(--accent))]")}>RAW MARKET FEED</h3>
-             <h3 className={cn("absolute -top-6 right-4 font-semibold text-center text-muted-foreground/50 text-sm mb-2 transition-all duration-300", isHovered && "text-transparent [text-shadow:0_0_8px_hsl(var(--accent))]")}>UNIFIED MEGA LISTING</h3>
-            
-            <Card 
-                className="w-full overflow-hidden bg-transparent shadow-2xl border-border/20 bg-gradient-to-br from-muted/10 to-muted/50"
+            <div 
+                className="w-full overflow-hidden bg-transparent shadow-2xl border-border/20 bg-gradient-to-br from-muted/10 to-muted/50 rounded-2xl"
             >
-              <CardContent className="p-4 md:p-6">
+              <div className="p-4 md:p-6">
                 <div 
                     className="w-full mx-auto cursor-pointer h-full min-h-[400px]"
                 >
@@ -121,8 +118,8 @@ export const MegaListingSimulation = () => {
                         </div>
                     </div>
                 </div>
-                </CardContent>
-            </Card>
+                </div>
+            </div>
         </div>
     );
 };
