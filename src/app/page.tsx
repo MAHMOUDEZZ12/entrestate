@@ -33,22 +33,35 @@ const ChatBubble = ({ children, className }: { children: React.ReactNode, classN
 
 const workflowSteps = [
     {
-        step: 1,
+        step: "01",
         title: "Build Your Knowledge Base",
         description: "Your private library is the brain of the operation. Upload projects, brochures, and brand assets to give your AI a single source of truth.",
-        icon: <Library className="h-10 w-10" />,
+        icon: <Library className="h-8 w-8" />,
+        cta: {
+            text: "Go to Brand & Assets",
+            href: "/dashboard/brand"
+        }
     },
     {
-        step: 2,
+        step: "02",
         title: "Deploy Intelligent Apps",
         description: "Activate specialized AI tools from our App Store. Each one is a 'superpower' designed to automate a specific part of your workflow.",
-        icon: <Bot className="h-10 w-10" />,
+        icon: <Bot className="h-8 w-8" />,
+        cta: {
+            text: "Explore the App Store",
+            href: "/apps"
+        }
     },
      {
-        step: 3,
+        step: "03",
         title: "Execute & Dominate",
         description: "Launch campaigns, generate leads, and close deals faster with AI-powered insights and assets, all perfectly on-brand.",
-        icon: <Sparkles className="h-10 w-10" />,
+        icon: <Sparkles className="h-8 w-8" />,
+        cta: {
+            text: "Start Your Free Trial",
+            href: "/login",
+            isShiny: true
+        }
     }
 ];
 
@@ -198,47 +211,51 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section id="how-it-works" className="py-20 md:py-32 bg-background">
+        <section id="how-it-works" className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Your Path to a 10x Workflow</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
                     Transform hours of manual work into an intelligent, automated process.
                 </p>
-                <div className="relative mt-16" ref={workflowRef}>
-                     <svg className="absolute top-0 left-0 w-full h-full hidden md:block" aria-hidden="true">
-                        <motion.path
-                            d="M 200 80 C 400 80, 400 200, 600 200 S 800 80, 1000 80"
-                            fill="none"
-                            stroke="hsl(var(--border))"
-                            strokeWidth="2"
-                            strokeDasharray="1"
-                            strokeDashoffset="0"
-                            style={{ pathLength }}
-                        />
-                    </svg>
-                    <div className="relative grid grid-cols-1 md:grid-cols-3 gap-12">
-                        {workflowSteps.map((step, index) => (
-                             <motion.div 
-                                key={step.step}
-                                initial={{ opacity: 0, y: 50 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: index * 0.2 }}
-                                viewport={{ once: true, amount: 0.5 }}
-                                className="flex flex-col items-center text-center"
-                              >
-                                <div className="p-4 bg-primary text-primary-foreground rounded-full mb-4 border-4 border-background">
-                                    {step.icon}
-                                </div>
-                                <h3 className="text-xl font-bold font-heading">{step.title}</h3>
-                                <p className="mt-2 text-muted-foreground">{step.description}</p>
-                            </motion.div>
-                        ))}
-                    </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                    {workflowSteps.map((step, index) => (
+                         <motion.div 
+                            key={step.step}
+                            initial={{ opacity: 0, y: 50 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.5, delay: index * 0.2 }}
+                            viewport={{ once: true, amount: 0.5 }}
+                          >
+                            <Card className="text-left bg-card h-full flex flex-col">
+                                <CardHeader>
+                                    <div className="flex justify-between items-start">
+                                        <p className="text-5xl font-bold text-primary/20">{step.step}</p>
+                                        <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                                            {step.icon}
+                                        </div>
+                                    </div>
+                                    <CardTitle className="pt-4 text-2xl">{step.title}</CardTitle>
+                                </CardHeader>
+                                <CardContent className="flex-grow">
+                                    <p className="text-muted-foreground">{step.description}</p>
+                                </CardContent>
+                                <CardFooter>
+                                     <Link href={step.cta.href}>
+                                        {step.cta.isShiny ? (
+                                            <ShinyButton>{step.cta.text} <ArrowRight /></ShinyButton>
+                                        ) : (
+                                            <Button variant="secondary" className="w-full">{step.cta.text} <ArrowRight className="ml-2"/></Button>
+                                        )}
+                                    </Link>
+                                </CardFooter>
+                            </Card>
+                        </motion.div>
+                    ))}
                 </div>
             </div>
         </section>
 
-        <section className="py-20 md:py-32 bg-secondary">
+        <section className="py-20 md:py-32 bg-background">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tight">An Operating System for Every Role</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
