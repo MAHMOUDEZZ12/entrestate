@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -148,10 +147,10 @@ export default function SolutionsPage() {
             icon={<HelpCircle className="h-8 w-8" />}
           />
         
-        <div className="mt-12 space-y-24">
+        <div className="mt-12 space-y-16">
             {faqData.map((category, index) => (
-                <section key={category.category} id={category.category.toLowerCase().replace(/\s/g, '-')} className="border-t pt-12">
-                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-8 text-left">
+                <section key={category.category} id={category.category.toLowerCase().replace(/\s/g, '-')} className="border-t pt-12 first:border-t-0 first:pt-0">
+                    <div className="flex flex-col md:flex-row items-start md:items-center gap-4 mb-8 text-left p-4 border rounded-2xl bg-muted/30">
                         <div className="p-3 bg-primary/10 text-primary rounded-lg border border-dashed">
                            {category.icon}
                         </div>
