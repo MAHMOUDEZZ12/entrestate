@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { cn } from '@/lib/utils';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList } from "@/components/ui/tabs";
 import { PricingCard } from '@/components/pricing-card';
 import { pricingData, AppData, PlanData } from '@/lib/pricing-data';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -37,10 +37,20 @@ export default function PricingPage() {
       return total + (app?.price_monthly || 0);
     }, 0);
 
-    return isAnnual ? monthlyPrice * 12 * 0.7 : monthlyPrice;
+    return isAnnual ? monthlyPrice * 12 * 0.8 : monthlyPrice; // 20% discount for annual
   }
   
   const customPrice = calculateCustomPrice();
+
+  const groupedApps = individualApps.reduce((acc, app) => {
+    const category = app.category || 'Other';
+    if (!acc[category]) {
+      acc[category] = [];
+    }
+    acc[category].push(app);
+    return acc;
+  }, {} as Record<string, AppData[]>);
+
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -55,7 +65,7 @@ export default function PricingPage() {
           <span className={cn(!isAnnual ? 'text-foreground' : 'text-muted-foreground', 'font-medium')}>Pay Monthly</span>
           <Switch checked={isAnnual} onCheckedChange={setIsAnnual} aria-label="Toggle billing frequency" />
           <span className={cn(isAnnual ? 'text-foreground' : 'text-muted-foreground', 'font-medium')}>
-            Pay Annually <span className="text-primary font-semibold">(-30%)</span>
+            Pay Annually <span className="text-primary font-semibold">(-20%)</span>
           </span>
         </div>
         
@@ -73,23 +83,27 @@ export default function PricingPage() {
             </TabsContent>
             <TabsContent value="custom" className="mt-12">
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                     <div className="md:col-span-2">
-                        <h3 className="font-semibold text-lg mb-4">Available Apps</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {individualApps.map(app => (
-                            <div key={app.name} className="flex items-center space-x-3 bg-muted/50 p-3 rounded-md hover:bg-muted/80 transition-colors">
-                              <Checkbox
-                                id={app.name}
-                                checked={selectedApps.includes(app.name)}
-                                onCheckedChange={() => handleAppSelection(app.name)}
-                              />
-                              <Label htmlFor={app.name} className="flex flex-col cursor-pointer w-full">
-                                <span className="font-medium text-foreground text-sm">{app.name}</span>
-                                <span className="text-xs text-muted-foreground">${app.price_monthly.toFixed(2)}/mo</span>
-                              </Label>
+                     <div className="md:col-span-2 space-y-8">
+                        {Object.entries(groupedApps).map(([category, apps]) => (
+                            <div key={category}>
+                                <h3 className="font-semibold text-lg mb-4">{category}</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                  {apps.map(app => (
+                                    <div key={app.name} className="flex items-center space-x-3 bg-muted/50 p-3 rounded-md hover:bg-muted/80 transition-colors">
+                                      <Checkbox
+                                        id={app.name}
+                                        checked={selectedApps.includes(app.name)}
+                                        onCheckedChange={() => handleAppSelection(app.name)}
+                                      />
+                                      <Label htmlFor={app.name} className="flex flex-col cursor-pointer w-full">
+                                        <span className="font-medium text-foreground text-sm">{app.name}</span>
+                                        <span className="text-xs text-muted-foreground">${app.price_monthly.toFixed(2)}/mo</span>
+                                      </Label>
+                                    </div>
+                                  ))}
+                                </div>
                             </div>
-                          ))}
-                        </div>
+                        ))}
                      </div>
                      <div className="sticky top-24">
                         <PricingCard 
@@ -97,7 +111,7 @@ export default function PricingPage() {
                                 id: 'custom',
                                 name: 'Your Custom Plan',
                                 tagline: `${selectedApps.length} app(s) selected.`,
-                                price_monthly: isAnnual ? (customPrice > 0 ? (customPrice / 12 * (1/0.7)) : 0) : customPrice,
+                                price_monthly: isAnnual ? (customPrice > 0 ? (customPrice / 12 * (1/0.8)) : 0) : customPrice,
                                 popular: false,
                                 features: selectedApps.length > 0 ? selectedApps : ['Select apps to see them here.']
                             }}
