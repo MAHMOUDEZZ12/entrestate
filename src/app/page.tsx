@@ -55,10 +55,10 @@ export default function HomePage() {
           </div>
           <div className="relative z-10 container mx-auto px-4 text-center">
             <div className="flex flex-col items-center">
-              <h1 className="text-5xl md:text-8xl font-bold font-heading tracking-tighter leading-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-heading tracking-tighter leading-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
                 The AI-Native Operating System for Real Estate
               </h1>
-              <p className="mt-6 max-w-2xl text-xl md:text-2xl text-foreground/70">
+              <p className="mt-6 max-w-2xl text-lg md:text-xl text-foreground/70">
                 From intelligent public search to a complete suite of professional tools, Entrestate is the ecosystem that gives you an unparalleled advantage.
               </p>
                <div className="mt-10 w-full max-w-2xl">
