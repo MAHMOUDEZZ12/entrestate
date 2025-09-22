@@ -52,7 +52,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'insta-ads-designer': generateAdFromBrochure,
     'audience-creator': suggestTargetingOptions,
     'rebranding': rebrandBrochure,
-    'pdf-editor': editPdf,
+    'pdf-editor-ai': editPdf,
     'landing-pages': generateLandingPage,
     'instagram-content-creator': generateSocialPost,
     'investor-matching': matchInvestors,
