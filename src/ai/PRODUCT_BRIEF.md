@@ -8,9 +8,22 @@ Entrestate is architected to be more than just a collection of tools; it is an *
 
 Our primary mission is to build a sophisticated system that can ingest, analyze, and act upon a vast range of real estate data, as outlined in the `DATA_INGESTION_POLICY.yml`. While this engine will power the Entrestate application for individual agents and brokerages, the core technology is designed to be productized as a standalone **SaaS offering**.
 
-### Standalone SaaS Product: Entrestate Search
+### Core Product Pillars
 
-The ultimate goal is to leverage our data and AI capabilities to launch a new, separate product: a real estate search engine that will disrupt traditional listing sites (like Bayut, Property Finder, Zillow). This search engine will offer both a web interface and a chat-based experience, providing unparalleled market intelligence to consumers, investors, and other real estate companies. It will be powered by the same Vertex AI Search backend we are building for the main app.
+Our ecosystem is built on three interconnected product pillars that form the foundation of our AI-native platform.
+
+#### 1. PRO SEARCH ENG. x3: The Triple Engine of Discovery
+-   **Vision & DNA**: Redefines search by combining three engines into one: Fast Search (keyword), Smart Search (semantic AI), and Deep Search (historical & predictive). It extends beyond listings into trends, history, and opportunity discovery.
+-   **Core Function**: A multi-layered engine that directs user queries to the optimal search type, from instant keyword filtering to deep, predictive analytics on market trends.
+
+#### 2. ESTCHAT X3: The Conversational Frontline
+-   **Vision & DNA**: Unifies all communication into a single, intelligent, and commercially productive stream. It engages users proactively, captures intent, and translates conversations into structured data.
+-   **Core Function**: A multi-channel AI assistant that engages users on Instagram, websites, and CRMs, using a prompt builder for customized dialogues and enriching lead profiles with every interaction.
+
+#### 3. MEGA LISTING PRO 2: The Unified Market Registry
+-   **Vision & DNA**: Creates a single source of truth for real estate data by consolidating, verifying, and archiving all listings to eliminate noise and enforce accuracy.
+-   **Core Function**: An intelligent listing engine that aggregates data from portals and developers, uses AI to detect duplicates and false pricing, and outputs a clean, verified feed for all other systems to use.
+
 
 ### Entrestate Application: The Premier Use Case
 

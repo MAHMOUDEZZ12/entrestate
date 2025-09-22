@@ -20,12 +20,6 @@ const filterCategories: FilterCategory[] = [
     'Web', 'Editing', 'Ads', 'Market Intelligence', 'CRM', 'Developer'
 ];
 
-const announcements = [
-    "The new Meta Auto Pilot can now orchestrate your entire ad workflow!",
-    "You can now connect your Bayut account to sync listings automatically.",
-    "The Investor Matching tool now supports commercial properties.",
-];
-
 const FeatureCard = ({
   feature,
 }: {
@@ -82,12 +76,6 @@ const FeatureCard = ({
 
 export default function AppsPage() {
   const [activeFilter, setActiveFilter] = React.useState<FilterCategory>('All');
-  const [currentAnnouncement, setCurrentAnnouncement] = React.useState(announcements[0]);
-
-  React.useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * announcements.length);
-    setCurrentAnnouncement(announcements[randomIndex]);
-  }, []);
 
   const getCategoryCount = (category: FilterCategory) => {
     if (category === 'All') return features.length;
@@ -126,10 +114,6 @@ export default function AppsPage() {
                         </Button>
                       ))}
                     </div>
-                </div>
-                <div className="text-center text-sm text-muted-foreground mt-2 flex items-center justify-center gap-2">
-                    <Sparkles className="h-4 w-4 text-primary" />
-                    <span className="font-semibold text-primary">What's New?</span> {currentAnnouncement}
                 </div>
             </div>
         </div>
