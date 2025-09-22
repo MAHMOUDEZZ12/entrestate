@@ -3,48 +3,65 @@
 
 import React from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Library, Bot, Sparkles } from 'lucide-react';
+import { Library, Bot, Sparkles, Workflow } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Card } from './ui/card';
+import { tools } from '@/lib/tools-client';
 
-const workflowSteps = [
+const flowSteps = [
     {
+        id: 'edit-pdf',
         step: "01",
-        title: "Build Your Knowledge Base",
-        description: "Your private library is the brain of the operation. Upload projects, brochures, and brand assets to give your AI a single source of truth.",
-        icon: <Library className="h-8 w-8" />,
+        title: "Edit a Brochure",
+        description: "Start by making a quick change to an existing project brochure.",
     },
     {
+        id: 'landing-pages',
         step: "02",
-        title: "Deploy Intelligent Apps",
-        description: "Activate specialized AI tools from our App Store. Each one is a 'superpower' designed to automate a specific part of your workflow.",
-        icon: <Bot className="h-8 w-8" />,
+        title: "Generate a Landing Page",
+        description: "Instantly create a beautiful, high-converting landing page from the brochure.",
     },
-     {
+    {
+        id: 'reel-ads',
         step: "03",
-        title: "Execute & Dominate",
-        description: "Launch campaigns, generate leads, and close deals faster with AI-powered insights and assets, all perfectly on-brand.",
-        icon: <Sparkles className="h-8 w-8" />,
+        title: "Design a Reel Ad",
+        description: "Generate a captivating video ad to drive traffic to your new page.",
+    },
+    {
+        id: 'meta-auto-pilot',
+        step: "04",
+        title: "Launch a Campaign",
+        description: "The Meta Pilot connects the ad to the landing page and launches the campaign.",
+    },
+    {
+        id: 'crm-assistant',
+        step: "05",
+        title: "Capture Leads",
+        description: "Finally, all incoming leads are automatically captured and organized in your CRM.",
     }
-];
+].map(step => {
+    const tool = tools.find(t => t.id === step.id);
+    return {
+        ...step,
+        icon: tool?.icon || <Workflow className="h-8 w-8" />,
+        color: tool?.color || 'hsl(var(--primary))',
+    };
+});
 
-const Node = ({ node, description, opacity }: { node: typeof workflowSteps[0], description: string, opacity: any }) => (
+
+const Node = ({ node, opacity, scale }: { node: typeof flowSteps[0], opacity: any, scale: any }) => (
   <motion.div
-    className="w-full max-w-sm"
-    initial={{ opacity: 0, scale: 0.9 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    transition={{ duration: 0.5, ease: 'easeOut' }}
-    viewport={{ once: true, amount: 0.8 }}
+    style={{ opacity, scale }}
+    className="w-full max-w-sm mx-auto"
   >
-    <Card className="bg-card/60 backdrop-blur-lg border-2 shadow-lg w-full border-primary/20">
+    <Card className="bg-card/60 backdrop-blur-lg border-2 shadow-lg w-full" style={{ borderColor: `${node.color}40` }}>
       <div className="flex items-start gap-4 p-6">
-        <div className="p-3 rounded-xl bg-primary/10 text-primary backdrop-blur-sm border border-primary/20">
-          {node.icon}
+        <div className="p-3 rounded-xl text-white backdrop-blur-sm border" style={{ backgroundColor: `${node.color}30`, borderColor: `${node.color}40` }}>
+          {React.cloneElement(node.icon, {style: {color: node.color}})}
         </div>
         <div className="text-left flex-1">
-            <p className="text-sm font-semibold text-primary">{node.step}</p>
+            <p className="text-sm font-semibold" style={{color: node.color}}>{node.step}</p>
             <p className="text-xl font-bold font-heading leading-tight">{node.title}</p>
-            <motion.p style={{ opacity }} className="text-sm text-muted-foreground mt-1">{description}</motion.p>
         </div>
       </div>
     </Card>
@@ -53,18 +70,23 @@ const Node = ({ node, description, opacity }: { node: typeof workflowSteps[0], d
 
 const Connector = ({
   pathLength,
+  color,
 }: {
   pathLength: any;
+  color: string;
 }) => (
   <motion.svg
-    className="absolute z-[-1] overflow-visible"
-    width="100%"
+    className="absolute top-0 left-1/2 -z-10"
+    width="2"
     height="100%"
+    viewBox="0 0 2 120"
+    preserveAspectRatio="none"
   >
     <motion.path
-      d="M 0 0 V 120"
+      d="M 1 0 V 120"
       fill="none"
-      stroke="hsl(var(--primary))"
+      stroke={color}
+      strokeOpacity="0.5"
       strokeWidth="2"
       strokeDasharray="4 4"
       strokeLinecap="round"
@@ -83,44 +105,35 @@ export const FlowSimulation = () => {
         offset: ['start end', 'end start'],
     });
 
-    const path1Length = useTransform(scrollYProgress, [0.1, 0.25], [0, 1]);
-    const path2Length = useTransform(scrollYProgress, [0.4, 0.55], [0, 1]);
-    
-    const desc1Opacity = useTransform(scrollYProgress, [0.15, 0.25], [0, 1]);
-    const desc2Opacity = useTransform(scrollYProgress, [0.45, 0.55], [0, 1]);
-    const desc3Opacity = useTransform(scrollYProgress, [0.75, 0.85], [0, 1]);
+    const createScrollTransforms = (index: number, total: number) => {
+        const start = 0.1 + (index * (0.8 / total));
+        const end = start + (0.8 / total);
+        
+        const opacity = useTransform(scrollYProgress, [start, start + 0.1], [0, 1]);
+        const scale = useTransform(scrollYProgress, [start, start + 0.1], [0.95, 1]);
+        const pathLength = useTransform(scrollYProgress, [start + 0.1, end - 0.1], [0, 1]);
+        
+        return { opacity, scale, pathLength };
+    };
+
+    const animatedSteps = flowSteps.map((step, index) => ({
+        ...step,
+        animations: createScrollTransforms(index, flowSteps.length),
+    }));
 
 
     return (
-        <div ref={targetRef} className="relative mt-16 w-full max-w-sm mx-auto min-h-[900px]">
-            {/* Node 1 */}
-            <div className="sticky top-1/4">
-                <Node node={workflowSteps[0]} description={workflowSteps[0].description} opacity={desc1Opacity} />
-            </div>
-            
-            {/* Connector 1 -> 2 */}
-            <div className="absolute top-[calc(25%_+_132px)] left-1/2 h-[120px] w-px">
-                <Connector pathLength={path1Length} />
-            </div>
-
-            {/* Node 2 */}
-            <div className="absolute top-[calc(25%_+_252px)] left-0 w-full">
-                 <div className="sticky top-1/2">
-                    <Node node={workflowSteps[1]} description={workflowSteps[1].description} opacity={desc2Opacity}/>
-                </div>
-            </div>
-            
-            {/* Connector 2 -> 3 */}
-            <div className="absolute top-[calc(25%_+_384px)] left-1/2 h-[120px] w-px">
-                <Connector pathLength={path2Length} />
-            </div>
-
-            {/* Node 3 */}
-            <div className="absolute top-[calc(25%_+_504px)] left-0 w-full">
-                <div className="sticky top-3/4">
-                    <Node node={workflowSteps[2]} description={workflowSteps[2].description} opacity={desc3Opacity}/>
-                </div>
-            </div>
+        <div ref={targetRef} className="relative mt-16 w-full max-w-sm mx-auto flex flex-col items-center space-y-8 min-h-[1200px]">
+           {animatedSteps.map((step, index) => (
+               <div key={step.id} className="w-full h-48 flex items-center relative">
+                   {index > 0 && (
+                       <div className="absolute bottom-full left-0 w-full h-[32px]">
+                           <Connector pathLength={animatedSteps[index-1].animations.pathLength} color={step.color} />
+                       </div>
+                   )}
+                   <Node node={step} opacity={step.animations.opacity} scale={step.animations.scale} />
+               </div>
+           ))}
         </div>
     );
 };
