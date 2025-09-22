@@ -264,11 +264,11 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                  { id: 'allowedDomains', name: 'Allowed Domains (Optional)', type: 'textarea', placeholder: 'example.com\nanother-site.net', description: "One domain per line. If empty, the chatbot can run anywhere." },
             ];
             tool.renderResult = (result, toast) => (
-                 <div className="space-y-4">
-                    <h3 className="font-semibold">Embed Code:</h3>
-                    <p className="text-sm text-muted-foreground">Copy and paste this snippet into the `&lt;body&gt;` of your website.</p>
-                    <CodeBlock>{result.embedCode.trim()}</CodeBlock>
-                </div>
+                <div className="space-y-4">
+                   <h3 className="font-semibold">Embed Code:</h3>
+                   <p className="text-sm text-muted-foreground">Copy and paste this snippet into the `&lt;body&gt;` of your website.</p>
+                   <CodeBlock>{result.embedCode.trim()}</CodeBlock>
+               </div>
             );
             break;
         case 'ai-brand-creator':
@@ -784,5 +784,3 @@ export const tools: Feature[] = mergeToolData().map(tool => {
     }
     return tool;
 });
-
-    
