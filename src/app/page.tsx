@@ -175,7 +175,7 @@ export default function HomePage() {
                    <div className="space-y-4 text-center md:text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Telescope className="h-8 w-8" /></div>
                        <h3 className="text-3xl font-bold font-heading">
-                          <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">PRO SEARCH ENG. x3</span>
+                          PRO SEARCH ENG. x3
                        </h3>
                        <p className="text-lg text-muted-foreground">The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.</p>
                        <Link href={`/products/pro-search-eng-x3`}>
@@ -191,7 +191,7 @@ export default function HomePage() {
                     <div className="space-y-4 text-center md:text-left md:order-2">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><MessageCircle className="h-8 w-8" /></div>
                         <h3 className="text-3xl font-bold font-heading">
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">ESTCHAT X3</span>
+                            ESTCHAT X3
                         </h3>
                        <p className="text-lg text-muted-foreground">The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.</p>
                        <Link href={`/products/estchat-x3`}>
@@ -207,7 +207,7 @@ export default function HomePage() {
                     <div className="space-y-4 text-center md:text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><FileJson className="h-8 w-8" /></div>
                         <h3 className="text-3xl font-bold font-heading">
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">MEGA LISTING PRO 2</span>
+                            MEGA LISTING PRO 2
                         </h3>
                        <p className="text-lg text-muted-foreground">The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.</p>
                        <Link href={`/products/mega-listing-pro-2`}>
@@ -336,4 +336,3 @@ export default function HomePage() {
     </>
   );
 }
-
