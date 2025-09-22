@@ -139,7 +139,7 @@ export default function HomePage() {
                 The AI-Native Operating System for Real Estate
               </h1>
               <p className="mt-6 max-w-2xl text-lg md:text-xl text-foreground/70">
-                Pick one of the Sales AI models or hire a full team in 3 shifts, multi languages, and realtors by nature! This is not a fancy product and no perfect website needed, they come with their magic.
+                Pick one of the Sales AI models or hire a full team in 3 shifts, multi languages, and realtors by nature!
               </p>
                <div className="mt-10 w-full max-w-2xl">
                      <div className="relative group">
@@ -163,7 +163,7 @@ export default function HomePage() {
         <section id="pillars" className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 space-y-20">
                  <div className="max-w-3xl mx-auto text-center">
-                    <h2 className="text-4xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent drop-shadow-md">
+                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent drop-shadow-md">
                        Explore the magical Realtors AI models
                     </h2>
                     <p className="mt-4 text-lg text-muted-foreground">
