@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { School, CheckCircle, Video, Workflow, Building, Landmark, LineChart, Award, Sparkles } from 'lucide-react';
+import { School, CheckCircle, Video, Workflow, Building, Landmark, LineChart, Award, Sparkles, BookOpen, Bot } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
