@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from './ui/card';
 import { motion } from 'framer-motion';
 import { Badge } from './ui/badge';
@@ -61,7 +61,7 @@ export const ProSearchSimulation = () => {
                 <p className="text-sm text-muted-foreground font-mono">"Damac properties lagons"</p>
             </CardHeader>
             <CardContent className="p-4">
-                <Tabs defaultValue="deep">
+                <Tabs defaultValue="smart">
                     <TabsList className="grid w-full grid-cols-3">
                         <TabsTrigger value="fast">Fast</TabsTrigger>
                         <TabsTrigger value="smart">Smart</TabsTrigger>
