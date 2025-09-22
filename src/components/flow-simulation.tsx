@@ -19,7 +19,6 @@ const flowToolIds = [
 const nodeData = flowToolIds.map(id => {
     const tool = tools.find(t => t.id === id);
     if (!tool) {
-        // Fallback for safety, though all IDs should exist
         return { id, icon: <Sparkles className="h-8 w-8" />, label: 'Unknown Tool', type: 'Action', color: 'hsl(var(--primary))' };
     }
     const type = tool.id === 'rebranding' ? 'Trigger' : 'Action';
@@ -55,27 +54,30 @@ const Node = ({ node, isVisible }: { node: typeof nodeData[0], isVisible: boolea
 );
 
 const Connector = ({
+  path,
   pathLength,
   color,
   isVisible,
 }: {
+  path: string;
   pathLength: any;
   color: string;
   isVisible: boolean;
 }) => (
   <motion.svg
-    className={cn("absolute z-[-1] w-px h-[80px] transition-opacity duration-300", isVisible ? 'opacity-100' : 'opacity-0')}
-    viewBox="0 0 2 80"
-    preserveAspectRatio="none"
+    className={cn("absolute z-[-1] overflow-visible transition-opacity duration-300", isVisible ? 'opacity-100' : 'opacity-0')}
+    width="100%"
+    height="100%"
   >
     <motion.path
-      d="M 1 0 V 80"
+      d={path}
+      fill="none"
       stroke={color}
       strokeWidth="2"
       strokeDasharray="4 4"
       initial={{ pathLength: 0 }}
       style={{ pathLength }}
-      transition={{ duration: 0.3, ease: "easeInOut" }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
     />
   </motion.svg>
 );
@@ -88,25 +90,54 @@ export const FlowSimulation = () => {
         offset: ['start end', 'end start'],
     });
 
-    const scrollPoints = [0.25, 0.35, 0.45, 0.55, 0.65];
+    const scrollPoints = [0.1, 0.25, 0.4, 0.55, 0.7];
     
-    const nodeVisibility = scrollPoints.map(point => useTransform(scrollYProgress, [point - 0.05, point], [0, 1]));
-    const connectorVisibility = scrollPoints.slice(1).map((point, i) => useTransform(scrollYProgress, [scrollPoints[i] + 0.05, point], [0, 1]));
+    const nodeVisibility = scrollPoints.map(point => useTransform(scrollYProgress, [point - 0.1, point], [0, 1]));
+    const connectorVisibility = scrollPoints.slice(1).map((point, i) => useTransform(scrollYProgress, [scrollPoints[i] + 0.1, point], [0, 1]));
 
     return (
-        <div ref={targetRef} className="relative mt-16 w-full max-w-4xl mx-auto h-[900px]">
-           {nodeData.map((node, index) => (
-                <React.Fragment key={node.id}>
-                    <div className="absolute left-1/2 -translate-x-1/2" style={{ top: `${index * 20}%`}}>
-                       <Node node={node} isVisible={true} />
-                    </div>
-                     {index < nodeData.length - 1 && (
-                        <div className="absolute left-1/2 -translate-x-1/2" style={{ top: `calc(${index * 20}% + 132px)` }}>
-                           <Connector pathLength={connectorVisibility[index]} color={nodeData[index + 1].color} isVisible={true} />
-                        </div>
-                    )}
-                </React.Fragment>
-           ))}
+        <div ref={targetRef} className="relative mt-16 w-full max-w-4xl mx-auto h-[1200px]">
+            {/* Node 1 */}
+            <motion.div className="absolute top-[5%] left-1/2 -translate-x-1/2" style={{ opacity: nodeVisibility[0] }}>
+                <Node node={nodeData[0]} isVisible={true} />
+            </motion.div>
+            
+            {/* Connector 1 -> 2 */}
+            <div className="absolute top-[calc(5%_+_132px)] left-1/2 -translate-x-1/2 h-[80px] w-px">
+                <Connector path="M 0 0 V 80" pathLength={connectorVisibility[0]} color={nodeData[1].color} isVisible={true} />
+            </div>
+
+            {/* Node 2 */}
+            <motion.div className="absolute top-[calc(5%_+_212px)] left-1/2 -translate-x-1/2" style={{ opacity: nodeVisibility[1] }}>
+                 <Node node={nodeData[1]} isVisible={true} />
+            </motion.div>
+            
+            {/* Connectors 2 -> 3 and 2 -> 4 */}
+            <div className="absolute top-[calc(5%_+_344px)] left-1/2 -translate-x-1/2 h-[80px] w-[320px]">
+                <Connector path="M 160 0 C 160 40, 0 40, 0 80" pathLength={connectorVisibility[1]} color={nodeData[2].color} isVisible={true} />
+                <Connector path="M 160 0 C 160 40, 320 40, 320 80" pathLength={connectorVisibility[1]} color={nodeData[3].color} isVisible={true} />
+            </div>
+            
+            <div className="absolute top-[calc(5%_+_424px)] w-full flex justify-center gap-[256px]">
+                 {/* Node 3 */}
+                <motion.div style={{ opacity: nodeVisibility[2] }}>
+                    <Node node={nodeData[2]} isVisible={true} />
+                </motion.div>
+                {/* Node 4 */}
+                <motion.div style={{ opacity: nodeVisibility[2] }}>
+                    <Node node={nodeData[3]} isVisible={true} />
+                </motion.div>
+            </div>
+            
+            {/* Connector 4 -> 5 */}
+            <div className="absolute top-[calc(5%_+_556px)] right-[calc(50%_-_288px)] h-[80px] w-px">
+                 <Connector path="M 0 0 V 80" pathLength={connectorVisibility[3]} color={nodeData[4].color} isVisible={true} />
+            </div>
+
+            {/* Node 5 */}
+             <motion.div className="absolute top-[calc(5%_+_636px)] right-[calc(50%_-_144px_-_144px)]" style={{ opacity: nodeVisibility[4] }}>
+                <Node node={nodeData[4]} isVisible={true} />
+            </motion.div>
         </div>
     );
 };
