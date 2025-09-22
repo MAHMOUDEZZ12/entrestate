@@ -139,7 +139,7 @@ export default function HomePage() {
                 The AI-Native Operating System for Real Estate
               </h1>
               <p className="mt-6 max-w-2xl text-lg md:text-xl text-foreground/70">
-                Pick one of the Sales AI models or hire a full team in 3 shifts, multi languages, and realtors by nature!
+                Explore the magical Realtors AI models
               </p>
                <div className="mt-10 w-full max-w-2xl">
                      <div className="relative group">
@@ -163,8 +163,8 @@ export default function HomePage() {
         <section id="pillars" className="py-20 md:py-32 bg-secondary">
             <div className="container mx-auto px-4 space-y-20">
                  <div className="max-w-3xl mx-auto text-center">
-                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent drop-shadow-md">
-                       Explore the magical Realtors AI models
+                    <h2 className="text-3xl md:text-5xl font-bold tracking-tight drop-shadow-md">
+                       <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Explore the magical Realtors AI models</span>
                     </h2>
                     <p className="mt-4 text-lg text-muted-foreground">
                         This is not a fancy product and no perfect website needed, they come with their perfection.
@@ -200,9 +200,9 @@ export default function HomePage() {
                         </h3>
                        <p className="text-2xl font-semibold !leading-tight">The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.</p>
                        <p className="text-lg text-muted-foreground">
-                            Imagine hiring a super agent with 15 years market experience.<br/>
-                            He knows everything and come with a learning dashboad.<br/>
-                            Use it in social media, Landing pages, company site, or QR code on businesscard.
+                            Imagine hiring a super agent with 15 years market experience<br/>
+                            He knows everything and come with a learning dashboad<br/>
+                            Use it in social media, Landing pages, company site, or QR code on businesscard
                        </p>
                        <Link href={`/products/estchat-x3`}>
                            <Button variant="outline" className="mt-6 shadow">Name your SuperAgent <ArrowRight className="ml-2 h-4 w-4"/></Button>
@@ -221,8 +221,9 @@ export default function HomePage() {
                         </h3>
                         <p className="text-2xl font-semibold !leading-tight">From Listings to MEGA PRO Listings</p>
                        <p className="text-lg text-muted-foreground">
-                            You don’t need more listings, you need a perfect listing manager.<br/>
-                            Listing is a little far byond a good images, It’s a word sensitive and require not less than a stock market attention.<br/>
+                            You don’t need more listings, you need a perfect listing manager<br/>
+                            Listing is a little far byond a good images, It’s a word sensitive<br/>
+                            and require not less than a stock market attention<br/>
                             name a project, and click list it this is litterly how it works.
                        </p>
                        <Link href={`/products/mega-listing-pro-2`}>
