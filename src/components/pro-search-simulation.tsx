@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card';
 import { Search, Zap, Sparkles, BrainCircuit, TrendingUp, Building } from 'lucide-react';
@@ -37,9 +37,51 @@ const SearchModeIndicator = ({ icon, label }: { icon: React.ReactNode, label: st
     </motion.div>
 );
 
+const exampleQueries = [
+    "", // Start with empty for Fast Search
+    "best roi for villas", // Smart Search
+    "price history for Emaar Beachfront" // Deep Search
+];
+
 export const ProSearchSimulation = () => {
     const [query, setQuery] = useState('');
-    const [isHovered, setIsHovered] = useState(false);
+    const [queryIndex, setQueryIndex] = useState(0);
+    const [isTyping, setIsTyping] = useState(false);
+
+    useEffect(() => {
+        if (isTyping) return;
+
+        const queryInterval = setInterval(() => {
+            setQueryIndex(prevIndex => (prevIndex + 1) % exampleQueries.length);
+        }, 4000); // Change query every 4 seconds
+
+        return () => clearInterval(queryInterval);
+    }, [isTyping]);
+
+    useEffect(() => {
+        if (isTyping) return;
+
+        const targetQuery = exampleQueries[queryIndex];
+        let currentTypedQuery = "";
+        let i = 0;
+
+        const typingInterval = setInterval(() => {
+            if (i < targetQuery.length) {
+                currentTypedQuery += targetQuery[i];
+                setQuery(currentTypedQuery);
+                i++;
+            } else {
+                clearInterval(typingInterval);
+            }
+        }, 50); // Typing speed
+
+        return () => clearInterval(typingInterval);
+    }, [queryIndex, isTyping]);
+    
+    const handleUserTyping = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!isTyping) setIsTyping(true);
+        setQuery(e.target.value);
+    }
 
     let searchMode = 'Fast';
     let results = [
@@ -58,7 +100,7 @@ export const ProSearchSimulation = () => {
         ];
     }
     
-    if (isHovered) {
+    if (query.toLowerCase().includes('history')) {
         searchMode = 'Deep';
         modeIcon = <BrainCircuit className="h-4 w-4" />;
         results = [
@@ -73,8 +115,6 @@ export const ProSearchSimulation = () => {
     return (
         <Card 
             className="w-full max-w-md mx-auto transition-all duration-300"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
         >
             <CardHeader className="pb-2">
                  <div className="relative">
@@ -83,7 +123,7 @@ export const ProSearchSimulation = () => {
                         placeholder="Search listings, trends, ROI..."
                         className="pl-10"
                         value={query}
-                        onChange={(e) => setQuery(e.target.value)}
+                        onChange={handleUserTyping}
                     />
                 </div>
             </CardHeader>
@@ -104,5 +144,3 @@ export const ProSearchSimulation = () => {
         </Card>
     );
 };
-
-    
