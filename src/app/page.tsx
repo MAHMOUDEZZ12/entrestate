@@ -60,17 +60,14 @@ const productPillars = [
         description: "The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.",
         visual: (
             <Card className="w-full max-w-lg mx-auto overflow-hidden">
-                <CardHeader className="p-4 border-b">
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground p-2 bg-muted rounded-md">
+                <CardHeader className="p-4 border-b flex justify-between items-center">
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <Search className="h-4 w-4" />
                         <span>JVC Area expected rental ROI in 2029</span>
                     </div>
+                     <Badge variant="default">In-Use</Badge>
                 </CardHeader>
                 <CardContent className="p-4">
-                     <div className="flex justify-between items-center mb-3">
-                        <h3 className="font-semibold">Deep Search Results: Predictive Analysis</h3>
-                        <Badge variant="default">In-Use</Badge>
-                     </div>
                      <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center p-4">
                         <Image src="https://picsum.photos/seed/jvc-2029-roi/800/600" alt="Search results for JVC 2029 ROI" width={800} height={600} className="rounded" data-ai-hint="predictive analytics chart" />
                      </div>
@@ -93,7 +90,7 @@ const productPillars = [
                         </div>
                         <p className="font-semibold text-sm">Live Chat</p>
                     </div>
-                     <Badge variant="secondary">In-Use</Badge>
+                     <Badge variant="default">In-Use</Badge>
                 </CardHeader>
                 <CardContent className="p-3 flex-1 flex flex-col gap-2 justify-end">
                    <ChatBubble className="bg-card self-start">Hi! I'm looking for a 2BR villa in Dubai Hills.</ChatBubble>
@@ -116,8 +113,8 @@ const productPillars = [
                     <Badge variant="default">In-Use</Badge>
                 </CardHeader>
                 <CardContent className="p-4">
-                     <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center p-4">
-                        <Image src="https://picsum.photos/seed/listing-preview/800/600" alt="A preview of a property listing" width={800} height={600} className="rounded" data-ai-hint="property listing preview" />
+                     <div className="aspect-video w-full bg-muted rounded-lg flex items-center justify-center p-4 relative">
+                        <Image src="https://picsum.photos/seed/listing-grid-final/800/600" alt="A preview of a unified property listing" fill className="rounded object-cover" data-ai-hint="property listing grid" />
                      </div>
                 </CardContent>
             </Card>
@@ -310,7 +307,7 @@ export default function HomePage() {
                                 </ul>
                            </CardContent>
                            <CardContent>
-                                <Button variant="secondary" className="w-full">Learn More</Button>
+                               <Button variant="secondary" className="w-full">Learn More</Button>
                            </CardContent>
                        </Card>
                    ))}
@@ -323,4 +320,3 @@ export default function HomePage() {
     </>
   );
 }
-
