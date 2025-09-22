@@ -1,10 +1,11 @@
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
 import { Cookie } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { LandingHeader } from '../landing-header';
-import { LandingFooter } from '../landing-footer';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 export default function CookiesPage() {
   return (
