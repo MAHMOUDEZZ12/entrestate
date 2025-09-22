@@ -178,7 +178,11 @@ export default function HomePage() {
                           <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">PRO SEARCH ENG. x3</span>
                        </h3>
                        <p className="text-2xl font-semibold !leading-tight">We turned the untouched search bar into unmatched search engine</p>
-                       <p className="text-lg text-muted-foreground">This model switch the life on you website. We added a decentralized market libirary to it. try our discovery search to see how it works!</p>
+                       <p className="text-lg text-muted-foreground">
+                            This model switch the life on you website.<br/>
+                            We added a decentralized market libirary to it.<br/>
+                            try our discovery search to see how it works!
+                       </p>
                        <Link href={`/products/pro-search-eng-x3`}>
                            <Button variant="outline" className="mt-6 shadow">let's Go <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
@@ -195,7 +199,11 @@ export default function HomePage() {
                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">ESTCHAT X3</span>
                         </h3>
                        <p className="text-2xl font-semibold !leading-tight">The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.</p>
-                       <p className="text-lg text-muted-foreground">Imagine hiring a super agent with 15 years market experience. He knows everything and come with a learning dashboad. Use it in social media, Landing pages, company site, or QR code on businesscard.</p>
+                       <p className="text-lg text-muted-foreground">
+                            Imagine hiring a super agent with 15 years market experience.<br/>
+                            He knows everything and come with a learning dashboad.<br/>
+                            Use it in social media, Landing pages, company site, or QR code on businesscard.
+                       </p>
                        <Link href={`/products/estchat-x3`}>
                            <Button variant="outline" className="mt-6 shadow">Name your SuperAgent <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
@@ -212,7 +220,11 @@ export default function HomePage() {
                             <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">MEGA LISTING PRO 2</span>
                         </h3>
                         <p className="text-2xl font-semibold !leading-tight">From Listings to MEGA PRO Listings</p>
-                       <p className="text-lg text-muted-foreground">You don’t need more listings, you need a perfect listing manager. Listing is a little far byond a good images, It’s a word sensitive and require not less than a stock market attention. name a project, and click list it this is litterly how it works.</p>
+                       <p className="text-lg text-muted-foreground">
+                            You don’t need more listings, you need a perfect listing manager.<br/>
+                            Listing is a little far byond a good images, It’s a word sensitive and require not less than a stock market attention.<br/>
+                            name a project, and click list it this is litterly how it works.
+                       </p>
                        <Link href={`/products/mega-listing-pro-2`}>
                            <Button variant="outline" className="mt-6 shadow">Use it to stop blaming Portals <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
