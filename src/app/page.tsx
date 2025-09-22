@@ -304,14 +304,14 @@ export default function HomePage() {
         
         <section className="py-20 md:py-32 text-center bg-gradient-to-t from-background to-primary/5">
             <div className="container mx-auto px-4">
-                <h2 className="text-3xl md:text-5xl font-bold font-heading tracking-tighter">Ready to Become a Super Agent?</h2>
+                <h2 className="text-3xl md:text-5xl font-bold font-heading tracking-tighter">Unlock Your Workflow with AI</h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    Train your assistant, explore the apps, and start closing faster today.
+                    Connect your apps into powerful, automated workflows that run 24/7. Stop repetitive tasks and start focusing on what matters: closing deals.
                 </p>
                  <div className="mt-8">
-                    <Link href="/login">
+                    <Link href="/resources/flows">
                         <ShinyButton>
-                            Get Started <ArrowRight />
+                            Explore Flows <ArrowRight />
                         </ShinyButton>
                     </Link>
                 </div>
@@ -322,8 +322,3 @@ export default function HomePage() {
     </>
   );
 }
-
-    
-
-    
-
