@@ -175,11 +175,11 @@ export default function HomePage() {
                    <div className="space-y-4 text-center md:text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Telescope className="h-8 w-8" /></div>
                        <h3 className="text-3xl font-bold font-heading">
-                          PRO SEARCH ENG. x3
+                          <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">PRO SEARCH ENG. x3</span>
                        </h3>
-                       <p className="text-lg text-muted-foreground">The triple-engine of discovery, combining Fast, Smart, and Deep search to provide unparalleled real estate intelligence.</p>
+                       <p className="text-lg text-muted-foreground">We turned the untouched search bar into unmatched search engine. This model switches the life on your website. We added a decentralized market library to it. Try our discovery search to see how it works!</p>
                        <Link href={`/products/pro-search-eng-x3`}>
-                           <Button variant="outline">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                           <Button variant="outline">let's Go <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                    <div>
@@ -191,11 +191,11 @@ export default function HomePage() {
                     <div className="space-y-4 text-center md:text-left md:order-2">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><MessageCircle className="h-8 w-8" /></div>
                         <h3 className="text-3xl font-bold font-heading">
-                            ESTCHAT X3
+                           <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">ESTCHAT X3</span>
                         </h3>
-                       <p className="text-lg text-muted-foreground">The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.</p>
+                       <p className="text-lg text-muted-foreground">Imagine hiring a super agent with 15 years market experience. He knows everything and comes with a learning dashboard. Use it in social media, landing pages, company site, or QR code on a business card.</p>
                        <Link href={`/products/estchat-x3`}>
-                           <Button variant="outline">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                           <Button variant="outline">Name your SuperAgent <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                    <div className="md:order-1">
@@ -207,11 +207,11 @@ export default function HomePage() {
                     <div className="space-y-4 text-center md:text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><FileJson className="h-8 w-8" /></div>
                         <h3 className="text-3xl font-bold font-heading">
-                            MEGA LISTING PRO 2
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">MEGA LISTING PRO 2</span>
                         </h3>
-                       <p className="text-lg text-muted-foreground">The unified market registry that creates a single source of truth by consolidating, verifying, and archiving all listings.</p>
+                       <p className="text-lg text-muted-foreground">You don’t need more listings, you need a perfect listing manager. A listing is a little far beyond good images. It’s word sensitive and requires not less than stock market attention. Name a project, and click "list it". This is literally how it works.</p>
                        <Link href={`/products/mega-listing-pro-2`}>
-                           <Button variant="outline">Explore Product <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                           <Button variant="outline">Use it to stop blaming Portals <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                    <div>

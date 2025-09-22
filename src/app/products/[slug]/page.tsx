@@ -21,10 +21,10 @@ import { EbramSimulation } from '@/components/ebram-simulation';
 
 const productsData: {[key: string]: any} = {
   'estchat-x3': {
-    title: 'ESTCHAT X3 APP LITE',
+    title: 'ESTCHAT X3',
     icon: <MessageCircle className="h-8 w-8" />,
-    tagline: 'The Conversational Frontline',
-    vision: 'chatENT X3 APP LITE exists to solve the timeless problem of communication in real estate. Too often, buyers, investors, and brokers are separated by channels, misaligned by language, and slowed down by complexity. This product was designed to unify all conversations into a single intelligent stream — one that is proactive, context-aware, and commercially productive.',
+    tagline: 'The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.',
+    vision: 'Imagine hiring a super agent with 15 years market experience. He knows everything and comes with a learning dashboard. Use it in social media, landing pages, company site, or QR code on a business card.',
     dna: 'The DNA of chatENT is engagement-first intelligence. It doesn’t wait for the user to figure out what to ask; it guides, proposes, and translates. Whether on Instagram, a project landing page, or inside an enterprise learning dashboard, chatENT behaves as the frontline of interaction, never missing a lead, never losing a question, and always capturing intent.',
     productCore: [
       'Engages users on Instagram, websites, campaigns, landing pages, and CRMs.',
@@ -51,12 +51,13 @@ const productsData: {[key: string]: any} = {
         { tier: 'Enterprise', description: 'Full regulatory dashboard integration, cross-market intelligence, white-label licensing.' },
     ],
     simulation: <EstChatSimulation />,
+    cta: { text: "Name your SuperAgent", href: "/login" }
   },
   'mega-listing-pro-2': {
     title: 'MEGA LISTING PRO 2',
     icon: <FileJson className="h-8 w-8" />,
-    tagline: 'The Unified Market Registry',
-    vision: 'The real estate market is fragmented by noise — duplicate listings, misleading ads, outdated properties, and inconsistent pricing. MEGA LISTING PRO 2 was born to create one single source of truth.',
+    tagline: 'From Listings to MEGA PRO Listings',
+    vision: 'You don’t need more listings, you need a perfect listing manager. A listing is a little far beyond good images. It’s word sensitive and requires not less than stock market attention. Name a project, and click "list it". This is literally how it works.',
     dna: 'Its DNA is market clarity. By consolidating, verifying, and archiving all listings, MEGA LISTING PRO 2 acts as the sovereign registry for real estate data. It does not merely collect; it filters, validates, and enforces accuracy, ensuring every participant — buyer, broker, investor, regulator — can operate from the same foundation of trust.',
     productCore: [
       'Aggregates listings from portals, developers, and brokers.',
@@ -82,12 +83,13 @@ const productsData: {[key: string]: any} = {
         { tier: 'Enterprise', description: 'White-label registry for governments and real estate authorities.' },
     ],
     simulation: <MegaListingSimulation />,
+    cta: { text: "Use it to stop blaming Portals", href: "/login" }
   },
   'pro-search-eng-x3': {
     title: 'PRO SEARCH ENG. x3',
     icon: <Telescope className="h-8 w-8" />,
-    tagline: 'The Triple Engine of Discovery',
-    vision: 'Search is the gateway to real estate intelligence. Yet most portals still rely on outdated keyword filters, leaving buyers with irrelevant results and investors without precision.',
+    tagline: 'We turned the untouched search bar into unmatched search engine',
+    vision: 'This model switches the life on your website. We added a decentralized market library to it. Try our discovery search to see how it works!',
     dna: 'Its DNA is precision with depth. Where traditional search ends at the listing, PRO SEARCH ENG. x 3 extends into prediction, history, and opportunity discovery.',
     productCore: [
       'Multi-Layered Engine: Each search type is optimized for different personas (Fast, Smart, Deep).',
@@ -114,6 +116,7 @@ const productsData: {[key: string]: any} = {
         { tier: 'Phase 3', description: 'Unlock Deep Search with premium investor dashboards.' },
     ],
     simulation: <ProSearchSimulation />,
+    cta: { text: "let's Go", href: "/login" }
   },
   'ebram-judicial-ai': {
     title: 'EBRAM JUDICIAL AI',
@@ -145,6 +148,7 @@ const productsData: {[key: string]: any} = {
         { tier: 'Phase 3', description: 'Launch as Judicial AI across sectors (beyond real estate).' },
     ],
     simulation: <EbramSimulation />,
+    cta: { text: "Get Started", href: "/login" }
   }
 };
 
@@ -166,15 +170,19 @@ export default function ProductPage() {
           description={product.tagline}
           icon={product.icon}
           simulation={product.simulation}
-        />
+        >
+            <div className="mt-6 space-y-4">
+                 <p className="text-lg text-muted-foreground max-w-xl">{product.vision}</p>
+                 <Link href={product.cta.href}>
+                    <Button variant="outline" size="lg">{product.cta.text} <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                 </Link>
+            </div>
+        </PageHeader>
         
         <section>
             <Card className="bg-card/50 backdrop-blur-lg border-primary/10 shadow-xl shadow-primary/10">
                  <CardContent className="p-8 md:p-10 space-y-4">
-                    <h2 className="text-2xl font-bold text-foreground mb-4">The Vision & DNA</h2>
-                    <p className="text-lg text-foreground/80">
-                        {product.vision}
-                    </p>
+                    <h2 className="text-2xl font-bold text-foreground mb-4">The DNA</h2>
                     <p className="text-lg text-foreground/80">
                         {product.dna}
                     </p>
@@ -265,4 +273,3 @@ export default function ProductPage() {
     </div>
   );
 }
-
