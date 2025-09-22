@@ -8,12 +8,12 @@ import { Bot, User } from 'lucide-react';
 
 const ChatBubble = ({ children, from, delay }: { children: React.ReactNode, from: 'user' | 'bot', delay: number }) => (
     <motion.div
-        initial={{ opacity: 0, y: 20, x: from === 'user' ? 20 : -20 }}
-        whileInView={{ opacity: 1, y: 0, x: 0 }}
-        transition={{ duration: 0.4, delay }}
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay, ease: "easeOut" }}
         viewport={{ once: true, amount: 0.8 }}
         className={cn(
-            "flex items-end gap-2 max-w-[85%]",
+            "flex items-end gap-2 max-w-[85%] w-fit",
             from === 'user' ? 'self-end' : 'self-start'
         )}
     >
@@ -22,13 +22,24 @@ const ChatBubble = ({ children, from, delay }: { children: React.ReactNode, from
                 <Bot className="h-5 w-5" />
             </div>
         )}
-        <div className={cn(
-            "relative text-sm p-3 rounded-2xl",
-            from === 'user'
-                ? 'bg-primary text-primary-foreground rounded-br-none'
-                : 'bg-muted rounded-bl-none'
-        )}>
-            {children}
+        <div className="relative">
+             <motion.div
+                className="absolute -inset-0.5 rounded-2xl z-0"
+                style={{
+                    background: `linear-gradient(90deg, transparent, hsl(var(--accent)), transparent)`
+                }}
+                initial={{ backgroundSize: "400% 400%", scale: 1.1, opacity: 0, rotate: 0 }}
+                whileInView={{ backgroundSize: "100% 100%", scale: 1, opacity: 1, rotate: from === 'user' ? '1.5deg' : '-1.5deg' }}
+                transition={{ duration: 0.6, delay: delay + 0.3, ease: 'circOut' }}
+             />
+             <div className={cn(
+                "relative z-10 text-sm p-3 rounded-2xl shadow-md",
+                from === 'user'
+                    ? 'bg-primary text-primary-foreground rounded-br-none'
+                    : 'bg-muted rounded-bl-none'
+            )}>
+                {children}
+            </div>
         </div>
          {from === 'user' && (
             <div className="flex-shrink-0 w-8 h-8 rounded-full bg-muted flex items-center justify-center">
