@@ -1,0 +1,101 @@
+
+{
+  "projects": [
+    {
+      "id": "dxboffplan-emaar-beachfront",
+      "name": "Emaar Beachfront",
+      "developer": "Emaar",
+      "area": "Dubai Harbour",
+      "priceFrom": "AED 2,500,000",
+      "country": "AE",
+      "city": "Dubai",
+      "status": "Multi-phase",
+      "tags": ["dxboffplan.com", "scrape"],
+      "thumbnailUrl": "https://www.propertyfinder.ae/property/053b519598801584a2066d48888b1b86/856/550/MODE/ad801c/9184988-51841o.jpg?ctr=ae"
+    },
+    {
+      "id": "dxboffplan-damac-lagoons",
+      "name": "Damac Lagoons",
+      "developer": "Damac",
+      "area": "Dubailand",
+      "priceFrom": "AED 1,800,000",
+      "country": "AE",
+      "city": "Dubai",
+      "status": "Off-plan",
+      "tags": ["dxboffplan.com", "scrape"],
+      "thumbnailUrl": "https://www.propertyfinder.ae/property/77b878241b714a796e67616552a4204c/856/550/MODE/18c45f/9216776-658fbo.jpg?ctr=ae"
+    },
+    {
+      "id": "dxboffplan-sobha-hartland-2",
+      "name": "Sobha Hartland II",
+      "developer": "Sobha Realty",
+      "area": "Bukadra",
+      "priceFrom": "AED 1,600,000",
+      "country": "AE",
+      "city": "Dubai",
+      "status": "Off-plan",
+      "tags": ["dxboffplan.com", "scrape"],
+      "thumbnailUrl": "https://www.propertyfinder.ae/property/4380bce4a7d768132f0525287f354f24/856/550/MODE/4c23c7/9060412-f0490o.jpg?ctr=ae"
+    },
+    {
+      "id": "pf-verde-by-sobha",
+      "name": "Verde by Sobha",
+      "developer": "Sobha Realty",
+      "area": "JLT",
+      "priceFrom": "AED 2,000,000",
+      "country": "AE",
+      "city": "Dubai",
+      "status": "New Launch",
+      "tags": ["propertyfinder.ae", "scrape"],
+      "thumbnailUrl": "https://www.propertyfinder.ae/property/b822b39f15b69f6b92a4b8686b245a55/856/550/MODE/81cf43/8353119-0153fo.jpg?ctr=ae"
+    },
+    {
+      "id": "pf-savanna-creek-beach",
+      "name": "Savanna at Creek Beach",
+      "developer": "Emaar",
+      "area": "Dubai Creek Harbour",
+      "priceFrom": "AED 1,300,000",
+      "country": "AE",
+      "city": "Dubai",
+      "status": "New Launch",
+      "tags": ["propertyfinder.ae", "scrape"],
+      "thumbnailUrl": "https://www.propertyfinder.ae/property/b18a666870c29f0a597a7a67d0251c68/856/550/MODE/39bb2f/8444100-3882co.jpg?ctr=ae"
+    },
+    {
+      "id": "pf-damac-bay-cavali",
+      "name": "DAMAC Bay by Cavalli",
+      "developer": "Damac",
+      "area": "Dubai Harbour",
+      "priceFrom": "AED 3,000,000",
+      "country": "AE",
+      "city": "Dubai",
+      "status": "New Launch",
+      "tags": ["propertyfinder.ae", "scrape"],
+      "thumbnailUrl": "https://www.propertyfinder.ae/property/a158b9c439a385f0c978b66d48f76378/856/550/MODE/e45084/7949363-2070ao.jpg?ctr=ae"
+    },
+    {
+      "id": "bayut-palm-beach-towers",
+      "name": "Palm Beach Towers",
+      "developer": "Nakheel",
+      "area": "Palm Jumeirah",
+      "priceFrom": "AED 2,900,000",
+      "country": "AE",
+      "city": "Dubai",
+      "status": "Off-plan",
+      "tags": ["bayut.com", "scrape"],
+      "thumbnailUrl": "https://www.bayut.com/projects/2200-palm-beach-towers-1165185966373079.jpg"
+    },
+    {
+      "id": "bayut- peninsula-four",
+      "name": "Peninsula Four, The Plaza",
+      "developer": "Select Group",
+      "area": "Business Bay",
+      "priceFrom": "AED 1,200,000",
+      "country": "AE",
+      "city": "Dubai",
+      "status": "Off-plan",
+      "tags": ["bayut.com", "scrape"],
+      "thumbnailUrl": "https://www.bayut.com/projects/2200-peninsula-four-the-plaza-1166395777478049.jpg"
+    }
+  ]
+}
