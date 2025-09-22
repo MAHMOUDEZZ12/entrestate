@@ -7,8 +7,6 @@
  * This flow takes project assets and key selling points to create a short-form
  * video reel with dynamic captions and trending audio.
  *
- * @module AI/Flows/GenerateReel
- *
  * @export {function} generateReel - The main function to generate a reel.
  * @export {type} GenerateReelInput - The Zod schema for the input of the generateReel flow.
  * @export {type} GenerateReelOutput - The Zod schema for the output of the generateReel flow.

@@ -8,8 +8,6 @@
  * and returns a structured execution plan. This plan can then be passed to an
  * "Execution Terminal" to perform the actual edits. This flow acts as a "Planner".
  *
- * @module AI/Flows/EditPdf
- *
  * @export {function} editPdf - The main function to create a PDF editing plan.
  * @export {type} EditPdfInput - The Zod schema for the input of the editPdf flow.
  * @export {type} EditPdfOutput - The Zod schema for the output of the editPdf flow.

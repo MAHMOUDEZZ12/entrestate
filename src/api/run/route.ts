@@ -3,23 +3,22 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { ai } from '@/ai/genkit';
 
-// Import all flow functions directly here
+// AI Flow Imports
 import { generateAdFromBrochure } from '@/ai/flows/meta-pilot/generate-ad-from-brochure';
-import { generateLandingPage } from '@/ai/flows/archy/generate-landing-page';
-import { rebrandBrochure } from '@/ai/flows/archy/rebrand-brochure';
+import { generateLandingPage } from '@/ai/flows/content/generate-landing-page';
+import { rebrandBrochure } from '@/ai/flows/content/rebrand-brochure';
 import { generateSocialPost } from '@/ai/flows/meta-pilot/generate-social-post';
 import { suggestTargetingOptions } from '@/ai/flows/meta-pilot/suggest-targeting-options';
-import { editPdf } from '@/ai/flows/archy/edit-pdf';
+import { editPdf } from '@/ai/flows/content/edit-pdf';
 import { matchInvestors } from '@/ai/flows/market-intelligence/match-investors';
-import { aiBrandCreator } from '@/ai/flows/archy/ai-brand-creator';
+import { aiBrandCreator } from '@/ai/flows/content/ai-brand-creator';
 import { generateMarketReport } from '@/ai/flows/market-intelligence/generate-market-report';
 import { getMarketTrends } from '@/ai/flows/market-intelligence/get-market-trends';
 import { generateListing } from '@/ai/flows/listing-crm/generate-listing';
-import { generateStory } from '@/ai/flows/archy/generate-story';
-import { generateReel } from '@/ai/flows/archy/generate-reel';
-import { generateTikTokVideo } from '@/ai/flows/archy/generate-tiktok-video';
+import { generateStory } from '@/ai/flows/content/generate-story';
+import { generateReel } from '@/ai/flows/video/generate-reel';
+import { generateTikTokVideo } from '@/ai/flows/video/generate-tiktok-video';
 import { getCrmMemory } from '@/ai/flows/listing-crm/get-crm-memory';
 import { manageSocialPage } from '@/ai/flows/meta-pilot/manage-social-page';
 import { generateMultiOffer } from '@/ai/flows/market-intelligence/generate-multi-offer';
@@ -29,16 +28,15 @@ import { createMetaCampaign } from '@/ai/flows/meta-pilot/create-meta-campaign';
 import { syncPropertyFinderListing } from '@/ai/flows/developer-backend/sync-property-finder-listing';
 import { syncBayutListing } from '@/ai/flows/developer-backend/sync-bayut-listing';
 import { generatePaymentPlan } from '@/ai/flows/listing-crm/generate-payment-plan';
-import { translateBrochure } from '@/ai/flows/archy/translate-brochure';
-import { editYoutubeVideo } from '@/ai/flows/archy/edit-youtube-video';
+import { translateBrochure } from '@/ai/flows/content/translate-brochure';
+import { editYoutubeVideo } from '@/ai/flows/video/edit-youtube-video';
 import { investigateLead } from '@/ai/flows/listing-crm/investigate-lead';
 import { generateKeywordPlan } from '@/ai/flows/market-intelligence/generate-keyword-plan';
-import { generateVideoPresenter } from '@/ai/flows/archy/generate-video-presenter';
-import { discoverEngine } from '@/ai/flows/market-intelligence/discover-engine';
+import { generateVideoPresenter } from '@/ai/flows/video/generate-video-presenter';
 import { dealAnalyzer } from '@/ai/flows/market-intelligence/deal-analyzer';
-import { ugcScriptWriter } from '@/ai/flows/archy/ugc-script-writer';
-import { leaseReviewerFlow } from '@/ai/flows/ebram/lease-reviewer';
-import { chatbotCreatorFlow } from '@/ai/flows/ebram/chatbot-creator';
+import { ugcScriptWriter } from '@/ai/flows/content/ugc-script-writer';
+import { leaseReviewerFlow } from '@/ai/flows/utility/lease-reviewer';
+import { chatbotCreatorFlow } from '@/ai/flows/utility/chatbot-creator';
 import { runMetaAutoPilot } from '@/ai/flows/meta-pilot/meta-auto-pilot';
 import { getPaypalTransaction } from '@/ai/flows/developer-backend/get-paypal-transaction';
 
@@ -84,7 +82,6 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'lead-investigator': investigateLead,
     'keyword-planner': generateKeywordPlan,
     'ai-video-presenter': generateVideoPresenter,
-    'discover-engine': discoverEngine,
     'deal-analyzer': dealAnalyzer,
     'ugc-script-writer': ugcScriptWriter,
     'lease-reviewer': leaseReviewerFlow,

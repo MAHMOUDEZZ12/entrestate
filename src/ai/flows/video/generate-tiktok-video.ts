@@ -7,8 +7,6 @@
  * This flow creates a short, engaging, on-trend video clip ready for TikTok,
  * using project assets and syncing to trending audio styles.
  *
- * @module AI/Flows/GenerateTikTokVideo
- *
  * @export {function} generateTikTokVideo - The main function to generate a TikTok video.
  * @export {type} GenerateTikTokVideoInput - The Zod schema for the input.
  * @export {type} GenerateTikTokVideoOutput - The Zod schema for the output.

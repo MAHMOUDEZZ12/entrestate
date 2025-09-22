@@ -7,8 +7,6 @@
  * This flow generates the HTML for a complete landing page, incorporating project details,
  * user branding preferences, and information from an optional brochure.
  *
- * @module AI/Flows/GenerateLandingPage
- *
  * @export {function} generateLandingPage - The main function to generate a landing page.
  * @export {type} GenerateLandingPageInput - The Zod schema for the input of the generateLandingPage flow.
  * @export {type} GenerateLandingPageOutput - The Zod schema for the output of the generateLandingPage flow.
@@ -207,5 +205,3 @@ const generateLandingPageFlow = ai.defineFlow(
     };
   }
 );
-
-    

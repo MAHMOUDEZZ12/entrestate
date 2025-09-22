@@ -7,8 +7,6 @@
  * This flow can either take a pre-existing character image or generate a new one,
  * then uses a video generation model to animate the character speaking the provided script.
  * It also generates a separate high-quality audio file of the speech.
- *
- * @module AI/Flows/GenerateVideoPresenter
  */
 
 import { ai } from '@/ai/genkit';

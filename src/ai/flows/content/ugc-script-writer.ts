@@ -7,8 +7,6 @@
  * This flow takes a topic and a desired vibe and generates short, conversational scripts
  * optimized for platforms like TikTok and Instagram Reels.
  *
- * @module AI/Flows/UgcScriptWriter
- *
  * @export {function} ugcScriptWriter - The main function to generate UGC scripts.
  * @export {type} UgcScriptWriterInput - The Zod schema for the input.
  * @export {type} UgcScriptWriterOutput - The Zod schema for the output.

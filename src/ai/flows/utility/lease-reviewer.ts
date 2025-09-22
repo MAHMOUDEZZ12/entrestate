@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -5,8 +6,6 @@
  *
  * This flow acts as an AI paralegal, reviewing a lease document and providing a structured analysis
  * to help agents and clients identify areas for concern or negotiation.
- *
- * @module AI/Flows/LeaseReviewer
  */
 
 import { ai } from '@/ai/genkit';

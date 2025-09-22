@@ -7,8 +7,6 @@
  * This flow takes a project ID and a desired vibe, and creates a short, engaging
  * video story suitable for platforms like Instagram or Facebook.
  *
- * @module AI/Flows/GenerateStory
- *
  * @export {function} generateStory - The main function to generate a story.
  * @export {type} GenerateStoryInput - The Zod schema for the input of the generateStory flow.
  * @export {type} GenerateStoryOutput - The Zod schema for the output of the generateStory flow.

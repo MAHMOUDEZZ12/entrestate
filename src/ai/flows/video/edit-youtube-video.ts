@@ -7,8 +7,6 @@
  * This flow takes a source video, a set of instructions, and returns a new,
  * edited video ready for YouTube, now powered by the advanced Veo 3 model with sound.
  *
- * @module AI/Flows/EditYouTubeVideo
- *
  * @export {function} editYoutubeVideo - The main function to edit a video.
  * @export {type} EditYouTubeVideoInput - The Zod schema for the input of the flow.
  * @export {type} EditYouTubeVideoOutput - The Zod schema for the output of the flow.

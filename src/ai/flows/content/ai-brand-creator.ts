@@ -8,8 +8,6 @@
  * and extracts structured data to set up their brand identity and create project lists,
  * acting as a command from the AI Assistant.
  *
- * @module AI/Flows/AIBrandCreator
- *
  * @export {function} aiBrandCreator - The main function to configure the workspace.
  * @export {type} AIBrandCreatorInput - The Zod schema for the input of the aiBrandCreator flow.
  * @export {type} AIBrandCreatorOutput - The Zod schema for the output of the aiBrandCreator flow.
@@ -141,9 +139,6 @@ const aiBrandCreatorFlow = ai.defineFlow(
     if (!output) {
       throw new Error('The AI failed to process the setup documents.');
     }
-    // In a real application, you would now use the 'output' data to update
-    // the user's settings in your database. For this simulation, we just
-    // return the extracted data and the summary.
     return output;
   }
 );

@@ -8,8 +8,6 @@
  * a new, translated version of the brochure, aiming to preserve the original
  * layout and design.
  *
- * @module AI/Flows/TranslateBrochure
- *
  * @export {function} translateBrochure - The main function to translate a brochure.
  * @export {type} TranslateBrochureInput - The Zod schema for the input.
  * @export {type} TranslateBrochureOutput - The Zod schema for the output.

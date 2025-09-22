@@ -7,8 +7,6 @@
  * This flow takes an existing brochure and applies a new brand identity to it, including contact details,
  * a company logo (generating one if not provided), and brand-specific tone and colors.
  *
- * @module AI/Flows/RebrandBrochure
- *
  * @export {function} rebrandBrochure - The main function to rebrand a brochure.
  * @export {type} RebrandBrochureInput - The Zod schema for the input of the rebrandBrochure flow.
  * @export {type} RebrandBrochureOutput - The Zod schema for the output of the rebrandBrochure flow.
@@ -175,7 +173,6 @@ const rebrandBrochureFlow = ai.defineFlow(
     let logoToUse = input.companyLogoDataUri;
     let generatedLogoUri: string | undefined = undefined;
 
-    // Generate a logo if one wasn't provided but is mentioned in the instructions or if no logo is provided at all.
     const shouldGenerateLogo = !input.companyLogoDataUri && (input.deepEditInstructions?.toLowerCase().includes("logo") || !input.companyLogoDataUri);
 
     if (shouldGenerateLogo) {
@@ -184,10 +181,9 @@ const rebrandBrochureFlow = ai.defineFlow(
         colors: input.colors,
       });
       generatedLogoUri = logoResult.logoDataUri;
-      logoToUse = generatedLogoUri; // This will be used for the prompt, but we return the generated one separately
+      logoToUse = generatedLogoUri;
     }
     
-    // The prompt needs to know about the generated logo if it exists
     const promptPayload = {
       ...input,
       generatedLogoDataUri: generatedLogoUri,
@@ -199,10 +195,9 @@ const rebrandBrochureFlow = ai.defineFlow(
       throw new Error("Failed to generate rebranded brochure.");
     }
     
-    // Ensure the generated logo URI is included in the final output if it was created.
     return {
       rebrandedBrochureDataUri: output.rebrandedBrochureDataUri,
-      logoDataUri: generatedLogoUri, // Return the newly generated logo if it exists
+      logoDataUri: generatedLogoUri,
     };
   }
 );

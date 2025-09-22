@@ -6,8 +6,6 @@
  *
  * This flow takes basic information about a project and generates an HTML/JS snippet
  * that users can paste into their website to deploy an AI-powered assistant.
- *
- * @module AI/Flows/ChatbotCreator
  */
 
 import { ai } from '@/ai/genkit';
