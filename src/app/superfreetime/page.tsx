@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
 import { secretCodes } from '@/lib/codes';
+import { PageHeader } from '@/components/ui/page-header';
 
 
 const GRID_SIZE = 5;
@@ -114,22 +115,16 @@ export default function SuperFreeTimePage() {
     const seconds = timeLeft % 60;
 
     return (
-        <div className="flex min-h-screen flex-col bg-background">
+        <main className="p-4 md:p-10 space-y-8">
             {foundKey && <Confetti />}
-            <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20 flex flex-col items-center">
-                <div className="text-center mb-12">
-                    <div className="inline-block p-4 mb-6 text-white rounded-2xl bg-gradient-to-br from-primary to-accent">
-                        <Key className="h-12 w-12" />
-                    </div>
-                    <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-foreground/60">
-                        Find The Key by Gemini
-                    </h1>
-                    <p className="text-lg md:text-xl text-foreground/60 max-w-3xl mx-auto">
-                        You have {MAX_ATTEMPTS} chances to find the key using the hint below. Good luck!
-                    </p>
-                </div>
+            <PageHeader 
+                icon={<Key className="h-8 w-8" />}
+                title="Find The Key"
+                description={`You have ${MAX_ATTEMPTS} chances to find the key using the hint below. Good luck!`}
+            />
 
-                <Card className="bg-card/50 backdrop-blur-lg border-primary/10 shadow-xl shadow-primary/10 w-full max-w-md">
+            <div className="flex justify-center">
+                <Card className="bg-card/50 backdrop-blur-lg w-full max-w-md">
                     <CardContent className="p-6">
                         <div className="mb-4 text-center p-3 bg-muted/50 rounded-lg border flex items-center justify-center gap-3">
                            <Lightbulb className="h-5 w-5 text-primary" />
@@ -167,59 +162,60 @@ export default function SuperFreeTimePage() {
                         </div>
                     </CardContent>
                 </Card>
+            </div>
 
-                 <Dialog open={gameOver} onOpenChange={(open) => { if(!open) resetGame(); }}>
-                    <DialogContent>
-                        <DialogHeader className="text-center items-center">
-                             {foundKey ? (
-                                showReward ? (
-                                    <>
-                                        <DialogTitle className="text-3xl font-bold text-primary">Your Secret Code!</DialogTitle>
-                                        <DialogDescription>
-                                            Login or register, then hand this code to your AI Assistant to unlock your secret reward. Good luck!
-                                        </DialogDescription>
-                                         <div className="my-4 p-4 bg-muted rounded-lg border border-dashed w-full flex items-center justify-between">
-                                            <span className="font-mono text-lg text-primary">{gameState.secretCode}</span>
-                                            <Button variant="ghost" size="icon" onClick={copyCode}><Copy className="h-4 w-4" /></Button>
-                                         </div>
-                                    </>
-                                ) : (
-                                    <>
-                                        <DialogTitle className="text-3xl font-bold text-green-400">You found it!</DialogTitle>
-                                        <DialogDescription>
-                                            You found the key in {attempts} {attempts === 1 ? 'attempt' : 'attempts'}.
-                                        </DialogDescription>
-                                    </>
-                                )
-                             ) : (
-                                <DialogTitle className="text-3xl font-bold text-destructive">{timeLeft <= 0 ? "Time's up!" : "Game Over"}</DialogTitle>
-                             )}
-                            {!foundKey && (
-                               <DialogDescription>That was fun, let's get back to business.</DialogDescription>
+
+            <Dialog open={gameOver} onOpenChange={(open) => { if(!open) resetGame(); }}>
+                <DialogContent>
+                    <DialogHeader className="text-center items-center">
+                            {foundKey ? (
+                            showReward ? (
+                                <>
+                                    <DialogTitle className="text-3xl font-bold text-primary">Your Secret Code!</DialogTitle>
+                                    <DialogDescription>
+                                        Login or register, then hand this code to your AI Assistant to unlock your secret reward. Good luck!
+                                    </DialogDescription>
+                                        <div className="my-4 p-4 bg-muted rounded-lg border border-dashed w-full flex items-center justify-between">
+                                        <span className="font-mono text-lg text-primary">{gameState.secretCode}</span>
+                                        <Button variant="ghost" size="icon" onClick={copyCode}><Copy className="h-4 w-4" /></Button>
+                                        </div>
+                                </>
+                            ) : (
+                                <>
+                                    <DialogTitle className="text-3xl font-bold text-green-400">You found it!</DialogTitle>
+                                    <DialogDescription>
+                                        You found the key in {attempts} {attempts === 1 ? 'attempt' : 'attempts'}.
+                                    </DialogDescription>
+                                </>
+                            )
+                            ) : (
+                            <DialogTitle className="text-3xl font-bold text-destructive">{timeLeft <= 0 ? "Time's up!" : "Game Over"}</DialogTitle>
                             )}
-                        </DialogHeader>
-                        <DialogFooter className="justify-center sm:justify-center gap-2">
-                           {showReward ? (
-                             <Link href="/login">
-                                <Button size="lg">Login or Register</Button>
-                             </Link>
-                           ) : (
-                            <>
-                                <Button onClick={resetGame} size="lg" variant="outline">One More Game</Button>
-                                {foundKey ? (
-                                    <Button size="lg" onClick={() => setShowReward(true)}>Claim Your Prize</Button>
-                                ) : (
-                                    <Link href="/login">
-                                        <Button size="lg"><UserPlus className="mr-2 h-4 w-4"/> Let's Get To Business</Button>
-                                    </Link>
-                                )}
-                            </>
-                           )}
-                        </DialogFooter>
-                    </DialogContent>
-                </Dialog>
+                        {!foundKey && (
+                            <DialogDescription>That was fun, let's get back to business.</DialogDescription>
+                        )}
+                    </DialogHeader>
+                    <DialogFooter className="justify-center sm:justify-center gap-2">
+                        {showReward ? (
+                            <Link href="/dashboard/assistant">
+                            <Button size="lg">Go to Assistant</Button>
+                            </Link>
+                        ) : (
+                        <>
+                            <Button onClick={resetGame} size="lg" variant="outline">One More Game</Button>
+                            {foundKey ? (
+                                <Button size="lg" onClick={() => setShowReward(true)}>Claim Your Prize</Button>
+                            ) : (
+                                <Link href="/dashboard">
+                                    <Button size="lg"><Briefcase className="mr-2 h-4 w-4"/> Let's Get To Business</Button>
+                                </Link>
+                            )}
+                        </>
+                        )}
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
 
-            </main>
-        </div>
+        </main>
     );
 }
