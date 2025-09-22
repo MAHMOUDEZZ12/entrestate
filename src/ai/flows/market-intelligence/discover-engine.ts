@@ -53,7 +53,10 @@ const discoverEngineFlow = ai.defineFlow(
     const authClient = await auth.getClient();
     google.options({ auth: authClient });
 
-    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'mtcmartechgooodstage-456-326b5';
+    const projectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;
+    if (!projectId) {
+        throw new Error("Google Cloud Project ID is not configured.");
+    }
     const location = 'global';
     // This is the production-ready Datastore ID for our knowledge base.
     const datastoreId = '2908016390688473088'; 
