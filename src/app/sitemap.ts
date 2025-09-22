@@ -5,12 +5,11 @@ import { appDetails } from '@/lib/blog-content';
 
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const siteUrl = 'https://entrestate.com'; // Replace with your actual domain
+  const siteUrl = 'https://www.entrestate.com';
 
   const staticRoutes = [
     '/',
     '/apps',
-    '/dashboard',
     '/pricing',
     '/solutions',
     '/login',
@@ -31,6 +30,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/products/estchat-x3',
     '/products/mega-listing-pro-2',
     '/products/pro-search-eng-x3',
+    '/sx3-mindmap',
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
@@ -44,13 +44,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'weekly' as const,
       priority: 0.7,
   }));
-
-  const toolRoutes = tools.map((tool) => ({
-    url: `${siteUrl}/dashboard/tool/${tool.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
   
   const appRoutes = tools.map((tool) => ({
     url: `${siteUrl}/apps/${tool.id}`,
@@ -60,6 +53,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
 
-  return [...staticRoutes, ...blogRoutes, ...toolRoutes, ...appRoutes];
+  return [...staticRoutes, ...blogRoutes, ...appRoutes];
 }
+
 
