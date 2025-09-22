@@ -32,19 +32,22 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
             title: "Generate a Luxury Ad",
             description: "Create a high-end, professional ad for a luxury property.",
             input: `{\n  "projectName": "Emaar Beachfront",\n  "focusArea": "Luxury amenities",\n  "toneOfVoice": "Luxury"\n}`,
-            outputImage: "https://picsum.photos/seed/tool-showcase-1/800/450"
+            outputImage: "https://picsum.photos/seed/luxury-ad/800/450",
+            imageHint: "luxury apartment interior"
         },
         {
-            title: "Create a Report",
+            title: "Create a Market Report",
             description: "Generate an in-depth market report for a specific area.",
             input: `{\n  "location": "Dubai Marina",\n  "propertyType": "Luxury Condos",\n  "reportType": "Investor"\n}`,
-            outputImage: "https://picsum.photos/seed/tool-showcase-2/800/450"
+            outputImage: "https://picsum.photos/seed/market-report/800/450",
+            imageHint: "dubai skyline"
         },
         {
             title: "Build a Landing Page",
             description: "Quickly generate a landing page for a new development.",
             input: `{\n  "projectName": "DAMAC Hills 2",\n  "projectDetails": "3-bedroom villas with lagoon access",\n  "brandingStyle": "Modern & Minimalist"\n}`,
-            outputImage: "https://picsum.photos/seed/tool-showcase-3/800/450"
+            outputImage: "https://picsum.photos/seed/villa-exterior/800/450",
+            imageHint: "modern villa exterior"
         }
     ];
 
@@ -65,7 +68,7 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
                                     <div>
                                         <Label className="text-sm">Example Output</Label>
                                         <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg">
-                                            <Image src={ex.outputImage} alt={ex.title} layout="fill" objectFit="cover" data-ai-hint="real estate marketing" />
+                                            <Image src={ex.outputImage} alt={ex.title} layout="fill" objectFit="cover" data-ai-hint={ex.imageHint} />
                                         </div>
                                     </div>
                                 </div>
