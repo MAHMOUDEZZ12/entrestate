@@ -104,6 +104,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   ];
   
   const additionalFaqs = [
+    { question: "Who can access my leads?", answer: "From our platform, no one. Your data is private and not accessible by our team." },
     { question: "Which facebook page is used in the ads?", answer: "Your connected Facebook Page and Instagram profile are used." },
     { question: "Can I stop the ad?", answer: "Yes, at any time. You have full control through your Meta Ads Manager." },
     { question: "Where do I pay for the ads?", answer: "Your ad budget is paid directly to Meta through the payment method registered in your Meta Ads Manager account." },
@@ -301,4 +302,3 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
     </div>
   );
 }
-
