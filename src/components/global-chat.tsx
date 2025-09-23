@@ -3,7 +3,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Bot, Send, Loader2, User, ChevronUp, X, Sparkles, PlusCircle } from 'lucide-react';
+import { Bot, Send, Loader2, User, ChevronUp, Sparkles, PlusCircle } from 'lucide-react';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
@@ -35,7 +35,6 @@ export function GlobalChat() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -140,44 +139,41 @@ export function GlobalChat() {
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        <SheetContent side="bottom" className="h-4/5 flex flex-col p-0 border-t-2">
-            <SheetHeader className="p-4 border-b flex-row justify-between items-center">
-                <SheetTitle className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-primary" />
-                    AI Assistant
-                </SheetTitle>
-                 <Button variant="ghost" size="icon" onClick={() => setIsSheetOpen(false)}>
-                    <X className="h-4 w-4" />
-                </Button>
-            </SheetHeader>
-            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef as any}>
-                <div className="space-y-4 max-w-4xl mx-auto w-full">
-                    {messages.map((msg, index) => (
-                        <div key={index} className={cn("flex items-start gap-3", msg.from === 'user' ? 'justify-end' : 'justify-start')}>
-                            {msg.from === 'ai' && (
-                                <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0"><Bot className="h-5 w-5" /></div>
-                            )}
-                            <div className={cn("max-w-xl rounded-2xl p-3 text-sm whitespace-pre-wrap", msg.from === 'user' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-muted rounded-bl-none')}>
-                                {msg.text}
-                            </div>
-                            {msg.from === 'user' && (
-                                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center shrink-0"><User className="h-5 w-5"/></div>
-                            )}
-                        </div>
-                    ))}
-                    {isLoading && (
-                        <div className="flex items-start gap-3 justify-start">
-                            <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0"><Bot className="h-5 w-5" /></div>
-                            <div className="rounded-2xl p-3 text-sm bg-muted rounded-bl-none">
-                                <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                            </div>
-                        </div>
-                    )}
-                </div>
-            </ScrollArea>
-        </SheetContent>
+      <SheetContent side="bottom" className="h-4/5 flex flex-col p-0 border-t-2 z-40" hideCloseButton={true}>
+          <SheetHeader className="p-4 border-b flex-row justify-between items-center">
+              <SheetTitle className="flex items-center gap-2">
+                  <Sparkles className="h-5 w-5 text-primary" />
+                  AI Assistant
+              </SheetTitle>
+          </SheetHeader>
+          <ScrollArea className="flex-1 p-4" ref={scrollAreaRef as any}>
+              <div className="space-y-4 max-w-4xl mx-auto w-full">
+                  {messages.map((msg, index) => (
+                      <div key={index} className={cn("flex items-start gap-3", msg.from === 'user' ? 'justify-end' : 'justify-start')}>
+                          {msg.from === 'ai' && (
+                              <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0"><Bot className="h-5 w-5" /></div>
+                          )}
+                          <div className={cn("max-w-xl rounded-2xl p-3 text-sm whitespace-pre-wrap", msg.from === 'user' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-muted rounded-bl-none')}>
+                              {msg.text}
+                          </div>
+                          {msg.from === 'user' && (
+                              <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center shrink-0"><User className="h-5 w-5"/></div>
+                          )}
+                      </div>
+                  ))}
+                  {isLoading && (
+                      <div className="flex items-start gap-3 justify-start">
+                          <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0"><Bot className="h-5 w-5" /></div>
+                          <div className="rounded-2xl p-3 text-sm bg-muted rounded-bl-none">
+                              <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                          </div>
+                      </div>
+                  )}
+              </div>
+          </ScrollArea>
+      </SheetContent>
 
-      <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-lg border-t">
+      <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t">
         <div className="container mx-auto p-4 max-w-5xl">
             <form onSubmit={handleSendMessage} className="relative flex items-center gap-4">
                  {actions.map(action => (
@@ -196,12 +192,11 @@ export function GlobalChat() {
                         onChange={(e) => setInput(e.target.value)}
                         disabled={isLoading}
                         autoComplete="off"
-                        onFocus={() => { if(!isSheetOpen) setIsSheetOpen(true); }}
                     />
                     <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
                         <SheetTrigger asChild>
                             <Button type="button" variant="ghost" size="icon">
-                                <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                                <ChevronUp className={cn("h-5 w-5 text-muted-foreground transition-transform", isSheetOpen && "rotate-180")} />
                             </Button>
                         </SheetTrigger>
                         <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
