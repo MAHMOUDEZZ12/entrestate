@@ -1,4 +1,3 @@
-
 import {
     Bot, BrainCircuit, CheckCircle, Plus, Sparkles, Upload, Megaphone, User,
     ShieldQuestion, Search, MessageCircle, PenTool, Clock2, Wallet, BadgeCheck,
@@ -80,6 +79,7 @@ export const tools: ToolData[] = [
     { id: 'data-importer', title: 'Data Importer', description: 'Manage your search context by importing and exporting XML data.', iconName: 'Upload', color: '#708090', categories: ['Developer'], badge: 'NEW', cta: 'Import Data' },
     
     // Developer Tools
+    { id: 'alloydb-scanner', title: 'AlloyDB Scanner', description: 'Scan your environment for databases and analyze their AlloyDB migration compatibility.', iconName: 'Database', color: '#3367d6', categories: ['Developer'], badge: 'NEW', cta: 'Run Scan' },
     { id: 'vm-creator', title: 'VM Creator', description: 'A utility for developers to provision Google Cloud virtual machines.', iconName: 'Terminal', color: '#333333', categories: ['Developer'], cta: 'Create VM' },
     { id: 'creative-execution-terminal', title: 'Creative Execution Terminal', dashboardTitle: 'Execution Terminal', description: 'The execution engine for complex creative tasks.', iconName: 'Terminal', color: '#333333', categories: ['Developer'], cta: 'Run Job' },
     { id: 'superfreetime', title: 'Super Free Time', description: 'A secret tool for some fun.', iconName: 'KeyRound', color: '#FFD700', categories: [], cta: 'Play' },

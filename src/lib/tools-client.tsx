@@ -1,10 +1,9 @@
-
 'use client';
 import React from 'react';
 import { appDetails as blogContent } from './blog-content';
 import * as LucideIcons from 'lucide-react';
 import { toast as sonnerToast } from "sonner";
-import { Copy, Download, Trash2, Eye, Link as LinkIcon, FileJson } from 'lucide-react';
+import { Copy, Download, Trash2, Eye, Link as LinkIcon, FileJson, Database } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -764,6 +763,33 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                 { id: 'price', name: 'Price (AED)', type: 'number' },
                 { id: 'imageUrls', name: 'Image URLs', type: 'textarea', placeholder: 'One URL per line' },
             ];
+            break;
+        case 'alloydb-scanner':
+            tool.creationFields = [
+                 { id: 'scanContext', name: 'Scan Context', type: 'textarea', placeholder: 'e.g., "Our production environment runs on GKE and includes a managed PostgreSQL 13 instance for user data and a self-hosted MySQL 8 for logging."', description: 'Describe the environment you want to scan.' },
+            ];
+            tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                    <Card className="bg-primary/10 border-primary/20">
+                        <CardHeader><CardTitle>Scan Summary</CardTitle></CardHeader>
+                        <CardContent><p>{result.summary}</p></CardContent>
+                    </Card>
+                    <h3 className="font-semibold text-lg pt-2">Detected Instances:</h3>
+                    {result.instances.map((instance: any, index: number) => (
+                        <Card key={index}>
+                            <CardHeader>
+                                <CardTitle className="text-lg flex justify-between items-center">
+                                    <div className="flex items-center gap-2"><Database className="h-5 w-5" /> {instance.name}</div>
+                                    <Badge variant={instance.isAlloyDBCompatible ? 'default' : 'secondary'}>{instance.type} {instance.version}</Badge>
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="mt-2"><strong>Recommendation:</strong> {instance.recommendation}</p>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </div>
+            );
             break;
         default:
             // Generic placeholder for tools without specific implementation yet

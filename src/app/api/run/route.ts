@@ -1,4 +1,3 @@
-
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -41,6 +40,7 @@ import { chatbotCreatorFlow } from '@/ai/flows/utility/chatbot-creator';
 import { runMetaAutoPilot } from '@/ai/flows/meta-pilot/meta-auto-pilot';
 import { getPaypalTransaction } from '@/ai/flows/developer-backend/get-paypal-transaction';
 import { commissionCalculator } from '@/ai/flows/sales/commission-calculator';
+import { scanForAlloyDB } from '@/ai/flows/developer-backend/scan-for-alloydb';
 
 const runToolSchema = z.object({
   toolId: z.string(),
@@ -83,6 +83,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'lease-reviewer': leaseReviewerFlow,
     'chatbot-creator': chatbotCreatorFlow,
     'paypal-transaction': getPaypalTransaction,
+    'alloydb-scanner': scanForAlloyDB,
     'prompt-library': (payload) => Promise.resolve({ message: "Executed from library", payload }), // Added for library execution
     'meta-auto-pilot': async (payload) => {
       // The real-time updates are simulated on the client,
