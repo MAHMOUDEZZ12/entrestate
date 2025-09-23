@@ -15,7 +15,7 @@ const navLinks = [
     { name: 'Apps', href: '/apps' },
     { name: 'Services', href: '/services' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Community', href: '/community' },
+    { name: 'Community', href: '/me/community' },
 ];
 
 export function LandingHeader() {
@@ -44,10 +44,10 @@ export function LandingHeader() {
         </div>
 
         <div className="hidden md:flex items-center gap-2">
-           <Link href="/me">
+           <Link href="/login">
               <Button variant="ghost">Dashboard</Button>
           </Link>
-          <Link href="/me">
+          <Link href="/login">
               <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
           </Link>
         </div>
