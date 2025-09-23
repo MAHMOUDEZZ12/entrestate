@@ -8,7 +8,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Link as LinkIcon
 } from 'lucide-react';
 import type { ReactElement } from 'react';
 import { tools as toolDetails, ToolData, Suite } from './tools-data';
@@ -24,6 +24,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Badge } from '@/components/ui/badge';
 import React from 'react';
 import { Copy } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 
 export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
 export type BadgeType = 'NEW' | 'AUTO' | 'DEPRECATED';
@@ -395,6 +396,41 @@ configureTool('ugc-script-writer', {
                             <p className="font-semibold text-primary">{script.callToAction}</p>
                         </div>
                     </CardContent>
+                </Card>
+            ))}
+        </div>
+    )
+});
+
+configureTool('lead-investigator', {
+    creationFields: [
+        { id: 'name', name: 'Lead Name', type: 'text', placeholder: 'e.g., John Doe' },
+        { id: 'email', name: 'Email (Optional)', type: 'text', placeholder: 'e.g., john.doe@example.com' },
+        { id: 'company', name: 'Company (Optional)', type: 'text', placeholder: 'e.g., ACME Inc.' },
+    ],
+    renderResult: (result, toast) => (
+        <div className="space-y-4">
+            <Alert>
+                <AlertTitle>Investigation Summary</AlertTitle>
+                <AlertDescription>{result.overallSummary}</AlertDescription>
+            </Alert>
+            {result.matches.map((match: any, index: number) => (
+                <Card key={index}>
+                    <CardHeader>
+                        <CardTitle className="flex justify-between items-center">
+                            {match.name}
+                            <Badge>{(match.matchConfidence * 100).toFixed(0)}% Match</Badge>
+                        </CardTitle>
+                        <CardDescription>Found on: {match.source}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <p>{match.summary}</p>
+                    </CardContent>
+                    <CardFooter>
+                         <a href={match.profileUrl} target="_blank" rel="noopener noreferrer">
+                            <Button variant="outline" size="sm"><LinkIcon className="mr-2 h-4 w-4" /> View Profile</Button>
+                        </a>
+                    </CardFooter>
                 </Card>
             ))}
         </div>
