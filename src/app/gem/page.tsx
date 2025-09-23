@@ -23,6 +23,7 @@ import { tools } from '@/lib/tools-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import Link from 'next/link';
+import { triggerScrape, triggerDataflow } from '@/services/admin-api';
 
 
 type TaskStatus = 'New' | 'Planned' | 'Coded' | 'Implemented' | 'Assured' | 'Issue Reported';
@@ -256,7 +257,6 @@ export default function GemAdminPage() {
             description: `Scraping data from source: ${source}`,
             status: 'Planned',
         };
-
         setChangeLog(prev => [newLogEntry, ...prev]);
 
         // Simulate the scraping process and UI updates
@@ -264,13 +264,11 @@ export default function GemAdminPage() {
         setTimeout(() => setChangeLog(prev => prev.map(l => l.id === newLogEntry.id ? {...l, status: 'Implemented'} : l)), 2000);
 
         try {
-            const response = await fetch(`/api/admin/scrape?source=${source}`, { method: 'POST' });
-            const data = await response.json();
-            if (!data.ok) throw new Error(data.error);
+            const data = await triggerScrape(source);
             
-            const successMessage = `Scraping from ${source} complete! Found and updated ${data.data.projectsAdded} projects.`;
+            const successMessage = `Scraping from ${source} complete! Found and updated ${data.projectsAdded} projects.`;
             setChangeLog(prev => prev.map(l => l.id === newLogEntry.id ? {...l, status: 'Assured', comment: successMessage} : l));
-            toast({ title: 'Scraping Complete!', description: `Added/updated ${data.data.projectsAdded} projects from ${source} in the Market Library.`});
+            toast({ title: 'Scraping Complete!', description: `Added/updated ${data.projectsAdded} projects from ${source} in the Market Library.`});
 
         } catch (e: any) {
             const errorMessage = `Error during scraping from ${source}: ${e.message}`;
@@ -296,13 +294,11 @@ export default function GemAdminPage() {
         setChangeLog(prev => [newLogEntry, ...prev]);
 
         try {
-            const response = await fetch(`/api/admin/dataflow?job=${jobType}`, { method: 'POST' });
-            const data = await response.json();
-            if (!data.ok) throw new Error(data.error);
+            const data = await triggerDataflow(jobType);
 
-            const successMessage = `Dataflow job '${data.data.job.name}' launched successfully.`;
+            const successMessage = `Dataflow job '${data.job.name}' launched successfully.`;
             setChangeLog(prev => prev.map(l => l.id === newLogEntry.id ? {...l, status: 'Implemented', comment: successMessage} : l));
-            toast({ title: 'Dataflow Job Launched!', description: `Job ID: ${data.data.job.id}`});
+            toast({ title: 'Dataflow Job Launched!', description: `Job ID: ${data.job.id}`});
 
         } catch(e: any) {
             const errorMessage = `Error launching Dataflow job: ${e.message}`;
