@@ -1,9 +1,10 @@
 
+
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Search, BookOpen, GitBranch, Users2, Workflow, School, X } from 'lucide-react';
+import { Menu, Search, BookOpen, GitBranch, Users2, Workflow, School, X, Settings, LogOut, LayoutDashboard } from 'lucide-react';
 import React from 'react';
 import { GlobalSearch } from '@/components/ui/global-search';
 import {
@@ -19,6 +20,17 @@ import { tools } from '@/lib/tools-client';
 import { DashboardSidebar } from './dashboard-sidebar';
 import { useTabManager } from '@/context/TabManagerContext';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
+import { auth } from '@/lib/firebase';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback } from './ui/avatar';
 
 
 const breadcrumbNameMap: { [key: string]: string } = {
@@ -31,7 +43,7 @@ const breadcrumbNameMap: { [key: string]: string } = {
     '/dashboard/flows': 'Flow Builder',
     '/dashboard/clients': 'Client Pages',
     '/dashboard/leads': 'Leads (CRM)',
-    '/dashboard/onboarding': 'Onboarding',
+    '/onboarding': 'Onboarding',
     '/dashboard/system-health': 'System Health',
     '/dashboard/projects': 'My Projects',
     '/dashboard/directory': 'Contacts Directory',
@@ -63,6 +75,11 @@ export function DashboardHeader() {
   const pathname = usePathname();
   const { openTabs, activeTab, removeTab } = useTabManager();
   const pathSegments = pathname.split('/').filter(Boolean);
+  const { user } = useAuth();
+  
+  const handleLogout = async () => {
+    await auth?.signOut();
+  }
 
 
   return (
@@ -106,7 +123,9 @@ export function DashboardHeader() {
           
            <div className="ml-auto flex items-center gap-2">
                 <nav className="hidden md:flex items-center gap-1">
-                    <Link href="/resources/flows"><Button variant="ghost" size="sm"><BookOpen className="h-4 w-4 mr-1"/> Resources</Button></Link>
+                    <Link href="/solutions"><Button variant="ghost" size="sm">Solutions</Button></Link>
+                    <Link href="/apps"><Button variant="ghost" size="sm">Apps</Button></Link>
+                    <Link href="/services"><Button variant="ghost" size="sm">Services</Button></Link>
                     <Link href="/community"><Button variant="ghost" size="sm"><Users2 className="h-4 w-4 mr-1"/> Community</Button></Link>
                 </nav>
               <div className="relative flex-1 md:grow-0">
@@ -119,6 +138,37 @@ export function DashboardHeader() {
                 </Button>
                 <GlobalSearch isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
               </div>
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                        <Avatar className="h-8 w-8">
+                        <AvatarFallback>{user?.email?.charAt(0).toUpperCase() || 'U'}</AvatarFallback>
+                        </Avatar>
+                    </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                        <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">My Account</p>
+                        <p className="text-xs leading-none text-muted-foreground">
+                            {user?.email}
+                        </p>
+                        </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem asChild>
+                        <Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                        <Link href="/dashboard/settings"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}>
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Log out
+                    </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
            </div>
        </div>
 

@@ -1,28 +1,511 @@
+
+
 'use client';
 
-import React from 'react';
-import { PageHeader } from '@/components/ui/page-header';
-import { Sparkles } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
+import React, { useState, useEffect, Suspense } from 'react';
+import { useSearchParams, useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { ProjectCard } from '@/components/ui/project-card';
+import { ProviderTile } from '@/components/ui/provider-tile';
+import { Check, ChevronRight, X, ArrowLeft, Loader2, Sparkles, Upload, Users2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import Image from 'next/image';
+import { track } from '@/lib/events';
+import type { Project, OnboardingDraft } from '@/types';
+import { useAuth } from '@/hooks/useAuth';
+import { saveUserData } from '@/services/database';
+import Link from 'next/link';
+
+const MOCK_DEVELOPERS = ['Emaar', 'Damac', 'Sobha', 'Nakheel', 'Meraas', 'Aldar'];
+
+const INITIAL_DRAFT: OnboardingDraft = {
+    city: 'Dubai',
+    country: 'UAE',
+    devFocus: [],
+    firstPass: {},
+    scanSelected: [],
+    shortlist: [],
+    brandKit: { logoUrl: null, colors: { primary: '#36454F', accent: '#98FF98' }, contact: { name: '', phone: '', email: '' } },
+    connections: {},
+    payment: { status: 'skipped' },
+    progress: { step: 1, ts: Date.now() },
+};
+
+function OnboardingComponent() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
+    const { toast } = useToast();
+    const { user } = useAuth();
+    const step = parseInt(searchParams.get('step') || '1', 10);
+    
+    const [isLoading, setIsLoading] = useState(false);
+    const [suggestedProjects, setSuggestedProjects] = useState<Project[]>([]);
+    const [scannedProjects, setScannedProjects] = useState<Project[]>([]);
+
+    const [draft, setDraft] = useState<OnboardingDraft>(INITIAL_DRAFT);
+    
+    const [logoPreview, setLogoPreview] = React.useState<string | null>(null);
+
+    // Fetch initial suggestions
+    useEffect(() => {
+        if (step === 1 && suggestedProjects.length === 0) {
+            setIsLoading(true);
+            fetch('/api/projects/suggest?devs=Emaar,Damac&limit=2')
+                .then(res => res.json())
+                .then(data => {
+                    if (data.ok) setSuggestedProjects(data.data || []);
+                })
+                .catch(err => console.error("Failed to fetch suggestions", err))
+                .finally(() => setIsLoading(false));
+        }
+    }, [step, suggestedProjects.length]);
+
+    // Fetch broader scan when user is on step 4 or has selected developers
+    useEffect(() => {
+        if (step === 4 && scannedProjects.length === 0 && user) {
+            setIsLoading(true);
+            const devQuery = draft.devFocus && draft.devFocus.length > 0 ? `q=${draft.devFocus.join(',')}` : 'q=emaar,damac,sobha,nakheel,meraas,aldar';
+            fetch(`/api/projects/scan?${devQuery}&limit=12`)
+                .then(res => res.json())
+                .then(data => {
+                    if(data.ok) setScannedProjects(data.data || []);
+                })
+                .catch(err => console.error("Failed to fetch scan", err))
+                .finally(() => setIsLoading(false));
+        }
+    }, [step, draft.devFocus, scannedProjects.length, user]);
+
+    const updateDraft = (data: Partial<OnboardingDraft>) => {
+        setDraft(prev => ({ ...prev, ...data, progress: { step, ts: Date.now() } }));
+    };
+    
+    const handleFileChange = (files: FileList | null) => {
+        const file = files?.[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            const result = reader.result as string;
+            setLogoPreview(result);
+            updateDraft({ brandKit: { ...draft.brandKit!, logoUrl: result }});
+          };
+          reader.readAsDataURL(file);
+        }
+    };
+
+    const toggleDeveloper = (dev: string) => {
+        const currentDevs = draft.devFocus || [];
+        const newDevs = currentDevs.includes(dev)
+            ? currentDevs.filter(d => d !== dev)
+            : [...currentDevs, dev];
+        updateDraft({ devFocus: newDevs });
+        track('onboarding_developer_toggled', { developer: dev, selected: !currentDevs.includes(dev) });
+    };
+    
+    const handleFirstPass = (projectName: string, status: 'relevant' | 'not') => {
+        updateDraft({ firstPass: { ...draft.firstPass, [projectName]: status } });
+        track('onboarding_project_rated', { project: projectName, rating: status });
+    };
+
+    const isStep1Complete = (draft.devFocus?.length || 0) > 0 && Object.keys(draft.firstPass || {}).length === suggestedProjects.length && suggestedProjects.length > 0;
+
+    const nextStep = () => {
+        track('onboarding_step_completed', { step });
+        router.push(`/onboarding?step=${step + 1}`);
+    };
+    const prevStep = () => {
+        track('onboarding_step_navigated_back', { fromStep: step, toStep: step - 1 });
+        router.push(`/onboarding?step=${step - 1}`);
+    };
+    
+    const finishOnboarding = () => {
+        track('onboarding_completed');
+        toast({ title: "Setup Complete!", description: "Welcome to your new dashboard. Let's start by exploring the market." });
+        router.push('/dashboard');
+    }
+    
+    const handleSaveCard = () => {
+        track('onboarding_payment_added');
+        toast({ title: "Card saved.", description: "You won't be charged now." });
+        updateDraft({ payment: { status: 'added' } });
+        nextStep();
+    }
+    
+    const handleSkipPayment = () => {
+        track('onboarding_payment_skipped');
+        updateDraft({ payment: { status: 'skipped'} }); 
+        nextStep();
+    }
+    
+     const handleSaveBrand = async () => {
+        if (!user) {
+            toast({ title: "Not Authenticated", description: "You must be logged in to save your brand.", variant: "destructive" });
+            return;
+        }
+        track('onboarding_brand_saved', { hasLogo: !!draft.brandKit?.logoUrl, primaryColor: draft.brandKit?.colors?.primary });
+        setIsLoading(true);
+        try {
+            const payload = {
+                companyName: draft.brandKit?.contact?.name,
+                brandKit: draft.brandKit,
+            };
+            await saveUserData(user.uid, payload);
+            
+            toast({ title: "Brand Kit Saved!", description: "Your brand is now ready to be used by the AI."});
+            nextStep();
+        } catch (error: any) {
+            toast({ title: "Error Saving Brand", description: error.message, variant: "destructive" });
+        } finally {
+            setIsLoading(false);
+        }
+    }
+    
+    const handleFinalizeShortlist = async () => {
+        if (!user) {
+            toast({ title: "Please log in", description: "You must be logged in to save projects.", variant: "destructive" });
+            return;
+        }
+        const selectedIds = draft.scanSelected || [];
+        const selectedProjectObjects = scannedProjects.filter(p => selectedIds.includes(p.id));
+        track('onboarding_shortlist_finalized', { projects: selectedIds, count: selectedIds.length });
+
+        setIsLoading(true);
+        try {
+            const idToken = await user.getIdToken();
+            for (const project of selectedProjectObjects) {
+                 await fetch('/api/user/projects', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${idToken}`
+                    },
+                    body: JSON.stringify(project)
+                });
+            }
+             toast({ title: "Projects Saved!", description: `${selectedProjectObjects.length} projects have been saved to your library.` });
+            nextStep();
+        } catch(error: any) {
+             toast({ title: "Error Saving Projects", description: error.message, variant: "destructive" });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+
+    const renderStep = () => {
+        switch (step) {
+            case 1:
+                return (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Let's build your project library</CardTitle>
+                            <CardDescription>We'll start by confirming your market and identifying key developers.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-8">
+                            <div>
+                                <h3 className="font-semibold mb-2">1. Confirm your city</h3>
+                                <div className="flex items-center gap-4 rounded-xl border p-4 bg-muted/20">
+                                    <p>We found you in: <span className="font-bold text-primary">{draft.city}, {draft.country}</span></p>
+                                    <Button variant="ghost" size="sm" className="ml-auto" onClick={() => track('onboarding_city_changed_clicked')}>Change city</Button>
+                                    <Button size="sm" onClick={() => track('onboarding_city_confirmed', { city: draft.city, country: draft.country })}>Yes, that's me</Button>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 className="font-semibold mb-2">2. Which developers do you work with?</h3>
+                                <p className="text-sm text-muted-foreground mb-3">Choose 1–3 to start. This helps us find relevant projects.</p>
+                                <div className="flex flex-wrap gap-2">
+                                    {MOCK_DEVELOPERS.map(dev => (
+                                        <button key={dev}
+                                            onClick={() => toggleDeveloper(dev)}
+                                            aria-pressed={draft.devFocus?.includes(dev)}
+                                            className={cn("rounded-full border px-3 py-1 text-sm transition-colors", draft.devFocus?.includes(dev) ? 'border-primary bg-primary/20 text-primary' : 'border-border hover:bg-muted/50')}>
+                                            {dev}
+                                        </button>
+                                    ))}
+                                    <button className="rounded-full border border-dashed px-3 py-1 text-sm text-muted-foreground hover:border-primary hover:text-primary" onClick={() => track('onboarding_add_new_developer_clicked')}>
+                                        + Add new
+                                    </button>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 className="font-semibold mb-2">3. Are these projects relevant?</h3>
+                                {isLoading && suggestedProjects.length === 0 ? (
+                                     <div className="flex items-center justify-center h-48 text-muted-foreground">
+                                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                        <span>Finding relevant projects for you...</span>
+                                     </div>
+                                ) : (
+                                    <div className="grid sm:grid-cols-2 gap-4">
+                                        {suggestedProjects.map((proj: Project) => (
+                                            <ProjectCard key={proj.id} project={{...proj, badge: 'Suggested'}} actions={
+                                                <div className="flex gap-2">
+                                                    <Button size="sm" onClick={() => handleFirstPass(proj.name, 'relevant')}>Relevant</Button>
+                                                    <Button size="sm" variant="ghost" onClick={() => handleFirstPass(proj.name, 'not')}>Not relevant</Button>
+                                                </div>
+                                            } />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </CardContent>
+                        <CardFooter>
+                            <Button onClick={nextStep} className="ml-auto" disabled={!isStep1Complete}>Continue <ChevronRight /></Button>
+                        </CardFooter>
+                    </Card>
+                );
+            case 2:
+                return (
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Your data. Your control.</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                           <ul className="space-y-3">
+                               <li className="flex items-start gap-3"><Check className="h-5 w-5 text-green-500 mt-1 shrink-0" /><div><span className="font-semibold">We tailor everything to your market.</span><br /><span className="text-muted-foreground">Your city and developer choices help us show you what's relevant.</span></div></li>
+                               <li className="flex items-start gap-3"><Check className="h-5 w-5 text-green-500 mt-1 shrink-0" /><div><span className="font-semibold">Your assets stay private.</span><br /><span className="text-muted-foreground">Your data, brand, and contacts are yours alone unless you explicitly publish them.</span></div></li>
+                               <li className="flex items-start gap-3"><Check className="h-5 w-5 text-green-500 mt-1 shrink-0" /><div><span className="font-semibold">No charges today.</span><br /><span className="text-muted-foreground">Add a card to enable exports and publishing later. You can cancel anytime.</span></div></li>
+                           </ul>
+                            <Collapsible>
+                                <CollapsibleTrigger className="text-sm text-muted-foreground underline">How we use your data</CollapsibleTrigger>
+                                <CollapsibleContent>
+                                    <p className="text-sm text-muted-foreground mt-2">We use your data strictly to power your tools. We do not sell your data or use it to train models for other users. Your privacy is paramount.</p>
+                                </CollapsibleContent>
+                            </Collapsible>
+                        </CardContent>
+                        <CardFooter className="flex justify-between">
+                            <Button variant="ghost" onClick={prevStep}><ArrowLeft /> Back</Button>
+                            <div className="flex gap-2">
+                                 <Button variant="outline" onClick={nextStep}>Skip for now</Button>
+                                 <Button onClick={nextStep}>Add Payment Method</Button>
+                            </div>
+                        </CardFooter>
+                    </Card>
+                );
+            case 3:
+                return (
+                     <Card>
+                        <CardHeader>
+                            <CardTitle>Add a payment method</CardTitle>
+                            <CardDescription>Used for exports & publishing. No charge to start.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            <div className="grid gap-2">
+                                <Label htmlFor="card-number">Card Number</Label>
+                                <Input id="card-number" placeholder="•••• •••• •••• 4242" />
+                            </div>
+                             <div className="grid grid-cols-2 gap-4">
+                                <div className="grid gap-2">
+                                    <Label htmlFor="expiry">Expires</Label>
+                                    <Input id="expiry" placeholder="MM/YY" />
+                                </div>
+                                <div className="grid gap-2">
+                                    <Label htmlFor="cvc">CVC</Label>
+                                    <Input id="cvc" placeholder="123" />
+                                </div>
+                            </div>
+                             <div className="flex items-center space-x-2">
+                                <Checkbox id="save-card" defaultChecked />
+                                <label htmlFor="save-card" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    Save as default payment method
+                                </label>
+                            </div>
+                        </CardContent>
+                        <CardFooter className="flex justify-between">
+                             <Button variant="ghost" onClick={prevStep}><ArrowLeft /> Back</Button>
+                            <div className="flex gap-2">
+                                 <Button variant="outline" onClick={handleSkipPayment}>Skip for now</Button>
+                                 <Button onClick={handleSaveCard}>Save Card</Button>
+                            </div>
+                        </CardFooter>
+                    </Card>
+                );
+            case 4:
+                return (
+                     <Card>
+                        <CardHeader>
+                             <CardTitle>Here's a broader scan based on your choices.</CardTitle>
+                            <CardDescription>Select 5-8 projects to build your initial library. This helps the AI understand your focus.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                             {isLoading && scannedProjects.length === 0 ? (
+                                 <div className="flex items-center justify-center h-64 text-muted-foreground">
+                                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                    <span>Scanning our Market Library for 100+ projects based on your preferences...</span>
+                                 </div>
+                             ) : (
+                                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                    {scannedProjects.map((proj: Project) => (
+                                        <ProjectCard 
+                                            key={proj.id} 
+                                            project={proj} 
+                                            selectable 
+                                            selected={draft.scanSelected?.includes(proj.id)}
+                                            onToggle={() => {
+                                                const currentSelection = draft.scanSelected || [];
+                                                const newSelection = currentSelection.includes(proj.id)
+                                                    ? currentSelection.filter(p => p !== proj.id)
+                                                    : [...currentSelection, proj.id];
+                                                updateDraft({ scanSelected: newSelection });
+                                            }}
+                                        />
+                                    ))}
+                                </div>
+                             )}
+                        </CardContent>
+                        <CardFooter className="flex justify-between">
+                            <Button variant="ghost" onClick={prevStep}><ArrowLeft /> Back</Button>
+                             <div className="flex gap-2">
+                                 <Button variant="outline" onClick={nextStep}>Skip</Button>
+                                 <Button onClick={handleFinalizeShortlist} disabled={isLoading}>
+                                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : null}
+                                    Use Selected ({(draft.scanSelected || []).length})
+                                </Button>
+                            </div>
+                        </CardFooter>
+                    </Card>
+                );
+            case 5:
+                return (
+                     <Card>
+                        <CardHeader>
+                            <CardTitle>Make it yours.</CardTitle>
+                            <CardDescription>Add your brand to personalize all AI-generated content.</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            <div className="space-y-2">
+                                <Label>Company Logo</Label>
+                                <div className="flex items-center gap-4">
+                                    <div className="relative flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed rounded-lg cursor-pointer bg-muted/20 hover:border-primary transition-colors">
+                                       <Input id="logo" type="file" accept="image/*" className="sr-only" onChange={(e) => handleFileChange(e.target.files)} />
+                                       <label htmlFor="logo" className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
+                                         {logoPreview ? (
+                                            <Image src={logoPreview} alt="Logo preview" fill={true} className="object-contain rounded-md p-2" />
+                                         ) : (
+                                           <div className="text-center text-muted-foreground">
+                                             <Upload className="mx-auto h-8 w-8 mb-1" />
+                                             <p className="text-xs">Drag & drop or click</p>
+                                           </div>
+                                         )}
+                                       </label>
+                                    </div>
+                                    <div className="flex items-center space-x-2">
+                                        <Checkbox id="extract-colors" />
+                                        <label htmlFor="extract-colors" className="text-sm font-medium">
+                                            Extract colors from logo
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                             <div className="grid md:grid-cols-2 gap-4">
+                                <div className="space-y-2">
+                                    <Label>Primary Color</Label>
+                                    <Input type="text" placeholder="#000000" value={draft.brandKit?.colors?.primary} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, colors: {...draft.brandKit!.colors, primary: e.target.value}}})} />
+                                </div>
+                                 <div className="space-y-2">
+                                    <Label>Accent Color</Label>
+                                    <Input type="text" placeholder="#FFFFFF" value={draft.brandKit?.colors?.accent} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, colors: {...draft.brandKit!.colors, accent: e.target.value}}})} />
+                                </div>
+                             </div>
+                             <div className="grid md:grid-cols-2 gap-4">
+                                 <div className="space-y-2">
+                                    <Label>Your Name / Company Name</Label>
+                                    <Input value={draft.brandKit?.contact?.name} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, contact: {...draft.brandKit!.contact, name: e.target.value}}})} placeholder="e.g., John Doe / Luxe Properties" />
+                                 </div>
+                                  <div className="space-y-2">
+                                    <Label>Phone Number</Label>
+                                    <Input value={draft.brandKit?.contact?.phone} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, contact: {...draft.brandKit!.contact, phone: e.target.value}}})} placeholder="e.g., +971 50 123 4567" />
+                                 </div>
+                                  <div className="space-y-2">
+                                    <Label>Email Address</Label>
+                                    <Input type="email" value={draft.brandKit?.contact?.email} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, contact: {...draft.brandKit!.contact, email: e.target.value}}})} placeholder="e.g., john.doe@luxe.com" />
+                                 </div>
+                             </div>
+                        </CardContent>
+                        <CardFooter className="flex justify-between">
+                             <Button variant="ghost" onClick={prevStep}><ArrowLeft /> Back</Button>
+                            <div className="flex gap-2">
+                                 <Button variant="outline" onClick={nextStep}>Skip for now</Button>
+                                 <Button onClick={handleSaveBrand} disabled={isLoading}>
+                                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : null}
+                                    Save Brand
+                                 </Button>
+                            </div>
+                        </CardFooter>
+                    </Card>
+                );
+             case 6:
+                return (
+                     <Card>
+                        <CardHeader>
+                            <CardTitle>Connect your accounts</CardTitle>
+                            <CardDescription>Unlock automations for posting, messaging, and more. You can always do this later.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <div className="grid gap-3 sm:grid-cols-2">
+                                <ProviderTile name="Instagram" onClick={() => track('onboarding_connect_clicked', { provider: 'instagram' })} />
+                                <ProviderTile name="Facebook Page" onClick={() => track('onboarding_connect_clicked', { provider: 'facebook' })} />
+                                <ProviderTile name="YouTube" onClick={() => track('onboarding_connect_clicked', { provider: 'youtube' })} />
+                                <ProviderTile name="Gmail" onClick={() => track('onboarding_connect_clicked', { provider: 'gmail' })} />
+                                <ProviderTile name="WhatsApp Business" onClick={() => track('onboarding_connect_clicked', { provider: 'whatsapp' })} />
+                            </div>
+                        </CardContent>
+                        <CardFooter className="flex justify-between">
+                            <Button variant="ghost" onClick={prevStep}><ArrowLeft /> Back</Button>
+                            <Button onClick={nextStep}>Continue</Button>
+                        </CardFooter>
+                    </Card>
+                );
+             case 7:
+                 return (
+                    <Card className="text-center">
+                        <CardHeader>
+                             <div className="mx-auto w-fit p-4 bg-primary/10 text-primary rounded-full mb-4">
+                                <Sparkles className="h-10 w-10" />
+                             </div>
+                            <CardTitle>You're all set!</CardTitle>
+                            <CardDescription>Your brand and project library are ready. What would you like to do next?</CardDescription>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                            <Link href="/" className="w-full block">
+                               <Button size="lg" className="w-full">Go to Dashboard</Button>
+                            </Link>
+                             <Link href="/community" className="w-full block">
+                                <Button size="lg" variant="outline" className="w-full">
+                                    <Users2 className="mr-2 h-4 w-4"/> Say Hi to the Community
+                                </Button>
+                            </Link>
+                        </CardContent>
+                        <CardFooter>
+                           <p className="text-xs text-muted-foreground mx-auto">You can always change your settings later from the dashboard.</p>
+                        </CardFooter>
+                    </Card>
+                 );
+            default:
+                return <div>Invalid step</div>;
+        }
+    };
+
+    return (
+        <div className="p-4 sm:p-6 md:p-8 w-full max-w-4xl mx-auto">
+            {renderStep()}
+        </div>
+    );
+}
+
 
 export default function OnboardingPage() {
-  return (
-    <div className="flex flex-col">
-      <PageHeader
-        title="Welcome to Entrestate"
-        description="Let's get your AI co-pilot set up for success. (Coming Soon)"
-        icon={<Sparkles className="h-8 w-8" />}
-      />
-      <main className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20">
-        <Card className="bg-card/80 backdrop-blur-lg text-center">
-            <CardContent className="p-8 md:p-12">
-                <h2 className="text-3xl font-bold font-heading">Onboarding Experience in Development</h2>
-                <p className="mt-4 text-lg text-muted-foreground">
-                    We are building a guided setup experience to help you train your AI and connect your accounts.
-                </p>
-            </CardContent>
-        </Card>
-      </main>
-    </div>
-  );
+    return (
+        <div className="flex min-h-screen flex-col bg-background text-foreground">
+            <main className="flex-1 flex items-center justify-center">
+                 <Suspense fallback={<Loader2 className="animate-spin h-8 w-8" />}>
+                    <OnboardingComponent />
+                 </Suspense>
+            </main>
+        </div>
+    )
 }
