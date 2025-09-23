@@ -7,8 +7,8 @@ import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { ArrowRight, LayoutGrid } from 'lucide-react';
-import { marketingSuites } from '@/lib/suites-data';
-import { solutions } from '@/lib/solutions-data';
+import { marketingSuites, type Suite } from '@/lib/suites-data';
+import { solutions, type Solution } from '@/lib/solutions-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
@@ -34,7 +34,7 @@ export default function AppsPage() {
             </div>
             <TabsContent value="suites">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {marketingSuites.map((suite) => (
+                {marketingSuites.map((suite: Suite) => (
                   <Link href={`/apps/${suite.id}`} key={suite.id} className="block group">
                     <Card className="h-full flex flex-col hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
                       <CardHeader>
@@ -56,7 +56,7 @@ export default function AppsPage() {
             </TabsContent>
             <TabsContent value="solutions">
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {solutions.map((solution) => (
+                {solutions.map((solution: Solution) => (
                     <Link href={`/solutions/${solution.slug}`} key={solution.slug} className="block group">
                         <Card className="h-full flex flex-col hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
                             <CardHeader>

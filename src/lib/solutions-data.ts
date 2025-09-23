@@ -2,8 +2,16 @@
 import {
     Telescope, MessageCircle, FileJson 
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-export const solutions = [
+export interface Solution {
+    slug: string;
+    title: string;
+    icon: LucideIcon;
+    description: string;
+}
+
+export const solutions: Solution[] = [
   {
     slug: 'pro-search-eng-x3',
     title: 'PRO SEARCH ENG. x3',

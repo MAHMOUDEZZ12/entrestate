@@ -2,8 +2,16 @@
 import {
     Sparkles, Building, Briefcase, BrainCircuit, LayoutGrid, Wrench
 } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
-export const marketingSuites = [
+export interface Suite {
+    id: string;
+    name: string;
+    icon: LucideIcon;
+    description: string;
+}
+
+export const marketingSuites: Suite[] = [
   {
     id: 'meta-marketing-suite',
     name: 'Meta Marketing Suite',

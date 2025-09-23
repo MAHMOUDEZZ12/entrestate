@@ -11,7 +11,6 @@ import { ArrowRight, BookOpen, MessageSquare, Newspaper, Check } from 'lucide-re
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
-import { tools } from '@/lib/tools-data';
 import { marketingSuites } from '@/lib/suites-data';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
