@@ -6,19 +6,15 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { ArrowRight, LayoutGrid } from 'lucide-react';
 import { suites } from '@/lib/suites-data';
 import { solutions } from '@/lib/solutions-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-
 export default function AppsPage() {
     
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1">
         <PageHeader
           title="The Cloudstore"
@@ -80,7 +76,6 @@ export default function AppsPage() {
           </Tabs>
         </div>
       </main>
-      <LandingFooter />
     </div>
   );
 }

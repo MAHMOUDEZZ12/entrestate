@@ -9,8 +9,6 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight, BookOpen, MessageSquare, Newspaper, Check } from 'lucide-react';
 import { ShinyButton } from '@/components/ui/shiny-button';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { tools } from '@/lib/tools-data';
 import { suites } from '@/lib/suites-data';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
@@ -56,7 +54,6 @@ export default function SuiteDetailPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
       <main className="flex-1 w-full">
         <PageHeader
           title={suite.name}
@@ -132,7 +129,6 @@ export default function SuiteDetailPage() {
         </section>
         
       </main>
-      <LandingFooter />
     </div>
   );
 }
