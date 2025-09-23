@@ -74,9 +74,13 @@ export default function FlowsPage() {
 
   useEffect(() => {
     setIsClient(true);
-    const savedAppIds = JSON.parse(localStorage.getItem('addedApps') || '[]');
-    const userApps = tools.filter(tool => savedAppIds.includes(tool.id));
-    setInstalledApps(userApps);
+    try {
+        const savedAppIds = JSON.parse(localStorage.getItem('addedApps') || '[]');
+        const userApps = tools.filter(tool => savedAppIds.includes(tool.id));
+        setInstalledApps(userApps);
+    } catch(e) {
+        // Handle cases where localStorage is not available.
+    }
   }, []);
 
   const handleAddStep = (type: StepType) => {
@@ -176,7 +180,7 @@ export default function FlowsPage() {
                                                                 className="p-3 rounded-lg text-white" 
                                                                 style={{ backgroundColor: step.appColor || 'hsl(var(--muted))' }}
                                                             >
-                                                              {getIconForType(step.type)}
+                                                              {step.appIcon || getIconForType(step.type)}
                                                             </div>
                                                             <div className="flex-1">
                                                                 <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">{step.type}</p>
