@@ -4,35 +4,32 @@
 import React from 'react';
 import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
-import { LifeBuoy, ArrowRight, LayoutGrid, Sparkles, Briefcase } from 'lucide-react';
+import { LifeBuoy, ArrowRight, BookOpen, MessageSquare, Search, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Button } from '@/components/ui/button';
-import { tools } from '@/lib/tools-data';
+import { Input } from '@/components/ui/input';
 
-const solutions = [
-  {
-    slug: 'market-search-engine',
-    title: 'Market Search Engine',
-    description: "A powerful, multi-layered search engine for listings, trends, and market data.",
-  },
-  {
-    slug: 'sales-agent-chat-ai',
-    title: 'SalesAgentChat AI',
-    description: "An advanced conversational AI that acts as a virtual sales agent on your website.",
-  },
-  {
-    slug: 'ai-listing-portal',
-    title: 'AI Listing Portal',
-    description: "A complete, AI-managed portal for showcasing your property portfolio.",
-  },
-];
-
-const services = [
-    { title: "Market Data Listing", description: "Sourcing, verifying, and listing your property portfolio across all relevant portals." },
-    { title: "Intel. Lead Generation", description: "AI-powered campaigns to find and qualify high-intent leads." },
-    { title: "Web & App Development", description: "Custom websites, portals, and mobile apps for the real estate industry." },
+const supportTopics = [
+    {
+        title: "Getting Started",
+        description: "Your guide to setting up your workspace, connecting accounts, and launching your first campaign.",
+        icon: <BookOpen className="h-6 w-6 text-primary" />,
+        href: "/documentation"
+    },
+    {
+        title: "Billing & Subscriptions",
+        description: "Manage your plan, view invoices, and update your payment methods.",
+        icon: <FileText className="h-6 w-6 text-primary" />,
+        href: "/me/settings?tab=subscription"
+    },
+    {
+        title: "Contact Us",
+        description: "Can't find what you're looking for? Our team is here to help.",
+        icon: <MessageSquare className="h-6 w-6 text-primary" />,
+        href: "mailto:support@entrestate.com"
+    }
 ];
 
 export default function SupportPage() {
@@ -47,67 +44,43 @@ export default function SupportPage() {
         />
         
         <div className="container mx-auto px-4 py-16 md:py-24 space-y-16">
-            <section id="apps">
+            <section id="ai-agent">
+                 <Card className="max-w-3xl mx-auto text-center bg-card/80 backdrop-blur-lg border-primary/20 shadow-lg">
+                    <CardHeader>
+                        <CardTitle className="text-2xl md:text-3xl font-bold">AI Support Agent</CardTitle>
+                        <CardDescription>Have a question? Ask our AI assistant for an instant answer.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                         <form className="relative w-full">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input 
+                                placeholder='e.g., "How do I connect my Facebook account?"' 
+                                className="w-full h-12 pl-10 pr-4 text-base rounded-full"
+                            />
+                        </form>
+                    </CardContent>
+                </Card>
+            </section>
+            
+            <section id="topics">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold tracking-tight flex items-center justify-center gap-3"><LayoutGrid /> Apps Support</h2>
-                    <p className="text-muted-foreground mt-2">Find guides and documentation for all our individual AI tools.</p>
+                    <h2 className="text-3xl font-bold tracking-tight">Browse Support Topics</h2>
+                    <p className="text-muted-foreground mt-2">Find guides and information about common questions.</p>
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {tools.filter(t => t.id !== 'superfreetime').map(tool => (
-                        <Link href={`/apps/${tool.id}`} key={tool.id}>
-                            <Card className="h-full hover:border-primary/50 transition-colors">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    {supportTopics.map(topic => (
+                        <Link href={topic.href} key={topic.title}>
+                            <Card className="h-full hover:border-primary/50 transition-colors hover:shadow-lg hover:-translate-y-1">
                                 <CardHeader>
-                                    <div className="flex items-center gap-3">
-                                        <div className="p-2 rounded-lg text-white w-fit" style={{backgroundColor: tool.color}}>
-                                            {React.createElement(eval(`require('lucide-react')['${tool.iconName}']`))}
+                                    <div className="flex items-center gap-4">
+                                        <div className="p-3 bg-primary/10 rounded-lg">
+                                            {topic.icon}
                                         </div>
-                                        <CardTitle className="text-lg">{tool.title}</CardTitle>
+                                        <CardTitle className="text-xl">{topic.title}</CardTitle>
                                     </div>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-sm text-muted-foreground">{tool.description}</p>
-                                </CardContent>
-                            </Card>
-                        </Link>
-                    ))}
-                </div>
-            </section>
-            
-            <section id="solutions">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold tracking-tight flex items-center justify-center gap-3"><Sparkles /> Solutions Support</h2>
-                    <p className="text-muted-foreground mt-2">Learn more about our core, outcome-oriented product offerings.</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {solutions.map(solution => (
-                         <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
-                            <Card className="h-full hover:border-primary/50 transition-colors">
-                                <CardHeader>
-                                    <CardTitle className="text-lg">{solution.title}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-sm text-muted-foreground">{solution.description}</p>
-                                </CardContent>
-                            </Card>
-                        </Link>
-                    ))}
-                </div>
-            </section>
-
-             <section id="services">
-                <div className="text-center mb-12">
-                    <h2 className="text-3xl font-bold tracking-tight flex items-center justify-center gap-3"><Briefcase /> Services Support</h2>
-                    <p className="text-muted-foreground mt-2">Information about our professional, hands-on services.</p>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {services.map(service => (
-                         <Link href="/services" key={service.title}>
-                            <Card className="h-full hover:border-primary/50 transition-colors">
-                                <CardHeader>
-                                    <CardTitle className="text-lg">{service.title}</CardTitle>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-sm text-muted-foreground">{service.description}</p>
+                                    <p className="text-sm text-muted-foreground">{topic.description}</p>
                                 </CardContent>
                             </Card>
                         </Link>
