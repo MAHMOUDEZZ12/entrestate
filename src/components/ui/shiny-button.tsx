@@ -3,7 +3,7 @@
 
 import { cn } from "@/lib/utils"
 import React from "react";
-import { Button, ButtonProps } from "./button";
+import { Button, ButtonProps } from "@/components/ui/button";
 
 export const ShinyButton = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, ...props }, ref) => {
     return (
