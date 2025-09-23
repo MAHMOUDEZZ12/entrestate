@@ -4,12 +4,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
-import { Bot, Send, Sparkles, Loader2, User } from 'lucide-react';
+import { Bot, Send, Loader2, User } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback } from './ui/avatar';
-import { secretCodes } from '@/lib/codes';
-import Link from 'next/link';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import { secretCodes } from '@/lib/codes';
 
 type Message = {
     from: 'ai' | 'user';
@@ -86,9 +86,6 @@ export function AssistantChat() {
 
   return (
     <div className="flex flex-col h-full">
-        <div className="p-4 border-b">
-             <h3 className="font-semibold flex items-center gap-2"><Bot className="h-5 w-5"/> AI Assistant</h3>
-        </div>
         <ScrollArea className="flex-1 p-4" ref={scrollAreaRef as any}>
             <div className="space-y-4">
                 {messages.map((msg, index) => (
