@@ -16,7 +16,6 @@ import { useToast } from '@/hooks/use-toast';
 import { PageHeader } from '@/components/ui/page-header';
 import { useAuth } from '@/hooks/useAuth';
 import { Checkbox } from '@/components/ui/checkbox';
-import { addFileToKnowledgeBase, getKnowledgeBaseFiles, deleteFileFromKnowledgeBase } from '@/services/database';
 import { getFunctions, httpsCallable } from 'firebase/functions';
 import { auth, db } from '@/lib/firebase';
 import type { KnowledgeFile } from '@/types';
@@ -61,11 +60,19 @@ export default function BrandPage() {
     if (!user) return;
     setIsLoadingFiles(true);
     try {
-        const userFiles = await getKnowledgeBaseFiles(user.uid);
-        setFiles(userFiles);
-    } catch (e) {
+        const idToken = await user.getIdToken();
+        const response = await fetch('/api/user/knowledge', {
+            headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        const data = await response.json();
+        if (data.ok) {
+            setFiles(data.data);
+        } else {
+            throw new Error(data.error);
+        }
+    } catch (e: any) {
         console.error("Failed to fetch knowledge base files", e);
-        toast({ title: "Error", description: "Could not load your files.", variant: "destructive" });
+        toast({ title: "Error", description: `Could not load your files: ${e.message}`, variant: "destructive" });
     } finally {
         setIsLoadingFiles(false);
     }
@@ -192,11 +199,8 @@ export default function BrandPage() {
       // In a real application, you would send these files to be indexed in a vector database.
       await new Promise(resolve => setTimeout(resolve, 3000 + selectedFiles.length * 500));
       
-      const filesToUpdate = files.filter(f => selectedFiles.includes(f.id));
-      for (const file of filesToUpdate) {
-          // This is a simulation. A real app would call a Cloud Function to update the status.
-          setFiles(prev => prev.map(f => f.id === file.id ? {...f, status: 'trained' as const} : f));
-      }
+      // This is a simulation of the backend process updating the status.
+      setFiles(prev => prev.map(f => selectedFiles.includes(f.id) ? {...f, status: 'trained' as const} : f));
 
       toast({
           title: "AI Training Complete!",
@@ -215,19 +219,26 @@ export default function BrandPage() {
         
         for (const file of Array.from(uploadedFiles)) {
              try {
-                const functions = getFunctions(auth.app);
-                const createUploadUrl = httpsCallable(functions, 'createUploadUrl');
-                const res: any = await createUploadUrl({ filename: file.name, type: 'knowledge_base', contentType: file.type });
-                const { uploadUrl, fileUrl } = res.data;
+                const idToken = await user.getIdToken();
+                
+                // 1. Get signed URL from our API, which calls the Cloud Function
+                const urlResponse = await fetch('/api/user/knowledge-upload-url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+                    body: JSON.stringify({ filename: file.name, contentType: file.type })
+                });
+                const { ok, data, error } = await urlResponse.json();
+                if (!ok) throw new Error(error);
+                const { uploadUrl, fileUrl, fileId } = data;
 
+                // 2. Upload file to signed URL
                 await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type }});
                 
-                await addFileToKnowledgeBase(user.uid, {
-                    fileName: file.name,
-                    fileUrl: fileUrl,
-                    type: file.type,
-                    size: file.size,
-                    status: 'uploaded',
+                // 3. Confirm upload with our API
+                await fetch('/api/user/knowledge-upload-url', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+                    body: JSON.stringify({ fileId, fileName: file.name, fileUrl, fileType: file.type, fileSize: file.size })
                 });
 
             } catch (e: any) {
@@ -243,7 +254,14 @@ export default function BrandPage() {
     const handleDeleteFile = async (fileId: string) => {
         if (!user) return;
         try {
-            await deleteFileFromKnowledgeBase(user.uid, fileId);
+            const idToken = await user.getIdToken();
+            const response = await fetch(`/api/user/knowledge?fileId=${fileId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${idToken}` },
+            });
+            const data = await response.json();
+            if (!data.ok) throw new Error(data.error);
+
             toast({ title: 'File Deleted', description: 'The file has been removed from your knowledge base.' });
             fetchKnowledgeFiles();
         } catch(e: any) {
@@ -281,7 +299,7 @@ export default function BrandPage() {
                         <Label>Company Logo</Label>
                          <div className="flex items-center gap-4">
                             <div className="relative flex flex-col items-center justify-center w-32 h-32 border-2 border-dashed rounded-lg cursor-pointer bg-muted/20 hover:border-primary transition-colors">
-                                <Input id="logo-upload" type="file" accept="image/*" className="sr-only" onChange={(e) => handleLogoFileChange(e.target.files)} ref={fileInputRef} />
+                                <Input id="logo-upload" type="file" accept="image/*" className="sr-only" onChange={(e) => handleLogoFileChange(e.target.files)} />
                                 <label htmlFor="logo-upload" className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
                                 {logoPreview ? (
                                     <Image src={logoPreview} alt="Logo preview" fill={true} className="object-contain rounded-md p-2" />
@@ -354,6 +372,7 @@ export default function BrandPage() {
                                         onCheckedChange={(checked) => {
                                             setSelectedFiles(prev => checked ? [...prev, file.id] : prev.filter(id => id !== file.id));
                                         }}
+                                        checked={selectedFiles.includes(file.id)}
                                     />
                                     <FileText className="h-8 w-8 text-muted-foreground" />
                                     <div className="overflow-hidden flex-1">
@@ -383,3 +402,4 @@ export default function BrandPage() {
     </main>
   );
 }
+
