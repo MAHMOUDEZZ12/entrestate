@@ -19,6 +19,8 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { CodeBlock } from '@/components/code-block';
 import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { PurchaseDialog } from '@/components/ui/purchase-dialog';
 
 
 interface PublicToolPageLayoutProps {
@@ -84,81 +86,6 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
     )
 }
 
-const PurchaseCard = ({ feature }: { feature: Feature & { price: number } }) => {
-    const [isProcessing, setIsProcessing] = React.useState(false);
-    const { toast } = useToast();
-
-    const handlePurchase = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        setIsProcessing(true);
-        await new Promise(resolve => setTimeout(resolve, 2000));
-        setIsProcessing(false);
-        toast({
-            title: 'Purchase Successful!',
-            description: `You have successfully purchased "${feature.title}". You can now access it in your dashboard.`,
-        });
-    };
-    
-    if (feature.price <= 0) {
-        return (
-             <Card className="bg-card/80 backdrop-blur-lg">
-                <CardHeader>
-                    <CardTitle>Get Started</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-muted-foreground">This app is free! Log in or sign up to add it to your dashboard.</p>
-                </CardContent>
-                <CardFooter>
-                     <Link href="/login" className="w-full">
-                        <Button size="lg" className="w-full">
-                            Get Started Free <ArrowRight className="ml-2 h-4 w-4"/>
-                        </Button>
-                    </Link>
-                </CardFooter>
-            </Card>
-        )
-    }
-
-    return (
-        <Card className="bg-card/80 backdrop-blur-lg">
-            <CardHeader>
-                <CardTitle>Purchase "{feature.title}"</CardTitle>
-                <CardDescription>Get single access to this tool.</CardDescription>
-            </CardHeader>
-            <form onSubmit={handlePurchase}>
-                <CardContent className="space-y-4">
-                     <div className="text-center bg-muted/50 p-4 rounded-lg">
-                        <p className="text-muted-foreground">Total amount</p>
-                        <p className="text-3xl font-bold font-heading text-primary">${feature.price.toFixed(2)}</p>
-                        <p className="text-xs text-muted-foreground">per month</p>
-                    </div>
-                     <div className="space-y-2">
-                        <Label htmlFor="email">Email Address</Label>
-                        <Input id="email" type="email" placeholder="you@example.com" required />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="card-details">Card Details</Label>
-                        <div className="relative">
-                            <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                            <Input id="card-details" placeholder="Card Number" className="pl-10" required />
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            <Input placeholder="MM / YY" required />
-                            <Input placeholder="CVC" required />
-                        </div>
-                    </div>
-                </CardContent>
-                <CardFooter>
-                    <Button type="submit" disabled={isProcessing} className="w-full" size="lg">
-                    {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    {isProcessing ? 'Processing...' : `Pay $${feature.price.toFixed(2)}`}
-                    </Button>
-                </CardFooter>
-            </form>
-        </Card>
-    );
-};
-
 
 export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   const isAutoPilot = feature.id === 'meta-auto-pilot';
@@ -194,7 +121,12 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                     </p>
                 </div>
                 <div className="lg:col-span-1">
-                    <PurchaseCard feature={feature} />
+                    <PurchaseDialog tool={feature}>
+                         <Button variant="outline" size="lg">
+                            <CreditCard className="mr-2 h-4 w-4" />
+                            Buy for ${feature.price}/mo
+                        </Button>
+                    </PurchaseDialog>
                 </div>
             </div>
         </div>
