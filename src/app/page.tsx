@@ -25,9 +25,6 @@ const MegaListingSimulation = dynamic(() => import('@/components/mega-listing-si
   ssr: false,
   loading: () => <div className="h-[400px] flex items-center justify-center bg-muted rounded-lg"><Loader2 className="animate-spin" /></div>,
 });
-const SolutionsCta = dynamic(() => import('@/components/solutions-cta').then(mod => mod.SolutionsCta), {
-  ssr: false,
-});
 
 
 export default function HomePage() {
@@ -158,7 +155,6 @@ export default function HomePage() {
             </div>
         </section>
 
-        <SolutionsCta />
       </main>
     </div>
   );
