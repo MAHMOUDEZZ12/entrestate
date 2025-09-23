@@ -7,15 +7,15 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Feature } from '@/lib/tools-client';
-import { ShinyButton } from './ui/shiny-button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Label } from '@/components/ui/label';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { CodeBlock } from './code-block';
-import { PurchaseDialog } from './ui/purchase-dialog';
-import { AutoPilotPlan } from './ui/autopilot-plan';
+import { CodeBlock } from '@/components/code-block';
+import { PurchaseDialog } from '@/components/ui/purchase-dialog';
+import { AutoPilotPlan } from '@/components/ui/autopilot-plan';
 
 
 interface PublicToolPageLayoutProps {
