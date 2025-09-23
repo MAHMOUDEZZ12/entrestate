@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, Search, ChevronDown, Bot, BrainCircuit, Database, File, Home, LayoutGrid, Library, LineChart, Palette, Target, Users, Users2, Workflow, GitMerge, GanttChartSquare } from 'lucide-react';
+import { LogOut, Settings, Search, Bot, Home, LayoutGrid, Workflow, Palette, Target, Users2, Database, LineChart, File, BrainCircuit, GitMerge, GanttChartSquare } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
@@ -14,48 +14,11 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Logo } from './logo';
-import { tools, Feature } from '@/lib/tools-client';
-import * as LucideIcons from 'lucide-react';
-import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-
-const iconMap: { [key: string]: React.ReactElement } = Object.fromEntries(
-  Object.entries(LucideIcons).map(([name, Icon]) => [name, <Icon key={name} />])
-);
-
-const ListItem = React.forwardRef<
-  HTMLAnchorElement,
-  React.ComponentPropsWithoutRef<typeof Link> & { tool: Feature }
->(({ className, title, tool, ...props }, ref) => {
-  return (
-    <li>
-      <Link href={tool.href} legacyBehavior passHref>
-        <a
-          ref={ref}
-          className={cn(
-            'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
-            className
-          )}
-          {...props}
-        >
-          <div className="flex items-center gap-3">
-             <div className="p-2 rounded-md text-white" style={{backgroundColor: tool.color}}>
-                {React.cloneElement(iconMap[tool.iconName] || <Sparkles />, { className: 'h-4 w-4' })}
-            </div>
-            <div>
-                <div className="text-sm font-medium leading-none">{title}</div>
-            </div>
-          </div>
-        </a>
-      </Link>
-    </li>
-  )
-})
-ListItem.displayName = 'ListItem'
+import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup } from './ui/command';
 
 
 const pageLinks = {
@@ -77,7 +40,7 @@ const pageLinks = {
     { title: 'Solutions', href: '/solutions', icon: <BrainCircuit className="mr-2 h-4 w-4" /> },
     { title: 'Pricing', href: '/pricing', icon: <File className="mr-2 h-4 w-4" /> },
     { title: 'Market Pulse', href: '/market', icon: <LineChart className="mr-2 h-4 w-4" /> },
-    { title: 'Community', href: '/community', icon: <Users className="mr-2 h-4 w-4" /> },
+    { title: 'Community', href: '/community', icon: <Users2 className="mr-2 h-4 w-4" /> },
     { title: 'Blog', href: '/blog', icon: <File className="mr-2 h-4 w-4" /> },
   ],
    "Developer": [
@@ -129,22 +92,27 @@ export function DashboardHeader() {
                     className="w-[90vw] max-w-[960px] p-0"
                 >
                     <motion.div drag={isDraggable} dragMomentum={false} className="cursor-grab active:cursor-grabbing">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
-                            {Object.entries(pageLinks).map(([category, links]) => (
-                                <div key={category}>
-                                    <h3 className="font-semibold text-sm px-3 py-1.5">{category}</h3>
-                                    <div className="flex flex-col">
+                       <Command>
+                         <CommandInput placeholder="Type a command or search..." />
+                         <CommandList>
+                            <CommandEmpty>No results found.</CommandEmpty>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
+                                {Object.entries(pageLinks).map(([category, links]) => (
+                                    <CommandGroup key={category} heading={category}>
                                         {links.map(link => (
                                              <Link key={link.href} href={link.href} passHref legacyBehavior>
-                                                <a className="flex items-center gap-3 rounded-md p-3 text-sm transition-colors hover:bg-accent hover:text-accent-foreground">
-                                                    {link.icon} {link.title}
-                                                </a>
+                                                <CommandItem asChild>
+                                                    <a className="flex items-center gap-3 rounded-md text-sm cursor-pointer">
+                                                        {link.icon} {link.title}
+                                                    </a>
+                                                </CommandItem>
                                             </Link>
                                         ))}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
+                                    </CommandGroup>
+                                ))}
+                            </div>
+                         </CommandList>
+                       </Command>
                     </motion.div>
                 </DropdownMenuContent>
             </DropdownMenu>
