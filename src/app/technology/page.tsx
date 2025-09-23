@@ -1,10 +1,11 @@
+
 'use client';
 
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
-import { ArrowRight, BrainCircuit, Code, Sparkles, Wand2 } from 'lucide-react';
+import { ArrowRight, BrainCircuit, Code, Sparkles, Wand2, Server, DatabaseZap } from 'lucide-react';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
@@ -74,6 +75,46 @@ export default function TechnologyPage() {
             </div>
         </section>
         
+        <section className="py-20 md:py-24 bg-muted/50">
+            <div className="container mx-auto px-4 md:px-6">
+                <div className="text-center max-w-3xl mx-auto">
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Built on Google Cloud</h2>
+                    <p className="mt-4 text-lg text-muted-foreground">
+                        Our entire platform runs on Google's secure, scalable, and AI-optimized infrastructure. This allows us to deliver cutting-edge features with enterprise-grade reliability.
+                    </p>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                    <Card className="bg-card/80">
+                        <CardHeader>
+                            <div className="p-3 bg-primary/10 rounded-lg w-fit text-primary mb-3"><BrainCircuit className="h-7 w-7" /></div>
+                            <CardTitle>Vertex AI</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">We use Vertex AI to manage our models, build Genkit AI flows, and orchestrate complex data processing pipelines for our Market Intelligence Cloud.</p>
+                        </CardContent>
+                    </Card>
+                     <Card className="bg-card/80">
+                        <CardHeader>
+                            <div className="p-3 bg-primary/10 rounded-lg w-fit text-primary mb-3"><Server className="h-7 w-7" /></div>
+                            <CardTitle>Firebase</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Firebase provides our serverless backend, including Authentication, Firestore for our real-time databases, and Cloud Storage for all user assets and generated media.</p>
+                        </CardContent>
+                    </Card>
+                     <Card className="bg-card/80">
+                        <CardHeader>
+                            <div className="p-3 bg-primary/10 rounded-lg w-fit text-primary mb-3"><DatabaseZap className="h-7 w-7" /></div>
+                            <CardTitle>App Hosting & Cloud Run</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">Our web application is deployed on Firebase App Hosting, giving us a fully managed, scalable, and secure environment powered by Cloud Run.</p>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </section>
+
         <GeminiSignature />
         
       </main>
