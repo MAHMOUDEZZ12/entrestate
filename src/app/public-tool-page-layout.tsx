@@ -10,8 +10,8 @@ import { Feature } from '@/lib/tools-client';
 import { ShinyButton } from './ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Label } from '@/components/ui/label';
-import { LandingHeader } from './landing-header';
-import { LandingFooter } from './landing-footer';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { CodeBlock } from './code-block';
 import { PurchaseDialog } from './ui/purchase-dialog';
@@ -190,5 +190,3 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
     </div>
   );
 }
-
-    
