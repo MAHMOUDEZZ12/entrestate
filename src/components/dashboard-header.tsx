@@ -80,27 +80,29 @@ export function DashboardHeader() {
           {id: 'flows', title: 'Flow Builder', href:'/me/flows', iconName: 'Workflow', color: '#8A2BE2'},
           {id: 'brand', title: 'Brand & Assets', href:'/me/brand', iconName: 'Palette', color: '#8A2BE2'},
           {id: 'assistant', title: 'AI Assistant', href:'/me/assistant', iconName: 'Bot', color: '#8A2BE2'},
-      ],
-      "Sales & CRM": [
           {id: 'leads', title: 'Leads (CRM)', href:'/me/leads', iconName: 'Target', color: '#FFA500'},
           {id: 'clients', title: 'Client Pages', href:'/me/clients', iconName: 'Users', color: '#FFA500'},
           {id: 'directory', title: 'Contacts Directory', href:'/me/directory', iconName: 'BookUser', color: '#FFA500'},
-          ...toolsData.filter(t => t.categories.includes('Sales Tools') || t.categories.includes('CRM') || t.categories.includes('Lead Gen')).map(t => ({...t, href: `/me/tool/${t.id}`})),
       ],
-      "Marketing & Ads": toolsData.filter(t => t.categories.includes('Marketing') || t.categories.includes('Ads')).map(t => ({...t, href: `/me/tool/${t.id}`})),
-      "Creative & Content": toolsData.filter(t => t.categories.includes('Creative') || t.categories.includes('Web') || t.categories.includes('Editing')).map(t => ({...t, href: `/me/tool/${t.id}`})),
-      "Market Intelligence": [
-          {id: 'market-library', title: 'Market Library', href:'/me/tool/projects-finder', iconName: 'Database', color: '#00CED1'},
-          {id: 'listing-performance', title: 'Listing Performance', href:'/me/tool/listing-performance', iconName: 'BarChart', color: '#00CED1'},
-          ...toolsData.filter(t => t.categories.includes('Market Intelligence')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      "All Tools & Apps": toolsData.filter(t => t.id !== 'superfreetime').map(t => ({...t, href: `/me/tool/${t.id}`})),
+      "Public Site": [
+          {id: 'public-home', title: 'Main Home', href:'/', iconName: 'Home', color: '#6a788c'},
+          {id: 'public-solutions', title: 'Solutions', href:'/solutions', iconName: 'Sparkles', color: '#6a788c'},
+          {id: 'public-apps', title: 'App Store', href:'/apps', iconName: 'LayoutGrid', color: '#6a788c'},
+          {id: 'public-pricing', title: 'Pricing', href:'/pricing', iconName: 'CreditCard', color: '#6a788c'},
+          {id: 'public-market', title: 'Market Pulse', href:'/market', iconName: 'LineChart', color: '#6a788c'},
+          {id: 'public-blog', title: 'Blog', href:'/blog', iconName: 'Rss', color: '#6a788c'},
+          {id: 'public-about', title: 'About Us', href:'/about', iconName: 'Info', color: '#6a788c'},
+          {id: 'public-community', title: 'Community Hub', href:'/community', iconName: 'Users2', color: '#6a788c'},
       ],
-      "Community": [
-          {id: 'community-notes', title: 'Community Notes', href:'/me/community', iconName: 'Users2', color: '#6a788c'},
-          {id: 'academy', title: 'Academy', href:'/me/community/academy', iconName: 'School', color: '#6a788c'},
-          {id: 'roadmap', title: 'Roadmap', href:'/me/community/roadmap', iconName: 'GitFork', color: '#6a788c'},
-          {id: 'documentation', title: 'Documentation', href:'/me/community/documentation', iconName: 'BookOpen', color: '#6a788c'},
+      "Developer Zone": [
+          {id: 'dev-home', title: 'Dev Dashboard', href:'/dev', iconName: 'GanttChartSquare', color: '#444'},
+          {id: 'dev-health', title: 'System Health', href:'/dev/system-health', iconName: 'HeartPulse', color: '#444'},
+          {id: 'dev-archive', title: 'Developer Archive', href:'/dev/archive', iconName: 'Database', color: '#444'},
+          {id: 'dev-sitemap', title: 'Sitemap', href:'/dev/sitemap', iconName: 'GitMerge', color: '#444'},
+          {id: 'dev-keys', title: 'API Keys', href:'/dev/keys', iconName: 'Key', color: '#444'},
+          {id: 'dev-importer', title: 'Data Importer', href:'/dev/data-importer', iconName: 'Upload', color: '#444'},
       ],
-      "Developer & Utility": toolsData.filter(t => t.categories.includes('Developer')).map(t => ({...t, href: `/me/tool/${t.id}`})),
   }
 
   return (
@@ -114,15 +116,13 @@ export function DashboardHeader() {
                 <DropdownMenuTrigger asChild>
                     <Button
                         variant="outline"
-                        className="w-full max-w-2xl justify-between text-muted-foreground h-10 px-4 text-base"
+                        className="w-full max-w-sm justify-between text-muted-foreground h-10 px-4 text-base"
                     >
                         <div className="flex items-center gap-2">
                             <Search className="h-4 w-4" />
-                            Explore Workspace & Apps...
+                            Explore Workspace...
                         </div>
-                        <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-                          <span className="text-xs">⌘</span>K
-                        </kbd>
+                        <ChevronDown className="h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
                  <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-[80vh] p-4" align="start">
