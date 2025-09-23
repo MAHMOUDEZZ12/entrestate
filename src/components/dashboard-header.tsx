@@ -16,14 +16,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
-import { GlobalSearch } from './ui/global-search';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { AssistantChat } from './assistant-chat';
 import { Logo } from './logo';
 
 
 export function DashboardHeader() {
   const { user } = useAuth();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-
+  
   const handleLogout = async () => {
     await auth?.signOut();
   }
@@ -35,23 +35,24 @@ export function DashboardHeader() {
         </div>
           
         <div className="flex-1 flex justify-center px-4">
-           <Button
-                variant="outline"
-                className="w-full max-w-lg justify-start text-muted-foreground h-9 px-4 text-sm"
-                onClick={() => setIsSearchOpen(true)}
-            >
-                <div className="flex items-center gap-2">
-                    <Search className="h-4 w-4" />
-                    Search for apps, projects, or actions...
-                     <kbd className="pointer-events-none ml-auto hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-                        <span className="text-xs">⌘</span>K
-                    </kbd>
-                </div>
-            </Button>
-            <GlobalSearch isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
+           {/* The search bar is now replaced by the assistant popover */}
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
+             <Popover>
+                <PopoverTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                        <Bot className="h-5 w-5" />
+                        <span className="sr-only">Open AI Assistant</span>
+                    </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[440px] p-0" align="end">
+                   <div className="h-[60vh] max-h-[700px] flex flex-col">
+                     <AssistantChat />
+                   </div>
+                </PopoverContent>
+            </Popover>
+
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-9 w-9 rounded-full">
@@ -74,7 +75,7 @@ export function DashboardHeader() {
                     <Link href="/me/settings"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
                 </DropdownMenuItem>
                  <DropdownMenuItem asChild>
-                    <Link href="/me/assistant"><Bot className="mr-2 h-4 w-4" /> AI Assistant</Link>
+                    <Link href="/me/assistant"><Bot className="mr-2 h-4 w-4" /> AI Command Center</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>

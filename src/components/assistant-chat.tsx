@@ -208,21 +208,25 @@ export function AssistantChat() {
                     <Command>
                          <CommandList>
                             {filteredSuggestions.length > 0 ? (
-                                filteredSuggestions.map((suggestion, index) => 
-                                    suggestion.type === 'group' ? (
-                                        <CommandGroup key={index} heading={suggestion.value} className="text-xs">
-                                        {filteredSuggestions.slice(index + 1).filter(i => i.type === 'item').map(item => (
+                                filteredSuggestions.filter(s => s.type === 'group').map((suggestion, index, groups) => 
+                                    <CommandGroup key={suggestion.value} heading={suggestion.value} className="text-xs">
+                                        {filteredSuggestions.filter(item => {
+                                            const itemIndex = allSuggestions.findIndex(i => i.value === item.value);
+                                            const groupIndex = allSuggestions.findIndex(g => g.value === suggestion.value);
+                                            const nextGroup = groups[index + 1];
+                                            const nextGroupIndex = nextGroup ? allSuggestions.findIndex(g => g.value === nextGroup.value) : -1;
+                                            
+                                            return item.type === 'item' && 
+                                                   itemIndex > groupIndex &&
+                                                   (nextGroupIndex === -1 || itemIndex < nextGroupIndex);
+                                        }).map(item => (
                                             <CommandItem key={item.value} onSelect={() => handleSuggestionClick(item.value)} className="cursor-pointer">
                                                  {item.icon}
                                                 <span className="ml-2">{item.value}</span>
                                             </CommandItem>
-                                        )).filter((_, i, arr) => {
-                                            const nextGroupIndex = filteredSuggestions.slice(index + 1).findIndex(s => s.type === 'group');
-                                            return nextGroupIndex === -1 || i < nextGroupIndex;
-                                        })}
-                                        </CommandGroup>
-                                    ) : null
-                                ).filter((el, index) => el !== null && (index === 0 || filteredSuggestions[index-1].type !== 'group'))
+                                        ))}
+                                    </CommandGroup>
+                                )
                             ) : (
                                 <div className="p-4 text-sm text-center text-muted-foreground">No suggestions found.</div>
                             )}
