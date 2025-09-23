@@ -123,7 +123,7 @@ export function DashboardHeader() {
            <div className="ml-auto flex items-center gap-2">
                 <nav className="hidden md:flex items-center gap-1">
                     <Link href="/solutions"><Button variant="ghost" size="sm">Solutions</Button></Link>
-                    <Link href="/apps"><Button variant="ghost" size="sm">Apps</Button></Link>
+                    <Link href="/me/marketing"><Button variant="ghost" size="sm">Apps</Button></Link>
                     <Link href="/services"><Button variant="ghost" size="sm">Services</Button></Link>
                     <Link href="/community"><Button variant="ghost" size="sm"><Users2 className="h-4 w-4 mr-1"/> Community</Button></Link>
                 </nav>
