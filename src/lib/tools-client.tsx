@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import {
@@ -8,7 +7,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Wrench, Briefcase, Languages, Link as LinkIcon
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Wrench, Briefcase, Languages, Link as LinkIcon, Sparkle
 } from 'lucide-react';
 import type { ReactElement } from 'react';
 import { tools as toolsData, ToolData } from './tools-data';
@@ -17,14 +16,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '@/components/ui/card';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import React from 'react';
 import { Copy } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
 
 export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
 export type BadgeType = 'NEW' | 'AUTO' | 'DEPRECATED';
@@ -114,6 +111,7 @@ const icons: { [key: string]: ReactElement } = {
     LinkIcon: <LinkIcon />,
     Briefcase: <Briefcase />,
     Wrench: <Wrench />,
+    Sparkle: <Sparkle />,
 };
 
 const copyToClipboard = (text: string, toast: (options: any) => void) => {
@@ -123,7 +121,7 @@ const copyToClipboard = (text: string, toast: (options: any) => void) => {
     });
 };
 
-export const tools: Feature[] = toolsData.map(tool => ({
+export const allTools: Feature[] = toolsData.map(tool => ({
     ...tool,
     icon: icons[tool.iconName] || <Sparkles />,
     href: `/me/tool/${tool.id}`,
@@ -161,9 +159,9 @@ export const tools: Feature[] = toolsData.map(tool => ({
 
 // Placeholder for individual tool configurations - find and modify tool by ID
 const configureTool = (id: string, config: Partial<Feature>) => {
-    const index = tools.findIndex(t => t.id === id);
+    const index = allTools.findIndex(t => t.id === id);
     if (index !== -1) {
-        tools[index] = { ...tools[index], ...config };
+        allTools[index] = { ...allTools[index], ...config };
     }
 }
 
@@ -443,4 +441,4 @@ configureTool('lead-investigator', {
 // Add more tool configurations here as needed...
 // ===================================================================================
 
-export default tools;
+export default allTools;

@@ -6,25 +6,29 @@ import { useParams, notFound } from 'next/navigation';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
-import { tools } from '@/lib/tools-client';
+import { tools as allToolsData } from '@/lib/tools-data'; // Use the server-safe data file
+import { allTools as allToolsClient } from '@/lib/tools-client'; // For client-side feature data
 import { pricingData } from '@/lib/pricing-data';
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
 
-  // Find the tool by its ID (slug)
-  const tool = tools.find(t => t.id === slug);
+  // Find the tool by its ID (slug) from the server-safe data
+  const toolData = allToolsData.find(t => t.id === slug);
   
   // Find the corresponding app pricing data
   const appPricing = pricingData.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === slug);
 
-  if (!tool) {
+  // Find the full client-side feature object
+  const feature = allToolsClient.find(t => t.id === slug);
+
+  if (!toolData || !feature) {
     return notFound();
   }
 
   // Combine tool data with its price
   const featureWithPrice = {
-      ...tool,
+      ...feature,
       price: appPricing?.price_monthly ?? 0, // Default to 0 if not found
   };
 
