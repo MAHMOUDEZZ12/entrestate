@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Search, BookOpen, GitBranch, Users2, Workflow, School, X, Settings, LogOut, LayoutDashboard, ChevronDown } from 'lucide-react';
+import { Menu, Search, BookOpen, GitBranch, Users2, Workflow, School, X, Settings, LogOut, LayoutDashboard, ChevronDown, Bot, Palette, Database, Target, LineChart } from 'lucide-react';
 import React from 'react';
 import { GlobalSearch } from '@/components/ui/global-search';
 import {
@@ -15,7 +15,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { usePathname } from 'next/navigation';
-import { tools, FilterCategory } from '@/lib/tools-client';
+import { tools, Feature } from '@/lib/tools-client';
 import { useTabManager } from '@/context/TabManagerContext';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -133,12 +133,15 @@ export function DashboardHeader() {
     return categories;
   }, []);
 
+  const intelligenceTools = tools.filter(t => t.categories.includes('Market Intelligence'));
+  const crmTools = tools.filter(t => t.categories.includes('CRM') || t.categories.includes('Sales Tools'));
+
 
   return (
     <header className="sticky top-0 z-30 flex h-auto flex-col border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
        <div className="flex h-14 items-center gap-4">
             <Link href="/me">
-                <Logo />
+                <Logo href="/me"/>
             </Link>
           
           <NavigationMenu className="hidden md:flex ml-6">
@@ -177,6 +180,29 @@ export function DashboardHeader() {
                     </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
+                    <NavigationMenuTrigger>Intelligence</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                            {intelligenceTools.map((tool) => (
+                                <ListItem key={tool.title} title={tool.title} href={tool.href} icon={tool.icon}>
+                                    {tool.description}
+                                </ListItem>
+                            ))}
+                        </ul>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+                 <NavigationMenuItem>
+                    <NavigationMenuTrigger>Workspace</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 ">
+                             <ListItem title="Brand & Assets" href="/me/brand" icon={<Palette />}>Manage your logos, colors, and knowledge base.</ListItem>
+                             <ListItem title="AI Assistant" href="/me/assistant" icon={<Bot />}>Your command center for all AI tasks.</ListItem>
+                             <ListItem title="Leads & CRM" href="/me/leads" icon={<Target />}>Manage your client relationships and sales pipeline.</ListItem>
+                             <ListItem title="Contacts Directory" href="/me/directory" icon={<Users2 />}>Your private phone book of key contacts.</ListItem>
+                        </ul>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
                     <Link href="/me/flows" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Flows
@@ -184,25 +210,15 @@ export function DashboardHeader() {
                     </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                    <Link href="/me/community" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Community
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                 <NavigationMenuItem>
-                    <Link href="/me/services" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Services
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <Link href="/me/solutions" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Solutions
-                        </NavigationMenuLink>
-                    </Link>
+                    <NavigationMenuTrigger>Community</NavigationMenuTrigger>
+                     <NavigationMenuContent>
+                         <ul className="grid w-[300px] gap-3 p-4">
+                            <ListItem title="Community Notes" href="/me/community" icon={<Users2 />}>Connect and collaborate with other professionals.</ListItem>
+                            <ListItem title="Market Academy" href="/me/community/academy" icon={<School />}>Master the market with expert courses.</ListItem>
+                            <ListItem title="Product Roadmap" href="/me/community/roadmap" icon={<GitBranch />}>See what's next and vote on features.</ListItem>
+                            <ListItem title="Documentation" href="/me/community/documentation" icon={<BookOpen />}>Explore guides and technical docs.</ListItem>
+                        </ul>
+                    </NavigationMenuContent>
                 </NavigationMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
