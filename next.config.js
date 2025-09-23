@@ -55,9 +55,6 @@ const nextConfig = {
   },
   async redirects() {
     return []
-  },
-  experimental: {
-    allowedDevOrigins: ["https://6000-firebase-mtcmartechgooodstage-1758017772708.cluster-axf5tvtfjjfekvhwxwkkkzsk2y.cloudworkstations.dev"]
   }
 };
 

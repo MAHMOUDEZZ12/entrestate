@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { ArrowRight, LayoutGrid } from 'lucide-react';
+import { ArrowRight, LayoutGrid, Sparkles } from 'lucide-react';
 import { marketingSuites, type Suite } from '@/lib/suites-data';
 import { solutions, type Solution } from '@/lib/solutions-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
