@@ -12,8 +12,8 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
-import { tools, Feature, FilterCategory } from '@/lib/tools-client';
-import { File, LayoutDashboard, Settings, User, Search, Bot, Sparkles, Palette, Database, Clock, Star, Plus } from 'lucide-react';
+import { tools, Feature } from '@/lib/tools-client';
+import { File, LayoutDashboard, Settings, User, Search, Bot, Sparkles, Palette, Database, Clock, Star, Plus, Folder, Zap } from 'lucide-react';
 import { useTabManager } from '@/context/TabManagerContext';
 
 interface GlobalSearchProps {
@@ -28,6 +28,17 @@ const shortcutItems = [
     { href: '/me/brand', label: 'Brand & Assets', icon: <Palette className="mr-2 h-4 w-4" />},
     { href: '/me/assistant', label: 'AI Assistant', icon: <Bot className="mr-2 h-4 w-4" />},
     { href: '/me/tool/projects-finder', label: 'Market Library', icon: <Database className="mr-2 h-4 w-4" />}
+];
+
+// Mock data to simulate searching across different entities
+const mockProjects = [
+    { id: 'proj-1', name: 'Emaar Beachfront', href: '/me/tool/projects-finder?q=emaar' },
+    { id: 'proj-2', name: 'DAMAC Hills 2', href: '/me/tool/projects-finder?q=damac' },
+];
+
+const mockActions = [
+    { id: 'action-1', name: 'Create New Campaign', href: '/me/tool/meta-ads-copilot' },
+    { id: 'action-2', name: 'Generate Market Report', href: '/me/tool/market-reports' },
 ];
 
 const mostSearchedItems = allTools.slice(0, 4);
@@ -61,12 +72,22 @@ export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
   }
 
   const searchResults = useMemo(() => {
-    if (query.trim() === '') return [];
+    if (query.trim() === '') return { apps: [], projects: [], actions: [] };
     
-    return allTools.filter(tool =>
-        tool.title.toLowerCase().includes(query.toLowerCase()) ||
-        tool.description.toLowerCase().includes(query.toLowerCase())
-    );
+    const lowerQuery = query.toLowerCase();
+
+    return {
+        apps: allTools.filter(tool =>
+            tool.title.toLowerCase().includes(lowerQuery) ||
+            tool.description.toLowerCase().includes(lowerQuery)
+        ),
+        projects: mockProjects.filter(proj =>
+            proj.name.toLowerCase().includes(lowerQuery)
+        ),
+        actions: mockActions.filter(action =>
+            action.name.toLowerCase().includes(lowerQuery)
+        ),
+    }
   }, [query]);
 
   return (
@@ -82,17 +103,44 @@ export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
       <CommandList>
         {query.length > 0 ? (
             <>
-              <CommandEmpty>No results found for "{query}".</CommandEmpty>
-              <CommandGroup heading="Apps & Tools">
-                {searchResults.map((tool) => (
-                    <CommandItem key={tool.id} onSelect={() => handleToolSelect(tool)} value={`${tool.title} ${tool.description}`}>
-                        <div className="p-1.5 rounded-md text-white mr-2" style={{backgroundColor: tool.color}}>
-                            {React.cloneElement(tool.icon, { className: 'h-4 w-4' })}
-                        </div>
-                        <span>{tool.title}</span>
-                    </CommandItem>
-                ))}
-              </CommandGroup>
+              {searchResults.apps.length === 0 && searchResults.projects.length === 0 && searchResults.actions.length === 0 && (
+                <CommandEmpty>No results found for "{query}".</CommandEmpty>
+              )}
+
+              {searchResults.apps.length > 0 && (
+                <CommandGroup heading="Apps & Tools">
+                    {searchResults.apps.map((tool) => (
+                        <CommandItem key={tool.id} onSelect={() => handleToolSelect(tool)} value={`${tool.title} ${tool.description}`}>
+                            <div className="p-1.5 rounded-md text-white mr-2" style={{backgroundColor: tool.color}}>
+                                {React.cloneElement(tool.icon, { className: 'h-4 w-4' })}
+                            </div>
+                            <span>{tool.title}</span>
+                        </CommandItem>
+                    ))}
+                </CommandGroup>
+              )}
+
+              {searchResults.projects.length > 0 && (
+                 <CommandGroup heading="Projects">
+                    {searchResults.projects.map((project) => (
+                        <CommandItem key={project.id} onSelect={() => handleSelect(project.href, project.name)}>
+                           <Folder className="mr-2 h-4 w-4" />
+                           <span>{project.name}</span>
+                        </CommandItem>
+                    ))}
+                 </CommandGroup>
+              )}
+
+               {searchResults.actions.length > 0 && (
+                 <CommandGroup heading="Actions">
+                    {searchResults.actions.map((action) => (
+                        <CommandItem key={action.id} onSelect={() => handleSelect(action.href, action.name)}>
+                           <Zap className="mr-2 h-4 w-4" />
+                           <span>{action.name}</span>
+                        </CommandItem>
+                    ))}
+                 </CommandGroup>
+              )}
             </>
         ) : (
             <div className="p-4 grid grid-cols-2 lg:grid-cols-4 gap-4">
