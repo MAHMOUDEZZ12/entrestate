@@ -16,7 +16,7 @@ import { Label } from './ui/label';
 import { LandingHeader } from './landing-header';
 import { LandingFooter } from './landing-footer';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
-import { CodeBlock } from './code-block';
+import { CodeBlock } from '@/components/code-block';
 import { PurchaseDialog } from './ui/purchase-dialog';
 import Image from 'next/image';
 
