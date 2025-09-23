@@ -30,25 +30,22 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
     // Simple examples. In a real app, these would be more detailed and specific.
     const examples = [
         {
-            title: "Generate a Luxury Ad",
-            description: "Create a high-end, professional ad for a luxury property.",
+            title: "Generate Ad Copy",
+            description: "Create high-converting ad copy for a luxury property.",
             input: `{\n  "projectName": "Emaar Beachfront",\n  "focusArea": "Luxury amenities",\n  "toneOfVoice": "Luxury"\n}`,
-            outputImage: "https://picsum.photos/seed/luxury-ad/800/450",
-            imageHint: "luxury apartment interior"
+            output: `{\n  "headline": "Emaar Beachfront: Where Luxury Meets the Sea",\n  "body": "Discover an exclusive island lifestyle with private beach access and unparalleled amenities. Your key to elegance awaits."\n}`
         },
         {
             title: "Create a Market Report",
             description: "Generate an in-depth market report for a specific area.",
             input: `{\n  "location": "Dubai Marina",\n  "propertyType": "Luxury Condos",\n  "reportType": "Investor"\n}`,
-            outputImage: "https://picsum.photos/seed/market-report/800/450",
-            imageHint: "dubai skyline"
+            output: `{\n  "reportTitle": "Q3 2024 Investor Report: Dubai Marina",\n  "executiveSummary": "The market shows a 5.2% QoQ price increase, driven by strong rental demand from HNWIs...",\n  "futureOutlook": "Positive, with yields expected to hold firm."\n}`
         },
         {
-            title: "Build a Landing Page",
-            description: "Quickly generate a landing page for a new development.",
+            title: "Build a Landing Page Plan",
+            description: "Quickly generate the HTML structure for a new development's landing page.",
             input: `{\n  "projectName": "DAMAC Hills 2",\n  "projectDetails": "3-bedroom villas with lagoon access",\n  "brandingStyle": "Modern & Minimalist"\n}`,
-            outputImage: "https://picsum.photos/seed/villa-exterior/800/450",
-            imageHint: "modern villa exterior"
+            output: `{\n  "landingPageHtml": "<!DOCTYPE html><html><head>...</head><body><section class=\\"hero\\">...</section></body></html>",\n  "headlineOptions": [...]\n}`
         }
     ];
 
@@ -59,25 +56,27 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
                     <CarouselContent>
                         {examples.map((ex, index) => (
                             <CarouselItem key={index}>
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                                    <div>
-                                        <h4 className="text-xl font-bold mb-2">{ex.title}</h4>
-                                        <p className="text-muted-foreground mb-4">{ex.description}</p>
-                                        <Label className="text-sm">Example Input</Label>
-                                        <CodeBlock>{ex.input}</CodeBlock>
+                                <div className="space-y-6">
+                                    <div className="text-center">
+                                        <h4 className="text-xl font-bold mb-1">{ex.title}</h4>
+                                        <p className="text-muted-foreground max-w-2xl mx-auto">{ex.description}</p>
                                     </div>
-                                    <div>
-                                        <Label className="text-sm">Example Output</Label>
-                                        <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg">
-                                            <Image src={ex.outputImage} alt={ex.title} width={800} height={450} className="object-cover" data-ai-hint={ex.imageHint} />
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                                        <div>
+                                            <Label className="text-sm">Example Input</Label>
+                                            <CodeBlock>{ex.input}</CodeBlock>
+                                        </div>
+                                        <div>
+                                            <Label className="text-sm">Example Output</Label>
+                                            <CodeBlock>{ex.output}</CodeBlock>
                                         </div>
                                     </div>
                                 </div>
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className="left-2" />
-                    <CarouselNext className="right-2"/>
+                    <CarouselPrevious className="left-[-1.5rem] md:left-2" />
+                    <CarouselNext className="right-[-1.5rem] md:right-2"/>
                 </Carousel>
             </CardContent>
         </Card>
@@ -111,7 +110,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
           <div className="mt-8 flex items-center justify-center gap-4">
             <Link href="/login">
                 <ShinyButton>
-                    Get Started Free
+                    Get Started
                     <ArrowRight />
                 </ShinyButton>
             </Link>
