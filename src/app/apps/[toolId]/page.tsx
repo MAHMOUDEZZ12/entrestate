@@ -4,7 +4,7 @@
 import React from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { tools } from '@/lib/tools-client';
-import { PublicToolPageLayout } from '@/app/public-tool-page-layout';
+import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
 import { pricingData } from '@/lib/pricing-data';
 
 export default function ToolPage() {

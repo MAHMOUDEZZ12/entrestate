@@ -30,17 +30,6 @@ export interface ToolData {
 }
 
 export const tools: ToolData[] = [
-    // Suite Dashboards
-    { id: 'meta-dashboard', title: 'Ads Manager Intelligence', description: 'Your command center, powered by a team of AI agents for advertising.', iconName: 'Megaphone', color: '#1877F2', categories: ['Ads', 'Marketing'], suite: 'Meta Marketing Suite', cta: 'Open Dashboard' },
-    { id: 'listing-portal-dashboard', title: 'AI Listing Portal', description: 'A complete suite of tools for managing, syndicating, and analyzing your property listings.', iconName: 'Building', color: '#FF4500', categories: ['Sales Tools', 'Developer'], suite: 'AI Listing Portal', cta: 'Open Dashboard' },
-    { id: 'creative-studio-dashboard', title: 'AI Creative Studio', description: 'Your one-stop-shop for generating all types of creative content, from videos to logos.', iconName: 'Palette', color: '#8A2BE2', categories: ['Creative', 'Video', 'Editing'], suite: 'AI Creative Studio', cta: 'Open Dashboard' },
-    { id: 'lead-intelligence-dashboard', title: 'Lead Intelligence AI', description: 'Tools to find, enrich, and analyze your leads for maximum conversion.', iconName: 'Target', color: '#00CED1', categories: ['Lead Gen', 'CRM', 'Market Intelligence'], suite: 'Lead Intelligence AI', cta: 'Open Dashboard' },
-    { id: 'marketing-management-dashboard', title: 'Marketing Management', description: 'High-level tools for managing your brand, communications, and sales processes.', iconName: 'Briefcase', color: '#DA70D6', categories: ['Marketing', 'Social & Comms'], suite: 'Marketing Management', cta: 'Open Dashboard' },
-    { id: 'google-ads-dashboard', title: 'Google Ads Suite', description: 'Tools for creating and managing high-performing Google Ads campaigns.', iconName: 'Search', color: '#4285F4', categories: ['Ads', 'Marketing'], suite: 'Google Ads Suite', cta: 'Open Dashboard' },
-    { id: 'web-dev-dashboard', title: 'Web Development Lab', description: 'Tools for creating and managing your online presence, from landing pages to chatbots.', iconName: 'Globe', color: '#1E90FF', categories: ['Web'], suite: 'Web Development Lab', cta: 'Open Dashboard' },
-    { id: 'core-ai-dashboard', title: 'Core AI Dashboard', description: 'The foundational AI agents that power the platform\'s intelligence and memory.', iconName: 'BrainCircuit', color: '#6a788c', categories: ['CRM', 'Developer'], suite: 'Core AI', cta: 'Open Dashboard' },
-    { id: 'utility-dashboard', title: 'Utility Tools', description: 'Developer and utility tools for managing the platform and advanced tasks.', iconName: 'Wrench', color: '#808080', categories: ['Developer'], suite: 'Utility', cta: 'Open Dashboard' },
-    
     // Meta Ads Pilot
     { id: 'meta-auto-pilot', title: 'Marketing Agency Agent', dashboardTitle: 'Marketing Agency Agent', description: 'The master agent that orchestrates the entire marketing campaign from start to finish.', iconName: 'Sparkles', color: '#4B0082', categories: ['Ads', 'Marketing'], suite: 'Meta Marketing Suite', badge: 'AUTO', cta: 'Launch Campaign' },
     { id: 'campaign-builder', title: 'Campaign Connector', description: 'Your dedicated agent for Facebook & Instagram advertising. Acts as the connector between strategy and execution.', iconName: 'LayoutTemplate', color: '#4B0082', categories: ['Ads', 'Marketing'], suite: 'Meta Marketing Suite', cta: 'Build Campaign' },
