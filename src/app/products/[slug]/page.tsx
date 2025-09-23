@@ -5,7 +5,7 @@ import React from 'react';
 import { useParams, notFound } from 'next/navigation';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
-import { PublicToolPageLayout } from '@/app/public-tool-page-layout';
+import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
 import { tools } from '@/lib/tools-client';
 import { pricingData } from '@/lib/pricing-data';
 

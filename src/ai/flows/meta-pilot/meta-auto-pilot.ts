@@ -28,6 +28,7 @@ import {
     CreateMetaCampaignInputSchema,
     CreateMetaCampaignOutputSchema,
 } from '@/types';
+import { GenerateAdFromBrochureInput } from './generate-ad-from-brochure';
 
 // Define tools that the main flow can call
 const suggestTargetingTool = ai.defineTool(
@@ -51,7 +52,7 @@ const generateCreativeTool = ai.defineTool(
     }),
     outputSchema: GenerateAdFromBrochureOutputSchema,
   },
-  async (input) => generateAdFromBrochure(input)
+  async (input: GenerateAdFromBrochureInput) => generateAdFromBrochure(input)
 );
 
 const assembleCampaignTool = ai.defineTool(

@@ -28,7 +28,7 @@ import { manageWhatsAppCampaign } from '@/ai/flows/listing-crm/manage-whatsapp-c
 import { createMetaCampaign } from '@/ai/flows/meta-pilot/create-meta-campaign';
 import { syncPropertyFinderListing } from '@/ai/flows/developer-backend/sync-property-finder-listing';
 import { syncBayutListing } from '@/ai/flows/developer-backend/sync-bayut-listing';
-import { generatePaymentPlan } from '@/ai/flows/listing-crm/generate-payment-plan';
+import { generatePaymentPlan } from '@/aiflows/listing-crm/generate-payment-plan';
 import { translateBrochure } from '@/ai/flows/content/translate-brochure';
 import { editYoutubeVideo } from '@/ai/flows/video/edit-youtube-video';
 import { investigateLead } from '@/ai/flows/listing-crm/investigate-lead';
@@ -89,6 +89,22 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'meta-auto-pilot': runMetaAutoPilot,
 };
 
+// Map of tool IDs to their suggested next action
+const nextActionMap: Record<string, { toolId: string; title: string; description: string; }> = {
+    'listing-generator': {
+        toolId: 'meta-ads-copilot',
+        title: 'Create Ad Campaign',
+        description: 'Your listing is ready. Would you like to create a Meta Ad Campaign to promote it?',
+    },
+    'landing-pages': {
+        toolId: 'meta-ads-copilot',
+        title: 'Drive Traffic',
+        description: 'Your landing page is live. Let\'s create an ad campaign to drive traffic to it.',
+    },
+    // Add more cross-suite connections here
+};
+
+
 export async function POST(req: NextRequest) {
   let body;
   try {
@@ -107,7 +123,11 @@ export async function POST(req: NextRequest) {
     }
 
     const result = await runner(payload);
-    return NextResponse.json(result);
+    
+    // Check if there is a suggested next action for this tool
+    const next_action = nextActionMap[toolId] || null;
+
+    return NextResponse.json({ ...result, next_action });
 
   } catch (e: any) {
     const errorMessage = e.message || 'An unexpected error occurred.';

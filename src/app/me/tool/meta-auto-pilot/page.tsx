@@ -14,7 +14,6 @@ import { Label } from '@/components/ui/label';
 import { MetaAutoPilotInput } from '@/types';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useAuth } from '@/hooks/useAuth';
-import { runMetaAutoPilot } from '@/ai/flows/meta-pilot/meta-auto-pilot';
 
 type Status = 'pending' | 'running' | 'completed' | 'error';
 
@@ -83,7 +82,21 @@ export default function MetaAutoPilotPage() {
 
     try {
         const payload: MetaAutoPilotInput = { projectId: selectedProject, campaignGoal: selectedGoal };
-        const data = await runMetaAutoPilot(payload);
+        const idToken = await user.getIdToken();
+        const response = await fetch('/api/run', {
+            method: 'POST',
+            headers: { 
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${idToken}`
+            },
+            body: JSON.stringify({
+                toolId: 'meta-auto-pilot',
+                payload
+            }),
+        });
+
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Autopilot failed to execute.');
 
         setFinalResult(data);
         track('autopilot_execution_succeeded', { projectId: selectedProject });
