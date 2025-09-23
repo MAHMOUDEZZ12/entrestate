@@ -7,17 +7,17 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard, Workflow, Clock2, Wallet, BadgeCheck, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Feature, tools } from '@/lib/tools-client';
-import { ShinyButton } from './components/ui/shiny-button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './components/ui/accordion';
+import { ShinyButton } from '@/components/ui/shiny-button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { LandingHeader } from './components/landing-header';
-import { LandingFooter } from './components/landing-footer';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './components/ui/carousel';
-import { CodeBlock } from './components/code-block';
-import { useToast } from './hooks/use-toast';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { CodeBlock } from '@/components/code-block';
+import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 
 
