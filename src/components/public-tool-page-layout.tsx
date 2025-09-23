@@ -20,7 +20,15 @@ import Image from 'next/image';
 
 
 interface PublicToolPageLayoutProps {
-  feature: Feature & { price: number };
+  feature: Feature & {
+    price: number;
+    details: {
+      faqs: { question: string; answer: string }[];
+      use_cases: string[];
+      aiVsManual: { metric: string; manual: string; ai: string; icon: React.ReactElement }[];
+      synergy: { tool: string; benefit: string }[];
+    };
+  };
 }
 
 
@@ -67,7 +75,7 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
                                     <div>
                                         <Label className="text-sm">Example Output</Label>
                                         <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg">
-                                            <Image src={ex.outputImage} alt={ex.title} layout="fill" objectFit="cover" data-ai-hint={ex.imageHint} />
+                                            <Image src={ex.outputImage} alt={ex.title} fill objectFit="cover" data-ai-hint={ex.imageHint} />
                                         </div>
                                     </div>
                                 </div>
@@ -287,4 +295,3 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
     </div>
   );
 }
-

@@ -11,24 +11,18 @@ import { ArrowRight, BookOpen, MessageSquare, Newspaper, Check } from 'lucide-re
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
+import { tools } from '@/lib/tools-data';
 import { marketingSuites } from '@/lib/suites-data';
-import { useToast } from '@/hooks/use-toast';
-import { Badge } from '@/components/ui/badge';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
-import { tools as allTools } from '@/lib/tools-client';
+import { useToast } from '@/hooks/use-toast';
 
 export default function SuiteDetailPage() {
   const { slug } = useParams<{ slug: string }>();
+  const router = useRouter();
+  const { toast } = useToast();
 
-  const suite = marketingSuites.find(s => s.id === slug);
-  if (!suite) {
-    notFound();
-  }
-
-  const suiteTools = allTools.filter(tool => tool.suite === suite.name);
   const [addedApps, setAddedApps] = React.useState<string[]>([]);
-  
-  React.useEffect(() => {
+   React.useEffect(() => {
     const savedState = localStorage.getItem('addedApps');
     if (savedState) {
         setAddedApps(JSON.parse(savedState));
@@ -43,6 +37,13 @@ export default function SuiteDetailPage() {
     localStorage.setItem('addedApps', JSON.stringify(newAddedApps));
   }
 
+
+  const suite = marketingSuites.find(s => s.id === slug);
+  if (!suite) {
+    notFound();
+  }
+
+  const suiteTools = tools.filter(tool => tool.suite === suite.name);
   
   const appsThatNeedConnection: { [key: string]: string } = {
     'meta-ads-copilot': 'Facebook',
@@ -52,7 +53,6 @@ export default function SuiteDetailPage() {
     'email-creator': 'Gmail / Outlook',
     'whatsapp-manager': 'WhatsApp Business',
   };
-
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -67,7 +67,7 @@ export default function SuiteDetailPage() {
         <section className="py-16 md:py-24">
             <div className="container mx-auto px-4">
                 <div className="text-center mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Apps Included in This Suite</h2>
+                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Apps Included in This Planet</h2>
                     <p className="mt-4 text-lg text-muted-foreground">This is the complete arsenal of tools you unlock.</p>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -89,26 +89,26 @@ export default function SuiteDetailPage() {
             <div className="container mx-auto px-4">
                  <div className="text-center mb-12">
                     <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Dedicated Resources</h2>
-                    <p className="mt-4 text-lg text-muted-foreground">Each Suite comes with its own universe of knowledge.</p>
+                    <p className="mt-4 text-lg text-muted-foreground">Each Planet comes with its own universe of knowledge.</p>
                 </div>
                  <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <Card>
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><Newspaper /> Suite News & Blog</CardTitle>
+                            <CardTitle className="flex items-center gap-2"><Newspaper /> Planet News & Blog</CardTitle>
                         </CardHeader>
                         <CardContent><p className="text-muted-foreground">The latest updates, strategies, and success stories related to the {suite.name}.</p></CardContent>
                         <CardFooter><Button variant="outline" asChild><Link href="/blog">Go to Blog</Link></Button></CardFooter>
                     </Card>
                      <Card>
                         <CardHeader>
-                             <CardTitle className="flex items-center gap-2"><BookOpen /> Suite Documentation</CardTitle>
+                             <CardTitle className="flex items-center gap-2"><BookOpen /> Planet Documentation</CardTitle>
                         </CardHeader>
                         <CardContent><p className="text-muted-foreground">In-depth technical guides and API references for every tool in this suite.</p></CardContent>
                         <CardFooter><Button variant="outline" asChild><Link href="/documentation">Go to Docs</Link></Button></CardFooter>
                     </Card>
                      <Card>
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><MessageSquare /> Suite Support</CardTitle>
+                            <CardTitle className="flex items-center gap-2"><MessageSquare /> Planet Support</CardTitle>
                         </CardHeader>
                         <CardContent><p className="text-muted-foreground">Get specialized help from our support team who are experts in the {suite.name}.</p></CardContent>
                         <CardFooter><Button variant="outline" asChild><Link href="/support">Contact Support</Link></Button></CardFooter>
@@ -119,7 +119,7 @@ export default function SuiteDetailPage() {
         
         <section className="py-24">
             <div className="container mx-auto px-4 text-center">
-                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Ready to Master This Suite?</h2>
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Ready to Master This Planet?</h2>
                 <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">Acquire the {suite.name} to add these powerful tools to your dashboard and supercharge your workflow.</p>
                 <div className="mt-8">
                     <Link href="/pricing">

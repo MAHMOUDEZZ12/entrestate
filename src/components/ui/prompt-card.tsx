@@ -40,8 +40,8 @@ export function PromptCard({ prompt }: { prompt: PromptCardProps }) {
                 // Potentially open a results view or just show a success state.
             } else {
                 // For prompts that require user input (no predefined payload), navigate to the tool page.
-                addTab({ href: `/dashboard/tool/${toolId}`, label: title });
-                router.push(`/dashboard/tool/${toolId}`);
+                addTab({ href: `/me/tool/${toolId}`, label: title });
+                router.push(`/me/tool/${toolId}`);
             }
 
         } catch (error: any) {

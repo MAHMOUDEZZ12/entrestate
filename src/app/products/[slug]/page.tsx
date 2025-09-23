@@ -5,7 +5,7 @@ import React from 'react';
 import { useParams, notFound } from 'next/navigation';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
-import { tools as allToolsClient, Feature } from '@/lib/tools-client';
+import { tools as allToolsClient } from '@/lib/tools-client';
 import { pricingData } from '@/lib/pricing-data';
 import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
 
@@ -25,7 +25,7 @@ export default function ProductDetailPage() {
   // Combine tool data with its price
   const featureWithPrice = {
       ...feature,
-      price: appPricing?.price_monthly ?? 0, // Default to 0 if not found
+      price: appPricing?.pricing ?? 0, // Default to 0 if not found
   };
 
   return (

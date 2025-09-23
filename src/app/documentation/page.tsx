@@ -4,7 +4,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Code, GitBranch, Cpu, Component, Wind, BrainCircuit, Network } from 'lucide-react';
-import { tools } from '@/lib/tools-client';
+import { tools } from '@/lib/tools-data';
 import { Badge } from '@/components/ui/badge';
 import { CodeBlock } from '@/components/code-block';
 import { PageHeader } from '@/components/ui/page-header';
@@ -30,20 +30,15 @@ const technologies = [
 
 const SchemaDisplay = ({ tool }: { tool: any }) => {
     // In a real app, we would dynamically import or fetch schemas.
-    // For now, we'll create a simplified representation from the `creationFields`.
-    const fields = tool.creationFields.map((field: any) => {
-        if (field.type === 'group-header' || field.type === 'button') return null;
-        const type = field.type === 'number' ? 'number' : field.type === 'file' ? 'file' : 'string';
-        return `  ${field.id}: ${type}; // ${field.description || ''}`;
-    }).filter(Boolean).join('\n');
-
+    // For now, this is a placeholder.
+    const inputExample = `{\n  "example_input": "..."\n}`;
     const outputExample = `{\n  "result": "..." // Output varies by tool\n}`;
 
     return (
         <div className="space-y-4">
             <div>
                 <h4 className="font-semibold text-base mb-2">Input Schema (from UI)</h4>
-                <CodeBlock>{`{\n${fields}\n}`}</CodeBlock>
+                <CodeBlock>{inputExample}</CodeBlock>
             </div>
              <div>
                 <h4 className="font-semibold text-base mb-2">Generic Output Schema</h4>
