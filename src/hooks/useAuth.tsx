@@ -17,11 +17,11 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // --- Admin ---
 // In a real application, this would come from a secure database role system.
-// For this simulation, we'll hardcode admin emails.
-const ADMIN_EMAILS = [
-    'admin@entrestate.com',
-    'dev@entrestate.com',
-    // Add your primary Firebase user's email here to grant yourself access
+// For this simulation, we'll hardcode admin usernames.
+const ADMIN_USERNAMES = [
+    'admin',
+    'dev',
+    // Add your Firebase user's displayName here to grant yourself access
 ];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
@@ -41,7 +41,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
-      const userIsAdmin = user ? ADMIN_EMAILS.includes(user.email || '') : false;
+      const userIsAdmin = user ? ADMIN_USERNAMES.includes(user.displayName || '') : false;
       setIsAdmin(userIsAdmin);
       setLoading(false);
       
