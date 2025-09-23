@@ -3,13 +3,14 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Bot, Send, Loader2, User, ChevronUp, X, Sparkles } from 'lucide-react';
+import { Bot, Send, Loader2, User, ChevronUp, X, Sparkles, PlusCircle } from 'lucide-react';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { secretCodes } from '@/lib/codes';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
+import { usePathname } from 'next/navigation';
 
 type Message = {
     from: 'ai' | 'user';
@@ -33,6 +34,8 @@ export function GlobalChat() {
   const [chatHistory, setChatHistory] = useState<any[]>([]);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -86,6 +89,54 @@ export function GlobalChat() {
         setIsLoading(false);
     }
   };
+  
+    const getContextualInfo = () => {
+        if (pathname.startsWith('/me/tool/')) {
+            return {
+                placeholder: "Ask a question about this tool or enter your next command...",
+                actions: [
+                    { label: "Save Result", href: "#", icon: <PlusCircle /> },
+                ]
+            };
+        }
+         if (pathname.startsWith('/me/flows')) {
+            return {
+                placeholder: "Describe a workflow you want to automate...",
+                actions: [
+                     { label: "New Flow", href: "/me/flows", icon: <PlusCircle /> },
+                ]
+            };
+        }
+        switch (pathname) {
+            case '/me/marketing':
+                return { 
+                    placeholder: "Search for an app or describe what you want to build...",
+                    actions: [] 
+                };
+            case '/me/brand':
+                return { 
+                    placeholder: "Ask about your brand assets or upload a new file...",
+                    actions: [
+                        { label: "Upload File", href: "#", icon: <PlusCircle /> },
+                    ]
+                };
+             case '/me':
+                 return {
+                    placeholder: "Search your projects or ask the AI to perform a task...",
+                    actions: [
+                        { label: "Add Project", href: "/me/tool/projects-finder", icon: <PlusCircle /> },
+                    ]
+                 }
+            default:
+                return { 
+                    placeholder: "Send a message or type '/' for commands...",
+                    actions: []
+                };
+        }
+    }
+    
+    const { placeholder, actions } = getContextualInfo();
+
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -127,26 +178,36 @@ export function GlobalChat() {
         </SheetContent>
 
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-lg border-t">
-        <div className="container mx-auto p-4 max-w-4xl">
-            <form onSubmit={handleSendMessage} className="relative">
-                <Input 
-                    placeholder="Send a message or type '/' for commands..." 
-                    className="w-full h-12 pl-4 pr-24 text-base"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    disabled={isLoading}
-                    autoComplete="off"
-                    onFocus={() => { if(!isSheetOpen) setIsSheetOpen(true); }}
-                />
-                <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                    <SheetTrigger asChild>
-                        <Button type="button" variant="ghost" size="icon">
-                            <ChevronUp className="h-5 w-5 text-muted-foreground" />
+        <div className="container mx-auto p-4 max-w-5xl">
+            <form onSubmit={handleSendMessage} className="relative flex items-center gap-4">
+                 {actions.map(action => (
+                    <Link href={action.href} key={action.label}>
+                        <Button type="button" variant="outline" size="sm" className="hidden sm:flex">
+                           {React.cloneElement(action.icon as React.ReactElement, { className: 'mr-2 h-4 w-4' })}
+                           {action.label}
                         </Button>
-                    </SheetTrigger>
-                    <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
-                        {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                    </Button>
+                    </Link>
+                 ))}
+                <div className="relative flex-1">
+                    <Input 
+                        placeholder={placeholder} 
+                        className="w-full h-12 pl-4 pr-24 text-base"
+                        value={input}
+                        onChange={(e) => setInput(e.target.value)}
+                        disabled={isLoading}
+                        autoComplete="off"
+                        onFocus={() => { if(!isSheetOpen) setIsSheetOpen(true); }}
+                    />
+                    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                        <SheetTrigger asChild>
+                            <Button type="button" variant="ghost" size="icon">
+                                <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                            </Button>
+                        </SheetTrigger>
+                        <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
+                            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                        </Button>
+                    </div>
                 </div>
             </form>
         </div>
