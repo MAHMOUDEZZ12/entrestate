@@ -85,7 +85,7 @@ async function scrapePropertyFinder() {
 }
 
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
   if (!adminDb) {
     return fail("Firebase Admin is not initialized. Check server environment.", 503);
   }

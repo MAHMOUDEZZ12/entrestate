@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from "react";
@@ -79,7 +78,7 @@ function SearchEngineUploadPreview() {
   };
 
   if (!user) {
-      return <Alert>Please log in to use the data importer.</Alert>
+      return <Alert><AlertTitle>Not Authenticated</AlertTitle><AlertDescription>Please log in to use the data importer.</AlertDescription></Alert>
   }
 
   return (

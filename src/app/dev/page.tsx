@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
-import { PlusCircle, Bot, GitCommit, AlertTriangle, GanttChartSquare, RotateCw, Loader2, Sparkles, CheckCircle, MessageSquare, Undo, Copy, Database, BrainCircuit, Activity, BarChart2, Users, MoreHorizontal, HeartPulse, GitMerge, Key, Library } from 'lucide-react';
+import { PlusCircle, Bot, GitCommit, AlertTriangle, GanttChartSquare, RotateCw, Loader2, Sparkles, CheckCircle, MessageSquare, Undo, Copy, Database, BrainCircuit, Activity, BarChart2, Users, MoreHorizontal, HeartPulse, GitMerge, Key, Library, Upload } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -264,7 +264,7 @@ export default function DevAdminPage() {
         setTimeout(() => setChangeLog(prev => prev.map(l => l.id === newLogEntry.id ? {...l, status: 'Implemented'} : l)), 2000);
 
         try {
-            const response = await fetch(`/api/admin/scrape?source=${source}`);
+            const response = await fetch(`/api/admin/scrape?source=${source}`, { method: 'POST' });
             const data = await response.json();
             if (!data.ok) throw new Error(data.error);
             
@@ -296,7 +296,7 @@ export default function DevAdminPage() {
         setChangeLog(prev => [newLogEntry, ...prev]);
 
         try {
-            const response = await fetch(`/api/admin/dataflow?job=${jobType}`);
+            const response = await fetch(`/api/admin/dataflow?job=${jobType}`, { method: 'POST' });
             const data = await response.json();
             if (!data.ok) throw new Error(data.error);
 
@@ -513,12 +513,12 @@ export default function DevAdminPage() {
                         <CardContent className="flex flex-wrap gap-2">
                             <Link href="/dev/data-importer">
                                 <Button variant="secondary">
-                                    Open XML Importer
+                                    <Upload className="mr-2 h-4 w-4" /> Open XML Importer
                                 </Button>
                             </Link>
                             <Link href="/dev/archive">
                                 <Button variant="secondary">
-                                    View Developer Archive
+                                    <Database className="mr-2 h-4 w-4" /> View Developer Archive
                                 </Button>
                             </Link>
                             <Link href="/dashboard/tool/prompt-library">
