@@ -130,7 +130,7 @@ export default function SettingsPage() {
         <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6">
           <TabsTrigger value="account"><User className="mr-2 h-4 w-4" /> Account</TabsTrigger>
           <TabsTrigger value="appearance"><Palette className="mr-2 h-4 w-4" /> Appearance</TabsTrigger>
-          <TabsTrigger value="analog"><MousePointer className="mr-2 h-4 w-4" /> Analog</TabsTrigger>
+          <TabsTrigger value="analog"><MousePointer className="mr-2 h-4 w-4" /> GemAnalog</TabsTrigger>
           <TabsTrigger value="assistant"><Bot className="mr-2 h-4 w-4" /> Assistant</TabsTrigger>
           <TabsTrigger value="connections"><Network className="mr-2 h-4 w-4" /> Connections</TabsTrigger>
           <TabsTrigger value="subscription"><CreditCard className="mr-2 h-4 w-4" /> Subscription</TabsTrigger>
@@ -222,7 +222,7 @@ export default function SettingsPage() {
         <TabsContent value="analog">
            <Card>
             <CardHeader>
-              <CardTitle>Analog Options</CardTitle>
+              <CardTitle>GemAnalog Options</CardTitle>
               <CardDescription>Customize the behavior of your "Play Analog" sensitive control bar.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
@@ -287,9 +287,9 @@ export default function SettingsPage() {
 
                 <Alert className="border-primary/30 bg-primary/10">
                     <Sparkles className="h-4 w-4 text-primary" />
-                    <AlertTitle className="text-primary font-bold">Coming Soon: AI Apps Analog</AlertTitle>
+                    <AlertTitle className="text-primary font-bold">Coming Soon: AI Apps, powered by GemAnalog</AlertTitle>
                     <AlertDescription>
-                        A premium workspace where you can visually map, connect, and deploy complex AI workflows like never before. The ultimate evolution of the "Play Analog" concept.
+                        A premium workspace where you can visually map, connect, and deploy complex AI workflows like never before. The ultimate evolution of the GemAnalog concept.
                     </AlertDescription>
                 </Alert>
                 
