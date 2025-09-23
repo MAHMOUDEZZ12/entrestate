@@ -14,6 +14,8 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useSensitiveArea } from '@/context/SensitiveAreaContext';
 import { CommandMenu } from './ui/command-menu';
 import { useToast } from '@/hooks/use-toast';
+import { useSpotlight } from '@/context/SpotlightContext';
+import { Feature } from '@/lib/tools-client';
 
 
 type Message = {
@@ -57,6 +59,7 @@ export function GlobalChat() {
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const { activeHint, isHintActive } = useSensitiveArea();
+  const { spotlightedApp } = useSpotlight();
   
   useEffect(() => {
     setIsClient(true);
@@ -168,6 +171,19 @@ export function GlobalChat() {
         }
         
         let leftKeys: ActionKey[] = [];
+
+        if (spotlightedApp) {
+            const isAdded = localStorage.getItem('addedApps')?.includes(spotlightedApp.id);
+            const mainAction = isAdded 
+                ? { label: "Open", href: `/me/tool/${spotlightedApp.id}`, icon: <ArrowRight /> }
+                : { label: "Add", action: () => alert(`Adding ${spotlightedApp.title}`), icon: <PlusCircle /> };
+
+            return {
+                placeholder: `Spotlight on: ${spotlightedApp.title}`,
+                leftKeys: [mainAction],
+                rightKey: { label: "Options", href: `/apps/${spotlightedApp.id}`, icon: <Settings2 /> }
+            };
+        }
 
         if (isHintActive) {
             return { placeholder: activeHint, leftKeys: [], rightKey: null };
@@ -315,5 +331,3 @@ export function GlobalChat() {
     </>
   );
 }
-
-    

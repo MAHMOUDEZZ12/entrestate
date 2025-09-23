@@ -23,6 +23,7 @@ import { track } from '@/lib/events';
 import { Feature } from '@/lib/tools-client';
 import { useTabManager } from '@/context/TabManagerContext';
 import { useRouter } from 'next/navigation';
+import { useSpotlight } from '@/context/SpotlightContext';
 
 
 interface DashboardServiceCardProps {
@@ -44,6 +45,7 @@ export function DashboardServiceCard({
   const [isConnecting, setIsConnecting] = useState(false);
   const { addTab } = useTabManager();
   const router = useRouter();
+  const { setSpotlight, clearSpotlight } = useSpotlight();
   
   const { title, description, icon, href, guideHref, color, dashboardTitle } = tool;
 
@@ -168,33 +170,35 @@ export function DashboardServiceCard({
   }
 
   return (
-    <Card className={cn("group flex h-full flex-col transition-all duration-300", isAdded && "border-primary/30 bg-card")}>
-      <CardHeader>
-        <div className="mb-4 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-                 <div
-                    className="rounded-lg p-3 text-white"
-                    style={{ backgroundColor: color || 'hsl(var(--primary))' }}
-                >
-                    {React.cloneElement(icon as React.ReactElement, { className: 'h-6 w-6' })}
+    <div onMouseEnter={() => setSpotlight(tool)} onMouseLeave={clearSpotlight}>
+        <Card className={cn("group flex h-full flex-col transition-all duration-300", isAdded && "border-primary/30 bg-card")}>
+        <CardHeader>
+            <div className="mb-4 flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                    <div
+                        className="rounded-lg p-3 text-white"
+                        style={{ backgroundColor: color || 'hsl(var(--primary))' }}
+                    >
+                        {React.cloneElement(icon as React.ReactElement, { className: 'h-6 w-6' })}
+                    </div>
+                    <CardTitle className="text-xl font-heading">{dashboardTitle || title}</CardTitle>
                 </div>
-                <CardTitle className="text-xl font-heading">{dashboardTitle || title}</CardTitle>
+                {isAdded && <Check className="h-5 w-5 text-green-500" />}
             </div>
-            {isAdded && <Check className="h-5 w-5 text-green-500" />}
-        </div>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardFooter className="mt-auto flex justify-end gap-2">
-        {guideHref && (
-          <Link href={guideHref} target="_blank">
-            <Button variant="ghost" size="sm">
-              <BookOpen className="mr-2 h-4 w-4" />
-              Guide
-            </Button>
-          </Link>
-        )}
-        <MainAction />
-      </CardFooter>
-    </Card>
+            <CardDescription>{description}</CardDescription>
+        </CardHeader>
+        <CardFooter className="mt-auto flex justify-end gap-2">
+            {guideHref && (
+            <Link href={guideHref} target="_blank">
+                <Button variant="ghost" size="sm">
+                <BookOpen className="mr-2 h-4 w-4" />
+                Guide
+                </Button>
+            </Link>
+            )}
+            <MainAction />
+        </CardFooter>
+        </Card>
+    </div>
   );
 }

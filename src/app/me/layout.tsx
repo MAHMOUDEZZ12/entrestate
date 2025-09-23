@@ -6,6 +6,7 @@ import { DashboardHeader } from '@/components/dashboard-header';
 import { DashboardTabs } from '@/components/dashboard-tabs';
 import { GlobalChat } from '@/components/global-chat';
 import { cn } from '@/lib/utils';
+import { SpotlightProvider } from '@/context/SpotlightContext';
 
 export default function MeLayout({
   children,
@@ -31,7 +32,7 @@ export default function MeLayout({
       <DashboardHeader />
       <div className={cn("flex flex-col flex-1", isBarOnTop && "flex-col-reverse")}>
         <main className="flex-1 overflow-y-auto pb-24 pt-0">
-            {children}
+          {children}
         </main>
         {isClient && <GlobalChat />}
       </div>
