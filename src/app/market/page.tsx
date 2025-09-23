@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -8,8 +7,6 @@ import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'rec
 import { LineChart, Users2, Eye, Target, Sparkles, Download, ArrowRight, TrendingUp, FileText, Building, Database, BarChart, FileJson } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import Link from 'next/link';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { ShinyButton } from '@/components/ui/shiny-button';
 
 const kpiData = {
@@ -56,7 +53,6 @@ export default function MarketPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
       <main className="flex-1 w-full">
       <PageHeader
         title="Market Data Library"
@@ -198,7 +194,6 @@ export default function MarketPage() {
            </div>
         </section>
       </main>
-      <LandingFooter />
     </div>
   );
 }

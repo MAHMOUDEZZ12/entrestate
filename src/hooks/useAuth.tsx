@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
@@ -24,6 +23,14 @@ const ADMIN_USERNAMES = [
     // Add your Firebase user's displayName here to grant yourself access
 ];
 
+const isProtectedRoute = (path: string) => {
+    return path.startsWith('/me') || path.startsWith('/onboarding');
+};
+  
+const isAdminRoute = (path: string) => {
+    return path.startsWith('/gem');
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,6 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!auth) {
+        console.warn("Firebase Auth not initialized, user will be treated as logged out.");
         setLoading(false);
         if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
             router.push('/login');
@@ -62,13 +70,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => unsubscribe();
   }, [pathname, router]);
   
-  const isProtectedRoute = (path: string) => {
-    return path.startsWith('/me');
-  };
-  
-  const isAdminRoute = (path: string) => {
-    return path.startsWith('/gem');
-  }
 
   if (loading) {
     return (

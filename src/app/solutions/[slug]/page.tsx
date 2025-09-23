@@ -1,10 +1,7 @@
-
 'use client';
 
 import React from 'react';
 import { useParams, notFound } from 'next/navigation';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { PageHeader } from '@/components/ui/page-header';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -134,7 +131,6 @@ export default function SolutionPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
       <main className="flex-1 w-full max-w-5xl mx-auto px-4 md:px-6 py-12 md:py-20 space-y-16">
         <PageHeader
           title={solution.title}
@@ -263,7 +259,6 @@ export default function SolutionPage() {
         </section>
 
       </main>
-      <LandingFooter />
     </div>
   );
 }

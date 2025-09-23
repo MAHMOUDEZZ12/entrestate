@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import React from 'react';
@@ -9,8 +7,6 @@ import { tools } from '@/lib/tools-client';
 import { Badge } from '@/components/ui/badge';
 import { CodeBlock } from '@/components/code-block';
 import { PageHeader } from '@/components/ui/page-header';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 
 
 const technologies = [
@@ -60,7 +56,6 @@ const SchemaDisplay = ({ tool }: { tool: any }) => {
 export default function DocumentationPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
-        <LandingHeader />
         <main className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
             <PageHeader 
                 icon={<GitBranch className="h-8 w-8" />}
@@ -141,7 +136,6 @@ export default function DocumentationPage() {
                 </Card>
             </section>
         </main>
-      <LandingFooter />
     </div>
   );
 }

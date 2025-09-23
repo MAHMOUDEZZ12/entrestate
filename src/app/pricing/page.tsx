@@ -1,12 +1,9 @@
-
 'use client';
 
 import React, { useState } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Wallet } from 'lucide-react';
 import { Switch } from '@/components/ui/switch';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { cn } from '@/lib/utils';
 import { PricingCard } from '@/components/pricing-card';
 import { pricingData } from '@/lib/pricing-data';
@@ -17,7 +14,6 @@ export default function PricingPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
         <PageHeader
           title="Plans & Pricing"
@@ -39,7 +35,6 @@ export default function PricingPage() {
         </div>
         
       </main>
-      <LandingFooter />
     </div>
   );
 }

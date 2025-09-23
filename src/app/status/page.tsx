@@ -1,12 +1,9 @@
-
 'use client';
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Server, CheckCircle, Clock } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
@@ -24,7 +21,6 @@ export default function StatusPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1">
         <PageHeader
           title="System Status"
@@ -67,7 +63,6 @@ export default function StatusPage() {
           </Card>
         </div>
       </main>
-      <LandingFooter />
     </div>
   );
 }

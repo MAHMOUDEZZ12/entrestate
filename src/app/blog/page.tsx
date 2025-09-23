@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -8,8 +7,6 @@ import { PageHeader } from '@/components/ui/page-header';
 import { ArrowRight, Rss } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { appDetails } from '@/lib/blog-content';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { tools } from '@/lib/tools-client';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
@@ -39,7 +36,6 @@ export default function BlogPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1">
         <PageHeader
           title="Entrestate Insights"
@@ -86,7 +82,6 @@ export default function BlogPage() {
           </div>
         </div>
       </main>
-      <LandingFooter />
     </div>
   );
 }

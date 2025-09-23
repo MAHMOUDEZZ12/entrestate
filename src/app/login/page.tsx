@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from "next/image"
@@ -13,8 +12,6 @@ import { Label } from "@/components/ui/label"
 import { Logo } from "@/components/logo"
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
-import { LandingHeader } from "@/components/landing-header";
-import { LandingFooter } from "@/components/landing-footer";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Info } from 'lucide-react';
 
@@ -121,7 +118,6 @@ export default function AuthPage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1">
         <div className="w-full lg:grid lg:min-h-[calc(100vh-8rem)] lg:grid-cols-2">
           <div className="flex items-center justify-center py-12 px-4">
@@ -178,7 +174,6 @@ export default function AuthPage() {
           </div>
         </div>
       </main>
-      <LandingFooter />
     </div>
   )
 }

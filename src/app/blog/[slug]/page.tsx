@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -11,8 +10,6 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { cn } from '@/lib/utils';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 
 export default function BlogPage() {
     const { slug } = useParams<{ slug: string }>();
@@ -28,7 +25,6 @@ export default function BlogPage() {
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
-            <LandingHeader />
             <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
                 <article>
                     <header className="mb-12 text-center">
@@ -91,7 +87,6 @@ export default function BlogPage() {
                     </section>
                 </article>
             </main>
-            <LandingFooter />
         </div>
     );
 }

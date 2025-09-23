@@ -7,8 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { ProjectCard } from '@/components/ui/project-card';
 import { Badge } from '@/components/ui/badge';
 
@@ -42,7 +40,6 @@ function SearchResultsComponent() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-6 py-12">
         <div className="w-full max-w-3xl mx-auto">
           <form onSubmit={handleSearch} className="relative mb-8">
@@ -113,7 +110,6 @@ function SearchResultsComponent() {
             </TabsContent>
         </Tabs>
       </main>
-      <LandingFooter />
     </div>
   );
 }

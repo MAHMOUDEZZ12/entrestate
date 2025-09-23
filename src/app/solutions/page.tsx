@@ -1,12 +1,9 @@
-
 'use client';
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Sparkles, Telescope, MessageCircle, FileJson } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import Link from 'next/link';
 
 const solutions = [
@@ -33,7 +30,6 @@ const solutions = [
 export default function SolutionsPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1 w-full">
          <PageHeader
             title="Our Solutions"
@@ -60,7 +56,6 @@ export default function SolutionsPage() {
         </div>
 
       </main>
-      <LandingFooter />
     </div>
   );
 }

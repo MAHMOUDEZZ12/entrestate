@@ -5,14 +5,11 @@ import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
 import { FileText } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 
 
 export default function TermsPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
          <PageHeader 
             icon={<FileText className="h-8 w-8" />}
@@ -53,7 +50,6 @@ export default function TermsPage() {
             </CardContent>
         </Card>
       </main>
-      <LandingFooter />
     </div>
   );
 }

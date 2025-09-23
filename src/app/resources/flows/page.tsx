@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import React from 'react';
@@ -76,7 +74,7 @@ export default function FlowLibraryPage() {
                                 </div>
                             </CardContent>
                             <CardContent>
-                                <Link href="/dashboard/flows" className="w-full">
+                                <Link href="/me/flows" className="w-full">
                                     <Button className="w-full">
                                         {flow.cta} <ArrowRight className="ml-2 h-4 w-4" />
                                     </Button>
@@ -88,7 +86,6 @@ export default function FlowLibraryPage() {
             </div>
         </div>
       </main>
-      <LandingFooter />
     </div>
   );
 }

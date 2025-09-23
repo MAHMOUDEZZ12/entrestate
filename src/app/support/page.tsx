@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -6,8 +5,6 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
 import { LifeBuoy, ArrowRight, BookOpen, MessageSquare, Search, FileText, Bot, Bug, FileWarning, Loader2 } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
@@ -97,7 +94,6 @@ export default function SupportPage() {
     const [dialogOpen, setDialogOpen] = useState(false);
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1 w-full">
         <PageHeader
           title="Support Center"
@@ -178,7 +174,6 @@ export default function SupportPage() {
             </section>
         </div>
       </main>
-      <LandingFooter />
     </div>
   );
 }

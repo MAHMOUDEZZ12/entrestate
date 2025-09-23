@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -10,8 +9,6 @@ import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { getPaypalTransaction } from '@/ai/flows/developer-backend/get-paypal-transaction';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 
 const StepCard = ({ step, title, children, isActive }: { step: number, title: string, children: React.ReactNode, isActive: boolean }) => (
     <AnimatePresence>
@@ -89,7 +86,6 @@ export default function InstagramAdValuePage() {
 
     return (
         <div className="flex flex-col min-h-screen">
-        <LandingHeader />
         <main className="flex-1 w-full max-w-2xl mx-auto px-4 py-16 md:py-24">
             <div className="text-center mb-12">
                 <h1 className="text-3xl md:text-4xl font-bold font-heading">Are Your Ads Valuable?</h1>
@@ -144,7 +140,6 @@ export default function InstagramAdValuePage() {
                 <Link href="/cookies" className="underline hover:text-primary">Delete your cookies from here if needed.</Link>
             </div>
         </main>
-        <LandingFooter />
         </div>
     );
 }

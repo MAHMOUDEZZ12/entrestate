@@ -12,20 +12,12 @@ import { usePathname } from 'next/navigation';
 
 const navLinks = [
     { name: 'Apps', href: '/apps' },
-    { name: 'Solutions', href: '/solutions' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'Community', href: '/me/community' },
 ];
 
 export function LandingHeader() {
-  const { user, loading } = useAuth();
-  const pathname = usePathname();
-
-  // Don't render the header for logged-in users on dashboard routes
-  if (!loading && user && (pathname.startsWith('/me') || pathname.startsWith('/gem'))) {
-      return null;
-  }
-
+  
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center">

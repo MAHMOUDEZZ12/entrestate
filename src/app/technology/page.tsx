@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -9,8 +8,6 @@ import { ArrowRight, BrainCircuit, Code, Sparkles, Wand2 } from 'lucide-react';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import Image from 'next/image';
 import { Badge } from '@/components/ui/badge';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const GeminiSignature = () => (
@@ -30,7 +27,6 @@ const GeminiSignature = () => (
 export default function TechnologyPage() {
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
       <main className="flex-1 w-full">
         <section className="py-20 md:py-32 bg-gradient-to-b from-background to-muted/50">
              <div className="container mx-auto px-4 md:px-6 text-center">
@@ -81,7 +77,6 @@ export default function TechnologyPage() {
         <GeminiSignature />
         
       </main>
-      <LandingFooter />
     </div>
   );
 }

@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -23,9 +22,9 @@ export const SolutionsCta = () => {
                             <ArrowRight />
                         </ShinyButton>
                     </Link>
-                    <Link href="/services">
+                     <Link href="/pricing">
                         <Button variant="outline" size="lg">
-                            Explore Services
+                            View Plans
                         </Button>
                     </Link>
                 </div>

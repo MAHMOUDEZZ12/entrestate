@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -8,8 +7,6 @@ import Link from 'next/link';
 import { ArrowRight, BookOpen, BrainCircuit, Check, MessageCircle, Plus, Sparkles, Upload, Share2, Workflow, Database, BarChart3 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PageHeader } from '@/components/ui/page-header';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 
 const MindMapNode = ({
   title,
@@ -81,7 +78,6 @@ export default function SX3MindMapPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-      <LandingHeader />
       <main className="flex-1 w-full">
         <PageHeader
           title="The Entrestate Ecosystem"
@@ -133,7 +129,6 @@ export default function SX3MindMapPage() {
           </MindMapNode>
         </div>
       </main>
-      <LandingFooter />
     </div>
   );
 }

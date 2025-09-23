@@ -7,8 +7,6 @@ import { Input } from '@/components/ui/input';
 import { Search, Sparkles, ArrowRight, Bot, Telescope, MessageCircle, FileJson } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { motion } from "framer-motion";
@@ -30,7 +28,6 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1 w-full">
         {/* New Hero Section */}
         <section className="relative flex h-[calc(100vh-4rem)] w-full items-center justify-center overflow-hidden border-b bg-background">
@@ -59,7 +56,7 @@ export default function HomePage() {
                 The AI-Native Operating System for Real Estate
               </h1>
               <p className="mt-6 max-w-2xl text-lg md:text-xl text-foreground/70">
-                A complete ecosystem of Apps, Solutions, and Services to give real estate professionals an unparalleled advantage.
+                A complete ecosystem of Apps, Suites, and Services to give real estate professionals an unparalleled advantage.
               </p>
                <div className="mt-10 w-full max-w-2xl">
                      <div className="relative group">
@@ -100,7 +97,7 @@ export default function HomePage() {
                        <p className="text-lg text-muted-foreground">
                             Redefine how you discover opportunities. Our triple-engine search combines keyword-based speed, semantic AI understanding, and predictive historical analysis to give you a complete market view.
                        </p>
-                       <Link href="/solutions/market-search-engine">
+                       <Link href="/apps">
                            <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
@@ -118,7 +115,7 @@ export default function HomePage() {
                        <p className="text-lg text-muted-foreground">
                             Deploy a super-intelligent agent on your website or social media. It engages users proactively, answers complex questions with market data, and captures qualified leads 24/7.
                        </p>
-                       <Link href={`/solutions/sales-agent-chat-ai`}>
+                       <Link href="/apps">
                            <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
@@ -136,7 +133,7 @@ export default function HomePage() {
                         <p className="text-lg text-muted-foreground">
                            Create a single source of truth for your property data. Our AI consolidates, verifies, and archives listings to eliminate noise, enforce accuracy, and syndicate perfectly formatted data to all major portals.
                        </p>
-                       <Link href={`/solutions/ai-listing-portal`}>
+                       <Link href="/apps">
                            <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
@@ -149,7 +146,6 @@ export default function HomePage() {
 
         <SolutionsCta />
       </main>
-      <LandingFooter />
     </div>
   );
 }

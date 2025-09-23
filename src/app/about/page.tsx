@@ -7,14 +7,11 @@ import { PageHeader } from '@/components/ui/page-header';
 import { Users2 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import Image from 'next/image';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
 import { Logo } from '@/components/logo';
 
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen">
-      <LandingHeader />
       <main className="flex-1">
         <PageHeader
           title="About Entrestate"
@@ -48,7 +45,6 @@ export default function AboutPage() {
           </Card>
         </div>
       </main>
-      <LandingFooter />
     </div>
   );
 }
