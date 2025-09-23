@@ -70,6 +70,10 @@ export interface KnowledgeFile {
     createdAt: Date;
 }
 
+export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
+export type BadgeType = 'NEW' | 'AUTO' | 'DEPRECATED';
+export type Suite = 'Meta Marketing Suite' | 'Web Development Lab' | 'AI Listing Portal' | 'AI Creative Studio' | 'Marketing Management' | 'Lead Intelligence AI' | 'Google Ads Suite' | 'Core AI' | 'Utility';
+
 
 // Schemas for Audience Creator (`suggest-targeting-options`)
 export const SuggestTargetingOptionsInputSchema = z.object({

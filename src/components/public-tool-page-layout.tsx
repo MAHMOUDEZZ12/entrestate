@@ -11,13 +11,9 @@ import { ShinyButton } from './ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { Input } from './ui/input';
 import { Label } from './ui/label';
-import { LandingHeader } from './landing-header';
-import { LandingFooter } from './landing-footer';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
 import { CodeBlock } from './code-block';
-import { useToast } from '@/hooks/use-toast';
 import Image from 'next/image';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { PurchaseDialog } from '@/components/ui/purchase-dialog';
@@ -71,7 +67,7 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
                                     <div>
                                         <Label className="text-sm">Example Output</Label>
                                         <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg">
-                                            <Image src={ex.outputImage} alt={ex.title} layout="fill" objectFit="cover" data-ai-hint={ex.imageHint} />
+                                            <Image src={ex.outputImage} alt={ex.title} fill objectFit="cover" data-ai-hint={ex.imageHint} />
                                         </div>
                                     </div>
                                 </div>
@@ -97,7 +93,6 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-    <LandingHeader />
     <main className="flex-1 w-full bg-background">
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 border-b overflow-hidden">
@@ -289,7 +284,6 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       )}
 
     </main>
-    <LandingFooter />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 
 'use client';
 
+import React, { ReactElement } from 'react';
 import {
     Bot, BrainCircuit, CheckCircle, Plus, Sparkles, Upload, Megaphone, User,
     ShieldQuestion, Search, MessageCircle, PenTool, Clock2, Wallet, BadgeCheck,
@@ -9,22 +10,27 @@ import {
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
     FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Wrench, Briefcase, Languages, Link as LinkIcon, Sparkle
 } from 'lucide-react';
-import type { ReactElement } from 'react';
 import { tools as toolsData, ToolData } from './tools-data';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import React from 'react';
-import { Copy } from 'lucide-react';
 
-export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
-export type BadgeType = 'NEW' | 'AUTO' | 'DEPRECATED';
+// Centralized Icon Map
+const icons: { [key: string]: ReactElement } = {
+    Bot: <Bot />, BrainCircuit: <BrainCircuit />, CheckCircle: <CheckCircle />, Plus: <Plus />, Sparkles: <Sparkles />,
+    Upload: <Upload />, Megaphone: <Megaphone />, User: <User />, ShieldQuestion: <ShieldQuestion />, Search: <Search />,
+    MessageCircle: <MessageCircle />, PenTool: <PenTool />, Clock2: <Clock2 />, Wallet: <Wallet />, BadgeCheck: <BadgeCheck />,
+    ClipboardList: <ClipboardList />, Target: <Target />, LineChart: <LineChart />, Users2: <Users2 />, Network: <Network />,
+    LayoutTemplate: <LayoutTemplate />, Video: <Video />, Instagram: <Instagram />, FileText: <FileText />, Globe: <Globe />,
+    FileSearch: <FileSearch />, KeyRound: <KeyRound />, BarChart3: <BarChart3 />, Newspaper: <Newspaper />,
+    Handshake: <Handshake />, Filter: <Filter />, ListChecks: <ListChecks />, Container: <Container />,
+    BotMessageSquare: <BotMessageSquare />, Terminal: <Terminal />, FileCheck: <FileCheck />, Palette: <Palette />,
+    Map: <Map />, LandPlot: <LandPlot />, Building: <Building />, Camera: <Camera />, Calculator: <Calculator />,
+    Album: <Album />, Wand2: <Wand2 />, Database: <Database />, BarChart: <BarChart />, FileJson: <FileJson />,
+    ImageIcon: <ImageIcon />, Youtube: <Youtube />, Edit: <Edit />, CreditCard: <CreditCard />, Library: <Library />,
+    Facebook: <Facebook />, Languages: <Languages />, LinkIcon: <LinkIcon />, Briefcase: <Briefcase />, Wrench: <Wrench />, Sparkle: <Sparkle />
+};
 
 export interface Field {
     id: string;
@@ -39,7 +45,6 @@ export interface Field {
 }
 
 export interface Feature extends ToolData {
-    longDescription: string;
     href: string;
     guideHref: string;
     icon: React.ReactElement;
@@ -53,112 +58,49 @@ export interface Feature extends ToolData {
     };
 }
 
-const icons: { [key: string]: ReactElement } = {
-    Bot: <Bot />,
-    BrainCircuit: <BrainCircuit />,
-    CheckCircle: <CheckCircle />,
-    Plus: <Plus />,
-    Sparkles: <Sparkles />,
-    Upload: <Upload />,
-    Megaphone: <Megaphone />,
-    User: <User />,
-    ShieldQuestion: <ShieldQuestion />,
-    Search: <Search />,
-    MessageCircle: <MessageCircle />,
-    PenTool: <PenTool />,
-    Clock2: <Clock2 />,
-    Wallet: <Wallet />,
-    BadgeCheck: <BadgeCheck />,
-    ClipboardList: <ClipboardList />,
-    Target: <Target />,
-    LineChart: <LineChart />,
-    Users2: <Users2 />,
-    Network: <Network />,
-    LayoutTemplate: <LayoutTemplate />,
-    Video: <Video />,
-    Instagram: <Instagram />,
-    FileText: <FileText />,
-    Globe: <Globe />,
-    FileSearch: <FileSearch />,
-    KeyRound: <KeyRound />,
-    BarChart3: <BarChart3 />,
-    Newspaper: <Newspaper />,
-    Handshake: <Handshake />,
-    Filter: <Filter />,
-    ListChecks: <ListChecks />,
-    Container: <Container />,
-    BotMessageSquare: <BotMessageSquare />,
-    Terminal: <Terminal />,
-    FileCheck: <FileCheck />,
-    Palette: <Palette />,
-    Map: <Map />,
-    LandPlot: <LandPlot />,
-    Building: <Building />,
-    Camera: <Camera />,
-    Calculator: <Calculator />,
-    Album: <Album />,
-    Wand2: <Wand2 />,
-    Database: <Database />,
-    BarChart: <BarChart />,
-    FileJson: <FileJson />,
-    ImageIcon: <ImageIcon />,
-    Youtube: <Youtube />,
-    Edit: <Edit />,
-    CreditCard: <CreditCard />,
-    Library: <Library />,
-    Facebook: <Facebook />,
-    Languages: <Languages />,
-    LinkIcon: <LinkIcon />,
-    Briefcase: <Briefcase />,
-    Wrench: <Wrench />,
-    Sparkle: <Sparkle />,
+// Function to process raw data and add client-side properties
+const processToolsData = (data: ToolData[]): Feature[] => {
+    return data.map(tool => ({
+        ...tool,
+        icon: icons[tool.iconName] || <Sparkles />,
+        href: `/me/tool/${tool.id}`,
+        guideHref: `/blog/${tool.id}`,
+        details: { // Default details, can be overridden later
+            faqs: [
+                { question: 'Is this tool included in all plans?', answer: 'Yes, this is a core tool available to all users.' },
+                { question: 'How does the AI work?', answer: 'It uses a fine-tuned version of Google\'s Gemini model to provide the best results.' },
+                { question: 'Can I export the results?', answer: 'Yes, results can be exported in various formats like PDF or CSV where applicable.' },
+            ],
+            use_cases: [
+                'Automating daily marketing tasks.',
+                'Generating high-quality content in seconds.',
+                'Analyzing market data for better insights.',
+            ],
+            aiVsManual: [
+                { metric: 'Time Taken', manual: '3-4 hours', ai: '5 minutes', icon: <Clock2 /> },
+                { metric: 'Cost', manual: '$200 (Outsourcing)', ai: '$2 (API Credits)', icon: <Wallet /> },
+                { metric: 'Quality Score', manual: '75/100', ai: '92/100', icon: <BadgeCheck /> }
+            ],
+            synergy: [
+                { tool: 'CRM Memory', benefit: 'Personalize the output using your client data.'},
+                { tool: 'Market Library', benefit: 'Base the generation on real-time market data.'},
+                { tool: 'Brand Creator', benefit: 'Ensure all generated content matches your brand identity.'},
+            ]
+        },
+        creationFields: [ // Default fields
+            { id: `${tool.id}-input`, name: 'Primary Input', type: 'textarea', placeholder: 'Enter the main content or prompt here...' },
+        ],
+        renderResult: (result, toast) => (
+            <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap max-h-[70vh] overflow-auto">{JSON.stringify(result, null, 2)}</pre>
+        ),
+    }));
 };
 
-const copyToClipboard = (text: string, toast: (options: any) => void) => {
-    navigator.clipboard.writeText(text);
-    toast({
-        title: 'Copied to clipboard!',
-    });
-};
+// Create the full client-side feature list
+export const allTools: Feature[] = processToolsData(toolsData);
 
-export const allTools: Feature[] = toolsData.map(tool => ({
-    ...tool,
-    icon: icons[tool.iconName] || <Sparkles />,
-    href: `/me/tool/${tool.id}`,
-    guideHref: `/blog/${tool.id}`,
-    longDescription: 'A longer, more detailed description of what this amazing tool can do for the user.',
-    details: {
-        faqs: [
-            { question: 'Is this tool included in all plans?', answer: 'Yes, this is a core tool available to all users.' },
-            { question: 'How does the AI work?', answer: 'It uses a fine-tuned version of Google\'s Gemini model to provide the best results.' },
-            { question: 'Can I export the results?', answer: 'Yes, results can be exported in various formats like PDF or CSV where applicable.' },
-        ],
-        use_cases: [
-            'Automating daily marketing tasks.',
-            'Generating high-quality content in seconds.',
-            'Analyzing market data for better insights.',
-        ],
-        aiVsManual: [
-            { metric: 'Time Taken', manual: '3-4 hours', ai: '5 minutes', icon: <Clock2 /> },
-            { metric: 'Cost', manual: '$200 (Outsourcing)', ai: '$2 (API Credits)', icon: <Wallet /> },
-            { metric: 'Quality Score', manual: '75/100', ai: '92/100', icon: <BadgeCheck /> }
-        ],
-        synergy: [
-            { tool: 'CRM Memory', benefit: 'Personalize the output using your client data.'},
-            { tool: 'Market Library', benefit: 'Base the generation on real-time market data.'},
-            { tool: 'Brand Creator', benefit: 'Ensure all generated content matches your brand identity.'},
-        ]
-    },
-    creationFields: [
-        { id: `${tool.id}-input`, name: 'Primary Input', type: 'textarea', placeholder: 'Enter the main content or prompt here...' },
-    ],
-    renderResult: (result, toast) => (
-        <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap max-h-[70vh] overflow-auto">{JSON.stringify(result, null, 2)}</pre>
-    ),
-}));
-
-// Placeholder for individual tool configurations - find and modify tool by ID
-const configureTool = (id: string, config: Partial<Feature>) => {
+// Function to find a tool and apply specific configurations
+const configureTool = (id: string, config: Partial<Omit<Feature, keyof ToolData>>) => {
     const index = allTools.findIndex(t => t.id === id);
     if (index !== -1) {
         allTools[index] = { ...allTools[index], ...config };
@@ -166,7 +108,7 @@ const configureTool = (id: string, config: Partial<Feature>) => {
 }
 
 // ===================================================================================
-// TOOL CONFIGURATIONS
+// SPECIFIC TOOL UI CONFIGURATIONS
 // ===================================================================================
 
 configureTool('insta-ads-designer', {
@@ -385,15 +327,15 @@ configureTool('ugc-script-writer', {
                     <CardHeader><CardTitle>Variation {index + 1}</CardTitle></CardHeader>
                     <CardContent className="space-y-3">
                         <div>
-                            <Label className="text-xs font-bold uppercase text-muted-foreground">Hook</Label>
+                            <p className="text-xs font-bold uppercase text-muted-foreground">Hook</p>
                             <p className="font-semibold">"{script.hook}"</p>
                         </div>
                          <div>
-                            <Label className="text-xs font-bold uppercase text-muted-foreground">Body</Label>
+                            <p className="text-xs font-bold uppercase text-muted-foreground">Body</p>
                             <p className="text-sm">{script.body}</p>
                         </div>
                          <div>
-                            <Label className="text-xs font-bold uppercase text-muted-foreground">CTA</Label>
+                            <p className="text-xs font-bold uppercase text-muted-foreground">CTA</p>
                             <p className="font-semibold text-primary">{script.callToAction}</p>
                         </div>
                     </CardContent>
@@ -438,7 +380,5 @@ configureTool('lead-investigator', {
     )
 });
 
-// Add more tool configurations here as needed...
-// ===================================================================================
-
-export default allTools;
+// Finally, export the configured tools array as the default export.
+export { allTools as tools };

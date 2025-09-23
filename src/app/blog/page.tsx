@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -7,10 +8,10 @@ import { PageHeader } from '@/components/ui/page-header';
 import { ArrowRight, Rss } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { appDetails } from '@/lib/blog-content';
-import { tools } from '@/lib/tools-client';
+import { tools } from '@/lib/tools-data';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
-import type { FilterCategory } from '@/lib/tools-client';
+import type { FilterCategory } from '@/types';
 
 const posts = appDetails.apps.map(content => {
     const tool = tools.find(t => t.id === content.name.toLowerCase().replace(/\s/g, '-'));

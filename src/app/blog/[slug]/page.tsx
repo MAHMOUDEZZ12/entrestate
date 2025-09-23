@@ -1,8 +1,9 @@
+
 'use client';
 
 import React from 'react';
 import { useParams, notFound } from 'next/navigation';
-import { tools } from '@/lib/tools-client';
+import { tools as allToolsClient, tools } from '@/lib/tools-client';
 import { appDetails } from '@/lib/blog-content';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Plus } from 'lucide-react';
@@ -13,7 +14,7 @@ import { cn } from '@/lib/utils';
 
 export default function BlogPage() {
     const { slug } = useParams<{ slug: string }>();
-    const feature = tools.find(t => t.id === slug);
+    const feature = allToolsClient.find(t => t.id === slug);
     const content = appDetails.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === slug);
 
     if (!feature || !content) {
@@ -21,7 +22,7 @@ export default function BlogPage() {
     }
     
     const flowChain = content.chain.split('→').map(s => s.trim());
-    const flowTools = flowChain.map(name => tools.find(t => t.title === name)).filter(Boolean) as (typeof tools[0])[];
+    const flowTools = flowChain.map(name => allToolsClient.find(t => t.title === name)).filter(Boolean) as (typeof allToolsClient[0])[];
 
     return (
         <div className="flex min-h-screen flex-col bg-background">

@@ -5,24 +5,20 @@ import React from 'react';
 import { useParams, notFound } from 'next/navigation';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
-import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
-import { tools as allToolsData } from '@/lib/tools-data'; // Use the server-safe data file
-import { allTools as allToolsClient } from '@/lib/tools-client'; // For client-side feature data
+import { tools as allToolsClient, Feature } from '@/lib/tools-client';
 import { pricingData } from '@/lib/pricing-data';
+import { PublicToolPageLayout } from '@/components/public-tool-page-layout';
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>();
 
-  // Find the tool by its ID (slug) from the server-safe data
-  const toolData = allToolsData.find(t => t.id === slug);
+  // Find the full client-side feature object
+  const feature = allToolsClient.find(t => t.id === slug);
   
   // Find the corresponding app pricing data
   const appPricing = pricingData.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === slug);
 
-  // Find the full client-side feature object
-  const feature = allToolsClient.find(t => t.id === slug);
-
-  if (!toolData || !feature) {
+  if (!feature) {
     return notFound();
   }
 
