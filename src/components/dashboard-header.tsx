@@ -3,19 +3,19 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Search, BookOpen, GitBranch, Users2, Workflow, School, X, Settings, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, Search, BookOpen, GitBranch, Users2, Workflow, School, X, Settings, LogOut, LayoutDashboard, ChevronDown } from 'lucide-react';
 import React from 'react';
 import { GlobalSearch } from '@/components/ui/global-search';
 import {
   Breadcrumb,
-  BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbLink,
+  BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb"
 import { usePathname } from 'next/navigation';
-import { tools } from '@/lib/tools-client';
+import { tools, FilterCategory } from '@/lib/tools-client';
 import { DashboardSidebar } from './dashboard-sidebar';
 import { useTabManager } from '@/context/TabManagerContext';
 import { cn } from '@/lib/utils';
@@ -29,6 +29,15 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
 
 
@@ -46,12 +55,12 @@ const breadcrumbNameMap: { [key: string]: string } = {
     '/me/system-health': 'System Health',
     '/me/projects': 'My Projects',
     '/me/directory': 'Contacts Directory',
-    '/community/academy': 'Market Academy',
-    '/community/roadmap': 'Roadmap',
-    '/community/documentation': 'Documentation',
-    '/community': 'Community Notes',
-    '/resources/flows': 'Flow Library',
-    '/resources': 'Resources',
+    '/me/community/academy': 'Market Academy',
+    '/me/community/roadmap': 'Roadmap',
+    '/me/community/documentation': 'Documentation',
+    '/me/community': 'Community Notes',
+    '/me/resources/flows': 'Flow Library',
+    '/me/resources': 'Resources',
     '/me/archive': 'Developer Archive',
     '/me/data-importer': 'Data Importer',
     '/me/tool/projects-finder': 'Market Library',
@@ -68,6 +77,37 @@ const getBreadcrumbName = (path: string) => {
     return name.charAt(0).toUpperCase() + name.slice(1);
 }
 
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a"> & { icon: React.ReactElement }
+>(({ className, title, children, icon, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+            <div className="flex items-center gap-x-2">
+                <div className="p-1.5 bg-primary/10 text-primary rounded-md">
+                    {React.cloneElement(icon, { className: 'h-4 w-4' })}
+                </div>
+                <div className="text-sm font-medium leading-none">{title}</div>
+          </div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  )
+})
+ListItem.displayName = "ListItem"
+
 
 export function DashboardHeader() {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
@@ -80,53 +120,80 @@ export function DashboardHeader() {
     await auth?.signOut();
   }
 
+  const toolCategories = React.useMemo(() => {
+    const categories: Record<string, typeof tools> = {};
+    tools.forEach(tool => {
+        tool.categories.forEach(cat => {
+            if (cat !== 'All') {
+                if (!categories[cat]) categories[cat] = [];
+                categories[cat].push(tool);
+            }
+        })
+    });
+    return categories;
+  }, []);
+
 
   return (
     <header className="sticky top-0 z-30 flex h-auto flex-col border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
        <div className="flex h-14 items-center gap-4">
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button size="icon" variant="outline" className="sm:hidden">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle Menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="sm:max-w-xs p-0">
-              <DashboardSidebar />
-            </SheetContent>
-          </Sheet>
+            <Link href="/me">
+                <Logo />
+            </Link>
           
-          <Breadcrumb className="hidden md:flex">
-            <BreadcrumbList>
-                {pathSegments.map((segment, index) => {
-                    const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
-                    const isLast = index === pathSegments.length - 1;
-                    const name = getBreadcrumbName(href);
-                    return (
-                        <React.Fragment key={href}>
-                            {index > 0 && <BreadcrumbSeparator />}
-                            <BreadcrumbItem>
-                                {isLast ? (
-                                    <BreadcrumbPage className="capitalize">{name}</BreadcrumbPage>
-                                ) : (
-                                    <BreadcrumbLink asChild>
-                                        <Link href={href} className="capitalize">{name}</Link>
-                                    </BreadcrumbLink>
-                                )}
-                            </BreadcrumbItem>
-                        </React.Fragment>
-                    )
-                })}
-            </BreadcrumbList>
-          </Breadcrumb>
+          <NavigationMenu className="hidden md:flex ml-6">
+            <NavigationMenuList>
+                <NavigationMenuItem>
+                    <Link href="/me" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            Home
+                        </NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
+                 <NavigationMenuItem>
+                    <NavigationMenuTrigger>Apps</NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                        <ul className="grid w-[600px] gap-3 p-4 md:grid-cols-2 lg:w-[700px] lg:grid-cols-3">
+                            {Object.entries(toolCategories).map(([category, toolsInCategory]) => (
+                                <li key={category}>
+                                     <p className="px-3 py-2 text-sm font-semibold text-muted-foreground">{category}</p>
+                                     <ul className="space-y-1">
+                                      {toolsInCategory.slice(0, 4).map((tool) => (
+                                        <ListItem key={tool.title} title={tool.title} href={tool.href} icon={tool.icon}>
+                                            {tool.description}
+                                        </ListItem>
+                                      ))}
+                                    </ul>
+                                </li>
+                            ))}
+                        </ul>
+                         <div className="p-4 pt-0 text-center">
+                            <Link href="/me/marketing">
+                                <Button variant="outline" className="w-full">
+                                    View All Apps
+                                </Button>
+                            </Link>
+                        </div>
+                    </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <Link href="/me/flows" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            Flows
+                        </NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <Link href="/me/community" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            Community
+                        </NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
           
            <div className="ml-auto flex items-center gap-2">
-                <nav className="hidden md:flex items-center gap-1">
-                    <Link href="/solutions"><Button variant="ghost" size="sm">Solutions</Button></Link>
-                    <Link href="/me/marketing"><Button variant="ghost" size="sm">Apps</Button></Link>
-                    <Link href="/services"><Button variant="ghost" size="sm">Services</Button></Link>
-                    <Link href="/community"><Button variant="ghost" size="sm"><Users2 className="h-4 w-4 mr-1"/> Community</Button></Link>
-                </nav>
               <div className="relative flex-1 md:grow-0">
                 <Button variant="outline" className="w-full justify-start text-muted-foreground md:w-[200px] lg:w-[336px]" onClick={() => setIsSearchOpen(true)}>
                     <Search className="mr-2 h-4 w-4" />
