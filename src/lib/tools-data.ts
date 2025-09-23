@@ -68,7 +68,7 @@ export const tools: ToolData[] = [
     // Market Intelligence
     { id: 'projects-finder', title: 'Market Library', description: 'Search our intelligent library for verified projects.', iconName: 'Database', color: '#00CED1', categories: ['Market Intelligence', 'Market Library'], cta: 'Search Library' },
     { id: 'market-reports', title: 'Market Reports', description: 'Generate PDF reports on market trends, pricing, and sentiment.', iconName: 'Newspaper', color: '#00CED1', categories: ['Market Intelligence'], cta: 'Generate Report' },
-    { id: 'market-trends', title: 'Market Trends Watcher', dashboardTitle: 'Market Trends', description: 'Identify emerging market trends before they become mainstream.', iconName: 'LineChart', color: '#00CED1', categories: ['Market Intelligence'], cta: 'View Trends' },
+    { id: 'market-trends', title: 'Market Analyst Agent', description: 'The watcher that identifies emerging market trends, finds opportunities, and provides optimization suggestions.', iconName: 'LineChart', color: '#00CED1', categories: ['Market Intelligence'], cta: 'View Trends' },
 
     // Core / Foundational
     { id: 'crm-assistant', title: 'CRM Memory Assistant', description: 'The core data store that remembers every client interaction.', iconName: 'BrainCircuit', color: '#DA70D6', categories: ['CRM'], cta: 'Query Memory' },
