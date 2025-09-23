@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React from 'react';
@@ -8,17 +9,17 @@ import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard, Workflow } 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Feature, tools } from '@/lib/tools-client';
 import Image from 'next/image';
-import { ShinyButton } from '@/components/ui/shiny-button';
+import { ShinyButton } from './ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { CodeBlock } from '@/components/code-block';
-import { PurchaseDialog } from '@/components/ui/purchase-dialog';
+import { PurchaseDialog } from './ui/purchase-dialog';
 import { AutoPilotPlan } from '@/components/ui/autopilot-plan';
 import {
   Table,
@@ -99,7 +100,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   const newUseCases = [
       "84% higher quality lead than a well trained team",
       "A chain leader for all the meta ads apps",
-      "Handle a full agency ads tasks within a mins"
+      "handle a full agency ads tasks within a mins"
   ];
 
   return (
@@ -147,7 +148,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
        <section className="py-24 md:py-32 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">A Radically Simple Workflow</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">A Radically Simple Workflow</h2>
              <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, elegant process powered by AI.</p>
           </div>
            {isAutoPilot ? <AutoPilotPlan /> : <ToolShowcase feature={feature} />}
@@ -158,7 +159,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       <section className="py-24 md:py-32">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Smartly designed for Realestate Complex Ads</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Smartly designed for Realestate Complex Ads</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {newUseCases.map((useCase, index) => (
@@ -187,7 +188,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
        <section className="py-24 md:py-32 bg-muted/30">
         <div className="container mx-auto px-4">
            <div className="text-center max-w-2xl mx-auto mb-16">
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">The AI Advantage</h2>
+                 <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">The AI Advantage</h2>
                  <p className="mt-4 text-lg text-muted-foreground">See how much time and effort you save by using the AI.</p>
             </div>
             <Card className="max-w-4xl mx-auto bg-card/80 backdrop-blur-lg">
@@ -222,7 +223,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       {/* Flows Section */}
       <section className="py-24 md:py-32">
         <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Build Powerful Flows</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Build Powerful Flows</h2>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
               Connect {feature.title} with other apps to create automated workflows that run your business on autopilot.
             </p>
@@ -270,7 +271,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       <section className="py-24 md:py-32 bg-muted/30">
         <div className="container mx-auto px-4">
              <div className="text-center max-w-2xl mx-auto mb-16">
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Good to Know</h2>
+                 <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Good to Know</h2>
                  <p className="mt-4 text-lg text-muted-foreground">Answers to common questions.</p>
             </div>
             <Card className="max-w-3xl mx-auto bg-card">
