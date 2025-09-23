@@ -521,7 +521,7 @@ export default function GemAdminPage() {
                                     <Database className="mr-2 h-4 w-4" /> View Developer Archive
                                 </Button>
                             </Link>
-                            <Link href="/dashboard/tool/prompt-library">
+                            <Link href="/me/tool/prompt-library">
                                 <Button variant="secondary">
                                     <Library className="mr-2 h-4 w-4" /> Go to Prompt Library
                                 </Button>

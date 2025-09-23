@@ -34,9 +34,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!auth) {
         setLoading(false);
-        // if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-        //     router.push('/login');
-        // }
+        if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
+            router.push('/login');
+        }
         return;
     }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -52,10 +52,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           router.push('/me'); // Redirect non-admins from /gem to /me
         }
       } else {
-        // User is not logged in. Protection is currently disabled.
-        // if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-        //   router.push('/login');
-        // }
+        // User is not logged in. Protect all relevant routes.
+        if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
+          router.push('/login');
+        }
       }
     });
 
@@ -70,16 +70,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return path.startsWith('/gem');
   }
 
-  // Since login is disabled, we don't need a hard loading gate.
-  // We can just render children immediately.
-  // if (loading) {
-  //   return (
-  //       <div className="flex h-screen w-full items-center justify-center">
-  //           <Loader2 className="h-8 w-8 animate-spin" />
-  //       </div>
-  //   );
-  // }
+  if (loading) {
+    return (
+        <div className="flex h-screen w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+    );
+  }
 
+  // Final check after loading, in case of race conditions with navigation
+  if (!user && (isProtectedRoute(pathname) || isAdminRoute(pathname))) {
+      // Don't render children, let the redirect happen.
+      return (
+         <div className="flex h-screen w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      );
+  }
+
+   if (user && isAdminRoute(pathname) && !isAdmin) {
+      // Don't render children, let the redirect happen.
+      return (
+         <div className="flex h-screen w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      );
+  }
+  
   const value = { user, loading, isAdmin };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

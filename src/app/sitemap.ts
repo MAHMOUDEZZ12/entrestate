@@ -35,7 +35,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/gem/system-health',
     '/gem/archive',
     '/gem/data-importer',
-    '/gem/keys'
+    '/gem/keys',
+    '/me'
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
