@@ -13,6 +13,7 @@ import Link from 'next/link';
 import { useTabManager } from '@/context/TabManagerContext';
 import { useRouter } from 'next/navigation';
 import {
+  Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -114,7 +115,7 @@ export function AssistantChat() {
   };
 
   return (
-    <div className="flex flex-col h-full max-h-[80vh]">
+    <div className="flex flex-col h-full max-h-[calc(100vh-56px)]">
         <div className="p-4 border-b">
              <h3 className="font-semibold flex items-center gap-2"><Bot className="h-5 w-5"/> AI Assistant</h3>
         </div>
@@ -144,6 +145,7 @@ export function AssistantChat() {
             </div>
         </ScrollArea>
         <div className="border-t">
+          <Command className="bg-transparent">
             <CommandInput
                 placeholder="Ask a question or search for apps & actions..."
                 value={input}
@@ -184,6 +186,7 @@ export function AssistantChat() {
                     <Send className="h-4 w-4" />
                 </Button>
             </form>
+          </Command>
         </div>
     </div>
   );
