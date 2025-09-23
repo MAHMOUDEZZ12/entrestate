@@ -4,13 +4,13 @@
 import type { Market } from "@/types";
 import { adminAuth } from "./firebaseAdmin";
 
-export function ok<T>(data: T, init: number = 200) {
+export async function ok<T>(data: T, init: number = 200) {
   return Response.json({ ok: true, data }, { status: init });
 }
-export function bad(message = "Bad Request", init: number = 400) {
+export async function bad(message = "Bad Request", init: number = 400) {
   return Response.json({ ok: false, error: message }, { status: init });
 }
-export function fail(error: any, code = 500) {
+export async function fail(error: any, code = 500) {
   console.error('[API FAIL]', error);
   // Avoid leaking detailed internal errors to the client
   const message = typeof error === 'string' ? error : (error?.message || "An internal server error occurred.");
