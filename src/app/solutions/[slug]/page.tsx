@@ -19,6 +19,40 @@ import { MegaListingSimulation } from '@/components/mega-listing-simulation';
 
 
 const solutionsData: {[key: string]: any} = {
+  'pro-search-eng-x3': {
+    title: 'PRO SEARCH ENG. x3',
+    icon: <Telescope className="h-8 w-8" />,
+    tagline: 'We turned the untouched search bar into unmatched search engine',
+    vision: 'This model switches the life on your website. We added a decentralized market library to it. Try our discovery search to see how it works!',
+    dna: 'Its DNA is precision with depth. Where traditional search ends at the listing, PRO SEARCH ENG. x 3 extends into prediction, history, and opportunity discovery.',
+    productCore: [
+      'Multi-Layered Engine: Each search type is optimized for different personas (Fast, Smart, Deep).',
+      'Predictive Insights: Deep Search uses archived data + AI to project possible appreciation trends.',
+      'Personalization: Search adjusts results based on buyer profile, investor goals, or broker preferences.',
+      'Universal Connector: Works natively with MEGA LISTING PRO 2 and RECAIUS (Book 1).'
+    ],
+     techStack: {
+      'Fast Search': 'ElasticSearch Cluster.',
+      'Smart Search': 'OpenAI/Vertex AI NLP models for semantic + intent detection.',
+      'Deep Search': 'BigQuery + ML models for trend predictions.',
+      'Orchestration Layer': 'Directs user queries into one of the 3 engines or merges outputs dynamically.',
+      'Front-End': 'Angular/React with instant UI filters, maps, and predictive graph overlays.'
+    },
+    useCases: [
+      { persona: 'The Buyer', query: 'Wants speed and accuracy.', experience: 'Uses Fast Search for instant listings with filters like price, location, property type.' },
+      { persona: 'The Investor', query: 'Seeks market timing.', experience: 'Uses Deep Search to ask: “Which areas under AED 2M will appreciate 15% in the next 3 years?”' },
+      { persona: 'The Regulator', query: 'Needs transparency.', experience: 'Uses Smart Search to analyze misleading ads or filter by compliance flags.' },
+      { persona: 'The Broker', query: 'Needs efficiency.', experience: 'Uses all three engines depending on whether serving a quick client, analyzing portfolios, or researching long-term opportunities.' },
+    ],
+     growthPath: [
+        { tier: 'Phase 1', description: 'Launch Fast Search as core utility.' },
+        { tier: 'Phase 2', description: 'Deploy Smart Search with AI natural language.' },
+        { tier: 'Phase 3', description: 'Unlock Deep Search with premium investor dashboards.' },
+    ],
+    simulation: <ProSearchSimulation />,
+    cta: { text: "let's Go", href: "/login" },
+    price: 190,
+  },
   'estchat-x3': {
     title: 'ESTCHAT X3',
     icon: <MessageCircle className="h-8 w-8" />,
@@ -53,7 +87,7 @@ const solutionsData: {[key: string]: any} = {
     cta: { text: "Name your SuperAgent", href: "/login" },
     price: 149,
   },
-  'mega-listing-pro-2': {
+    'mega-listing-pro-2': {
     title: 'MEGA LISTING PRO 2',
     icon: <FileJson className="h-8 w-8" />,
     tagline: 'From Listings to MEGA PRO Listings',
@@ -85,40 +119,6 @@ const solutionsData: {[key: string]: any} = {
     simulation: <MegaListingSimulation />,
     cta: { text: "Use it to stop blaming Portals", href: "/login" },
     price: 68,
-  },
-  'pro-search-eng-x3': {
-    title: 'PRO SEARCH ENG. x3',
-    icon: <Telescope className="h-8 w-8" />,
-    tagline: 'We turned the untouched search bar into unmatched search engine',
-    vision: 'This model switches the life on your website. We added a decentralized market library to it. Try our discovery search to see how it works!',
-    dna: 'Its DNA is precision with depth. Where traditional search ends at the listing, PRO SEARCH ENG. x 3 extends into prediction, history, and opportunity discovery.',
-    productCore: [
-      'Multi-Layered Engine: Each search type is optimized for different personas (Fast, Smart, Deep).',
-      'Predictive Insights: Deep Search uses archived data + AI to project possible appreciation trends.',
-      'Personalization: Search adjusts results based on buyer profile, investor goals, or broker preferences.',
-      'Universal Connector: Works natively with MEGA LISTING PRO 2 and RECAIUS (Book 1).'
-    ],
-     techStack: {
-      'Fast Search': 'ElasticSearch Cluster.',
-      'Smart Search': 'OpenAI/Vertex AI NLP models for semantic + intent detection.',
-      'Deep Search': 'BigQuery + ML models for trend predictions.',
-      'Orchestration Layer': 'Directs user queries into one of the 3 engines or merges outputs dynamically.',
-      'Front-End': 'Angular/React with instant UI filters, maps, and predictive graph overlays.'
-    },
-    useCases: [
-      { persona: 'The Buyer', query: 'Wants speed and accuracy.', experience: 'Uses Fast Search for instant listings with filters like price, location, property type.' },
-      { persona: 'The Investor', query: 'Seeks market timing.', experience: 'Uses Deep Search to ask: “Which areas under AED 2M will appreciate 15% in the next 3 years?”' },
-      { persona: 'The Regulator', query: 'Needs transparency.', experience: 'Uses Smart Search to analyze misleading ads or filter by compliance flags.' },
-      { persona: 'The Broker', query: 'Needs efficiency.', experience: 'Uses all three engines depending on whether serving a quick client, analyzing portfolios, or researching long-term opportunities.' },
-    ],
-     growthPath: [
-        { tier: 'Phase 1', description: 'Launch Fast Search as core utility.' },
-        { tier: 'Phase 2', description: 'Deploy Smart Search with AI natural language.' },
-        { tier: 'Phase 3', description: 'Unlock Deep Search with premium investor dashboards.' },
-    ],
-    simulation: <ProSearchSimulation />,
-    cta: { text: "let's Go", href: "/login" },
-    price: 190,
   }
 };
 
@@ -126,10 +126,6 @@ const solutionsData: {[key: string]: any} = {
 export default function SolutionPage() {
   const { slug } = useParams<{ slug: string }>();
   
-  if (slug === 'ebram-judicial-ai') {
-    notFound();
-  }
-
   const solution = solutionsData[slug];
 
   if (!solution) {
