@@ -164,12 +164,6 @@ export default function AuthPage() {
                     }
                     Google
                 </Button>
-                <div className="mt-4 text-center text-sm">
-                    Already have an account?{' '}
-                    <button onClick={() => alert('Login functionality has been disabled as per your request.')} className="underline">
-                        Sign in
-                    </button>
-                </div>
               </div>
           </div>
           <div className="hidden bg-muted lg:block relative">
