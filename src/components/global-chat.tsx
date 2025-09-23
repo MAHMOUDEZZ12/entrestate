@@ -9,8 +9,8 @@ import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { secretCodes } from '@/lib/codes';
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
-import { usePathname } from 'next/navigation';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from './ui/sheet';
+import { usePathname, useRouter } from 'next/navigation';
 import { useSensitiveArea } from '@/context/SensitiveAreaContext';
 import { CommandMenu } from './ui/command-menu';
 import { useToast } from '@/hooks/use-toast';
@@ -38,6 +38,7 @@ type ActionKey = {
 
 export function GlobalChat() {
   const { toast } = useToast();
+  const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([
     { from: 'ai', text: <InitialAssistantMessage /> },
   ]);
@@ -198,7 +199,7 @@ export function GlobalChat() {
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t">
             <div className="container mx-auto p-4 max-w-5xl flex items-center gap-4">
-                <div className="hidden md:block text-muted-foreground font-mono text-lg">&lt;</div>
+                <button onClick={() => router.back()} className="hidden md:block text-muted-foreground font-mono text-lg hover:text-primary transition-colors" aria-label="Go back">&lt;</button>
                 <div className="flex items-center gap-2">
                      {leftKeys.map((key, i) => {
                         const button = (
@@ -220,9 +221,9 @@ export function GlobalChat() {
                             disabled={isLoading}
                             autoComplete="off"
                         />
-                        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
                             <SheetTrigger asChild>
-                                 <Button type="button" variant="ghost" size="icon">
+                                 <Button type="button" variant="ghost" size="icon" title="View Chat History">
                                     <Sparkles className="h-5 w-5 text-muted-foreground" />
                                 </Button>
                             </SheetTrigger>
@@ -238,7 +239,7 @@ export function GlobalChat() {
                         </div>
                     </div>
                 </form>
-                 <div className="hidden md:block text-muted-foreground font-mono text-lg">&gt;</div>
+                 <button onClick={() => router.forward()} className="hidden md:block text-muted-foreground font-mono text-lg hover:text-primary transition-colors" aria-label="Go forward">&gt;</button>
             </div>
         </div>
       <SheetContent side="bottom" className="h-4/5 flex flex-col p-0 border-t-2 z-40" hideCloseButton={true}>
