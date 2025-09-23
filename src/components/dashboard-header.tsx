@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Logo } from './logo';
-import { tools, ToolData } from '@/lib/tools-data';
+import { tools as toolsData, ToolData } from '@/lib/tools-data';
 import * as LucideIcons from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
@@ -27,7 +27,7 @@ const iconMap: { [key: string]: React.ReactElement } = Object.fromEntries(
   Object.entries(LucideIcons).map(([name, Icon]) => [name, <Icon key={name} />])
 );
 
-interface MegaMenuItem extends Partial<ToolData> {
+interface MegaMenuItem {
     id: string;
     title: string;
     href: string;
@@ -46,7 +46,7 @@ const ListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            "block select-none space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className
           )}
           {...props}
@@ -67,6 +67,7 @@ ListItem.displayName = "ListItem"
 
 export function DashboardHeader() {
   const { user } = useAuth();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   const handleLogout = async () => {
     await auth?.signOut();
@@ -80,16 +81,26 @@ export function DashboardHeader() {
           {id: 'brand', title: 'Brand & Assets', href:'/me/brand', iconName: 'Palette', color: '#8A2BE2'},
           {id: 'assistant', title: 'AI Assistant', href:'/me/assistant', iconName: 'Bot', color: '#8A2BE2'},
       ],
-      "Sales & CRM": tools.filter(t => t.categories.includes('Sales Tools') || t.categories.includes('CRM') || t.categories.includes('Lead Gen')).map(t => ({...t, href: `/me/tool/${t.id}`})),
-      "Marketing & Ads": tools.filter(t => t.categories.includes('Marketing') || t.categories.includes('Ads')).map(t => ({...t, href: `/me/tool/${t.id}`})),
-      "Creative & Content": tools.filter(t => t.categories.includes('Creative') || t.categories.includes('Web') || t.categories.includes('Editing')).map(t => ({...t, href: `/me/tool/${t.id}`})),
-      "Market Intelligence": tools.filter(t => t.categories.includes('Market Intelligence') || t.categories.includes('Market Library')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      "Sales & CRM": [
+          {id: 'leads', title: 'Leads (CRM)', href:'/me/leads', iconName: 'Target', color: '#FFA500'},
+          {id: 'clients', title: 'Client Pages', href:'/me/clients', iconName: 'Users', color: '#FFA500'},
+          {id: 'directory', title: 'Contacts Directory', href:'/me/directory', iconName: 'BookUser', color: '#FFA500'},
+          ...toolsData.filter(t => t.categories.includes('Sales Tools') || t.categories.includes('CRM') || t.categories.includes('Lead Gen')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      ],
+      "Marketing & Ads": toolsData.filter(t => t.categories.includes('Marketing') || t.categories.includes('Ads')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      "Creative & Content": toolsData.filter(t => t.categories.includes('Creative') || t.categories.includes('Web') || t.categories.includes('Editing')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      "Market Intelligence": [
+          {id: 'market-library', title: 'Market Library', href:'/me/tool/projects-finder', iconName: 'Database', color: '#00CED1'},
+          {id: 'listing-performance', title: 'Listing Performance', href:'/me/tool/listing-performance', iconName: 'BarChart', color: '#00CED1'},
+          ...toolsData.filter(t => t.categories.includes('Market Intelligence')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      ],
       "Community": [
           {id: 'community-notes', title: 'Community Notes', href:'/me/community', iconName: 'Users2', color: '#6a788c'},
           {id: 'academy', title: 'Academy', href:'/me/community/academy', iconName: 'School', color: '#6a788c'},
           {id: 'roadmap', title: 'Roadmap', href:'/me/community/roadmap', iconName: 'GitFork', color: '#6a788c'},
+          {id: 'documentation', title: 'Documentation', href:'/me/community/documentation', iconName: 'BookOpen', color: '#6a788c'},
       ],
-      "Developer & Utility": tools.filter(t => t.categories.includes('Developer')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      "Developer & Utility": toolsData.filter(t => t.categories.includes('Developer')).map(t => ({...t, href: `/me/tool/${t.id}`})),
   }
 
   return (
