@@ -97,19 +97,7 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
 export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   const isAutoPilot = feature.id === 'meta-auto-pilot';
 
-  const newUseCases = [
-      "84% higher quality lead than a well trained team",
-      "A chain leader for all the meta ads apps",
-      "handle a full agency  ads tasks within a mins"
-  ];
-  
-  const additionalFaqs = [
-    { question: "Who can access my leads?", answer: "From our platform, no one. Your data is private and not accessible by our team." },
-    { question: "Which facebook page is used in the ads?", answer: "Your connected Facebook Page and Instagram profile are used." },
-    { question: "Can I stop the ad?", answer: "Yes, at any time. You have full control through your Meta Ads Manager." },
-    { question: "Where do I pay for the ads?", answer: "Your ad budget is paid directly to Meta through the payment method registered in your Meta Ads Manager account." },
-    { question: "What if I have no Facebook Page?", answer: "Please visit this <a href='/blog' class='underline'>blog</a> for a full guide on how to create your page and activate your business suite." }
-  ];
+  const faqs = feature.details.faqs || [];
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -164,33 +152,36 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       </section>
 
       {/* Use Cases Section */}
-      <section className="py-24 md:py-32">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Smartly designed for Realestate Complex Ads</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {newUseCases.map((useCase, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.15 }}
-                viewport={{ once: true, amount: 0.5 }}
-              >
-                <Card className="bg-card/80 h-full">
-                  <CardHeader>
-                    <CardTitle className="flex items-start gap-3">
-                      <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                      <span>{useCase}</span>
-                    </CardTitle>
-                  </CardHeader>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {feature.details.use_cases && feature.details.use_cases.length > 0 && (
+          <section className="py-24 md:py-32">
+            <div className="container mx-auto px-4">
+              <div className="text-center max-w-2xl mx-auto mb-16">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Powered for Professionals</h2>
+                 <p className="mt-4 text-lg text-muted-foreground">From individual agents to large brokerages, see how {feature.title} is a game-changer.</p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {feature.details.use_cases.map((useCase, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.15 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                  >
+                    <Card className="bg-card/80 h-full">
+                      <CardHeader>
+                        <CardTitle className="flex items-start gap-3">
+                          <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                          <span>{useCase}</span>
+                        </CardTitle>
+                      </CardHeader>
+                    </Card>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+      )}
 
       {/* AI vs Manual */}
        <section className="py-24 md:py-32 bg-muted/30">
@@ -213,7 +204,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                             {feature.details.aiVsManual.map((item, index) => (
                                 <TableRow key={index}>
                                     <TableCell className="font-semibold flex items-center gap-2">
-                                        {React.cloneElement(item.icon as React.ReactElement, { className: 'h-5 w-5' })}
+                                        {item.icon ? React.cloneElement(item.icon as React.ReactElement, { className: 'h-5 w-5' }) : null}
                                         {item.metric}
                                     </TableCell>
                                     <TableCell>{item.manual}</TableCell>
@@ -229,73 +220,77 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
 
 
       {/* Flows Section */}
-      <section className="py-24 md:py-32">
-        <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Build Powerful Flows</h2>
-            <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              Connect {feature.title} with other apps to create automated workflows that run your business on autopilot.
-            </p>
-            <div className="mt-12">
-                 <Card className="max-w-2xl mx-auto bg-card/80">
-                    <CardContent className="p-6">
-                        <div className="flex items-center justify-center flex-wrap gap-4">
-                        {(feature.details.synergy.slice(0, 2).map((s, index) => {
-                            const relatedTool = tools.find(t => t.title === s.tool);
-                            return (
-                                <React.Fragment key={index}>
-                                <div className="flex flex-col items-center gap-2">
-                                     <div className="p-3 rounded-lg text-white" style={{ backgroundColor: feature.color }}>
-                                       {React.cloneElement(feature.icon, { className: 'h-6 w-6' })}
+      {feature.details.synergy && feature.details.synergy.length > 0 && (
+          <section className="py-24 md:py-32">
+            <div className="container mx-auto px-4 text-center">
+                <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Build Powerful Flows</h2>
+                <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
+                  Connect {feature.title} with other apps to create automated workflows that run your business on autopilot.
+                </p>
+                <div className="mt-12">
+                     <Card className="max-w-2xl mx-auto bg-card/80">
+                        <CardContent className="p-6">
+                            <div className="flex items-center justify-center flex-wrap gap-4">
+                            {(feature.details.synergy.slice(0, 2).map((s, index) => {
+                                const relatedTool = tools.find(t => t.title === s.tool);
+                                return (
+                                    <React.Fragment key={index}>
+                                    <div className="flex flex-col items-center gap-2">
+                                         <div className="p-3 rounded-lg text-white" style={{ backgroundColor: feature.color }}>
+                                           {React.cloneElement(feature.icon, { className: 'h-6 w-6' })}
+                                         </div>
+                                         <p className="text-xs font-semibold">{feature.title}</p>
                                      </div>
-                                     <p className="text-xs font-semibold">{feature.title}</p>
-                                 </div>
-                                 <Plus className="h-6 w-6 text-muted-foreground" />
-                                <div className="flex flex-col items-center gap-2">
-                                     <div className="p-3 rounded-lg text-white" style={{ backgroundColor: relatedTool?.color || 'hsl(var(--secondary))' }}>
-                                       {relatedTool ? React.cloneElement(relatedTool.icon, { className: 'h-6 w-6' }) : <Sparkles className="h-6 w-6" />}
+                                     <Plus className="h-6 w-6 text-muted-foreground" />
+                                    <div className="flex flex-col items-center gap-2">
+                                         <div className="p-3 rounded-lg text-white" style={{ backgroundColor: relatedTool?.color || 'hsl(var(--secondary))' }}>
+                                           {relatedTool ? React.cloneElement(relatedTool.icon, { className: 'h-6 w-6' }) : <Sparkles className="h-6 w-6" />}
+                                         </div>
+                                         <p className="text-xs font-semibold">{s.tool}</p>
                                      </div>
-                                     <p className="text-xs font-semibold">{s.tool}</p>
-                                 </div>
-                               </React.Fragment>
-                            )
-                        }))}
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-4">{feature.details.synergy[0]?.benefit || "Combine tools to create powerful automations."}</p>
-                    </CardContent>
-                    <CardFooter>
-                         <Link href="/dashboard/flows" className="w-full">
-                            <Button variant="outline" className="w-full">
-                                <Workflow className="mr-2 h-4 w-4" />
-                                Go to Flow Builder
-                            </Button>
-                        </Link>
-                    </CardFooter>
-                 </Card>
+                                   </React.Fragment>
+                                )
+                            }))}
+                            </div>
+                            <p className="text-sm text-muted-foreground mt-4">{feature.details.synergy[0]?.benefit || "Combine tools to create powerful automations."}</p>
+                        </CardContent>
+                        <CardFooter>
+                             <Link href="/dashboard/flows" className="w-full">
+                                <Button variant="outline" className="w-full">
+                                    <Workflow className="mr-2 h-4 w-4" />
+                                    Go to Flow Builder
+                                </Button>
+                            </Link>
+                        </CardFooter>
+                     </Card>
+                </div>
             </div>
-        </div>
-      </section>
+          </section>
+      )}
       
        {/* FAQ Section */}
-      <section className="py-24 md:py-32 bg-muted/30">
-        <div className="container mx-auto px-4">
-             <div className="text-center max-w-2xl mx-auto mb-16">
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Good to Know</h2>
-                 <p className="mt-4 text-lg text-muted-foreground">Answers to common questions.</p>
+      {faqs.length > 0 && (
+          <section className="py-24 md:py-32 bg-muted/30">
+            <div className="container mx-auto px-4">
+                 <div className="text-center max-w-2xl mx-auto mb-16">
+                     <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Good to Know</h2>
+                     <p className="mt-4 text-lg text-muted-foreground">Answers to common questions.</p>
+                </div>
+                <Card className="max-w-3xl mx-auto bg-card">
+                    <CardContent className="p-6">
+                        <Accordion type="single" collapsible className="w-full">
+                            {faqs.map((faq, index) => (
+                                <AccordionItem value={`item-${index}`} key={index}>
+                                    <AccordionTrigger className="text-left text-lg hover:no-underline">{faq.question}</AccordionTrigger>
+                                    <AccordionContent className="text-base text-muted-foreground" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                                </AccordionItem>
+                            ))}
+                        </Accordion>
+                    </CardContent>
+                </Card>
             </div>
-            <Card className="max-w-3xl mx-auto bg-card">
-                <CardContent className="p-6">
-                    <Accordion type="single" collapsible className="w-full">
-                        {[...feature.details.faqs, ...additionalFaqs].map((faq, index) => (
-                            <AccordionItem value={`item-${index}`} key={index}>
-                                <AccordionTrigger className="text-left text-lg hover:no-underline">{faq.question}</AccordionTrigger>
-                                <AccordionContent className="text-base text-muted-foreground" dangerouslySetInnerHTML={{ __html: faq.answer }} />
-                            </AccordionItem>
-                        ))}
-                    </Accordion>
-                </CardContent>
-            </Card>
-        </div>
-      </section>
+          </section>
+      )}
 
     </main>
     <LandingFooter />
