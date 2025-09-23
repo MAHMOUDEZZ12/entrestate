@@ -67,6 +67,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
   }));
 
+  const productRoutes = tools.map((tool) => ({
+    url: `${siteUrl}/products/${tool.id}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.8,
+  }));
 
-  return [...staticRoutes, ...suiteRoutes, ...blogRoutes, ...meToolRoutes];
+
+  return [...staticRoutes, ...suiteRoutes, ...blogRoutes, ...meToolRoutes, ...productRoutes];
 }
