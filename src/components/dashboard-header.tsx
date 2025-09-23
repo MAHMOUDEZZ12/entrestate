@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, Search, Bot } from 'lucide-react';
+import { LogOut, Settings, Bot } from 'lucide-react';
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
@@ -16,42 +16,34 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
-import { AssistantChat } from './assistant-chat';
+import { GlobalSearch } from './ui/global-search';
 import { Logo } from './logo';
 
 
 export function DashboardHeader() {
   const { user } = useAuth();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   const handleLogout = async () => {
     await auth?.signOut();
   }
 
   return (
+    <>
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
         <div className="flex items-center gap-4">
           <Logo href="/me" />
         </div>
           
         <div className="flex-1 flex justify-center px-4">
-           {/* The search bar is now replaced by the assistant popover */}
+           {/* The search bar is now handled by the GlobalSearch component triggered by the Bot icon */}
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
-             <Popover>
-                <PopoverTrigger asChild>
-                    <Button variant="ghost" size="icon">
-                        <Bot className="h-5 w-5" />
-                        <span className="sr-only">Open AI Assistant</span>
-                    </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[440px] p-0" align="end">
-                   <div className="h-[60vh] max-h-[700px] flex flex-col">
-                     <AssistantChat />
-                   </div>
-                </PopoverContent>
-            </Popover>
+            <Button variant="ghost" size="icon" onClick={() => setIsSearchOpen(true)}>
+                <Bot className="h-5 w-5" />
+                <span className="sr-only">Open AI Assistant & Search</span>
+            </Button>
 
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -86,5 +78,7 @@ export function DashboardHeader() {
             </DropdownMenu>
         </div>
     </header>
+    <GlobalSearch isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
+    </>
   );
 }
