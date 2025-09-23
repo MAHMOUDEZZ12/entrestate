@@ -27,23 +27,6 @@ export function LandingHeader() {
       return null;
   }
 
-  const AuthNav = () => (
-    <Link href="/me">
-        <Button>Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" /></Button>
-    </Link>
-  );
-
-  const PublicNav = () => (
-     <>
-        <Link href="/login">
-            <Button variant="ghost">Log In</Button>
-        </Link>
-        <Link href="/login">
-            <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
-        </Link>
-     </>
-  );
-
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 max-w-screen-2xl items-center">
@@ -59,10 +42,7 @@ export function LandingHeader() {
             ))}
           </nav>
         </div>
-        <div className="hidden md:flex items-center gap-2">
-          {!loading && (user ? <AuthNav /> : <PublicNav />)}
-        </div>
-
+        
         {/* Mobile Menu */}
         <div className="md:hidden">
             <Sheet>
@@ -84,28 +64,6 @@ export function LandingHeader() {
                                 </SheetClose>
                             ))}
                         </nav>
-                         <div className="mt-8 pt-8 border-t border-border/40 flex flex-col gap-4">
-                           {!loading && user ? (
-                               <SheetClose asChild>
-                                 <Link href="/me">
-                                    <Button className="w-full">Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" /></Button>
-                                </Link>
-                               </SheetClose>
-                           ) : (
-                             <>
-                                <SheetClose asChild>
-                                 <Link href="/login">
-                                    <Button variant="outline" className="w-full">Log In</Button>
-                                </Link>
-                               </SheetClose>
-                               <SheetClose asChild>
-                                 <Link href="/login">
-                                    <Button className="w-full">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
-                                </Link>
-                               </SheetClose>
-                             </>
-                           )}
-                        </div>
                     </div>
                 </SheetContent>
             </Sheet>
