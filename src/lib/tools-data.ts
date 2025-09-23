@@ -50,7 +50,7 @@ export const tools: ToolData[] = [
     { id: 'images-hq-ai', title: 'Images HQ AI', description: 'Generate high-quality, royalty-free images for listings and ads.', iconName: 'ImageIcon', color: '#1E90FF', categories: ['Creative'], suite: 'AI Creative Studio', cta: 'Generate Image' },
     { id: 'logo-creator-ai', title: 'Logo Creator AI', description: 'Create a professional logo for your brand in seconds.', iconName: 'Sparkles', color: '#1E90FF', categories: ['Creative'], suite: 'AI Creative Studio', cta: 'Create Logo' },
     { id: 'aerial-view-generator', title: 'Aerial View Generator', description: 'Create cinematic, aerial video tours of any property.', iconName: 'Camera', color: '#8A2BE2', categories: ['Creative', 'Video'], suite: 'AI Creative Studio', cta: 'Generate Aerial View' },
-    { id: 'ai-brand-creator', title: 'AI Brand Creator', description: 'Configure your brand kit by analyzing uploaded documents.', iconName: 'Wand2.2', color: '#DA70D6', categories: ['Creative', 'CRM'], suite: 'Marketing Management', cta: 'Create Brand' },
+    { id: 'ai-brand-creator', title: 'AI Brand Creator', description: 'Configure your brand kit by analyzing uploaded documents.', iconName: 'Wand2', color: '#DA70D6', categories: ['Creative', 'CRM'], suite: 'Marketing Management', cta: 'Create Brand' },
 
     // Listing Portal
     { id: 'listing-manager', title: 'Listing Manager', description: 'Your central hub to prepare and syndicate listings to major portals.', iconName: 'ClipboardList', color: '#FF4500', categories: ['Sales Tools'], suite: 'AI Listing Portal', cta: 'Manage Listings' },
