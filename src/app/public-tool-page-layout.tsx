@@ -96,6 +96,12 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
 export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   const isAutoPilot = feature.id === 'meta-auto-pilot';
 
+  const newUseCases = [
+      "84% higher quality lead than a well trained team",
+      "A chain leader for all the meta ads apps",
+      "Handle a full agency ads tasks within a mins"
+  ];
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
     <LandingHeader />
@@ -152,11 +158,10 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       <section className="py-24 md:py-32">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Powered for Professionals</h2>
-            <p className="mt-4 text-lg text-muted-foreground">From individual agents to large brokerages, see how {feature.title} is a game-changer.</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Smartly designed for Realestate Complex Ads</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {(feature.details.use_cases || []).map((useCase, index) => (
+            {newUseCases.map((useCase, index) => (
               <Card key={index} className="bg-card/80">
                 <CardHeader>
                   <CardTitle className="flex items-start gap-3">
