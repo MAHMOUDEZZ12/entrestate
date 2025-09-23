@@ -1,3 +1,4 @@
+
 'use client';
 import React from 'react';
 import { appDetails as blogContent } from './blog-content';
@@ -22,6 +23,7 @@ import { CodeBlock } from '@/components/code-block';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { tools as toolsData, ToolData } from './tools-data';
+import { ComposedChart, Area, Line, CartesianGrid, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
 export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
@@ -514,6 +516,57 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                 </div>
             );
             break;
+        case 'market-trends':
+            tool.creationFields = [
+                { id: 'topic', name: 'Topic to Analyze', type: 'text', placeholder: 'e.g., "Dubai rental yields"' },
+            ];
+            tool.renderResult = (result, toast) => (
+                <div className="space-y-4">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Market Analysis</CardTitle>
+                            <CardDescription>Overall Sentiment: <Badge>{result.overallSentiment}</Badge></CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <h4 className="font-semibold text-primary">Future Outlook</h4>
+                            <p className="text-sm mb-4">{result.futureOutlook}</p>
+                            <h4 className="font-semibold text-primary">Emerging Trends</h4>
+                            <ul className="list-disc pl-5 text-sm space-y-1">{result.emergingTrends.map((t: any, i: number) => <li key={i}><strong>{t.trend}:</strong> {t.description}</li>)}</ul>
+                        </CardContent>
+                    </Card>
+                    
+                     <Card>
+                        <CardHeader><CardTitle>6-Month Forecast for {result.topic}</CardTitle></CardHeader>
+                        <CardContent>
+                            <ResponsiveContainer width="100%" height={250}>
+                                <ComposedChart data={result.forecastData}>
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="date" fontSize={12} />
+                                    <YAxis fontSize={12} />
+                                    <Tooltip contentStyle={{ backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))' }}/>
+                                    <Legend />
+                                    <Area type="monotone" dataKey="range" stroke="none" fill="hsl(var(--primary))" fillOpacity={0.2} name="Confidence Interval" />
+                                    <Line type="monotone" dataKey="predictedValue" stroke="hsl(var(--primary))" name="Predicted Value" />
+                                </ComposedChart>
+                            </ResponsiveContainer>
+                        </CardContent>
+                    </Card>
+
+                    <Card>
+                        <CardHeader><CardTitle>Key Opportunities</CardTitle></CardHeader>
+                        <CardContent>
+                            <ul className="space-y-2">{result.keyOpportunities.map((o: any, i: number) => <li key={i} className="text-sm p-2 bg-muted/50 rounded-md"><strong>{o.opportunity}:</strong> {o.rationale}</li>)}</ul>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader><CardTitle>Optimization Suggestions</CardTitle></CardHeader>
+                        <CardContent>
+                            <ul className="space-y-2">{result.optimizationSuggestions.map((s: any, i: number) => <li key={i} className="text-sm p-2 bg-muted/50 rounded-md"><strong>{s.suggestion}:</strong> (Impact: {s.impact})</li>)}</ul>
+                        </CardContent>
+                    </Card>
+                </div>
+            );
+            break;
         case 'listing-generator':
              tool.creationFields = [
                 { id: 'platform', name: 'Target Platform', type: 'select', options: ['Property Finder', 'Bayut', 'Generic'] },
@@ -542,47 +595,43 @@ export const tools: Feature[] = mergeToolData().map(tool => {
             break;
         case 'deal-analyzer':
             tool.creationFields = [
-                 { id: 'group-header-1', name: 'Property & Loan Details', type: 'group-header' },
                 { id: 'propertyAddress', name: 'Property Address', type: 'text', placeholder: 'e.g., 123 Ocean View, Dubai Marina' },
-                { id: 'purchasePrice', name: 'Purchase Price (AED)', type: 'number', placeholder: 'e.g., 2000000' },
-                { id: 'downPaymentPercentage', name: 'Down Payment (%)', type: 'number', placeholder: 'e.g., 20' },
-                { id: 'interestRate', name: 'Interest Rate (%)', type: 'number', placeholder: 'e.g., 4.5' },
-                { id: 'loanTermYears', name: 'Loan Term (Years)', type: 'number', placeholder: 'e.g., 25' },
-                { id: 'group-header-2', name: 'Income & Expenses', type: 'group-header' },
-                { id: 'expectedMonthlyRent', name: 'Expected Monthly Rent (AED)', type: 'number', placeholder: 'e.g., 12000' },
-                { id: 'monthlyExpenses', name: 'Total Monthly Expenses (AED)', type: 'number', placeholder: 'e.g., 2500' },
-                { id: 'closingCosts', name: 'Closing Costs (AED)', type: 'number', placeholder: 'e.g., 80000' },
             ];
             tool.renderResult = (result, toast) => (
                  <div className="space-y-4">
+                     <Card className="bg-blue-500/10 border-blue-500/30">
+                         <CardHeader>
+                            <CardTitle className="text-blue-600">AI Data Agent Results</CardTitle>
+                            <CardDescription>The following data was estimated by the AI based on market analysis.</CardDescription>
+                         </CardHeader>
+                         <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div><p className="text-sm font-semibold">Est. Value</p><p>AED {result.fetchedData.estimatedValue.toLocaleString()}</p></div>
+                            <div><p className="text-sm font-semibold">Est. Rent</p><p>AED {result.fetchedData.estimatedMonthlyRent.toLocaleString()}/mo</p></div>
+                            <div><p className="text-sm font-semibold">Est. Expenses</p><p>AED {result.fetchedData.estimatedMonthlyExpenses.toLocaleString()}/mo</p></div>
+                         </CardContent>
+                    </Card>
+                    
                     <Card>
                         <CardHeader>
-                            <CardTitle>Analysis Summary</CardTitle>
+                            <CardTitle>Investment Analysis</CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p>{result.analysisSummary}</p>
+                            <p>{result.analysis.analysisSummary}</p>
                         </CardContent>
                     </Card>
+
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                         <Card>
                             <CardHeader><CardTitle className="text-base">Monthly Cash Flow</CardTitle></CardHeader>
-                            <CardContent><p className="text-xl font-bold">AED {result.monthlyCashFlow.toLocaleString()}</p></CardContent>
+                            <CardContent><p className="text-xl font-bold">AED {result.analysis.monthlyCashFlow.toLocaleString()}</p></CardContent>
                         </Card>
                         <Card>
                             <CardHeader><CardTitle className="text-base">Cash on Cash ROI</CardTitle></CardHeader>
-                            <CardContent><p className="text-xl font-bold">{result.cashOnCashROI.toFixed(2)}%</p></CardContent>
+                            <CardContent><p className="text-xl font-bold">{result.analysis.cashOnCashROI.toFixed(2)}%</p></CardContent>
                         </Card>
-                         <Card>
+                            <Card>
                             <CardHeader><CardTitle className="text-base">Cap Rate</CardTitle></CardHeader>
-                            <CardContent><p className="text-xl font-bold">{result.capitalizationRate.toFixed(2)}%</p></CardContent>
-                        </Card>
-                         <Card>
-                            <CardHeader><CardTitle className="text-base">Monthly Mortgage</CardTitle></CardHeader>
-                            <CardContent><p className="text-xl font-bold">AED {result.monthlyMortgagePayment.toLocaleString()}</p></CardContent>
-                        </Card>
-                        <Card>
-                            <CardHeader><CardTitle className="text-base">Initial Investment</CardTitle></CardHeader>
-                            <CardContent><p className="text-xl font-bold">AED {result.totalInitialInvestment.toLocaleString()}</p></CardContent>
+                            <CardContent><p className="text-xl font-bold">{result.analysis.capitalizationRate.toFixed(2)}%</p></CardContent>
                         </Card>
                     </div>
                 </div>
