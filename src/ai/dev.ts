@@ -14,5 +14,4 @@ export default genkit({
       apiVersion: 'v1',
     }),
   ],
-  enableTracingAndMetrics: true,
 });
