@@ -47,9 +47,13 @@ export default function MePage() {
 
   useEffect(() => {
     setIsClient(true);
-    const savedState = localStorage.getItem('addedApps');
-    if (savedState) {
-      setAddedApps(JSON.parse(savedState));
+    try {
+        const savedState = localStorage.getItem('addedApps');
+        if (savedState) {
+          setAddedApps(JSON.parse(savedState));
+        }
+    } catch(e) {
+        console.error("Could not access localStorage for added apps");
     }
   }, []);
 
