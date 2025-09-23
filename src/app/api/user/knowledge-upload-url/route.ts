@@ -1,15 +1,13 @@
-
 'use server';
 
 import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, fail, bad, getUidFromRequest } from "@/lib/api-helpers";
-import { getFunctions, httpsCallable } from "firebase-admin/functions";
 import { getStorage } from 'firebase-admin/storage';
 import { v4 as uuidv4 } from "uuid";
 
 /**
- * This route handler acts as a secure backend-for-frontend (BFF) to interact with the Cloud Function.
- * It ensures that only authenticated users can get a signed URL.
+ * This route handler acts as a secure backend-for-frontend (BFF) to interact with the Cloud Function for uploads.
+ * It ensures that only authenticated users can get a signed URL and logs the file metadata upon completion.
  */
 
 // POST: Request a signed URL for upload
@@ -26,7 +24,12 @@ export async function POST(req: Request) {
     const fileId = uuidv4();
     const path = `knowledge_base/${uid}/${fileId}/${filename}`;
     
-    const bucket = getStorage().bucket();
+    const bucketName = process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET;
+    if (!bucketName) {
+        throw new Error("Firebase Storage bucket is not configured in environment variables.");
+    }
+    
+    const bucket = getStorage().bucket(bucketName);
     const file = bucket.file(path);
 
     const [url] = await file.getSignedUrl({

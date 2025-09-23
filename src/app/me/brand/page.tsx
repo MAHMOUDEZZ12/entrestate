@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -10,15 +9,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Palette, Upload, Save, BrainCircuit, FileText, ImageIcon, Loader2, Trash2 } from 'lucide-react';
+import { Palette, Upload, Save, BrainCircuit, FileText, Loader2, Trash2, CheckCircle, HelpCircle } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { PageHeader } from '@/components/ui/page-header';
 import { useAuth } from '@/hooks/useAuth';
 import { Checkbox } from '@/components/ui/checkbox';
-import { getFunctions, httpsCallable } from 'firebase/functions';
-import { auth, db } from '@/lib/firebase';
 import type { KnowledgeFile } from '@/types';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 
 
 const brandSchema = z.object({
@@ -30,6 +33,31 @@ const brandSchema = z.object({
 });
 
 type BrandFormValues = z.infer<typeof brandSchema>;
+
+const StatusIcon = ({ status }: { status: KnowledgeFile['status'] }) => {
+    const statusConfig = {
+        uploaded: { icon: <HelpCircle className="h-4 w-4 text-amber-500" />, text: 'Ready to Train' },
+        training: { icon: <Loader2 className="h-4 w-4 animate-spin text-blue-500" />, text: 'Training...' },
+        trained: { icon: <CheckCircle className="h-4 w-4 text-green-500" />, text: 'Trained' },
+        error: { icon: <HelpCircle className="h-4 w-4 text-red-500" />, text: 'Error' },
+    };
+    const { icon, text } = statusConfig[status] || statusConfig.uploaded;
+    return (
+        <TooltipProvider>
+            <Tooltip>
+                <TooltipTrigger asChild>
+                    <div className="flex items-center gap-1">
+                        {icon}
+                    </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                    <p>{text}</p>
+                </TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
+    );
+};
+
 
 export default function BrandPage() {
   const { toast } = useToast();
@@ -158,18 +186,23 @@ export default function BrandPage() {
   };
   
   const handleLogoUpload = async (file: File) => {
-     if (!user || !auth) return;
+     if (!user) return;
      toast({ title: 'Uploading logo...'});
      try {
-        const functions = getFunctions(auth.app);
-        const createUploadUrl = httpsCallable(functions, 'createUploadUrl');
-        const res: any = await createUploadUrl({ filename: file.name, type: 'logo', contentType: file.type });
-        const { uploadUrl, fileUrl } = res.data;
+        const idToken = await user.getIdToken();
+        const urlResponse = await fetch('/api/user/knowledge-upload-url', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+            body: JSON.stringify({ filename: file.name, type: 'logo', contentType: file.type })
+        });
+        const { ok, data, error } = await urlResponse.json();
+        if (!ok) throw new Error(error);
+        const { uploadUrl, fileUrl } = data;
 
         await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type }});
         
-        setLogoPreview(fileUrl); // Set preview to the final storage URL
-        reset({ ...control._formValues, logoUrl: fileUrl }); // Update form state
+        setLogoPreview(fileUrl);
+        reset({ ...control._formValues, logoUrl: fileUrl });
 
         toast({ title: 'Logo uploaded successfully!' });
      } catch (e: any) {
@@ -195,6 +228,8 @@ export default function BrandPage() {
           title: "AI Training Started",
           description: `The assistant is now analyzing ${selectedFiles.length} file(s). This may take a moment.`,
       });
+      
+      setFiles(prev => prev.map(f => selectedFiles.includes(f.id) ? {...f, status: 'training' as const} : f));
 
       // In a real application, you would send these files to be indexed in a vector database.
       await new Promise(resolve => setTimeout(resolve, 3000 + selectedFiles.length * 500));
@@ -211,7 +246,7 @@ export default function BrandPage() {
   }
   
     const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        if (!user || !auth) return;
+        if (!user) return;
         const uploadedFiles = event.target.files;
         if (!uploadedFiles || uploadedFiles.length === 0) return;
 
@@ -221,7 +256,6 @@ export default function BrandPage() {
              try {
                 const idToken = await user.getIdToken();
                 
-                // 1. Get signed URL from our API, which calls the Cloud Function
                 const urlResponse = await fetch('/api/user/knowledge-upload-url', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
@@ -231,10 +265,8 @@ export default function BrandPage() {
                 if (!ok) throw new Error(error);
                 const { uploadUrl, fileUrl, fileId } = data;
 
-                // 2. Upload file to signed URL
                 await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type }});
                 
-                // 3. Confirm upload with our API
                 await fetch('/api/user/knowledge-upload-url', {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
@@ -273,7 +305,7 @@ export default function BrandPage() {
   return (
     <main className="p-4 md:p-10 space-y-8">
       <PageHeader
-        title="Brand & Assets"
+        title="Brand &amp; Assets"
         description="Manage your brand identity and the files that form the Knowledge Base for your AI assistant."
         icon={<Palette className="h-8 w-8" />}
       />
@@ -357,31 +389,34 @@ export default function BrandPage() {
                 <CardHeader>
                     <CardTitle>Knowledge Base</CardTitle>
                     <CardDescription>
-                        Upload your brochures, market reports, and client lists to train your AI.
+                        Upload your brochures, market reports, and client lists to train your AI. This will enable it to answer questions about your specific data.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     {isLoadingFiles ? (
                         <div className="flex justify-center items-center h-40"><Loader2 className="animate-spin"/></div>
                     ) : (
-                        <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
+                        <div className="space-y-3 max-h-60 overflow-y-auto pr-2">
                             {files.map(file => (
-                                <div key={file.id} className="flex items-center gap-4 p-2 rounded-md bg-muted/50">
+                                <div key={file.id} className="flex items-center gap-2 p-2 rounded-md bg-muted/50">
                                     <Checkbox 
                                         id={`file-${file.id}`} 
                                         onCheckedChange={(checked) => {
                                             setSelectedFiles(prev => checked ? [...prev, file.id] : prev.filter(id => id !== file.id));
                                         }}
                                         checked={selectedFiles.includes(file.id)}
+                                        disabled={file.status === 'trained'}
                                     />
-                                    <FileText className="h-8 w-8 text-muted-foreground" />
+                                    <FileText className="h-6 w-6 text-muted-foreground" />
                                     <div className="overflow-hidden flex-1">
                                         <p className="font-semibold text-sm truncate">{file.fileName}</p>
                                         <p className="text-xs text-muted-foreground">{((file.size || 0) / 1024).toFixed(2)} KB</p>
                                     </div>
+                                    <StatusIcon status={file.status} />
                                     <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleDeleteFile(file.id)}><Trash2 className="h-4 w-4 text-destructive/70 hover:text-destructive" /></Button>
                                 </div>
                             ))}
+                            {files.length === 0 && <p className="text-center text-sm text-muted-foreground py-10">No files uploaded yet.</p>}
                         </div>
                     )}
                      <Button onClick={() => fileInputRef.current?.click()} variant="outline" className="w-full mt-4">
@@ -402,4 +437,3 @@ export default function BrandPage() {
     </main>
   );
 }
-

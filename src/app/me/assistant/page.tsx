@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -36,7 +35,7 @@ export default function AssistantPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground mb-4">
-                The AI learns from the documents you provide. This ensures all responses are hyper-relevant and secure.
+                The AI learns from the documents you provide in your Knowledge Base. This ensures all responses are hyper-relevant and secure.
               </p>
               <Link href="/me/brand">
                 <Button variant="outline" className="w-full">
