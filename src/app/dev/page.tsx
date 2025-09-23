@@ -96,7 +96,7 @@ export default function DevAdminPage() {
     const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
     
     const [scrapingStates, setScrapingStates] = useState<{ [key: string]: boolean }>({});
-    const [dataflowStates, setDataflowStates] = useState<{ [key: string]: boolean }>({});
+    const [dataflowStates, setDataStates] = useState<{ [key: string]: boolean }>({});
 
     useEffect(() => {
         // Load changelog from localStorage on mount
@@ -237,7 +237,7 @@ export default function DevAdminPage() {
     };
     
     const handleLaunchDataflow = async (jobType: string) => {
-        setDataflowStates(prev => ({...prev, [jobType]: true }));
+        setDataStates(prev => ({...prev, [jobType]: true }));
         toast({ title: 'Dataflow Job Requested', description: `Request sent to launch '${jobType}' job.`});
 
         const newLogEntry: ChangeLogEntry = {
@@ -264,7 +264,7 @@ export default function DevAdminPage() {
             setChangeLog(prev => prev.map(l => l.id === newLogEntry.id ? {...l, status: 'Issue Reported', comment: errorMessage} : l));
             toast({ title: 'Dataflow Launch Failed', description: e.message, variant: 'destructive'});
         } finally {
-            setDataflowStates(prev => ({...prev, [jobType]: false }));
+            setDataStates(prev => ({...prev, [jobType]: false }));
         }
     }
 
