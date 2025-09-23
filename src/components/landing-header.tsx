@@ -9,7 +9,7 @@ import { Logo } from './logo';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 
 const navLinks = [
-    { name: 'Apps', href: '/apps' },
+    { name: 'Apps', href: '/me/marketing' },
     { name: 'Pricing', href: '/pricing' },
     { name: 'Community', href: '/me/community' },
 ];
