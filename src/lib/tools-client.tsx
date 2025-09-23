@@ -57,7 +57,6 @@ export interface Feature extends ToolData {
         use_cases: string[];
     };
     icon: React.ReactElement; // Override icon to be ReactElement
-    price: number;
 }
 
 
@@ -236,7 +235,7 @@ export const tools: Feature[] = mergeToolData().map(tool => {
             tool.renderResult = (result, toast) => (
                 <div className="space-y-4">
                    <h3 className="font-semibold">Embed Code:</h3>
-                   <p className="text-sm text-muted-foreground">Copy and paste this snippet into the `&lt;body&gt;` of your website.</p>
+                   <p className="text-sm text-muted-foreground">{'Copy and paste this snippet into the `<body>` of your website.'}</p>
                    <CodeBlock>{result.embedCode.trim()}</CodeBlock>
                </div>
             );
@@ -811,3 +810,4 @@ export const tools: Feature[] = mergeToolData().map(tool => {
     }
     return tool;
 });
+

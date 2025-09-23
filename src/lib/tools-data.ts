@@ -46,6 +46,7 @@ export const tools: ToolData[] = [
     { id: 'images-hq-ai', title: 'Images HQ AI', description: 'Generate high-quality, royalty-free images for listings and ads.', iconName: 'ImageIcon', color: '#1E90FF', categories: ['Creative'], cta: 'Generate Image' },
     { id: 'logo-creator-ai', title: 'Logo Creator AI', description: 'Create a professional logo for your brand in seconds.', iconName: 'Sparkles', color: '#1E90FF', categories: ['Creative'], cta: 'Create Logo' },
     { id: 'aerial-view-generator', title: 'Aerial View Generator', description: 'Create cinematic, aerial video tours of any property.', iconName: 'Camera', color: '#8A2BE2', categories: ['Creative', 'Video'], cta: 'Generate Aerial View' },
+    { id: 'ai-brand-creator', title: 'AI Brand Creator', description: 'Configure your brand kit by analyzing uploaded documents.', iconName: 'Wand2', color: '#DA70D6', categories: ['Creative', 'CRM'], cta: 'Create Brand' },
 
     // Listing Intelligence
     { id: 'listing-manager', title: 'Listing Manager', description: 'Your central hub to prepare and syndicate listings to major portals.', iconName: 'ClipboardList', color: '#FF4500', categories: ['Sales Tools'], cta: 'Manage Listings' },
@@ -69,7 +70,6 @@ export const tools: ToolData[] = [
     { id: 'market-trends', title: 'Market Trends Watcher', dashboardTitle: 'Market Trends', description: 'Identify emerging market trends before they become mainstream.', iconName: 'LineChart', color: '#00CED1', categories: ['Market Intelligence'], cta: 'View Trends' },
 
     // Core / Foundational
-    { id: 'ai-brand-creator', title: 'AI Brand Creator', description: 'Configure your brand kit by analyzing uploaded documents.', iconName: 'Wand2', color: '#DA70D6', categories: ['Creative', 'CRM'], cta: 'Create Brand' },
     { id: 'crm-assistant', title: 'CRM Memory Assistant', description: 'The core data store that remembers every client interaction.', iconName: 'BrainCircuit', color: '#DA70D6', categories: ['CRM'], cta: 'Query Memory' },
     { id: 'ai-assistant', title: 'AI Assistant', description: 'Your personal, trainable AI partner.', iconName: 'Bot', color: '#DA70D6', categories: ['CRM'], cta: 'Chat Now' },
     
