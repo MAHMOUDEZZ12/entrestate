@@ -89,10 +89,10 @@ export default function MePage() {
         title="Home"
         description="Your workspace. Launch apps, run flows, and manage your real estate universe."
       >
-        <Link href="/dev">
+        <Link href="/gem">
           <Button variant="outline">
             <GanttChartSquare className="mr-2 h-4 w-4" />
-            Dev Admin
+            Gem Admin
           </Button>
         </Link>
       </PageHeader>

@@ -12,10 +12,10 @@ export default function DeprecatedDevAdminPage() {
     <main className="p-4 md:p-10 space-y-8">
        <PageHeader
         title="This page has moved"
-        description="The Developer Admin dashboard is now located at the top-level /dev route."
+        description="The Developer Admin dashboard is now located at the top-level /gem route."
         icon={<GanttChartSquare className="h-8 w-8" />}
       >
-        <Link href="/dev">
+        <Link href="/gem">
             <Button>Go to Developer Dashboard</Button>
         </Link>
       </PageHeader>

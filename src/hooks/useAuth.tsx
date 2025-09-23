@@ -49,7 +49,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (user) {
         // User is logged in. Check if they are trying to access admin routes without permission.
         if (isAdminRoute(pathname) && !userIsAdmin) {
-          router.push('/me'); // Redirect non-admins from /dev to /me
+          router.push('/me'); // Redirect non-admins from /gem to /me
         }
       } else {
         // User is not logged in. Protect all relevant routes.
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
   
   const isAdminRoute = (path: string) => {
-    return path.startsWith('/dev');
+    return path.startsWith('/gem');
   }
 
   if (loading) {

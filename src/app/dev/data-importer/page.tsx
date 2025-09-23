@@ -1,138 +1,110 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import { getFunctions, httpsCallable } from "firebase/functions";
-import { getFirestore, doc, onSnapshot } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
-import { useAuth } from "@/hooks/useAuth";
-import { PageHeader } from "@/components/ui/page-header";
-import { Upload } from "lucide-react";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import Link from 'next/link';
+import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
+import { onAuthStateChanged, User } from 'firebase/auth';
+import { auth } from '@/lib/firebase';
+import { useRouter, usePathname } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
-function SearchEngineUploadPreview() {
-  const [file, setFile] = useState<File | null>(null);
-  const [status, setStatus] = useState("idle");
-  const [importId, setImportId] = useState<string | null>(null);
-  const [importDoc, setImportDoc] = useState<any>(null);
-  const { user } = useAuth();
-
-  const onChoose = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (e.target.files) {
-        setFile(e.target.files[0]);
-      }
-  };
-
-  const startUpload = async () => {
-    if (!file) return alert("Select an XML file.");
-    if (!auth) return alert("Firebase not initialized.");
-
-    setStatus("requesting upload url");
-    try {
-      const functions = getFunctions(auth.app);
-      const createUpload = httpsCallable(functions, "createUploadUrl");
-      const res: any = await createUpload({ filename: file.name, type: "search_context" });
-      const { uploadUrl, importId: id } = res.data;
-      setImportId(id);
-
-      // upload
-      setStatus("uploading file...");
-      const body = await file.text();
-      const r = await fetch(uploadUrl, { method: "PUT", headers: { "Content-Type": "application/xml" }, body });
-      if (!r.ok) throw new Error("upload failed");
-
-      setStatus("uploaded; waiting for preview...");
-      // listen to xmlImports doc for preview
-      if (!db) return;
-      const impRef = doc(db, "xmlImports", id);
-      const unsub = onSnapshot(impRef, snap => {
-        if (!snap.exists()) return;
-        const d = snap.data(); setImportDoc(d);
-        if (d.status === "pending_preview") setStatus("preview ready");
-        else if (d.status === "processing") setStatus("processing");
-        else if (d.status === "error") setStatus("error: " + JSON.stringify(d.errors || d.error));
-        else if (d.status === "done") { setStatus("done"); unsub(); }
-      });
-    } catch (err: any) {
-      console.error(err);
-      setStatus("error: " + err.message);
-    }
-  };
-
-  const confirm = async (mergePolicy = "skip") => {
-    if (!importId || !auth) return;
-    setStatus("confirming import...");
-    try {
-      const functions = getFunctions(auth.app);
-      const confirmFn = httpsCallable(functions, "confirmImport");
-      const res: any = await confirmFn({ importId, mergePolicy });
-      const data = res.data;
-      setStatus("import committed: " + (data.committed || 0) + " pages");
-    } catch (err: any) {
-      setStatus("confirm error: " + err.message);
-    }
-  };
-
-  if (!user) {
-      return <Alert><AlertTitle>Not Authenticated</AlertTitle><AlertDescription>Please log in to use the data importer.</AlertDescription></Alert>
-  }
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Upload Search Context (XML)</CardTitle>
-        <CardDescription>Upload an XML file to import search context data into your project.</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <Input type="file" accept=".xml" onChange={onChoose} />
-        <div>Status: <Badge>{status}</Badge></div>
-
-        {importDoc && importDoc.preview && (
-          <div className="mt-4 border-t pt-4">
-            <h5 className="font-semibold text-lg">Preview: domain '{importDoc.preview.domain}'</h5>
-            <ul className="list-disc pl-5 mt-2 space-y-2">
-              {importDoc.preview.pages.map((p: any, i: number) => (
-                <li key={i}>
-                  <b>{p.title || p.url}</b>
-                  <p className="text-sm text-muted-foreground">{p.summary}</p>
-                  {p.tags.length > 0 && <div className="text-xs text-muted-foreground">Tags: {p.tags.join(", ")}</div>}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-         {status.startsWith("error:") && <Alert variant="destructive"><AlertTitle>Error</AlertTitle><AlertDescription>{status}</AlertDescription></Alert>}
-      </CardContent>
-      <CardFooter className="flex-col items-start gap-4">
-          <Button onClick={startUpload} disabled={!file || status.includes('uploading')}>Upload & Parse</Button>
-          {status === 'preview ready' && (
-              <div className="flex gap-2">
-                <Button onClick={() => confirm("skip")}>Confirm & Import (Merge/Skip Duplicates)</Button>
-                <Button variant="destructive" onClick={() => confirm("overwrite")}>Confirm & Overwrite</Button>
-              </div>
-          )}
-      </CardFooter>
-    </Card>
-  );
+interface AuthContextType {
+    user: User | null;
+    loading: boolean;
+    isAdmin: boolean;
 }
 
-export default function DataImporterPage() {
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// --- Admin ---
+// In a real application, this would come from a secure database role system.
+// For this simulation, we'll hardcode admin usernames.
+const ADMIN_USERNAMES = [
+    'admin',
+    'dev',
+    // Add your Firebase user's displayName here to grant yourself access
+];
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!auth) {
+        setLoading(false);
+        if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
+            router.push('/login');
+        }
+        return;
+    }
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+      const userIsAdmin = user ? ADMIN_USERNAMES.includes(user.displayName || '') : false;
+      setIsAdmin(userIsAdmin);
+      setLoading(false);
+      
+      // --- Route Protection Logic ---
+      if (user) {
+        // User is logged in. Check if they are trying to access admin routes without permission.
+        if (isAdminRoute(pathname) && !userIsAdmin) {
+          router.push('/me'); // Redirect non-admins from /gem to /me
+        }
+      } else {
+        // User is not logged in. Protect all relevant routes.
+        if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
+          router.push('/login');
+        }
+      }
+    });
+
+    return () => unsubscribe();
+  }, [pathname, router]);
+  
+  const isProtectedRoute = (path: string) => {
+    return path.startsWith('/me');
+  };
+  
+  const isAdminRoute = (path: string) => {
+    return path.startsWith('/gem');
+  }
+
+  if (loading) {
     return (
-         <main className="p-4 md:p-10 space-y-8">
-            <PageHeader
-                title="Data Importer"
-                description="Manage your search context by importing and exporting XML data."
-                icon={<Upload />}
-            >
-                <Link href="/dev">
-                    <Button variant="outline">Back to Dev Dashboard</Button>
-                </Link>
-            </PageHeader>
-            <SearchEngineUploadPreview />
-        </main>
-    )
+        <div className="flex h-screen w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+    );
+  }
+
+  // Final check after loading, in case of race conditions with navigation
+  if (!user && (isProtectedRoute(pathname) || isAdminRoute(pathname))) {
+      // Don't render children, let the redirect happen.
+      return (
+         <div className="flex h-screen w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      );
+  }
+
+   if (user && isAdminRoute(pathname) && !isAdmin) {
+      // Don't render children, let the redirect happen.
+      return (
+         <div className="flex h-screen w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      );
+  }
+  
+  const value = { user, loading, isAdmin };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+
+export function useAuth(): AuthContextType {
+    const context = useContext(AuthContext);
+    if(context === undefined) {
+        throw new Error('useAuth must be used within an AuthProvider');
+    }
+    return context;
 }

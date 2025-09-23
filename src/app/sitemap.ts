@@ -30,12 +30,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/resources/flows',
     '/sx3-mindmap',
     '/support',
-    '/dev',
-    '/dev/sitemap',
-    '/dev/system-health',
-    '/dev/archive',
-    '/dev/data-importer',
-    '/dev/keys'
+    '/gem',
+    '/gem/sitemap',
+    '/gem/system-health',
+    '/gem/archive',
+    '/gem/data-importer',
+    '/gem/keys'
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
