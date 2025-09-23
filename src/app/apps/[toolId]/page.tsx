@@ -5,6 +5,7 @@ import React from 'react';
 import { notFound, useParams } from 'next/navigation';
 import { tools, Feature } from '@/lib/tools-client';
 import { PublicToolPageLayout } from '@/app/public-tool-page-layout';
+import { pricingData } from '@/lib/pricing-data';
 
 export default function ToolPage() {
   const params = useParams();
@@ -15,7 +16,11 @@ export default function ToolPage() {
     if (!tool) {
       return undefined;
     }
-    return tool;
+    const priceInfo = pricingData.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === tool.id.toLowerCase());
+    return {
+        ...tool,
+        price: priceInfo?.price_monthly || 0,
+    };
   }, [toolId]);
 
   if (!feature) {

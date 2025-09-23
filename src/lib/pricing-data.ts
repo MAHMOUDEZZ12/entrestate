@@ -20,10 +20,12 @@ export interface PlanData {
     features: string[];
 }
 
-export const pricingData: {
+interface PricingData {
     apps: AppData[];
     plans: PlanData[];
-} = {
+}
+
+export const pricingData: PricingData = {
     "apps": [
         // Core Products
         { "name": "PRO SEARCH ENG. x3", "description": "The triple-engine of discovery: Fast, Smart, and Deep Search.", "price_monthly": 190, "category": "Intelligence" },

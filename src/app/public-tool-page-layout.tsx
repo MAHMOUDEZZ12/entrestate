@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React from 'react';
@@ -32,7 +31,7 @@ import {
 
 
 interface PublicToolPageLayoutProps {
-  feature: Feature & { price: number };
+  feature: Feature;
 }
 
 const ToolShowcase = ({ feature }: { feature: Feature }) => {
@@ -98,6 +97,9 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   const isAutoPilot = feature.id === 'meta-auto-pilot';
 
   const faqs = feature.details.faqs || [];
+  const useCases = feature.details.use_cases || [];
+  const aiVsManual = feature.details.aiVsManual || [];
+  const synergy = feature.details.synergy || [];
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -152,7 +154,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       </section>
 
       {/* Use Cases Section */}
-      {feature.details.use_cases && feature.details.use_cases.length > 0 && (
+      {useCases.length > 0 && (
           <section className="py-24 md:py-32">
             <div className="container mx-auto px-4">
               <div className="text-center max-w-2xl mx-auto mb-16">
@@ -160,7 +162,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                  <p className="mt-4 text-lg text-muted-foreground">From individual agents to large brokerages, see how {feature.title} is a game-changer.</p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {feature.details.use_cases.map((useCase, index) => (
+                {useCases.map((useCase, index) => (
                   <motion.div
                     key={index}
                     initial={{ opacity: 0, y: 50 }}
@@ -201,7 +203,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {feature.details.aiVsManual.map((item, index) => (
+                            {aiVsManual.map((item, index) => (
                                 <TableRow key={index}>
                                     <TableCell className="font-semibold flex items-center gap-2">
                                         {item.icon ? React.cloneElement(item.icon as React.ReactElement, { className: 'h-5 w-5' }) : null}
@@ -220,7 +222,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
 
 
       {/* Flows Section */}
-      {feature.details.synergy && feature.details.synergy.length > 0 && (
+      {synergy.length > 0 && (
           <section className="py-24 md:py-32">
             <div className="container mx-auto px-4 text-center">
                 <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Build Powerful Flows</h2>
@@ -231,7 +233,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                      <Card className="max-w-2xl mx-auto bg-card/80">
                         <CardContent className="p-6">
                             <div className="flex items-center justify-center flex-wrap gap-4">
-                            {(feature.details.synergy.slice(0, 2).map((s, index) => {
+                            {(synergy.slice(0, 2).map((s, index) => {
                                 const relatedTool = tools.find(t => t.title === s.tool);
                                 return (
                                     <React.Fragment key={index}>
@@ -252,7 +254,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                                 )
                             }))}
                             </div>
-                            <p className="text-sm text-muted-foreground mt-4">{feature.details.synergy[0]?.benefit || "Combine tools to create powerful automations."}</p>
+                            <p className="text-sm text-muted-foreground mt-4">{synergy[0]?.benefit || "Combine tools to create powerful automations."}</p>
                         </CardContent>
                         <CardFooter>
                              <Link href="/dashboard/flows" className="w-full">
@@ -282,7 +284,9 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                             {faqs.map((faq, index) => (
                                 <AccordionItem value={`item-${index}`} key={index}>
                                     <AccordionTrigger className="text-left text-lg hover:no-underline">{faq.question}</AccordionTrigger>
-                                    <AccordionContent className="text-base text-muted-foreground" dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                                    <AccordionContent className="text-base text-muted-foreground">
+                                        <div dangerouslySetInnerHTML={{ __html: faq.answer }} />
+                                    </AccordionContent>
                                 </AccordionItem>
                             ))}
                         </Accordion>
