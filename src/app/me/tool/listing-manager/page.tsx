@@ -108,7 +108,7 @@ export default function ListingManagerPage() {
     const handlePortalSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!portalName || !portalScreenshot) {
-            toast({ title: "Missing Information", description: "Please provide a portal name and a screenshot.", variant: 'destructive'});
+            toast({ title: "Missing Information", description: "Please provide both a portal name and a screenshot.", variant: 'destructive'});
             return;
         }
         addIssueToChangeLog(`New portal submission: "${portalName}". User has uploaded a screenshot of the form. Please review and add support.`);
