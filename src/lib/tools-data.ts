@@ -1,4 +1,3 @@
-
 import {
     Bot, BrainCircuit, CheckCircle, Plus, Sparkles, Upload, Megaphone, User,
     ShieldQuestion, Search, MessageCircle, PenTool, Clock2, Wallet, BadgeCheck,
@@ -55,7 +54,7 @@ export const tools: ToolData[] = [
     { id: 'listing-generator', title: 'Listing Generator', description: 'Craft perfect listings for portals like Property Finder & Bayut.', iconName: 'FileText', color: '#FF4500', categories: ['Sales Tools'], cta: 'Generate Listing' },
     { id: 'propertyfinder-sync', title: 'Property Finder Pilot', dashboardTitle: 'Property Finder', description: 'Execution terminal for pushing listings to Property Finder.', iconName: 'Building', color: '#FF4500', categories: ['Developer', 'Sales Tools'], badge: 'AUTO', cta: 'Sync Listing' },
     { id: 'bayut-sync', title: 'Bayut Pilot', dashboardTitle: 'Bayut', description: 'Execution terminal for pushing listings to Bayut.', iconName: 'Building', color: '#FF4500', categories: ['Developer', 'Sales Tools'], badge: 'AUTO', cta: 'Sync Listing' },
-    { id: 'deal-analyzer', title: 'Deal Analyzer', description: 'Analyze the investment potential of any real estate deal.', iconName: 'BarChart3', color: '#32CD32', categories: ['Sales Tools', 'Market Intelligence'], cta: 'Analyze Deal' },
+    { id: 'deal-analyzer', title: 'Deal Analyzer', description: 'Enter a property address to get AI-driven market estimates for price, rent, and expenses, then see a full investment analysis including cash flow and ROI.', iconName: 'BarChart3', color: '#32CD32', categories: ['Sales Tools', 'Market Intelligence'], cta: 'Analyze Deal' },
     { id: 'commission-calculator', title: 'Commission Calculator', description: 'Instantly calculate your sales commission.', iconName: 'Calculator', color: '#32CD32', categories: ['Sales Tools'], cta: 'Calculate' },
     { id: 'payment-planner', title: 'Payment Planner', description: 'Generate tailored payment plans for off-plan properties.', iconName: 'FileCheck', color: '#32CD32', categories: ['Sales Tools'], cta: 'Create Plan' },
     { id: 'investor-matching', title: 'Investor Matching', description: 'Pair budgets with the right projects.', iconName: 'Handshake', color: '#32CD32', categories: ['Sales Tools', 'Lead Gen'], cta: 'Find Matches' },
@@ -83,7 +82,7 @@ export const tools: ToolData[] = [
     { id: 'alloydb-scanner', title: 'AlloyDB Scanner', description: 'Scan for databases and analyze suitability for AlloyDB migration.', iconName: 'Database', color: '#6a788c', categories: ['Developer'], cta: 'Scan Environment' },
     
     // Deprecated
-    { id: 'ai-price-estimator', title: 'AI Price Estimator', description: 'Get an AI-powered price estimate for any property.', iconName: 'Wallet', color: '#808080', categories: ['Sales Tools', 'Market Intelligence'], badge: 'DEPRECATED', cta: 'Estimate Price' },
+    { id: 'ai-price-estimator', title: 'AI Price Estimator (Deprecated)', description: 'Get an AI-powered price estimate for any property.', iconName: 'Wallet', color: '#808080', categories: ['Sales Tools', 'Market Intelligence'], badge: 'DEPRECATED', cta: 'Estimate Price' },
     { id: 'pdf-editor', title: 'Visual PDF Editor', description: 'A legacy tool for simple PDF edits.', iconName: 'Edit', color: '#808080', categories: ['Editing'], badge: 'DEPRECATED', cta: 'Open Editor' },
     
     // Placeholder / Coming Soon

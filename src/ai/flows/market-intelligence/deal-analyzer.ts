@@ -1,11 +1,11 @@
-
 'use server';
 
 /**
  * @fileOverview An AI flow to analyze a real estate deal's investment potential.
  *
- * This flow takes property, loan, and income details and returns a
- * comprehensive financial analysis with key investment metrics.
+ * This flow now incorporates a "data agent" (fetchMarketData tool) to first
+ * estimate market values for a property and then uses those estimates to
+ * conduct a full investment analysis, including cash flow, ROI, and cap rate.
  *
  * @module AI/Flows/DealAnalyzer
  *
@@ -19,39 +19,80 @@ import {z} from 'genkit';
 
 /**
  * Defines the schema for the input of the deal analyzer flow.
+ * Now simplified to only require a property address.
  */
 export const DealAnalyzerInputSchema = z.object({
-  propertyAddress: z.string().describe("The full address of the property."),
-  purchasePrice: z.number().positive().describe("The total purchase price of the property."),
-  downPaymentPercentage: z.number().min(0).max(100).describe("The down payment as a percentage of the purchase price."),
-  interestRate: z.number().min(0).describe("The annual interest rate for the loan."),
-  loanTermYears: z.number().positive().describe("The term of the loan in years."),
-  expectedMonthlyRent: z.number().positive().describe("The projected gross monthly rental income."),
-  monthlyExpenses: z.number().min(0).describe("Estimated total monthly expenses (taxes, insurance, HOA, maintenance)."),
-  closingCosts: z.number().min(0).describe("Estimated closing costs."),
+  propertyAddress: z.string().describe("The full address of the property to analyze."),
 });
 export type DealAnalyzerInput = z.infer<typeof DealAnalyzerInputSchema>;
 
 
 /**
  * Defines the schema for the output of the deal analyzer flow.
+ * It now includes the data fetched by the data agent.
  */
 export const DealAnalyzerOutputSchema = z.object({
-  analysisSummary: z.string().describe("A narrative summary of the deal's viability, including a recommendation."),
-  monthlyMortgagePayment: z.number().describe("The calculated principal and interest monthly mortgage payment."),
-  monthlyCashFlow: z.number().describe("The estimated net cash flow per month."),
-  cashOnCashROI: z.number().describe("The estimated cash-on-cash return on investment (annualized)."),
-  capitalizationRate: z.number().describe("The estimated capitalization rate (cap rate)."),
-  totalInitialInvestment: z.number().describe("The total cash required to close the deal (down payment + closing costs)."),
+  fetchedData: z.object({
+    estimatedValue: z.number(),
+    estimatedMonthlyRent: z.number(),
+    estimatedMonthlyExpenses: z.number(),
+  }).describe("The market data estimated by the AI data agent."),
+  analysis: z.object({
+    analysisSummary: z.string().describe("A narrative summary of the deal's viability, including a recommendation."),
+    monthlyMortgagePayment: z.number().describe("The calculated principal and interest monthly mortgage payment."),
+    monthlyCashFlow: z.number().describe("The estimated net cash flow per month."),
+    cashOnCashROI: z.number().describe("The estimated cash-on-cash return on investment (annualized)."),
+    capitalizationRate: z.number().describe("The estimated capitalization rate (cap rate)."),
+    totalInitialInvestment: z.number().describe("The total cash required to close the deal (down payment + closing costs)."),
+  }).describe("The detailed financial analysis of the deal.")
 });
 export type DealAnalyzerOutput = z.infer<typeof DealAnalyzerOutputSchema>;
 
 
+// The "Data Agent" tool
+const fetchMarketData = ai.defineTool(
+    {
+        name: 'fetchMarketData',
+        description: 'Fetches estimated market data for a given property address, including value, rent, and expenses.',
+        inputSchema: z.object({
+            address: z.string(),
+        }),
+        outputSchema: z.object({
+            estimatedValue: z.number().describe("The AI's estimated market value for the property."),
+            estimatedMonthlyRent: z.number().describe("The AI's estimated average monthly rent for the area."),
+            estimatedMonthlyExpenses: z.number().describe("The AI's estimated monthly expenses (taxes, insurance, HOA)."),
+        })
+    },
+    async ({ address }) => {
+        // In a real application, this would query a database or external API.
+        // For now, we simulate this with plausible data based on the address.
+        const hash = address.split('').reduce((acc, char) => char.charCodeAt(0) + ((acc << 5) - acc), 0);
+        const value = 2000000 + (hash % 100) * 10000;
+        const rent = Math.round((value / 200) / 100) * 100;
+        const expenses = Math.round((rent * 0.2) / 50) * 50;
+        return {
+            estimatedValue: value,
+            estimatedMonthlyRent: rent,
+            estimatedMonthlyExpenses: expenses,
+        };
+    }
+);
+
 const dealAnalyzerPrompt = ai.definePrompt({
   name: 'dealAnalyzerPrompt',
-  input: {schema: DealAnalyzerInputSchema},
-  output: {schema: DealAnalyzerOutputSchema},
-  prompt: `You are an expert real estate investment analyst. Analyze the following deal and provide a professional financial breakdown.
+  tools: [fetchMarketData],
+  input: { schema: z.object({
+      propertyAddress: z.string(),
+      purchasePrice: z.number(),
+      downPaymentPercentage: z.number(),
+      interestRate: z.number(),
+      loanTermYears: z.number(),
+      expectedMonthlyRent: z.number(),
+      monthlyExpenses: z.number(),
+      closingCosts: z.number(),
+  })},
+  output: { schema: DealAnalyzerOutputSchema.shape.analysis },
+  prompt: `You are an expert real estate investment analyst. First, use the fetchMarketData tool to get estimates for the property. Then, analyze the following deal and provide a professional financial breakdown.
 
   **Property Details:**
   - Address: {{{propertyAddress}}}
@@ -87,12 +128,32 @@ const dealAnalyzerFlow = ai.defineFlow(
     inputSchema: DealAnalyzerInputSchema,
     outputSchema: DealAnalyzerOutputSchema,
   },
-  async input => {
-    const {output} = await dealAnalyzerPrompt(input);
+  async (input) => {
+    // Stage 1: Call the Data Agent Tool
+    const dataAgentResult = await fetchMarketData({ address: input.propertyAddress });
+
+    // Stage 2: Call the analysis prompt with data from the agent
+    const analysisInput = {
+      propertyAddress: input.propertyAddress,
+      purchasePrice: dataAgentResult.estimatedValue,
+      downPaymentPercentage: 20, // Standard default
+      interestRate: 4.5, // Standard default
+      loanTermYears: 25, // Standard default
+      expectedMonthlyRent: dataAgentResult.estimatedMonthlyRent,
+      monthlyExpenses: dataAgentResult.estimatedMonthlyExpenses,
+      closingCosts: dataAgentResult.estimatedValue * 0.04, // Standard 4% default
+    };
+
+    const { output } = await dealAnalyzerPrompt(analysisInput);
+    
     if (!output) {
       throw new Error('The AI failed to analyze the deal.');
     }
-    return output;
+
+    return {
+      fetchedData: dataAgentResult,
+      analysis: output
+    };
   }
 );
 

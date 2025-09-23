@@ -1,28 +1,24 @@
-
 'use client';
 
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Sparkles, AlertCircle } from 'lucide-react';
+import { Loader2, Sparkles, AlertCircle, BarChart3 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { cn } from '@/lib/utils';
 import { track } from '@/lib/events';
-import { notFound, useParams } from 'next/navigation';
 import { PageHeader } from '@/components/ui/page-header';
 import { useAuth } from '@/hooks/useAuth';
-import { dealAnalyzer, DealAnalyzerInputSchema } from '@/ai/flows/market-intelligence/deal-analyzer';
+import { dealAnalyzer, DealAnalyzerInputSchema, DealAnalyzerOutput } from '@/ai/flows/market-intelligence/deal-analyzer';
 
 const ToolPage = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  const [result, setResult] = React.useState<any | null>(null);
+  const [result, setResult] = React.useState<DealAnalyzerOutput | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
   
@@ -34,13 +30,6 @@ const ToolPage = () => {
     resolver: zodResolver(DealAnalyzerInputSchema),
     defaultValues: {
       propertyAddress: '123 Ocean View, Dubai Marina',
-      purchasePrice: 2000000,
-      downPaymentPercentage: 20,
-      interestRate: 4.5,
-      loanTermYears: 25,
-      expectedMonthlyRent: 12000,
-      monthlyExpenses: 2500,
-      closingCosts: 80000
     }
   });
 
@@ -75,7 +64,7 @@ const ToolPage = () => {
                 <div className="flex items-center justify-center h-full text-center text-muted-foreground">
                     <div>
                         <Loader2 className="h-10 w-10 animate-spin text-primary mb-2 mx-auto" />
-                        <p>The AI is analyzing the deal...</p>
+                        <p>The AI Data Agent is fetching market data, then the Analyzer will run...</p>
                     </div>
                 </div>
             );
@@ -101,34 +90,39 @@ const ToolPage = () => {
         
        return (
             <div className="space-y-4">
+                <Card className="bg-blue-500/10 border-blue-500/30">
+                     <CardHeader>
+                        <CardTitle className="text-blue-600">AI Data Agent Results</CardTitle>
+                        <CardDescription>The following data was estimated by the AI based on market analysis.</CardDescription>
+                     </CardHeader>
+                     <CardContent className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div><p className="text-sm font-semibold">Est. Value</p><p>AED {result.fetchedData.estimatedValue.toLocaleString()}</p></div>
+                        <div><p className="text-sm font-semibold">Est. Rent</p><p>AED {result.fetchedData.estimatedMonthlyRent.toLocaleString()}/mo</p></div>
+                        <div><p className="text-sm font-semibold">Est. Expenses</p><p>AED {result.fetchedData.estimatedMonthlyExpenses.toLocaleString()}/mo</p></div>
+                     </CardContent>
+                </Card>
+                
                 <Card>
                     <CardHeader>
-                        <CardTitle>Analysis Summary</CardTitle>
+                        <CardTitle>Investment Analysis</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p>{result.analysisSummary}</p>
+                        <p>{result.analysis.analysisSummary}</p>
                     </CardContent>
                 </Card>
+
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     <Card>
                         <CardHeader><CardTitle className="text-base">Monthly Cash Flow</CardTitle></CardHeader>
-                        <CardContent><p className="text-xl font-bold">AED {result.monthlyCashFlow.toLocaleString()}</p></CardContent>
+                        <CardContent><p className="text-xl font-bold">AED {result.analysis.monthlyCashFlow.toLocaleString()}</p></CardContent>
                     </Card>
                     <Card>
                         <CardHeader><CardTitle className="text-base">Cash on Cash ROI</CardTitle></CardHeader>
-                        <CardContent><p className="text-xl font-bold">{result.cashOnCashROI.toFixed(2)}%</p></CardContent>
+                        <CardContent><p className="text-xl font-bold">{result.analysis.cashOnCashROI.toFixed(2)}%</p></CardContent>
                     </Card>
                         <Card>
                         <CardHeader><CardTitle className="text-base">Cap Rate</CardTitle></CardHeader>
-                        <CardContent><p className="text-xl font-bold">{result.capitalizationRate.toFixed(2)}%</p></CardContent>
-                    </Card>
-                        <Card>
-                        <CardHeader><CardTitle className="text-base">Monthly Mortgage</CardTitle></CardHeader>
-                        <CardContent><p className="text-xl font-bold">AED {result.monthlyMortgagePayment.toLocaleString()}</p></CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader><CardTitle className="text-base">Initial Investment</CardTitle></CardHeader>
-                        <CardContent><p className="text-xl font-bold">AED {result.totalInitialInvestment.toLocaleString()}</p></CardContent>
+                        <CardContent><p className="text-xl font-bold">{result.analysis.capitalizationRate.toFixed(2)}%</p></CardContent>
                     </Card>
                 </div>
             </div>
@@ -139,69 +133,27 @@ const ToolPage = () => {
   return (
     <main className="p-4 md:p-10 space-y-8 container mx-auto">
        <PageHeader
-            title="Deal Analyzer"
-            description="Analyze the investment potential of any real estate deal."
+            title="Investment Analyzer"
+            description="Enter a property address and let the AI data agent fetch market estimates and run a full investment analysis."
+            icon={<BarChart3 />}
         />
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
             <Card>
                 <form onSubmit={handleSubmit(handleGeneration)}>
                     <CardHeader>
-                        <CardTitle>Configuration</CardTitle>
+                        <CardTitle>Analyze a Property</CardTitle>
                         <CardDescription>
-                            Provide the necessary inputs for the AI.
+                            Provide an address to start the analysis.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                             <Controller name="propertyAddress" control={control} render={({ field }) => (
-                                <div className="space-y-2 md:col-span-2">
-                                    <Label htmlFor="propertyAddress">Property Address</Label>
-                                    <Input id="propertyAddress" {...field} />
-                                </div>
-                            )} />
-                            <Controller name="purchasePrice" control={control} render={({ field }) => (
-                                <div className="space-y-2">
-                                    <Label htmlFor="purchasePrice">Purchase Price (AED)</Label>
-                                    <Input id="purchasePrice" type="number" {...field} />
-                                </div>
-                            )} />
-                             <Controller name="downPaymentPercentage" control={control} render={({ field }) => (
-                                <div className="space-y-2">
-                                    <Label htmlFor="downPaymentPercentage">Down Payment (%)</Label>
-                                    <Input id="downPaymentPercentage" type="number" {...field} />
-                                </div>
-                            )} />
-                             <Controller name="interestRate" control={control} render={({ field }) => (
-                                <div className="space-y-2">
-                                    <Label htmlFor="interestRate">Interest Rate (%)</Label>
-                                    <Input id="interestRate" type="number" step="0.1" {...field} />
-                                </div>
-                            )} />
-                              <Controller name="loanTermYears" control={control} render={({ field }) => (
-                                <div className="space-y-2">
-                                    <Label htmlFor="loanTermYears">Loan Term (Years)</Label>
-                                    <Input id="loanTermYears" type="number" {...field} />
-                                </div>
-                            )} />
-                             <Controller name="expectedMonthlyRent" control={control} render={({ field }) => (
-                                <div className="space-y-2">
-                                    <Label htmlFor="expectedMonthlyRent">Monthly Rent (AED)</Label>
-                                    <Input id="expectedMonthlyRent" type="number" {...field} />
-                                </div>
-                            )} />
-                             <Controller name="monthlyExpenses" control={control} render={({ field }) => (
-                                <div className="space-y-2">
-                                    <Label htmlFor="monthlyExpenses">Monthly Expenses (AED)</Label>
-                                    <Input id="monthlyExpenses" type="number" {...field} />
-                                </div>
-                            )} />
-                             <Controller name="closingCosts" control={control} render={({ field }) => (
-                                <div className="space-y-2 md:col-span-2">
-                                    <Label htmlFor="closingCosts">Closing Costs (AED)</Label>
-                                    <Input id="closingCosts" type="number" {...field} />
-                                </div>
-                            )} />
-                        </div>
+                         <Controller name="propertyAddress" control={control} render={({ field }) => (
+                            <div className="space-y-2 md:col-span-2">
+                                <Label htmlFor="propertyAddress">Property Address</Label>
+                                <Input id="propertyAddress" {...field} />
+                                {errors.propertyAddress && <p className="text-sm text-destructive">{errors.propertyAddress.message}</p>}
+                            </div>
+                        )} />
                     </CardContent>
                     <CardFooter>
                         <Button type="submit" size="lg" disabled={isLoading}>

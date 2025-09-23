@@ -1,4 +1,3 @@
-
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -80,6 +79,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'keyword-planner': generateKeywordPlan,
     'ai-video-presenter': generateVideoPresenter,
     'deal-analyzer': dealAnalyzer,
+    'ai-price-estimator': dealAnalyzer, // Re-routing the old tool ID to the new unified analyzer
     'ugc-script-writer': ugcScriptWriter,
     'lease-reviewer': leaseReviewerFlow,
     'chatbot-creator': chatbotCreatorFlow,
