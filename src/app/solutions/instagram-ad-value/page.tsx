@@ -99,7 +99,7 @@ export default function InstagramAdValuePage() {
             <div className="text-lg space-y-4 mb-12 text-center bg-muted/50 p-6 rounded-lg">
                 <p>If it assures what you know, that’s good.</p>
                 <p>If it explains what you had, then follow. It pays.</p>
-                <p>If it describes what you’re facing, then click to solve it in 3 steps.</p>
+                <p>If it describes what you’re facing, then click the ad to solve it in 3 steps.</p>
             </div>
 
             <div className="relative min-h-[300px]">
@@ -120,7 +120,7 @@ export default function InstagramAdValuePage() {
                 </StepCard>
 
                 <StepCard step={2} title="A Question of Value" isActive={step === 2}>
-                    <p className="text-muted-foreground mb-6">So far you've read, uniquely visited, and submitted your task. No flashy images, no distracting videos, no vibrant colors. Just intent. Does this simple, direct interaction feel entertaining enough to be considered "Value"?</p>
+                    <p className="text-muted-foreground mb-6">So far you read, then uniquely visited, then perfected submitted the task. No images, no videos, no colors. Does this ad entertain you enough to be considered “Value”?</p>
                     <div className="flex gap-4">
                         <Button className="flex-1" variant="outline" size="lg" onClick={() => handleEntertainChoice('yes')}>Yes, it does</Button>
                         <Button className="flex-1" variant="outline" size="lg" onClick={() => handleEntertainChoice('no')}>No, it does not</Button>
@@ -128,8 +128,8 @@ export default function InstagramAdValuePage() {
                 </StepCard>
 
                 <StepCard step={3} title="The Final Step" isActive={step === 3}>
-                    <p className="text-muted-foreground mb-2">Fair enough. Value is free, but the ad that brought you here was not.</p>
-                    <p className="mb-6">Pay back the <span className="font-bold text-primary">$20 USD</span> spent to reach you. Then, do nothing. You will receive an email that opens the gate to your perfect ad campaign. Not an eBook, not a webinar—it's a click-to-action backed on your first step. It pays.</p>
+                    <p className="text-muted-foreground mb-2">Fair, value is free. But the ad was not. Pay back the cost spent to reach you, then do nothing to get a open the gate to your perfect ad. Not an Ebook, it’s a click to action backed on (1). It pays.</p>
+                    <p className="mb-6">Pay 20 usd then open your email.</p>
                     <Button className="w-full" size="lg" onClick={handlePayment} disabled={isLoading}>
                         {isLoading ? (
                             <Loader2 className="mr-2 h-4 w-4 animate-spin" />
