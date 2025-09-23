@@ -18,7 +18,7 @@ import {
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Logo } from './logo';
 import { motion } from 'framer-motion';
-import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup } from './ui/command';
+import { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem } from './ui/command';
 
 
 const pageLinks = {
@@ -138,7 +138,7 @@ export function DashboardHeader() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                    <Link href="/me"><LayoutGrid className="mr-2 h-4 w-4" /> Dashboard</Link>
+                    <Link href="/me"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="/me/settings"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
