@@ -25,6 +25,7 @@ export function ProjectCard({
             src={project.thumbnailUrl || `https://picsum.photos/seed/${project.id}/300/200`}
             alt={project.name}
             fill
+            sizes="300px"
             className="object-cover"
             data-ai-hint="building exterior"
         />
@@ -58,3 +59,5 @@ export function ProjectCard({
     </div>
   );
 }
+
+    

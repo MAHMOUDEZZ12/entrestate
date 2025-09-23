@@ -1,9 +1,8 @@
+
 'use client';
 
-import Image from "next/image"
-import Link from "next/link"
-import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { Button } from "@/components/ui/button"
@@ -163,13 +162,11 @@ export default function AuthPage() {
               </div>
           </div>
           <div className="hidden bg-muted lg:block relative">
-              <Image
+              <img
               src="https://picsum.photos/seed/auth/1920/1080"
               alt="Image"
-              fill
-              className="object-cover dark:brightness-[0.2] dark:grayscale"
+              className="absolute inset-0 w-full h-full object-cover dark:brightness-[0.2] dark:grayscale"
               data-ai-hint="abstract architecture"
-              priority
               />
           </div>
         </div>
@@ -177,3 +174,5 @@ export default function AuthPage() {
     </div>
   )
 }
+
+    
