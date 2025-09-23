@@ -2,42 +2,27 @@
 'use client';
 
 import React from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
 import { DashboardHeader } from '@/components/dashboard-header';
 import { DashboardTabs } from '@/components/dashboard-tabs';
+import { GlobalIntelligenceSidebar } from '@/components/global-intelligence-sidebar';
 
 export default function MeLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user, loading } = useAuth();
-  const router = useRouter();
-
-  // This check is disabled for now to remove the login requirement.
-  // React.useEffect(() => {
-  //     if (!loading && !user) {
-  //         router.push('/login');
-  //     }
-  // }, [user, loading, router]);
-
-  // if (loading || !user) {
-  //     return (
-  //         <div className="flex h-screen w-full items-center justify-center">
-  //             <Loader2 className="h-8 w-8 animate-spin" />
-  //         </div>
-  //     );
-  // }
-
   return (
     <div className="flex min-h-screen w-full flex-col">
       <DashboardHeader />
-      <DashboardTabs />
-      <main className="flex-1 bg-muted/20">
-        {children}
-      </main>
+      <div className="flex flex-1">
+        <main className="flex-1 flex flex-col bg-muted/20">
+            <DashboardTabs />
+            <div className="flex-1 overflow-y-auto">
+                {children}
+            </div>
+        </main>
+        <GlobalIntelligenceSidebar />
+      </div>
     </div>
   );
 }
