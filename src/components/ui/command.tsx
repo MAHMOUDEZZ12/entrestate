@@ -31,7 +31,7 @@ interface CommandDialogProps extends DialogProps {
 const CommandDialog = ({ children, isDraggable = false, ...props }: CommandDialogProps) => {
   const dialogContent = (
     <DialogContent 
-      className="overflow-hidden p-0 shadow-lg"
+      className="overflow-hidden p-0 shadow-lg max-w-2xl"
       hideCloseButton={isDraggable}
       style={isDraggable ? {
         position: 'fixed',
@@ -40,15 +40,13 @@ const CommandDialog = ({ children, isDraggable = false, ...props }: CommandDialo
         transform: 'translateX(-50%)',
         width: 'clamp(400px, 50vw, 640px)',
         maxWidth: '90vw',
-      } : {
-        maxWidth: '4xl'
-      }}
+      } : undefined}
     >
-      <DialogTitle className="sr-only">Global Search</DialogTitle>
-      <DialogDescription className="sr-only">Search for apps, projects, or actions across the platform.</DialogDescription>
-      <Command className="[&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
+      <DialogTitle className="sr-only">Global Search & AI Assistant</DialogTitle>
+      <DialogDescription className="sr-only">Search for apps, projects, or actions across the platform, or chat with the AI assistant.</DialogDescription>
+      <div className="h-full">
         {children}
-      </Command>
+      </div>
     </DialogContent>
   );
 
@@ -91,7 +89,7 @@ const CommandList = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <CommandPrimitive.List
     ref={ref}
-    className={cn('max-h-[50vh] overflow-y-auto overflow-x-hidden', className)}
+    className={cn('max-h-[200px] overflow-y-auto overflow-x-hidden', className)}
     {...props}
   />
 ));

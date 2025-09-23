@@ -66,8 +66,8 @@ export function DashboardHeader() {
                 <DropdownMenuItem asChild>
                     <Link href="/me/settings"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
                 </DropdownMenuItem>
-                 <DropdownMenuItem asChild>
-                    <Link href="/me/assistant"><Bot className="mr-2 h-4 w-4" /> AI Command Center</Link>
+                 <DropdownMenuItem onClick={() => setIsSearchOpen(true)}>
+                    <Bot className="mr-2 h-4 w-4" /> AI Command Center
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
