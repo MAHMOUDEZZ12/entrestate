@@ -3,7 +3,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Bot, Send, Loader2, User, ChevronUp, Sparkles, PlusCircle } from 'lucide-react';
+import { Bot, Send, Loader2, User, Sparkles, PlusCircle } from 'lucide-react';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
@@ -139,13 +139,41 @@ export function GlobalChat() {
 
   return (
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+        <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t">
+            <div className="container mx-auto p-4 max-w-5xl">
+                <form onSubmit={handleSendMessage} className="relative flex items-center gap-4">
+                    {actions.map(action => (
+                        <Link href={action.href} key={action.label}>
+                            <Button type="button" variant="outline" size="sm" className="hidden sm:flex">
+                            {React.cloneElement(action.icon as React.ReactElement, { className: 'mr-2 h-4 w-4' })}
+                            {action.label}
+                            </Button>
+                        </Link>
+                    ))}
+                    <div className="relative flex-1">
+                        <Input 
+                            placeholder={placeholder} 
+                            className="w-full h-12 pl-4 pr-24 text-base"
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            disabled={isLoading}
+                            autoComplete="off"
+                        />
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                            <SheetTrigger asChild>
+                                <Button type="button" variant="ghost" size="icon">
+                                    <Sparkles className="h-5 w-5 text-muted-foreground" />
+                                </Button>
+                            </SheetTrigger>
+                            <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
+                                {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
       <SheetContent side="bottom" className="h-4/5 flex flex-col p-0 border-t-2 z-40" hideCloseButton={true}>
-          <SheetHeader className="p-4 border-b flex-row justify-between items-center">
-              <SheetTitle className="flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-primary" />
-                  AI Assistant
-              </SheetTitle>
-          </SheetHeader>
           <ScrollArea className="flex-1 p-4" ref={scrollAreaRef as any}>
               <div className="space-y-4 max-w-4xl mx-auto w-full">
                   {messages.map((msg, index) => (
@@ -172,41 +200,6 @@ export function GlobalChat() {
               </div>
           </ScrollArea>
       </SheetContent>
-
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t">
-        <div className="container mx-auto p-4 max-w-5xl">
-            <form onSubmit={handleSendMessage} className="relative flex items-center gap-4">
-                 {actions.map(action => (
-                    <Link href={action.href} key={action.label}>
-                        <Button type="button" variant="outline" size="sm" className="hidden sm:flex">
-                           {React.cloneElement(action.icon as React.ReactElement, { className: 'mr-2 h-4 w-4' })}
-                           {action.label}
-                        </Button>
-                    </Link>
-                 ))}
-                <div className="relative flex-1">
-                    <Input 
-                        placeholder={placeholder} 
-                        className="w-full h-12 pl-4 pr-24 text-base"
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        disabled={isLoading}
-                        autoComplete="off"
-                    />
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                        <SheetTrigger asChild>
-                            <Button type="button" variant="ghost" size="icon">
-                                <ChevronUp className={cn("h-5 w-5 text-muted-foreground transition-transform", isSheetOpen && "rotate-180")} />
-                            </Button>
-                        </SheetTrigger>
-                        <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
-                            {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
-                        </Button>
-                    </div>
-                </div>
-            </form>
-        </div>
-      </div>
     </Sheet>
   );
 }
