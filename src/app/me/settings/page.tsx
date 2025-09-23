@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Settings, Palette, User, CreditCard, Paintbrush, Text, Sun, Moon, Laptop, Bot, BrainCircuit, Network, Database, Users, Instagram, Facebook, Linkedin, Mail, MessageCircle, Twitter, Share2, Building, MousePointer } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -98,7 +98,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <main className="p-4 md:p-10 space-y-8">
+    <main className="p-4 md:p-10 space-y-8 container mx-auto">
       <PageHeader
         title="Settings"
         description="Manage your account, appearance, and subscription preferences."

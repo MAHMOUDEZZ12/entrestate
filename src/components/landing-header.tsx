@@ -1,7 +1,7 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, LayoutDashboard, LogOut, Menu, Settings, Users2, Workflow } from 'lucide-react';
@@ -18,6 +18,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
+import { GlobalSearch } from './ui/global-search';
 
 
 const navLinks = [
@@ -30,6 +31,7 @@ const navLinks = [
 
 export function LandingHeader() {
   const { user, loading } = useAuth();
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   const handleLogout = async () => {
     await auth?.signOut();
@@ -37,6 +39,17 @@ export function LandingHeader() {
 
   const AuthNav = () => (
     <>
+      <Button
+        variant="outline"
+        className="w-64 justify-start text-muted-foreground h-9 px-3"
+        onClick={() => setIsSearchOpen(true)}
+      >
+        <span className="flex items-center gap-2">
+          <LayoutDashboard className="h-4 w-4" />
+          Go to...
+        </span>
+      </Button>
+      <GlobalSearch isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="relative h-8 w-8 rounded-full">

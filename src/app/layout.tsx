@@ -4,8 +4,8 @@ import './globals.css';
 import { Poppins, PT_Sans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { CookieConsent } from '@/components/cookie-consent';
-import { ThemeProvider } from '@/components/theme-switcher';
 import { AuthProvider } from '@/hooks/useAuth';
+import { ThemeProvider } from 'next-themes';
 
 const fontSans = PT_Sans({ 
   subsets: ['latin'],

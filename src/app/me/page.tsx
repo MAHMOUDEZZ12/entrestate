@@ -7,8 +7,6 @@ import { ArrowRight, PlusCircle, GanttChartSquare, LayoutGrid } from 'lucide-rea
 import { PageHeader } from '@/components/ui/page-header';
 import { tools, Feature } from '@/lib/tools-client';
 import { Button } from '@/components/ui/button';
-import { useTabManager } from '@/context/TabManagerContext';
-import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import type { Project } from '@/types';
 import { ProjectCard } from '@/components/ui/project-card';
@@ -39,8 +37,6 @@ export default function MePage() {
   const [userProjects, setUserProjects] = useState<Project[]>([]);
   const [isLoadingProjects, setIsLoadingProjects] = useState(true);
 
-  const router = useRouter();
-  const { addTab } = useTabManager();
   const { user } = useAuth();
 
   useEffect(() => {
@@ -77,9 +73,9 @@ export default function MePage() {
   }, [user]);
 
   const handleOpenApp = (tool: Feature) => {
-    addTab({ href: tool.href, label: tool.title });
-    router.push(tool.href);
-    // track('app_opened', { toolId: tool.id });
+    // This logic should now be handled by the GlobalSearch or a similar component
+    // For now, we can just log it or navigate directly.
+    window.location.href = tool.href;
   };
 
   const myApps = React.useMemo(() => {
@@ -88,7 +84,7 @@ export default function MePage() {
   }, [addedApps, isClient]);
 
   return (
-    <div className="p-4 md:p-10 space-y-8">
+    <div className="p-4 md:p-10 space-y-8 container mx-auto">
       <PageHeader
         title="Home"
         description="Your workspace. Launch apps, run flows, and manage your real estate universe."

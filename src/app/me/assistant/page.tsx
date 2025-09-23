@@ -11,16 +11,16 @@ import { Button } from '@/components/ui/button';
 
 export default function AssistantPage() {
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full container mx-auto px-4 md:px-6">
       <PageHeader
         title="AI Command Center"
         description="Your AI co-pilot for the entire suite. Train it, command it, and let it run campaigns for you."
         icon={<Bot className="h-6 w-6" />}
       />
       
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-8 p-4 md:p-6">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-8 py-6">
         {/* Main Chat Interface */}
-        <div className="lg:col-span-2 h-[calc(100vh-200px)] flex flex-col bg-card/50 backdrop-blur-lg border rounded-xl shadow-lg">
+        <div className="lg:col-span-2 h-[calc(100vh-250px)] flex flex-col bg-card/50 backdrop-blur-lg border rounded-xl shadow-lg">
            <AssistantChat />
         </div>
 

@@ -21,17 +21,6 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import { track } from '@/lib/events';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 import { notFound, useParams } from 'next/navigation';
 import { PageHeader } from '@/components/ui/page-header';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -355,7 +344,7 @@ const ToolPage = () => {
 
 
   return (
-    <main className="p-4 md:p-10 space-y-8">
+    <main className="p-4 md:p-10 space-y-8 container mx-auto">
       {showConfetti && <Confetti onComplete={() => setShowConfetti(false)} />}
        <PageHeader
             title={tool.title}

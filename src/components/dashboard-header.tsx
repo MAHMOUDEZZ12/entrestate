@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { LogOut, Settings, Search, Bot } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import {
@@ -16,7 +16,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
-import { Logo } from './logo';
 import { GlobalSearch } from './ui/global-search';
 
 
@@ -30,9 +29,6 @@ export function DashboardHeader() {
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
-       <div className="sm:hidden">
-            <Logo href="/me" />
-        </div>
           
         <div className="flex-1 flex justify-center px-4">
            <Button

@@ -227,7 +227,7 @@ export default function CommunityPage() {
     const [open, setOpen] = useState(false);
   return (
     <div className="flex flex-col min-h-screen">
-      <main className="flex-1">
+      <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-8">
         <PageHeader
           title="Community Notes"
           description="Connect, learn, and grow with a network of forward-thinking real estate professionals."
@@ -246,36 +246,32 @@ export default function CommunityPage() {
                 </DialogContent>
             </Dialog>
         </PageHeader>
-        <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20">
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
-                {mockNotes.map((note) => (
-                <Card 
-                    key={note.id} 
-                    className="bg-card/80 backdrop-blur-lg break-inside-avoid-column border-b-4"
-                    style={{'--card-border-color': typeColors[note.type], borderColor: 'var(--card-border-color)'} as React.CSSProperties}
-                >
-                    <CardHeader>
-                    <div className="flex items-center justify-between">
-                        <Badge style={{ backgroundColor: typeColors[note.type]}} className="text-white">{note.type}</Badge>
-                        <div className="text-sm text-muted-foreground flex items-center gap-1">
-                            <User className="h-4 w-4" /> {note.author}
-                        </div>
+        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 mt-8">
+            {mockNotes.map((note) => (
+            <Card 
+                key={note.id} 
+                className="bg-card/80 backdrop-blur-lg break-inside-avoid-column border-b-4"
+                style={{'--card-border-color': typeColors[note.type], borderColor: 'var(--card-border-color)'} as React.CSSProperties}
+            >
+                <CardHeader>
+                <div className="flex items-center justify-between">
+                    <Badge style={{ backgroundColor: typeColors[note.type]}} className="text-white">{note.type}</Badge>
+                    <div className="text-sm text-muted-foreground flex items-center gap-1">
+                        <User className="h-4 w-4" /> {note.author}
                     </div>
-                    <CardTitle className="pt-2">{note.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                    <p className="text-muted-foreground">{note.content}</p>
-                    </CardContent>
-                    <CardFooter>
-                    <Button variant="outline" size="sm">View Note &amp; Comments ({note.comments})</Button>
-                    </CardFooter>
-                </Card>
-                ))}
-            </div>
+                </div>
+                <CardTitle className="pt-2">{note.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                <p className="text-muted-foreground">{note.content}</p>
+                </CardContent>
+                <CardFooter>
+                <Button variant="outline" size="sm">View Note &amp; Comments ({note.comments})</Button>
+                </CardFooter>
+            </Card>
+            ))}
         </div>
-      </main>
+      </div>
     </div>
   );
 }
-
-    
