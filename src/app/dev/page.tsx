@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
-import { PlusCircle, Bot, GitCommit, AlertTriangle, GanttChartSquare, RotateCw, Loader2, Sparkles, CheckCircle, MessageSquare, Undo, Copy, Database, BrainCircuit, Activity, BarChart2, Users, MoreHorizontal, HeartPulse, GitMerge, Key } from 'lucide-react';
+import { PlusCircle, Bot, GitCommit, AlertTriangle, GanttChartSquare, RotateCw, Loader2, Sparkles, CheckCircle, MessageSquare, Undo, Copy, Database, BrainCircuit, Activity, BarChart2, Users, MoreHorizontal, HeartPulse, GitMerge, Key, Library } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -92,6 +92,7 @@ export default function DevAdminPage() {
     const { toast } = useToast();
     const [currentTask, setCurrentTask] = useState('');
     const [selectedToolId, setSelectedToolId] = useState('');
+    const [selectedModel, setSelectedModel] = useState('gemini-1.5-pro');
     const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
     
     const [scrapingStates, setScrapingStates] = useState<{ [key: string]: boolean }>({});
@@ -161,7 +162,7 @@ export default function DevAdminPage() {
 
         setChangeLog(prev => [newLogEntry, ...prev]);
         
-        const promptText = `Task Assigned (ID: ${newLogEntry.id}): For the target "${selectedItem.title}", please start work on the following task: "${currentTask}". Please update the status to 'Planned' once you begin and 'Implemented' when you are done.`;
+        const promptText = `Task Assigned (ID: ${newLogEntry.id}): Using the model '${selectedModel}', for the target "${selectedItem.title}", please start work on the following task: "${currentTask}". Please update the status to 'Planned' once you begin and 'Implemented' when you are done.`;
         copyToClipboard(promptText, "The prompt to assign this new task has been copied to your clipboard. Paste it in our chat to have me start.");
 
         setCurrentTask('');
@@ -304,39 +305,53 @@ export default function DevAdminPage() {
                         <CardDescription>Assign a new development task for the AI.</CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <div className="flex flex-col sm:flex-row gap-4">
-                            <Select value={selectedToolId} onValueChange={setSelectedToolId}>
-                                <SelectTrigger className="w-full sm:w-[280px]">
-                                    <SelectValue placeholder="Select an app or page..." />
-                                </SelectTrigger>
-                                <SelectContent>
-                                    <SelectGroup>
-                                        <SelectLabel>Apps & Tools</SelectLabel>
-                                        {tools.map(tool => (
-                                            <SelectItem key={tool.id} value={tool.id}>{tool.title}</SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                    <SelectGroup>
-                                        <SelectLabel>Site Pages</SelectLabel>
-                                        {sitePages.map(page => (
-                                            <SelectItem key={page.id} value={page.id}>{page.title}</SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                    <SelectGroup>
-                                        <SelectLabel>New Concepts</SelectLabel>
-                                         {newConcepts.map(concept => (
-                                            <SelectItem key={concept.id} value={concept.id}>{concept.title}</SelectItem>
-                                        ))}
-                                    </SelectGroup>
-                                </SelectContent>
-                            </Select>
-                            <Textarea 
-                                placeholder="Enter your next task for me here..."
-                                value={currentTask}
-                                onChange={(e) => setCurrentTask(e.target.value)}
-                                rows={2}
-                                className="flex-grow"
-                            />
+                        <div className="flex flex-col sm:flex-row gap-4 items-start">
+                            <div className="flex-grow space-y-2">
+                                <Textarea 
+                                    placeholder="Enter your next task for me here..."
+                                    value={currentTask}
+                                    onChange={(e) => setCurrentTask(e.target.value)}
+                                    rows={3}
+                                    className="flex-grow"
+                                />
+                            </div>
+                            <div className="flex sm:flex-col gap-2 w-full sm:w-[280px]">
+                                <Select value={selectedToolId} onValueChange={setSelectedToolId}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select a Target..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectGroup>
+                                            <SelectLabel>Apps & Tools</SelectLabel>
+                                            {tools.map(tool => (
+                                                <SelectItem key={tool.id} value={tool.id}>{tool.title}</SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                        <SelectGroup>
+                                            <SelectLabel>Site Pages</SelectLabel>
+                                            {sitePages.map(page => (
+                                                <SelectItem key={page.id} value={page.id}>{page.title}</SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                        <SelectGroup>
+                                            <SelectLabel>New Concepts</SelectLabel>
+                                             {newConcepts.map(concept => (
+                                                <SelectItem key={concept.id} value={concept.id}>{concept.title}</SelectItem>
+                                            ))}
+                                        </SelectGroup>
+                                    </SelectContent>
+                                </Select>
+                                <Select value={selectedModel} onValueChange={setSelectedModel}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select a Model..." />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="gemini-1.5-pro">Gemini 1.5 Pro (Default)</SelectItem>
+                                        <SelectItem value="fine-tuned-routing-v1">Fine-tuned: Routing v1</SelectItem>
+                                        <SelectItem value="fine-tuned-creative-v2">Fine-tuned: Creative v2</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                             <Button 
                                 size="lg" 
                                 onClick={handleAssignTask}
@@ -414,55 +429,61 @@ export default function DevAdminPage() {
             </TabsContent>
 
             <TabsContent value="data" className="mt-6 space-y-6">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Data Ingestion & Pipelines</CardTitle>
-                        <CardDescription>Manage data scrapers and batch processing jobs.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <Card>
-                            <CardHeader><CardTitle>Scraping</CardTitle><CardDescription>Pull data from public portals.</CardDescription></CardHeader>
-                            <CardContent className="flex flex-col gap-2">
-                                <Button onClick={() => handleScrape('dxboffplan')} disabled={scrapingStates['dxboffplan']}>
-                                    {scrapingStates['dxboffplan'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
-                                    {scrapingStates['dxboffplan'] ? 'Scraping...' : 'Scrape DXBOffPlan'}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <Card>
+                        <CardHeader><CardTitle>Scraping</CardTitle><CardDescription>Pull data from public portals.</CardDescription></CardHeader>
+                        <CardContent className="flex flex-col gap-2">
+                            <Button onClick={() => handleScrape('dxboffplan')} disabled={scrapingStates['dxboffplan']}>
+                                {scrapingStates['dxboffplan'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
+                                {scrapingStates['dxboffplan'] ? 'Scraping...' : 'Scrape DXBOffPlan'}
+                            </Button>
+                            <Button onClick={() => handleScrape('propertyfinder')} disabled={scrapingStates['propertyfinder']}>
+                                {scrapingStates['propertyfinder'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
+                                {scrapingStates['propertyfinder'] ? 'Scraping...' : 'Scrape Property Finder'}
+                            </Button>
+                        </CardContent>
+                    </Card>
+                     <Card>
+                        <CardHeader><CardTitle>Dataflow Jobs</CardTitle><CardDescription>Launch heavy-duty data pipelines.</CardDescription></CardHeader>
+                        <CardContent className="flex flex-col gap-2">
+                           <Button onClick={() => handleLaunchDataflow('deep-ingestion')} disabled={dataflowStates['deep-ingestion']}>
+                                {dataflowStates['deep-ingestion'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
+                                Launch Deep Ingestion
+                            </Button>
+                            <Button onClick={() => handleLaunchDataflow('transform-market-data')} disabled={dataflowStates['transform-market-data']}>
+                                {dataflowStates['transform-market-data'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
+                                Transform Market Data
+                            </Button>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader><CardTitle>Model Adaptation</CardTitle><CardDescription>Manage fine-tuning jobs.</CardDescription></CardHeader>
+                        <CardContent className="flex flex-col gap-2">
+                            <Button variant="secondary"><Sparkles className="mr-2 h-4 w-4" /> Start New Fine-Tuning Job</Button>
+                            <Button variant="ghost">View Past Jobs</Button>
+                        </CardContent>
+                    </Card>
+                     <Card className="md:col-span-3">
+                        <CardHeader><CardTitle>Knowledge Base</CardTitle><CardDescription>Manage core data sources and prompts.</CardDescription></CardHeader>
+                        <CardContent className="flex flex-wrap gap-2">
+                            <Link href="/dev/data-importer">
+                                <Button variant="secondary">
+                                    Open XML Importer
                                 </Button>
-                                <Button onClick={() => handleScrape('propertyfinder')} disabled={scrapingStates['propertyfinder']}>
-                                    {scrapingStates['propertyfinder'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
-                                    {scrapingStates['propertyfinder'] ? 'Scraping...' : 'Scrape Property Finder'}
+                            </Link>
+                            <Link href="/dev/archive">
+                                <Button variant="secondary">
+                                    View Developer Archive
                                 </Button>
-                            </CardContent>
-                        </Card>
-                         <Card>
-                            <CardHeader><CardTitle>Dataflow Jobs</CardTitle><CardDescription>Launch heavy-duty data pipelines.</CardDescription></CardHeader>
-                            <CardContent className="flex flex-col gap-2">
-                               <Button onClick={() => handleLaunchDataflow('deep-ingestion')} disabled={dataflowStates['deep-ingestion']}>
-                                    {dataflowStates['deep-ingestion'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
-                                    Launch Deep Ingestion
+                            </Link>
+                            <Link href="/dashboard/tool/prompt-library">
+                                <Button variant="secondary">
+                                    <Library className="mr-2 h-4 w-4" /> Go to Prompt Library
                                 </Button>
-                                <Button onClick={() => handleLaunchDataflow('transform-market-data')} disabled={dataflowStates['transform-market-data']}>
-                                    {dataflowStates['transform-market-data'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
-                                    Transform Market Data
-                                </Button>
-                            </CardContent>
-                        </Card>
-                         <Card>
-                            <CardHeader><CardTitle>Knowledge Base</CardTitle><CardDescription>Manage core data sources.</CardDescription></CardHeader>
-                            <CardContent className="flex flex-col gap-2">
-                                <Link href="/dev/data-importer">
-                                    <Button variant="secondary" className="w-full">
-                                        Open XML Importer
-                                    </Button>
-                                </Link>
-                                <Link href="/dev/archive">
-                                    <Button variant="secondary" className="w-full">
-                                        View Developer Archive
-                                    </Button>
-                                </Link>
-                            </CardContent>
-                        </Card>
-                    </CardContent>
-                </Card>
+                            </Link>
+                        </CardContent>
+                    </Card>
+                </div>
             </TabsContent>
             
              <TabsContent value="users" className="mt-6 space-y-6">

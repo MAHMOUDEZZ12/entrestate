@@ -1,10 +1,11 @@
+
 import {
     Bot, BrainCircuit, CheckCircle, Plus, Sparkles, Upload, Megaphone, User,
     ShieldQuestion, Search, MessageCircle, PenTool, Clock2, Wallet, BadgeCheck,
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library
 } from 'lucide-react';
 import type { ReactElement } from 'react';
 import type { FilterCategory, BadgeType } from './tools-client';
@@ -72,6 +73,7 @@ export const tools: ToolData[] = [
     { id: 'ai-brand-creator', title: 'AI Brand Creator', dashboardTitle: 'Brand Creator', description: 'Configure your brand kit by analyzing uploaded documents.', iconName: 'Wand2', color: '#6A0DAD', categories: ['CRM'], cta: 'Create Brand' },
     { id: 'crm-assistant', title: 'CRM Memory Assistant', dashboardTitle: 'CRM Memory', description: 'The core data store that remembers every client interaction.', iconName: 'BrainCircuit', color: '#6A0DAD', categories: ['CRM'], cta: 'Query Memory' },
     { id: 'ai-assistant', title: 'AI Assistant', description: 'Your personal, trainable AI partner.', iconName: 'Bot', color: '#6A0DAD', categories: ['CRM'], cta: 'Chat with Assistant' },
+    { id: 'prompt-library', title: 'Prompt Library', description: 'Browse and use pre-built prompts to get started faster.', iconName: 'Library', color: '#6A0DAD', categories: ['CRM'], cta: 'Browse Prompts' },
     
     // Enterprise / Secret Tools
     { id: 'lease-reviewer', title: 'Lease Reviewer', description: 'Upload a lease agreement and let the AI analyze it for risks and non-standard clauses.', iconName: 'FileSearch', color: '#4682B4', categories: ['Sales Tools', 'Developer'], badge: 'NEW', cta: 'Review Lease' },
