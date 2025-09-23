@@ -1,191 +1,115 @@
+import { Sparkles, Building, Bot } from 'lucide-react';
+import React from 'react';
 
-'use client';
+export type AppCategory = 'Marketing' | 'Sales' | 'Creative' | 'Intelligence' | 'Web' | 'Editing' | 'Ads' | 'Social & Comms' | 'CRM' | 'Developer' | 'Lead Gen';
 
-import Link from 'next/link';
-import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, BookOpen, Plus, Check, Loader2, CreditCard } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { useToast } from '@/hooks/use-toast';
-import { track } from '@/lib/events';
-import { Feature } from '@/lib/tools-client';
-import { useTabManager } from '@/context/TabManagerContext';
-import { useRouter } from 'next/navigation';
-import { useSpotlight } from '@/context/SpotlightContext';
-
-
-interface DashboardServiceCardProps {
-  tool: Feature;
-  isAdded: boolean;
-  setIsAdded: (isAdded: boolean) => void;
-  connectionRequired?: string; // e.g., "Facebook"
-  paymentRequired?: boolean;
+export interface AppData {
+    name: string;
+    description: string;
+    price_monthly: number;
+    category: AppCategory;
 }
 
-export function DashboardServiceCard({
-  tool,
-  isAdded,
-  setIsAdded,
-  connectionRequired,
-  paymentRequired,
-}: DashboardServiceCardProps) {
-  const { toast } = useToast();
-  const [isConnecting, setIsConnecting] = useState(false);
-  const { addTab } = useTabManager();
-  const router = useRouter();
-  const { setSpotlight, clearSpotlight } = useSpotlight();
-  
-  const { title, description, icon, href, guideHref, color, dashboardTitle } = tool;
-
-  const handleAdd = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsAdded(true);
-    track('app_added', { toolId: tool.id, connectionType: 'direct' });
-    toast({ title: `${title} Added!`, description: 'The tool is now available in your workspace.' });
-  }
-
-  const handleConnect = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setIsConnecting(true);
-    setTimeout(() => {
-        setIsConnecting(false);
-        setIsAdded(true);
-        track('app_added', { toolId: tool.id, connectionType: 'api' });
-        toast({
-            title: `${title} Activated!`,
-            description: `You have connected your ${connectionRequired} account.`
-        });
-    }, 1500);
-  }
-
-  const handlePayment = (e: React.MouseEvent) => {
-    e.preventDefault();
-    router.push('/pricing');
-  }
-  
-  const handleOpenApp = () => {
-    addTab({ href: tool.href, label: tool.title });
-    router.push(tool.href);
-    track('app_opened', { toolId: tool.id });
-  };
-
-  
-  const AddButtonContent = () => (
-    <>
-        <Plus className="mr-2 h-4 w-4" />
-        Add
-    </>
-  );
-
-  const MainAction = () => {
-    if (isAdded) {
-        return (
-             <Button size="sm" onClick={handleOpenApp}>
-                Open
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-            </Button>
-        )
-    }
-
-    let dialogContent;
-    let actionHandler = handleAdd;
-    let actionText = "Add to Workspace";
-    let titleText = `Add "${title}" to Your Workspace?`;
-
-    if (connectionRequired) {
-        titleText = `Connect to ${connectionRequired}?`;
-        dialogContent = `To use the ${title} tool, you need to securely connect your ${connectionRequired} account. This allows the application to act on your behalf.`;
-        actionText = `Connect to ${connectionRequired}`;
-        actionHandler = handleConnect;
-    } else if (paymentRequired) {
-        titleText = `Upgrade Required`;
-         dialogContent = (
-            <div>
-                <p>The "{title}" tool is a premium feature not included in your current plan.</p>
-                <p className="mt-2">Please upgrade your subscription to access this and other powerful tools.</p>
-            </div>
-        );
-        actionText = "View Plans";
-        actionHandler = handlePayment;
-    } else {
-        dialogContent = (
-             <div>
-                <p>You are about to add the "{title}" tool to your personal workspace. This will make it available on your main dashboard.</p>
-                {guideHref && (
-                    <p className="mt-2 text-sm text-muted-foreground">
-                        Read the <Link href={guideHref} className="underline hover:text-primary">Handbook guide</Link> to learn more.
-                    </p>
-                )}
-            </div>
-        );
-    }
-
-    return (
-        <AlertDialog>
-            <AlertDialogTrigger asChild>
-                    <Button size="sm" variant="outline"><AddButtonContent /></Button>
-            </AlertDialogTrigger>
-            <AlertDialogContent>
-                <AlertDialogHeader>
-                <AlertDialogTitle>{titleText}</AlertDialogTitle>
-                <AlertDialogDescription asChild>
-                    <div>{dialogContent}</div>
-                </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <AlertDialogAction onClick={actionHandler} disabled={isConnecting}>
-                    {isConnecting ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : null}
-                    {actionText}
-                </AlertDialogAction>
-                </AlertDialogFooter>
-            </AlertDialogContent>
-        </AlertDialog>
-    );
-  }
-
-  return (
-    <div onMouseEnter={() => setSpotlight(tool)} onMouseLeave={clearSpotlight}>
-        <Card className={cn("group flex h-full flex-col transition-all duration-300", isAdded && "border-primary/30 bg-card")}>
-        <CardHeader>
-            <div className="mb-4 flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                    <div
-                        className="rounded-lg p-3 text-white"
-                        style={{ backgroundColor: color || 'hsl(var(--primary))' }}
-                    >
-                        {React.cloneElement(icon as React.ReactElement, { className: 'h-6 w-6' })}
-                    </div>
-                     <CardTitle className="text-base font-semibold font-heading leading-tight">{dashboardTitle || title}</CardTitle>
-                </div>
-                {isAdded && <Check className="h-5 w-5 text-green-500" />}
-            </div>
-            <CardDescription className="text-xs">{description}</CardDescription>
-        </CardHeader>
-        <CardFooter className="mt-auto flex justify-end gap-2">
-            {guideHref && (
-            <Link href={guideHref} target="_blank">
-                <Button variant="ghost" size="sm">
-                <BookOpen className="mr-2 h-4 w-4" />
-                Guide
-                </Button>
-            </Link>
-            )}
-            <MainAction />
-        </CardFooter>
-        </Card>
-    </div>
-  );
+export interface PlanData {
+    id: string;
+    name: string;
+    tagline: string;
+    price_monthly: number;
+    popular: boolean;
+    features: string[];
 }
+
+interface PricingData {
+    apps: AppData[];
+    plans: PlanData[];
+}
+
+export const pricingData: PricingData = {
+    "apps": [
+        // This list can be kept for internal reference or other UI elements,
+        // but the primary pricing model will now be driven by the `plans` array.
+        { "name": "PRO SEARCH ENG. x3", "description": "The triple-engine of discovery: Fast, Smart, and Deep Search.", "price_monthly": 190, "category": "Intelligence" },
+        { "name": "ESTCHAT X3", "description": "The conversational frontline for your website, social media, and CRM.", "price_monthly": 149, "category": "CRM" },
+        { "name": "MEGA LISTING PRO 2", "description": "The unified market registry to consolidate and verify all listings.", "price_monthly": 68, "category": "Sales" },
+        { "name": "Insta Ads Designer", "description": "Create perfect ads for Instagram Stories & Feed.", "price_monthly": 15, "category": "Ads" },
+        { "name": "Reel Ads", "description": "Generate engaging video ads for Instagram Reels.", "price_monthly": 20, "category": "Ads" },
+    ],
+    "plans": [
+        {
+            "id": "agent",
+            "name": "Agent Suite",
+            "tagline": "For the individual agent focused on listings and closing deals.",
+            "price_monthly": 49,
+            "popular": false,
+            "features": [
+                "Listing Generator",
+                "Deal Analyzer",
+                "Payment Planner",
+                "WhatsApp Manager",
+                "AI Video Presenter",
+                "Landing Page Builder",
+                "Brochure Translator"
+            ]
+        },
+        {
+            "id": "super-agent",
+            "name": "Super Agent Suite",
+            "tagline": "For the marketing-savvy agent running multi-channel campaigns.",
+            "price_monthly": 99,
+            "popular": true,
+            "features": [
+                "Listing Generator",
+                "Deal Analyzer",
+                "Payment Planner",
+                "WhatsApp Manager",
+                "AI Video Presenter",
+                "Landing Page Builder",
+                "Brochure Translator",
+                "Marketing Agency Agent",
+                "Campaign Connector",
+                "Brand Search Optimization",
+                "Insta Ads Designer",
+                "Reel Ads",
+                "UGC Script Writer",
+                "AI YouTube Video Editor",
+                "Lead Investigator AI",
+                "CRM Memory Assistant"
+            ]
+        },
+        {
+            "id": "full-power",
+            "name": "Full Power",
+            "tagline": "For brokerages and developers managing teams & portfolios.",
+            "price_monthly": 199,
+            "popular": false,
+            "features": [
+                 "Listing Generator",
+                "Deal Analyzer",
+                "Payment Planner",
+                "WhatsApp Manager",
+                "AI Video Presenter",
+                "Landing Page Builder",
+                "Brochure Translator",
+                "Marketing Agency Agent",
+                "Campaign Connector",
+                "Brand Search Optimization",
+                "Insta Ads Designer",
+                "Reel Ads",
+                "UGC Script Writer",
+                "AI YouTube Video Editor",
+                "Lead Investigator AI",
+                "CRM Memory Assistant",
+                "Market Analyst Agent",
+                "Market Reports",
+                "Market Library",
+                "Property Finder Pilot",
+                "Bayut Pilot",
+                "Automated Rebranding",
+                "AI Brand Creator",
+                "Centralized Brand Control",
+                "Team Management & Collaboration Features",
+                "Priority Support & Onboarding"
+            ]
+        }
+    ]
+};

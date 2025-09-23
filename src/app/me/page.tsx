@@ -1,28 +1,30 @@
 
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowRight, PlusCircle, GanttChartSquare, LayoutGrid, Trash2 } from 'lucide-react';
+import { ArrowRight, PlusCircle, GanttChartSquare, LayoutGrid } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { tools, Feature } from '@/lib/tools-client';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
-import type { Project } from '@/types';
-import { ProjectCard } from '@/components/ui/project-card';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
-import { SensitiveArea } from '@/components/ui/sensitive-area';
-import { useToast } from '@/hooks/use-toast';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { useSpotlight } from '@/context/SpotlightContext';
+import { marketingSuites } from '@/lib/suites-data';
+import { pricingData } from '@/lib/pricing-data';
 
 const AppIcon = ({ tool, onOpen }: { tool: Feature; onOpen: (tool: Feature) => void }) => {
+  const { setSpotlight, clearSpotlight } = useSpotlight();
   return (
-    <SensitiveArea hint={`Open the "${tool.title}" app`}>
-      <button
-        onClick={() => onOpen(tool)}
+    <div onMouseEnter={() => setSpotlight(tool)} onMouseLeave={clearSpotlight}>
+      <Link
+        href={tool.href}
         className="flex flex-col items-center justify-center text-center gap-2 group"
         aria-label={`Open ${tool.title}`}
+        onClick={(e) => {
+          e.preventDefault();
+          onOpen(tool);
+        }}
       >
         <div
           className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-hover:shadow-xl transition-all duration-200"
@@ -31,195 +33,112 @@ const AppIcon = ({ tool, onOpen }: { tool: Feature; onOpen: (tool: Feature) => v
           {React.cloneElement(tool.icon, { className: 'h-8 w-8' })}
         </div>
         <p className="text-xs font-medium text-foreground truncate w-20">{tool.title}</p>
-      </button>
-    </SensitiveArea>
+      </Link>
+    </div>
   );
 };
 
+
 export default function MePage() {
-  const [addedApps, setAddedApps] = useState<string[]>([]);
   const [isClient, setIsClient] = useState(false);
-  const [userProjects, setUserProjects] = useState<Project[]>([]);
-  const [isLoadingProjects, setIsLoadingProjects] = useState(true);
-
   const { user } = useAuth();
-  const { toast } = useToast();
-
-  useEffect(() => {
-    setIsClient(true);
-    try {
-        const savedState = localStorage.getItem('addedApps');
-        if (savedState) {
-          setAddedApps(JSON.parse(savedState));
-        }
-    } catch(e) {
-        console.error("Could not access localStorage for added apps");
-    }
-  }, []);
-
-  const fetchUserProjects = useCallback(async () => {
-    if (!user) {
-        setIsLoadingProjects(false);
-        return;
-    };
-    try {
-        setIsLoadingProjects(true);
-        const idToken = await user.getIdToken();
-        const response = await fetch('/api/user/projects', {
-            headers: { 'Authorization': `Bearer ${idToken}` }
-        });
-        const data = await response.json();
-        if (data.ok) {
-            setUserProjects(data.data);
-        }
-    } catch (error) {
-        console.error("Failed to fetch user projects:", error);
-    } finally {
-        setIsLoadingProjects(false);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    fetchUserProjects();
-  }, [fetchUserProjects]);
-
-  const handleOpenApp = (tool: Feature) => {
-    // This logic should now be handled by the GlobalSearch or a similar component
-    // For now, we can just log it or navigate directly.
-    window.location.href = tool.href;
-  };
   
-    const handleDeleteProject = async (projectId: string) => {
-        if (!user) return;
-        try {
-            const idToken = await user.getIdToken();
-            const response = await fetch(`/api/user/projects?projectId=${projectId}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${idToken}` },
-            });
-            const data = await response.json();
-            if (!data.ok) throw new Error(data.error);
-
-            toast({ title: "Project Removed", description: "The project has been removed from your library." });
-            fetchUserProjects(); // Refresh the list
-        } catch (error: any) {
-            toast({ title: "Error", description: `Could not remove project: ${error.message}`, variant: "destructive" });
-        }
-    };
+  // SIMULATION: Assume the user has purchased the "Super Agent Suite"
+  const mySuites = ['Super Agent Suite']; 
 
   const myApps = React.useMemo(() => {
     if (!isClient) return [];
-    return tools.filter((tool) => addedApps.includes(tool.id));
-  }, [addedApps, isClient]);
+    
+    // Get all feature titles from the purchased suites
+    const myFeatures = mySuites.flatMap(suiteName => {
+        const plan = pricingData.plans.find(p => p.name === suiteName);
+        return plan ? plan.features : [];
+    });
+
+    // Filter tools to get the full tool object for each owned feature
+    return tools.filter(tool => myFeatures.includes(tool.title));
+  }, [isClient, mySuites]);
+
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const handleOpenApp = (tool: Feature) => {
+    // This logic should now be handled by the GlobalSearch or a similar component
+    window.location.href = tool.href;
+  };
+
+  const myAppsBySuite = marketingSuites.map(suite => {
+      return {
+          ...suite,
+          apps: tools.filter(tool => tool.suite === suite.name)
+      }
+  }).filter(suite => mySuites.includes(suite.name));
+  
 
   return (
     <div className="p-4 md:p-10 space-y-8 container mx-auto">
        <PageHeader
-        title="Home"
-        description="Your workspace. Launch apps, run flows, and manage your real estate universe."
+        title="My Workspace"
+        description="Launch apps, run flows, and manage your real estate universe."
       >
-        <SensitiveArea hint="Navigate to the Gem Admin dashboard">
             <Link href="/gem">
             <Button variant="outline">
                 <GanttChartSquare className="mr-2 h-4 w-4" />
                 Gem Admin
             </Button>
             </Link>
-        </SensitiveArea>
       </PageHeader>
       
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-        <div className="xl:col-span-2">
-            <h2 className="text-2xl font-bold font-heading mb-4">My Apps</h2>
-            {isClient && myApps.length === 0 ? (
-                 <div className="text-center py-16 border-2 border-dashed rounded-lg">
-                     <LayoutGrid className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <h3 className="text-xl font-bold">Your Workspace is Empty</h3>
-                    <p className="text-muted-foreground mt-2 mb-6">Add apps from the App Store to get started.</p>
-                     <Link href="/me/marketing">
-                        <Button>
-                            Go to App Store
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                    </Link>
-                </div>
-            ) : (
-                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-8 xl:grid-cols-9 gap-x-4 gap-y-6">
-                    {isClient && myApps.map((tool) => (
-                        <AppIcon key={tool.id} tool={tool} onOpen={handleOpenApp} />
-                    ))}
-                    <Link href="/me/marketing" className="flex flex-col items-center justify-center text-center gap-2 group">
+      {myAppsBySuite.length === 0 ? (
+            <div className="text-center py-16 border-2 border-dashed rounded-lg">
+                <LayoutGrid className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-bold">Your Workspace is Empty</h3>
+                <p className="text-muted-foreground mt-2 mb-6">Purchase a suite from the Marketplace to get started.</p>
+                <Link href="/apps">
+                    <Button>
+                        Go to Marketplace
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                </Link>
+            </div>
+      ) : (
+        <div className="space-y-8">
+            {myAppsBySuite.map(suite => (
+                <Card key={suite.id}>
+                    <CardHeader>
+                        <div className="flex items-center gap-3">
+                            <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                                {React.createElement(suite.icon, { className: 'h-6 w-6' })}
+                            </div>
+                            <div>
+                               <CardTitle className="text-2xl">{suite.name}</CardTitle>
+                               <CardDescription>{suite.description}</CardDescription>
+                            </div>
+                        </div>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-7 lg:grid-cols-9 xl:grid-cols-10 gap-x-4 gap-y-6">
+                            {suite.apps.map(app => (
+                                <AppIcon key={app.id} tool={app} onOpen={handleOpenApp} />
+                            ))}
+                        </div>
+                    </CardContent>
+                </Card>
+            ))}
+             <Card className="border-dashed">
+                <CardContent className="p-6 text-center">
+                     <Link href="/apps" className="flex flex-col items-center justify-center gap-2 group">
                         <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-muted/50 border-2 border-dashed group-hover:border-primary group-hover:bg-primary/10 transition-colors">
                         <PlusCircle className="h-8 w-8 text-muted-foreground group-hover:text-primary transition-colors" />
                         </div>
-                        <p className="text-xs font-medium text-muted-foreground group-hover:text-primary transition-colors truncate w-20">Add Apps</p>
+                        <p className="text-sm font-medium text-muted-foreground group-hover:text-primary transition-colors">Add Suites from Marketplace</p>
                     </Link>
-                </div>
-            )}
-        </div>
-        <div className="xl:col-span-1">
-             <Card>
-                <CardHeader>
-                    <CardTitle>My Projects</CardTitle>
-                    <CardDescription>Your personal library of projects.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                    {isLoadingProjects ? (
-                        <div className="flex justify-center items-center h-24">
-                            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                        </div>
-                    ) : userProjects.length > 0 ? (
-                        userProjects.slice(0, 3).map(p => (
-                            <SensitiveArea hint={`View details for ${p.name}`} key={p.id}>
-                                <ProjectCard
-                                    project={p}
-                                    actions={
-                                         <AlertDialog>
-                                            <AlertDialogTrigger asChild>
-                                                <Button variant="ghost" size="icon" className="h-7 w-7">
-                                                    <Trash2 className="h-4 w-4 text-destructive/70 hover:text-destructive" />
-                                                </Button>
-                                            </AlertDialogTrigger>
-                                            <AlertDialogContent>
-                                                <AlertDialogHeader>
-                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                                    <AlertDialogDescription>This will permanently remove "{p.name}" from your library. This action cannot be undone.</AlertDialogDescription>
-                                                </AlertDialogHeader>
-                                                <AlertDialogFooter>
-                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                                    <AlertDialogAction onClick={() => handleDeleteProject(p.id)} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">Delete</AlertDialogAction>
-                                                </AlertDialogFooter>
-                                            </AlertDialogContent>
-                                        </AlertDialog>
-                                    }
-                                />
-                            </SensitiveArea>
-                        ))
-                    ) : (
-                        <div className="text-center py-8 border-2 border-dashed rounded-lg">
-                            <p className="text-sm text-muted-foreground">No projects in your library yet.</p>
-                             <SensitiveArea hint="Add a new project to your library">
-                                <Link href="/me/tool/projects-finder" className="mt-2 inline-block">
-                                    <Button size="sm" variant="outline">
-                                        <PlusCircle className="mr-2 h-4 w-4" />
-                                        Add from Market Library
-                                    </Button>
-                                </Link>
-                            </SensitiveArea>
-                        </div>
-                    )}
-                     <SensitiveArea hint="Add or manage your projects">
-                        <Link href="/me/tool/projects-finder" className="w-full">
-                            <Button variant="outline" className="w-full">
-                                <PlusCircle className="mr-2 h-4 w-4" />
-                                {userProjects.length > 0 ? "Manage Projects" : "Add Projects"}
-                            </Button>
-                        </Link>
-                    </SensitiveArea>
                 </CardContent>
             </Card>
         </div>
-      </div>
+      )}
     </div>
   );
 }
