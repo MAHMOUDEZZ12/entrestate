@@ -433,8 +433,7 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                 { id: 'path', name: 'URL Path (Optional)', type: 'text', placeholder: 'e.g., /exclusive-offer' },
             ];
              tool.renderResult = (result, toast) => {
-                // This is now handled by the live preview in the main component.
-                // This function can be used for secondary results if needed.
+                // This is handled by special logic in the page component itself
                 return null;
             };
             break;
