@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   CommandDialog,
@@ -12,10 +12,9 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
-import { tools, Feature } from '@/lib/tools-client';
-import { File, LayoutDashboard, Settings, User, Search, Bot, Sparkles } from 'lucide-react';
+import { tools, Feature, FilterCategory } from '@/lib/tools-client';
+import { File, LayoutDashboard, Settings, User, Search, Bot, Sparkles, Palette, Database } from 'lucide-react';
 import { useTabManager } from '@/context/TabManagerContext';
-import { LandingFooter } from '../landing-footer';
 
 interface GlobalSearchProps {
   isOpen: boolean;
@@ -24,12 +23,14 @@ interface GlobalSearchProps {
 
 const allTools = tools.filter(t => t.id !== 'superfreetime');
 
-const searchCategories: {title: string, category: string }[] = [
-    { title: 'Marketing & Ads', category: 'Marketing' },
-    { title: 'Creative Suite', category: 'Creative' },
-    { title: 'Sales & CRM', category: 'Sales Tools' },
-    { title: 'Market Intelligence', category: 'Market Intelligence' },
+const navigationItems = [
+    { href: '/me/settings', label: 'Settings', icon: <Settings className="mr-2 h-4 w-4" />},
+    { href: '/me/brand', label: 'Brand & Assets', icon: <Palette className="mr-2 h-4 w-4" />},
+    { href: '/me/assistant', label: 'AI Assistant', icon: <Bot className="mr-2 h-4 w-4" />},
+    { href: '/me/tool/projects-finder', label: 'Market Library', icon: <Database className="mr-2 h-4 w-4" />}
 ];
+
+const categories: FilterCategory[] = ['Marketing', 'Creative', 'Sales Tools', 'Lead Gen', 'Social & Comms', 'Web', 'Editing', 'Ads', 'Market Intelligence', 'CRM', 'Developer'];
 
 export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
   const [query, setQuery] = useState('');
@@ -46,12 +47,23 @@ export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
     handleSelect(tool.href, tool.title);
   }
 
-  const filteredTools = query.trim() === ''
-    ? allTools
-    : allTools.filter(tool =>
-        tool.title.toLowerCase().includes(query.toLowerCase()) ||
-        tool.description.toLowerCase().includes(query.toLowerCase())
-      );
+  const groupedTools = useMemo(() => {
+    if (query.trim() === '') {
+        return categories.map(category => ({
+            category,
+            tools: allTools.filter(tool => tool.categories.includes(category))
+        })).filter(group => group.tools.length > 0);
+    } else {
+        const filtered = allTools.filter(tool =>
+            tool.title.toLowerCase().includes(query.toLowerCase()) ||
+            tool.description.toLowerCase().includes(query.toLowerCase())
+        );
+        if (filtered.length > 0) {
+            return [{ category: 'Search Results', tools: filtered }];
+        }
+        return [];
+    }
+  }, [query]);
 
   return (
     <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -63,32 +75,28 @@ export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
         
-        <CommandGroup heading="Tools">
-          {filteredTools.slice(0, 7).map((tool) => (
-            <CommandItem key={tool.id} onSelect={() => handleToolSelect(tool)} value={tool.title}>
-              <div className="p-1.5 rounded-md text-white mr-2" style={{backgroundColor: tool.color}}>
-                {React.cloneElement(tool.icon, { className: 'h-4 w-4' })}
-              </div>
-              <span>{tool.title}</span>
-            </CommandItem>
-          ))}
-        </CommandGroup>
+        {groupedTools.map(group => (
+            <CommandGroup key={group.category} heading={group.category}>
+                {group.tools.map((tool) => (
+                    <CommandItem key={tool.id} onSelect={() => handleToolSelect(tool)} value={`${tool.title} ${tool.description}`}>
+                        <div className="p-1.5 rounded-md text-white mr-2" style={{backgroundColor: tool.color}}>
+                            {React.cloneElement(tool.icon, { className: 'h-4 w-4' })}
+                        </div>
+                        <span>{tool.title}</span>
+                    </CommandItem>
+                ))}
+            </CommandGroup>
+        ))}
 
         <CommandSeparator />
         
         <CommandGroup heading="Navigation">
-           <CommandItem onSelect={() => handleSelect('/me/settings', 'Settings')}>
-            <Settings className="mr-2 h-4 w-4" />
-            <span>Settings</span>
-          </CommandItem>
-          <CommandItem onSelect={() => handleSelect('/me/brand', 'Brand & Assets')}>
-             <File className="mr-2 h-4 w-4" />
-             <span>Brand & Assets</span>
-           </CommandItem>
-            <CommandItem onSelect={() => handleSelect('/me/assistant', 'AI Assistant')}>
-              <Bot className="mr-2 h-4 w-4" />
-              <span>AI Assistant</span>
-            </CommandItem>
+           {navigationItems.map(item => (
+                <CommandItem key={item.href} onSelect={() => handleSelect(item.href, item.label)}>
+                   {item.icon}
+                   <span>{item.label}</span>
+                </CommandItem>
+           ))}
          </CommandGroup>
       </CommandList>
     </CommandDialog>
