@@ -8,7 +8,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook
 } from 'lucide-react';
 import type { ReactElement } from 'react';
 import { tools as toolDetails, ToolData, Suite } from './tools-data';
