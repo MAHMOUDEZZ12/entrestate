@@ -7,12 +7,8 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Feature } from '@/lib/tools-client';
-import Image from 'next/image';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
@@ -33,21 +29,35 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
             title: "Generate Ad Copy",
             description: "Create high-converting ad copy for a luxury property.",
             input: `{\n  "projectName": "Emaar Beachfront",\n  "focusArea": "Luxury amenities",\n  "toneOfVoice": "Luxury"\n}`,
-            output: `{\n  "headline": "Emaar Beachfront: Where Luxury Meets the Sea",\n  "body": "Discover an exclusive island lifestyle with private beach access and unparalleled amenities. Your key to elegance awaits."\n}`
+            output: `{\n  "headline": "Emaar Beachfront: Where Luxury Meets the Sea",\n  "body": "Discover an exclusive island lifestyle with private beach access and unparalleled amenities. Your key to elegance awaits."\n}`,
+            output_type: 'code'
         },
         {
-            title: "Create a Market Report",
-            description: "Generate an in-depth market report for a specific area.",
-            input: `{\n  "location": "Dubai Marina",\n  "propertyType": "Luxury Condos",\n  "reportType": "Investor"\n}`,
-            output: `{\n  "reportTitle": "Q3 2024 Investor Report: Dubai Marina",\n  "executiveSummary": "The market shows a 5.2% QoQ price increase, driven by strong rental demand from HNWIs...",\n  "futureOutlook": "Positive, with yields expected to hold firm."\n}`
+            title: "Rebrand a Brochure",
+            description: "Apply a new brand identity to an existing document.",
+            input: `{\n  "brochure": "source.pdf",\n  "colors": "Navy and Gold",\n  "logo": "new_logo.png"\n}`,
+            output: `data:application/pdf;base64,JVBERi0xLjQKJ...`,
+            output_type: 'iframe'
         },
         {
             title: "Build a Landing Page Plan",
             description: "Quickly generate the HTML structure for a new development's landing page.",
-            input: `{\n  "projectName": "DAMAC Hills 2",\n  "projectDetails": "3-bedroom villas with lagoon access",\n  "brandingStyle": "Modern & Minimalist"\n}`,
-            output: `{\n  "landingPageHtml": "<!DOCTYPE html><html>...",\n  "headlineOptions": [\n    {\n      "strategy": "Urgency-Focused",\n      "headline": "Limited Villas Available at DAMAC Hills 2!",\n      "cta": "Enquire Before They're Gone"\n    }\n  ]\n}`
+            input: `{\n  "projectName": "DAMAC Hills 2",\n  "brandingStyle": "Modern & Minimalist"\n}`,
+            output: `<!DOCTYPE html>\n<html>\n  <head>...\n  <body>\n    <h1>Welcome to DAMAC Hills 2</h1>\n    ...\n  </body>\n</html>`,
+            output_type: 'code'
         }
     ];
+
+    const renderOutput = (ex: typeof examples[0]) => {
+        if (ex.output_type === 'iframe') {
+            return (
+                <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg bg-background flex items-center justify-center">
+                    <p className="text-muted-foreground text-sm">[PDF Preview]</p>
+                </div>
+            )
+        }
+        return <CodeBlock>{ex.output}</CodeBlock>;
+    }
 
     return (
         <Card className="bg-muted/30 border-border/50">
@@ -56,27 +66,25 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
                     <CarouselContent>
                         {examples.map((ex, index) => (
                             <CarouselItem key={index}>
-                                <div className="space-y-6">
-                                    <div className="text-center">
-                                        <h4 className="text-xl font-bold mb-1">{ex.title}</h4>
-                                        <p className="text-muted-foreground max-w-2xl mx-auto">{ex.description}</p>
-                                    </div>
-                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                                    <div className="space-y-4">
+                                        <h4 className="text-xl font-bold mb-2">{ex.title}</h4>
+                                        <p className="text-muted-foreground mb-4">{ex.description}</p>
                                         <div>
                                             <Label className="text-sm">Example Input</Label>
                                             <CodeBlock>{ex.input}</CodeBlock>
                                         </div>
-                                        <div>
-                                            <Label className="text-sm">Example Output</Label>
-                                            <CodeBlock>{ex.output}</CodeBlock>
-                                        </div>
+                                    </div>
+                                    <div>
+                                        <Label className="text-sm">Example Output</Label>
+                                        {renderOutput(ex)}
                                     </div>
                                 </div>
                             </CarouselItem>
                         ))}
                     </CarouselContent>
-                    <CarouselPrevious className="left-[-1.5rem] md:left-2" />
-                    <CarouselNext className="right-[-1.5rem] md:right-2"/>
+                    <CarouselPrevious className="left-2" />
+                    <CarouselNext className="right-2"/>
                 </Carousel>
             </CardContent>
         </Card>
@@ -173,7 +181,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                     <Card key={index} className="text-center bg-card">
                         <CardHeader>
                             <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
-                                {React.cloneElement(item.icon, { className: 'h-8 w-8' })}
+                                {React.cloneElement(item.icon as React.ReactElement, { className: 'h-8 w-8' })}
                             </div>
                             <CardTitle>{item.metric}</CardTitle>
                         </CardHeader>
@@ -249,5 +257,3 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
     </div>
   );
 }
-
-    
