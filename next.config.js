@@ -60,7 +60,13 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    return []
+    return [
+      {
+        source: '/me/marketing',
+        destination: '/apps',
+        permanent: true,
+      },
+    ]
   }
 };
 
