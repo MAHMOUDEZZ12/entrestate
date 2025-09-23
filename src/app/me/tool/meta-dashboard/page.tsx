@@ -4,9 +4,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
-import { Facebook, Sparkles, LayoutTemplate, Users2, Instagram, Video, BotMessageSquare, Album } from 'lucide-react';
+import { Facebook, Sparkles, LayoutTemplate, Users2, Instagram, Video, BotMessageSquare, Album, Megaphone } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { tools } from '@/lib/tools-data';
+import * as LucideIcons from 'lucide-react';
+
 
 const metaTools = [
     'meta-auto-pilot',
@@ -25,9 +27,9 @@ export default function MetaDashboardPage() {
     return (
         <main className="p-4 md:p-10 space-y-8">
             <PageHeader
-                title="Meta Ads Dashboard"
-                description="Your command center for all Facebook & Instagram advertising tools. Launch campaigns, create audiences, and design ads from one place."
-                icon={<Facebook className="h-8 w-8" />}
+                title="Ads Manager Intelligence"
+                description="Your command center for a team of AI agents for advertising. Launch campaigns, create audiences, and design ads from one place."
+                icon={<Megaphone className="h-8 w-8" />}
             />
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
