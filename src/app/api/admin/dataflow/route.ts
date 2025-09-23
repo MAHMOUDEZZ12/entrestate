@@ -27,7 +27,7 @@ async function launchDataflowJob(jobName: string, parameters: Record<string, str
         projectId: projectId,
         location: 'us-central1', // Or your preferred region
         resource: {
-            jobName: `${jobName}-${Date.now()}`,
+            jobName: `${jobName.replace(/_/g, '-')}-${Date.now()}`,
             parameters: parameters,
             environment: {
                 // You can specify worker machine types, etc.
@@ -61,7 +61,7 @@ export async function POST(req: Request) {
     const jobType = searchParams.get('job');
     
     if (!jobType) {
-        return fail("A 'job' parameter is required (e.g., 'deep-ingestion').", 400);
+        return fail("A 'job' parameter is required (e.g., 'deep-ingestion' or 'transform-market-data').", 400);
     }
     
     let jobResult;
@@ -71,6 +71,11 @@ export async function POST(req: Request) {
         jobResult = await launchDataflowJob('deep-ingestion', {
             target_url: targetUrl,
             output_table: `${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}:entrestate.layer1_listings`,
+        });
+    } else if (jobType === 'transform-market-data') {
+         jobResult = await launchDataflowJob('transform-market-data', {
+            input_gcs_path: `gs://${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}/market_data/options_data.csv`,
+            output_bigquery_table: `${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}:entrestate.transformed_market_data`,
         });
     } else {
         return fail(`Unknown job type: ${jobType}`, 400);
@@ -92,3 +97,5 @@ export async function POST(req: Request) {
     return fail(e);
   }
 }
+
+    

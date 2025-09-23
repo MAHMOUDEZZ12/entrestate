@@ -95,6 +95,7 @@ export default function DevAdminPage() {
     const [changeLog, setChangeLog] = useState<ChangeLogEntry[]>([]);
     
     const [scrapingStates, setScrapingStates] = useState<{ [key: string]: boolean }>({});
+    const [dataflowStates, setDataflowStates] = useState<{ [key: string]: boolean }>({});
 
     useEffect(() => {
         // Load changelog from localStorage on mount
@@ -234,6 +235,38 @@ export default function DevAdminPage() {
         }
     };
     
+    const handleLaunchDataflow = async (jobType: string) => {
+        setDataflowStates(prev => ({...prev, [jobType]: true }));
+        toast({ title: 'Dataflow Job Requested', description: `Request sent to launch '${jobType}' job.`});
+
+        const newLogEntry: ChangeLogEntry = {
+            id: `dataflow-${jobType}-${Date.now()}`,
+            timestamp: new Date(),
+            toolId: 'dataflow-pipeline',
+            toolTitle: 'Dataflow Pipeline',
+            description: `Launch Dataflow job: ${jobType}`,
+            status: 'Planned',
+        };
+        setChangeLog(prev => [newLogEntry, ...prev]);
+
+        try {
+            const response = await fetch(`/api/admin/dataflow?job=${jobType}`);
+            const data = await response.json();
+            if (!data.ok) throw new Error(data.error);
+
+            const successMessage = `Dataflow job '${data.data.job.name}' launched successfully.`;
+            setChangeLog(prev => prev.map(l => l.id === newLogEntry.id ? {...l, status: 'Implemented', comment: successMessage} : l));
+            toast({ title: 'Dataflow Job Launched!', description: `Job ID: ${data.data.job.id}`});
+
+        } catch(e: any) {
+            const errorMessage = `Error launching Dataflow job: ${e.message}`;
+            setChangeLog(prev => prev.map(l => l.id === newLogEntry.id ? {...l, status: 'Issue Reported', comment: errorMessage} : l));
+            toast({ title: 'Dataflow Launch Failed', description: e.message, variant: 'destructive'});
+        } finally {
+            setDataflowStates(prev => ({...prev, [jobType]: false }));
+        }
+    }
+
     const handleUserAction = (userId: string, userName: string, action: string) => {
         const newLogEntry: ChangeLogEntry = {
             id: `user-action-${Date.now()}`,
@@ -383,12 +416,12 @@ export default function DevAdminPage() {
             <TabsContent value="data" className="mt-6 space-y-6">
                 <Card>
                     <CardHeader>
-                        <CardTitle>Data Ingestion</CardTitle>
-                        <CardDescription>Manage data pipelines and knowledge base sources.</CardDescription>
+                        <CardTitle>Data Ingestion & Pipelines</CardTitle>
+                        <CardDescription>Manage data scrapers and batch processing jobs.</CardDescription>
                     </CardHeader>
                     <CardContent className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         <Card>
-                            <CardHeader><CardTitle>Scraping</CardTitle></CardHeader>
+                            <CardHeader><CardTitle>Scraping</CardTitle><CardDescription>Pull data from public portals.</CardDescription></CardHeader>
                             <CardContent className="flex flex-col gap-2">
                                 <Button onClick={() => handleScrape('dxboffplan')} disabled={scrapingStates['dxboffplan']}>
                                     {scrapingStates['dxboffplan'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
@@ -401,49 +434,33 @@ export default function DevAdminPage() {
                             </CardContent>
                         </Card>
                          <Card>
-                            <CardHeader><CardTitle>Data Importer/Exporter</CardTitle></CardHeader>
-                            <CardContent>
+                            <CardHeader><CardTitle>Dataflow Jobs</CardTitle><CardDescription>Launch heavy-duty data pipelines.</CardDescription></CardHeader>
+                            <CardContent className="flex flex-col gap-2">
+                               <Button onClick={() => handleLaunchDataflow('deep-ingestion')} disabled={dataflowStates['deep-ingestion']}>
+                                    {dataflowStates['deep-ingestion'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
+                                    Launch Deep Ingestion
+                                </Button>
+                                <Button onClick={() => handleLaunchDataflow('transform-market-data')} disabled={dataflowStates['transform-market-data']}>
+                                    {dataflowStates['transform-market-data'] ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Database className="mr-2 h-4 w-4" />}
+                                    Transform Market Data
+                                </Button>
+                            </CardContent>
+                        </Card>
+                         <Card>
+                            <CardHeader><CardTitle>Knowledge Base</CardTitle><CardDescription>Manage core data sources.</CardDescription></CardHeader>
+                            <CardContent className="flex flex-col gap-2">
                                 <Link href="/dev/data-importer">
                                     <Button variant="secondary" className="w-full">
                                         Open XML Importer
                                     </Button>
                                 </Link>
-                            </CardContent>
-                        </Card>
-                         <Card>
-                            <CardHeader><CardTitle>Developer Archive</CardTitle></CardHeader>
-                            <CardContent>
                                 <Link href="/dev/archive">
                                     <Button variant="secondary" className="w-full">
-                                        View Archive
+                                        View Developer Archive
                                     </Button>
                                 </Link>
                             </CardContent>
                         </Card>
-                    </CardContent>
-                </Card>
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Knowledge Base Status</CardTitle>
-                        <CardDescription>An overview of the data currently training the AI models.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                        <div className="p-4 bg-muted rounded-lg">
-                           <p className="text-sm text-muted-foreground">Projects in Library</p>
-                           <p className="text-2xl font-bold">1,248</p>
-                        </div>
-                         <div className="p-4 bg-muted rounded-lg">
-                           <p className="text-sm text-muted-foreground">User Documents</p>
-                           <p className="text-2xl font-bold">352</p>
-                        </div>
-                         <div className="p-4 bg-muted rounded-lg">
-                           <p className="text-sm text-muted-foreground">Data Sources</p>
-                           <p className="text-2xl font-bold">2</p>
-                        </div>
-                         <div className="p-4 bg-muted rounded-lg">
-                           <p className="text-sm text-muted-foreground">Last Updated</p>
-                           <p className="text-2xl font-bold">Live</p>
-                        </div>
                     </CardContent>
                 </Card>
             </TabsContent>
@@ -564,3 +581,5 @@ export default function DevAdminPage() {
     </main>
   );
 }
+
+    
