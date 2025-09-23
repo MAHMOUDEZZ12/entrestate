@@ -11,13 +11,14 @@ import { ShinyButton } from '@/components/ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { CodeBlock } from '@/components/code-block';
-import { PurchaseDialog } from '@/components/ui/purchase-dialog';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { LandingHeader } from './components/landing-header';
+import { LandingFooter } from './components/landing-footer';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './components/ui/carousel';
+import { CodeBlock } from './components/code-block';
+import { useToast } from './hooks/use-toast';
+import { Loader2 } from 'lucide-react';
 import Image from 'next/image';
 
 
@@ -84,6 +85,81 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
     )
 }
 
+const PurchaseCard = ({ feature }: { feature: Feature & { price: number } }) => {
+    const [isProcessing, setIsProcessing] = React.useState(false);
+    const { toast } = useToast();
+
+    const handlePurchase = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setIsProcessing(true);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        setIsProcessing(false);
+        toast({
+            title: 'Purchase Successful!',
+            description: `You have successfully purchased "${feature.title}". You can now access it in your dashboard.`,
+        });
+    };
+    
+    if (feature.price <= 0) {
+        return (
+             <Card className="bg-card/80 backdrop-blur-lg">
+                <CardHeader>
+                    <CardTitle>Get Started</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-muted-foreground">This app is free! Log in or sign up to add it to your dashboard.</p>
+                </CardContent>
+                <CardFooter>
+                     <Link href="/login" className="w-full">
+                        <Button size="lg" className="w-full">
+                            Get Started Free <ArrowRight className="ml-2 h-4 w-4"/>
+                        </Button>
+                    </Link>
+                </CardFooter>
+            </Card>
+        )
+    }
+
+    return (
+        <Card className="bg-card/80 backdrop-blur-lg">
+            <CardHeader>
+                <CardTitle>Purchase "{feature.title}"</CardTitle>
+                <CardDescription>Get single access to this tool.</CardDescription>
+            </CardHeader>
+            <form onSubmit={handlePurchase}>
+                <CardContent className="space-y-4">
+                     <div className="text-center bg-muted/50 p-4 rounded-lg">
+                        <p className="text-muted-foreground">Total amount</p>
+                        <p className="text-3xl font-bold font-heading text-primary">${feature.price.toFixed(2)}</p>
+                        <p className="text-xs text-muted-foreground">per month</p>
+                    </div>
+                     <div className="space-y-2">
+                        <Label htmlFor="email">Email Address</Label>
+                        <Input id="email" type="email" placeholder="you@example.com" required />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="card-details">Card Details</Label>
+                        <div className="relative">
+                            <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input id="card-details" placeholder="Card Number" className="pl-10" required />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <Input placeholder="MM / YY" required />
+                            <Input placeholder="CVC" required />
+                        </div>
+                    </div>
+                </CardContent>
+                <CardFooter>
+                    <Button type="submit" disabled={isProcessing} className="w-full" size="lg">
+                    {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                    {isProcessing ? 'Processing...' : `Pay $${feature.price.toFixed(2)}`}
+                    </Button>
+                </CardFooter>
+            </form>
+        </Card>
+    );
+};
+
 
 export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   const isAutoPilot = feature.id === 'meta-auto-pilot';
@@ -98,7 +174,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
     <LandingHeader />
     <main className="flex-1 w-full bg-background">
       {/* Hero Section */}
-      <section className="relative py-20 md:py-32 text-center border-b overflow-hidden">
+      <section className="relative py-20 md:py-32 border-b overflow-hidden">
          <div 
             className="absolute inset-0 z-0"
             style={{
@@ -106,31 +182,22 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             }}
          />
         <div className="container mx-auto px-4 relative z-10">
-          <div className="p-4 bg-card border rounded-full w-fit mx-auto mb-6 shadow-lg">
-            {React.cloneElement(feature.icon, { className: 'h-10 w-10 text-primary' })}
-          </div>
-          <h1 className="text-4xl md:text-6xl font-bold font-heading tracking-tighter max-w-4xl mx-auto">
-            {feature.title}
-          </h1>
-          <p className="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-foreground/70">
-            {feature.longDescription}
-          </p>
-          <div className="mt-8 flex items-center justify-center gap-4">
-            <Link href="/login">
-                <ShinyButton>
-                    Get Started Free
-                    <ArrowRight />
-                </ShinyButton>
-            </Link>
-            {feature.price > 0 && (
-                <PurchaseDialog tool={feature}>
-                    <Button variant="outline" size="lg">
-                        <CreditCard className="mr-2 h-4 w-4" />
-                        Buy for ${feature.price}/mo
-                    </Button>
-                </PurchaseDialog>
-            )}
-          </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 md:gap-12 items-center">
+                <div className="lg:col-span-2 text-center lg:text-left">
+                     <div className="p-4 bg-card border rounded-full w-fit mx-auto lg:mx-0 mb-6 shadow-lg">
+                        {React.cloneElement(feature.icon, { className: 'h-10 w-10 text-primary' })}
+                    </div>
+                    <h1 className="text-4xl md:text-6xl font-bold font-heading tracking-tighter max-w-4xl">
+                        {feature.title}
+                    </h1>
+                    <p className="mt-6 max-w-3xl text-lg md:text-xl text-foreground/70">
+                        {feature.longDescription}
+                    </p>
+                </div>
+                <div className="lg:col-span-1">
+                    <PurchaseCard feature={feature} />
+                </div>
+            </div>
         </div>
       </section>
       
