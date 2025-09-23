@@ -15,13 +15,13 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Sparkles, AlertCircle, Wand2, Copy } from 'lucide-react';
+import { Loader2, Sparkles, AlertCircle, Wand2, Copy, ArrowRight } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Confetti } from '@/components/confetti';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import { track } from '@/lib/events';
-import { notFound, useParams } from 'next/navigation';
+import { notFound, useParams, useRouter } from 'next/navigation';
 import { PageHeader } from '@/components/ui/page-header';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useAuth } from '@/hooks/useAuth';
@@ -38,6 +38,7 @@ const copyToClipboard = (text: string, toast: (options: any) => void) => {
 
 const ToolPage = () => {
   const params = useParams();
+  const router = useRouter();
   const toolId = params.toolId as string;
   const [tool, setTool] = React.useState<Feature | undefined>(undefined);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -321,7 +322,7 @@ const ToolPage = () => {
   const renderResultContent = () => {
         if (isLoading) {
             return (
-                <div className="flex items-center justify-center h-full text-center text-muted-foreground">
+                <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground">
                     <div>
                         <Loader2 className="h-10 w-10 animate-spin text-primary mb-2 mx-auto" />
                         <p>The AI is working...</p>
@@ -340,26 +341,42 @@ const ToolPage = () => {
             );
         }
         
-        if (!result) {
-            return (
-                 <div className="flex items-center justify-center h-full text-center text-muted-foreground">
-                    <p>The AI-generated output will appear here.</p>
-                </div>
-            )
-        }
+        const nextAction = result?.next_action;
         
-        // Special render for landing pages
-        if (tool.id === 'landing-pages') {
-            return <LandingPageResult result={result} />;
-        }
-
-        if (tool.renderResult) {
-            return tool.renderResult(result, toast);
-        }
-
-        // Default generic renderer
         return (
-            <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap max-h-[70vh] overflow-auto">{JSON.stringify(result, null, 2)}</pre>
+            <div className="space-y-6">
+                {!result ? (
+                     <div className="flex items-center justify-center h-full text-center text-muted-foreground min-h-[300px]">
+                        <p>The AI-generated output will appear here.</p>
+                    </div>
+                ) : tool.id === 'landing-pages' ? (
+                    <LandingPageResult result={result} />
+                ) : tool.renderResult ? (
+                    tool.renderResult(result, toast)
+                ) : (
+                    <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap max-h-[70vh] overflow-auto">{JSON.stringify(result, null, 2)}</pre>
+                )}
+
+                {nextAction && (
+                    <Card className="bg-primary/10 border-primary/20">
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Sparkles className="h-5 w-5 text-primary" />
+                                Next Step
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground">{nextAction.description}</p>
+                        </CardContent>
+                        <CardFooter>
+                            <Button onClick={() => router.push(`/me/tool/${nextAction.toolId}`)}>
+                                {nextAction.title}
+                                <ArrowRight className="ml-2 h-4 w-4" />
+                            </Button>
+                        </CardFooter>
+                    </Card>
+                )}
+            </div>
         );
   };
 

@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { MetaAutoPilotInput } from '@/types';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useAuth } from '@/hooks/useAuth';
+import { runMetaAutoPilot } from '@/ai/flows/meta-pilot/meta-auto-pilot';
 
 type Status = 'pending' | 'running' | 'completed' | 'error';
 
@@ -65,9 +66,8 @@ export default function MetaAutoPilotPage() {
       
       setWorkflow(prev => prev.map((step, i) => i === index ? { ...step, status: 'running' } : step));
       
-      // Simulate variable step time, but don't wait for the final API result here
+      // Simulate variable step time
       setTimeout(() => {
-        // Check if we are still executing before marking as completed
         setWorkflow(prev => {
             const currentStep = prev.find(s => s.status === 'running');
             if (currentStep?.id === workflow[index].id) {
@@ -83,26 +83,11 @@ export default function MetaAutoPilotPage() {
 
     try {
         const payload: MetaAutoPilotInput = { projectId: selectedProject, campaignGoal: selectedGoal };
-        const idToken = await user.getIdToken();
-        const response = await fetch('/api/run', {
-            method: 'POST',
-            headers: { 
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${idToken}`
-            },
-            body: JSON.stringify({
-                toolId: 'meta-auto-pilot',
-                payload
-            }),
-        });
-
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Autopilot failed to execute.');
+        const data = await runMetaAutoPilot(payload);
 
         setFinalResult(data);
         track('autopilot_execution_succeeded', { projectId: selectedProject });
         toast({ title: 'Autopilot Complete!', description: 'Your campaign plan is ready for review.' });
-        // Ensure all steps are marked as completed on success
         setWorkflow(prev => prev.map(step => ({...step, status: 'completed'})));
 
     } catch (e: any) {
@@ -147,9 +132,9 @@ export default function MetaAutoPilotPage() {
                             <SelectValue placeholder="Select a project..." />
                         </SelectTrigger>
                         <SelectContent>
-                            <SelectItem value="emaar-beachfront">Emaar Beachfront</SelectItem>
-                            <SelectItem value="damac-hills-2">Damac Hills 2</SelectItem>
-                            <SelectItem value="sobha-hartland">Sobha Hartland</SelectItem>
+                            <SelectItem value="dxboffplan-emaar-beachfront">Emaar Beachfront</SelectItem>
+                            <SelectItem value="dxboffplan-damac-lagoons">Damac Lagoons</SelectItem>
+                            <SelectItem value="dxboffplan-sobha-hartland-2">Sobha Hartland II</SelectItem>
                         </SelectContent>
                     </Select>
                 </div>
