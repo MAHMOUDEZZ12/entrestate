@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster";
 import './globals.css';
@@ -6,6 +7,9 @@ import { cn } from '@/lib/utils';
 import { CookieConsent } from '@/components/cookie-consent';
 import { AuthProvider } from '@/hooks/useAuth';
 import { ThemeProvider } from 'next-themes';
+import { TabProvider } from '@/context/TabManagerContext';
+import { CanvasProvider } from '@/context/CanvasContext';
+import { CreativeCanvas } from '@/components/creative-canvas';
 
 const fontSans = PT_Sans({ 
   subsets: ['latin'],
@@ -48,9 +52,14 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
             >
-            {children}
-            <Toaster />
-            <CookieConsent />
+                <TabProvider>
+                    <CanvasProvider>
+                        {children}
+                        <CreativeCanvas />
+                    </CanvasProvider>
+                </TabProvider>
+                <Toaster />
+                <CookieConsent />
             </ThemeProvider>
         </AuthProvider>
       </body>

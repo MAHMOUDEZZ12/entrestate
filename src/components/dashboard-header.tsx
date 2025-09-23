@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { GlobalSearch } from './ui/global-search';
+import { Logo } from './logo';
 
 
 export function DashboardHeader() {
@@ -28,19 +29,22 @@ export function DashboardHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
+    <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
+        <div className="flex items-center gap-4">
+          <Logo href="/me" />
+        </div>
           
         <div className="flex-1 flex justify-center px-4">
            <Button
                 variant="outline"
-                className="w-full max-w-lg justify-start text-muted-foreground h-10 px-4 text-base"
+                className="w-full max-w-lg justify-start text-muted-foreground h-9 px-4 text-sm"
                 onClick={() => setIsSearchOpen(true)}
             >
                 <div className="flex items-center gap-2">
                     <Search className="h-4 w-4" />
                     Search for apps, projects, or actions...
-                     <kbd className="pointer-events-none ml-auto hidden h-6 select-none items-center gap-1 rounded border bg-muted px-2 font-mono text-xs font-medium opacity-100 sm:flex">
-                        <span className="text-sm">⌘</span>K
+                     <kbd className="pointer-events-none ml-auto hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+                        <span className="text-xs">⌘</span>K
                     </kbd>
                 </div>
             </Button>

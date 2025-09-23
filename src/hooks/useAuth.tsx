@@ -5,6 +5,7 @@ import { useState, useEffect, createContext, useContext, ReactNode } from 'react
 import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useRouter, usePathname } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 interface AuthContextType {
     user: User | null;
@@ -12,8 +13,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-const PUBLIC_PATHS = ['/login', '/signup', '/onboarding', '/privacy', '/terms'];
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -24,23 +23,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!auth) {
         setLoading(false);
+        // For environments where firebase might not be configured,
+        // we assume no user is logged in but allow public pages to render.
+        if (isProtectedRoute(pathname)) {
+            router.push('/login');
+        }
         return;
     }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);
-
-      const isPublicPath = PUBLIC_PATHS.includes(pathname) || pathname.startsWith('/_next') || pathname === '/';
-      
-      if (!user && !isPublicPath && !pathname.startsWith('/solutions') && !pathname.startsWith('/apps') && !pathname.startsWith('/community') && !pathname.startsWith('/services') && !pathname.startsWith('/blog') && !pathname.startsWith('/market')) {
-        router.push('/login');
-      } else if (user && (pathname === '/login' || pathname === '/signup')) {
-        router.push('/me');
-      }
     });
 
     return () => unsubscribe();
   }, [pathname, router]);
+  
+  const isProtectedRoute = (path: string) => {
+    return path.startsWith('/me') || path.startsWith('/dev');
+  };
+
+  if (loading) {
+    return (
+        <div className="flex h-screen w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+    );
+  }
+
+  if (!user && isProtectedRoute(pathname)) {
+      router.push('/login');
+      return (
+         <div className="flex h-screen w-full items-center justify-center">
+            <Loader2 className="h-8 w-8 animate-spin" />
+        </div>
+      );
+  }
   
   const value = { user, loading };
 
