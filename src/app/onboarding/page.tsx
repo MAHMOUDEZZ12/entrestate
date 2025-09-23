@@ -2,6 +2,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
@@ -284,12 +285,18 @@ function OnboardingComponent() {
     );
 }
 
+const DynamicOnboardingComponent = dynamic(() => Promise.resolve(OnboardingComponent), {
+  ssr: false,
+  loading: () => <div className="flex h-full w-full items-center justify-center"><Loader2 className="animate-spin h-8 w-8" /></div>,
+});
+
+
 export default function OnboardingPage() {
     return (
         <div className="flex min-h-screen flex-col bg-background text-foreground">
             <main className="flex-1 p-4 sm:p-6 md:p-8">
                  <Suspense fallback={<div className="flex h-full w-full items-center justify-center"><Loader2 className="animate-spin h-8 w-8" /></div>}>
-                    <OnboardingComponent />
+                    <DynamicOnboardingComponent />
                  </Suspense>
             </main>
         </div>

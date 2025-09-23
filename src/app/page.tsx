@@ -2,6 +2,7 @@
 'use client';
 
 import React from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Search, Sparkles, ArrowRight, Bot, Telescope, MessageCircle, FileJson } from 'lucide-react';
@@ -10,10 +11,23 @@ import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { motion } from "framer-motion";
-import { ProSearchSimulation } from '@/components/pro-search-simulation';
-import { EstChatSimulation } from '@/components/est-chat-simulation';
-import { MegaListingSimulation } from '@/components/mega-listing-simulation';
-import { SolutionsCta } from '@/components/solutions-cta';
+import { Loader2 } from 'lucide-react';
+
+const ProSearchSimulation = dynamic(() => import('@/components/pro-search-simulation').then(mod => mod.ProSearchSimulation), {
+  ssr: false,
+  loading: () => <div className="h-[288px] flex items-center justify-center bg-muted rounded-lg"><Loader2 className="animate-spin" /></div>,
+});
+const EstChatSimulation = dynamic(() => import('@/components/est-chat-simulation').then(mod => mod.EstChatSimulation), {
+  ssr: false,
+  loading: () => <div className="h-[480px] flex items-center justify-center bg-muted rounded-lg"><Loader2 className="animate-spin" /></div>,
+});
+const MegaListingSimulation = dynamic(() => import('@/components/mega-listing-simulation').then(mod => mod.MegaListingSimulation), {
+  ssr: false,
+  loading: () => <div className="h-[400px] flex items-center justify-center bg-muted rounded-lg"><Loader2 className="animate-spin" /></div>,
+});
+const SolutionsCta = dynamic(() => import('@/components/solutions-cta').then(mod => mod.SolutionsCta), {
+  ssr: false,
+});
 
 
 export default function HomePage() {
