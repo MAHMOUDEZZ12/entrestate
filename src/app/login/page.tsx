@@ -5,7 +5,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -16,6 +16,8 @@ import { Loader2 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LandingHeader } from "@/components/landing-header";
 import { LandingFooter } from "@/components/landing-footer";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Info } from 'lucide-react';
 
 
 export default function AuthPage() {
@@ -23,6 +25,7 @@ export default function AuthPage() {
   const { toast } = useToast();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,13 +34,30 @@ export default function AuthPage() {
     setError(null);
     try {
       if (isSigningUp) {
-        await createUserWithEmailAndPassword(auth, email, password);
+        if (!displayName) {
+            throw new Error("A username is required for sign up.");
+        }
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, { displayName });
+        
         toast({ title: "Account Created!", description: "Redirecting to get you set up..." });
-        router.push('/onboarding');
+        
+        // Redirect to /gem if user is an admin, otherwise to onboarding
+        if (['dev', 'admin'].includes(displayName.toLowerCase())) {
+            router.push('/gem');
+        } else {
+            router.push('/onboarding');
+        }
+
       } else {
         await signInWithEmailAndPassword(auth, email, password);
         toast({ title: "Login Successful", description: "Welcome back!" });
-        router.push('/me');
+        // Redirect to /gem if user is an admin, otherwise to /me
+        if (auth.currentUser && ['dev', 'admin'].includes(auth.currentUser.displayName?.toLowerCase() || '')) {
+            router.push('/gem');
+        } else {
+            router.push('/me');
+        }
       }
     } catch (err: any) {
       setError(err.message);
@@ -66,6 +86,20 @@ export default function AuthPage() {
 
   const AuthForm = ({ isSigningUp }: { isSigningUp: boolean }) => (
     <form onSubmit={(e) => { e.preventDefault(); handleEmailAuth(isSigningUp); }} className="grid gap-4">
+        {isSigningUp && (
+            <div className="grid gap-2">
+                <Label htmlFor="displayName">Username</Label>
+                <Input
+                    id="displayName"
+                    type="text"
+                    placeholder="e.g., dev, admin, johnsmith"
+                    required
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    disabled={isLoading}
+                />
+            </div>
+        )}
         <div className="grid gap-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -125,7 +159,7 @@ export default function AuthPage() {
                   </p>
               </div>
               
-                  <Tabs defaultValue="login" className="w-full">
+                  <Tabs defaultValue="signup" className="w-full">
                       <TabsList className="grid w-full grid-cols-2">
                           <TabsTrigger value="login">Login</TabsTrigger>
                           <TabsTrigger value="signup">Sign Up</TabsTrigger>
@@ -134,6 +168,13 @@ export default function AuthPage() {
                           <AuthForm isSigningUp={false} />
                       </TabsContent>
                       <TabsContent value="signup" className="pt-4">
+                          <Alert className="mb-4">
+                            <Info className="h-4 w-4"/>
+                            <AlertTitle>Developer Access</AlertTitle>
+                            <AlertDescription>
+                                To access the <b>/gem</b> dashboard, sign up with the username "dev" or "admin".
+                            </AlertDescription>
+                          </Alert>
                           <AuthForm isSigningUp={true} />
                       </TabsContent>
                   </Tabs>
