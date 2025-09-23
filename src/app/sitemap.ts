@@ -10,7 +10,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticRoutes = [
     '/',
-    '/apps',
     '/pricing',
     '/login',
     '/privacy',
@@ -47,7 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
   
   const suiteRoutes = marketingSuites.map((suite) => ({
-      url: `${siteUrl}/apps/${suite.id}`,
+      url: `${siteUrl}/solutions/${suite.id}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.9,
@@ -67,13 +66,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
   }));
 
-  const productRoutes = tools.map((tool) => ({
-    url: `${siteUrl}/products/${tool.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.8,
-  }));
-
-
-  return [...staticRoutes, ...suiteRoutes, ...blogRoutes, ...meToolRoutes, ...productRoutes];
+  return [...staticRoutes, ...suiteRoutes, ...blogRoutes, ...meToolRoutes];
 }

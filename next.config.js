@@ -66,6 +66,16 @@ const nextConfig = {
         destination: '/apps',
         permanent: true,
       },
+      {
+        source: '/apps',
+        destination: '/me/marketing',
+        permanent: true,
+      },
+       {
+        source: '/apps/:slug*',
+        destination: '/me/marketing',
+        permanent: true,
+      }
     ]
   }
 };
