@@ -83,9 +83,10 @@ export function DashboardHeader() {
           {id: 'leads', title: 'Leads (CRM)', href:'/me/leads', iconName: 'Target', color: '#FFA500'},
           {id: 'clients', title: 'Client Pages', href:'/me/clients', iconName: 'Users', color: '#FFA500'},
           {id: 'directory', title: 'Contacts Directory', href:'/me/directory', iconName: 'BookUser', color: '#FFA500'},
+          {id: 'projects-finder', title: 'Market Library', href:'/me/tool/projects-finder', iconName: 'Database', color: '#00CED1'},
+          {id: 'listing-performance', title: 'Listing Performance', href:'/me/tool/listing-performance', iconName: 'BarChart', color: '#00CED1'},
       ],
-      "All Tools & Apps": toolsData.filter(t => t.id !== 'superfreetime').map(t => ({...t, href: `/me/tool/${t.id}`})),
-      "Public Site": [
+       "Public Site": [
           {id: 'public-home', title: 'Main Home', href:'/', iconName: 'Home', color: '#6a788c'},
           {id: 'public-solutions', title: 'Solutions', href:'/solutions', iconName: 'Sparkles', color: '#6a788c'},
           {id: 'public-apps', title: 'App Store', href:'/apps', iconName: 'LayoutGrid', color: '#6a788c'},
@@ -125,9 +126,9 @@ export function DashboardHeader() {
                         <ChevronDown className="h-4 w-4" />
                     </Button>
                 </DropdownMenuTrigger>
-                 <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-[80vh] p-4" align="start">
+                 <DropdownMenuContent className="w-[calc(var(--radix-dropdown-menu-trigger-width)_*_2.5)] max-w-6xl max-h-[80vh] p-4" align="start">
                     <ScrollArea className="h-full">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {Object.entries(categorizedTools).map(([category, items]) => (
                                 <div key={category}>
                                 <DropdownMenuLabel>{category}</DropdownMenuLabel>
