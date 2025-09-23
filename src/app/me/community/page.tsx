@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
 import { MessageSquarePlus, User, Users2 } from 'lucide-react';
@@ -26,6 +26,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
 
 const noteSchema = z.object({
     title: z.string().min(5, 'Title must be at least 5 characters.'),
@@ -41,6 +42,15 @@ const noteSchema = z.object({
 
 type NoteFormValues = z.infer<typeof noteSchema>;
 
+type Note = {
+    id: string;
+    title: string;
+    author: string;
+    type: 'Connection' | 'Investor Request' | 'Opinion' | 'Review' | 'Question' | 'Self Intro';
+    content: string;
+    comments: number;
+    createdAt: any;
+};
 
 const noteTypes = ['Connection', 'Investor Request', 'Opinion', 'Review', 'Question', 'Self Intro'] as const;
 
@@ -53,51 +63,9 @@ const typeColors: { [key: string]: string } = {
   'Self Intro': 'hsl(300, 50%, 60%)',
 }
 
-const mockNotes = [
-  {
-    id: 1,
-    title: "Looking for a direct sales contact at Emaar",
-    author: "John Doe",
-    type: "Connection" as const,
-    content: "Our agency is looking to establish a direct line with the sales team at Emaar for bulk deals. Can anyone provide a senior contact?",
-    comments: 3,
-  },
-  {
-    id: 2,
-    title: "Investor seeking ready 2BR in Dubai Marina",
-    author: "Jane Smith",
-    type: "Investor Request" as const,
-    content: "Budget: AED 2.5M. Looking for a ready, tenanted 2-bedroom apartment in Dubai Marina with a high ROI. Service charges must be reasonable.",
-    comments: 8,
-  },
-  {
-    id: 3,
-    title: "Opinion: Is the off-plan market overheating?",
-    author: "Alex Johnson",
-    type: "Opinion" as const,
-    content: "With the recent influx of new projects, are we heading towards an oversupply situation in the off-plan market by 2026? What are your thoughts?",
-    comments: 15,
-  },
-  {
-    id: 4,
-    title: "Self Introduction - Michael from Prestige Properties",
-    author: "Michael Chen",
-    type: "Self Intro" as const,
-    content: "Hi everyone, I'm Michael, a senior broker at Prestige Properties specializing in luxury villas in Emirates Hills and Palm Jumeirah. Happy to connect with fellow real estate professionals!",
-    comments: 5,
-  },
-  {
-    id: 5,
-    title: "Question: Best tool for rebranding brochures?",
-    author: "Sarah Lee",
-    type: "Question" as const,
-    content: "I have a bunch of old brochures I need to update with my new logo and contact info. Which app is the best for this? Automated Rebranding or the PDF Editor?",
-    comments: 4,
-  }
-];
-
-const NewNoteForm = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
+const NewNoteForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => void, onNoteCreated: () => void }) => {
     const { toast } = useToast();
+    const { user } = useAuth();
     
     const {
         control,
@@ -123,13 +91,41 @@ const NewNoteForm = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
     }
 
     const onSubmit = async (data: NoteFormValues) => {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        console.log(data);
-        toast({
-            title: "Note Published!",
-            description: "Your note has been successfully added to the community board."
-        });
-        setOpen(false);
+        if (!user) {
+            toast({ title: 'Not Authenticated', description: 'Please log in to post a note.', variant: 'destructive'});
+            return;
+        }
+
+        try {
+            const idToken = await user.getIdToken();
+            const response = await fetch('/api/community/notes', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${idToken}`
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            if (!response.ok) {
+                throw new Error(result.error || "Failed to publish note.");
+            }
+
+            toast({
+                title: "Note Published!",
+                description: "Your note has been successfully added to the community board."
+            });
+            onNoteCreated();
+            setOpen(false);
+
+        } catch (error: any) {
+            toast({
+                title: "Error",
+                description: `Failed to publish note: ${error.message}`,
+                variant: 'destructive',
+            });
+        }
     }
     
     return (
@@ -225,6 +221,30 @@ const NewNoteForm = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
 
 export default function CommunityPage() {
     const [open, setOpen] = useState(false);
+    const [notes, setNotes] = useState<Note[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    
+    const fetchNotes = async () => {
+        setIsLoading(true);
+        try {
+            const response = await fetch('/api/community/notes');
+            const data = await response.json();
+            if (data.ok) {
+                setNotes(data.data);
+            } else {
+                throw new Error(data.error);
+            }
+        } catch (error) {
+            console.error("Failed to fetch notes:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchNotes();
+    }, []);
+
   return (
     <div className="flex flex-col">
       <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-8">
@@ -242,35 +262,41 @@ export default function CommunityPage() {
                         <DialogTitle>Create a New Note</DialogTitle>
                         <DialogDescription>Share your thoughts with the community. Select a type to get started.</DialogDescription>
                     </DialogHeader>
-                    <NewNoteForm setOpen={setOpen} />
+                    <NewNoteForm setOpen={setOpen} onNoteCreated={fetchNotes} />
                 </DialogContent>
             </Dialog>
         </PageHeader>
-        <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 mt-8">
-            {mockNotes.map((note) => (
-            <Card 
-                key={note.id} 
-                className="bg-card/80 backdrop-blur-lg break-inside-avoid-column border-b-4"
-                style={{'--card-border-color': typeColors[note.type], borderColor: 'var(--card-border-color)'} as React.CSSProperties}
-            >
-                <CardHeader>
-                <div className="flex items-center justify-between">
-                    <Badge style={{ backgroundColor: typeColors[note.type]}} className="text-white">{note.type}</Badge>
-                    <div className="text-sm text-muted-foreground flex items-center gap-1">
-                        <User className="h-4 w-4" /> {note.author}
+        {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        ) : (
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6 mt-8">
+                {notes.map((note) => (
+                <Card 
+                    key={note.id} 
+                    className="bg-card/80 backdrop-blur-lg break-inside-avoid-column border-b-4"
+                    style={{'--card-border-color': typeColors[note.type], borderColor: 'var(--card-border-color)'} as React.CSSProperties}
+                >
+                    <CardHeader>
+                    <div className="flex items-center justify-between">
+                        <Badge style={{ backgroundColor: typeColors[note.type]}} className="text-white">{note.type}</Badge>
+                        <div className="text-sm text-muted-foreground flex items-center gap-1">
+                            <User className="h-4 w-4" /> {note.author}
+                        </div>
                     </div>
-                </div>
-                <CardTitle className="pt-2">{note.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                <p className="text-muted-foreground">{note.content}</p>
-                </CardContent>
-                <CardFooter>
-                <Button variant="outline" size="sm">View Note &amp; Comments ({note.comments})</Button>
-                </CardFooter>
-            </Card>
-            ))}
-        </div>
+                    <CardTitle className="pt-2">{note.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                    <p className="text-muted-foreground">{note.content}</p>
+                    </CardContent>
+                    <CardFooter>
+                    <Button variant="outline" size="sm">View Note &amp; Comments ({note.comments})</Button>
+                    </CardFooter>
+                </Card>
+                ))}
+            </div>
+        )}
       </div>
     </div>
   );
