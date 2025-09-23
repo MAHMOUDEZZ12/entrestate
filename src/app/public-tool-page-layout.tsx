@@ -5,21 +5,21 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard, Workflow } from 'lucide-react';
+import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard, Workflow, Clock2, Wallet, BadgeCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Feature, tools } from '@/lib/tools-client';
 import Image from 'next/image';
-import { ShinyButton } from './ui/shiny-button';
+import { ShinyButton } from '@/components/ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { CodeBlock } from '@/components/code-block';
-import { PurchaseDialog } from './ui/purchase-dialog';
+import { PurchaseDialog } from '@/components/ui/purchase-dialog';
 import { AutoPilotPlan } from '@/components/ui/autopilot-plan';
 import {
   Table,
@@ -100,7 +100,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   const newUseCases = [
       "84% higher quality lead than a well trained team",
       "A chain leader for all the meta ads apps",
-      "handle a full agency ads tasks within a mins"
+      "handle a full agency  ads tasks within a mins"
   ];
 
   return (
