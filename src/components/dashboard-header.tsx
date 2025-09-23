@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, Search, Bot, Home, LayoutGrid, Workflow, Palette, Target, Users2, Database, LineChart, File, BrainCircuit, GitMerge, GanttChartSquare } from 'lucide-react';
+import { LogOut, Settings, Search, Bot, Home, LayoutGrid, Workflow, Palette, Target, Users2, Database, LineChart, File, BrainCircuit, GitMerge, GanttChartSquare, LayoutDashboard } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
