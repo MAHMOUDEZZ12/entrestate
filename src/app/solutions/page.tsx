@@ -23,7 +23,7 @@ const solutionsData = [
       "Struggling to stand out in a crowded market.",
       "Losing track of leads and follow-ups."
     ],
-    solutionApps: ["Meta Auto Pilot", "Insta Ads Designer", "Listing Generator", "CRM Memory", "WhatsApp Manager"]
+    solutionApps: ["Meta Auto Pilot", "Insta Ads Designer", "Listing Generator", "CRM Memory Assistant", "WhatsApp Manager"]
   },
   {
     persona: "For The Brokerage",
@@ -126,7 +126,7 @@ export default function SolutionsPage() {
           ))}
         </div>
 
-        <section className="py-24 bg-muted/50">
+        <section className="py-24 bg-muted/30">
            <div className="container mx-auto px-4 max-w-4xl">
               <div className="text-center mb-12">
                 <h2 className="text-3xl md:text-4xl font-bold font-heading">Frequently Asked Questions</h2>
@@ -153,5 +153,3 @@ export default function SolutionsPage() {
     </div>
   );
 }
-
-    
