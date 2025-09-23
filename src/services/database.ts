@@ -118,5 +118,3 @@ export async function deleteFileFromKnowledgeBase(userId: string, fileId: string
         throw fail(error);
     }
 }
-
-    
