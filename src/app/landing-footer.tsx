@@ -51,7 +51,7 @@ export function LandingFooter() {
               <Link href="/me/community" className="text-muted-foreground hover:text-primary transition-colors">Community</Link>
               <Link href="/status" className="text-muted-foreground hover:text-primary transition-colors">System Status</Link>
               <Link href="/support" className="text-muted-foreground hover:text-primary transition-colors">Support</Link>
-              <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">Technology</Link>
+              <Link href="/technology" className="text-muted-foreground hover:text-primary transition-colors">Technology</Link>
               <Link href="/superfreetime" className="text-muted-foreground hover:text-primary transition-colors">SuperFreeTime</Link>
             </nav>
           </div>

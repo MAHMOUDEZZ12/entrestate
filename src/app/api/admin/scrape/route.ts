@@ -1,8 +1,9 @@
+
 'use server';
 
 import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, fail } from "@/lib/api-helpers";
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 
 async function scrapeDxbOffplan() {
   const baseUrl = "https://dxboffplan.com";

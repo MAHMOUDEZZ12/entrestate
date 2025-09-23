@@ -14,6 +14,5 @@ export default genkit({
       apiVersion: 'v1',
     }),
   ],
-  logLevel: 'debug',
   enableTracingAndMetrics: true,
 });
