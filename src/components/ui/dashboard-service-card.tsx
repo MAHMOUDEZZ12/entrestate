@@ -1,115 +1,83 @@
-import { Sparkles, Building, Bot } from 'lucide-react';
+
+'use client';
+
 import React from 'react';
+import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { Plus, Check, Zap } from 'lucide-react';
+import type { Feature } from '@/lib/tools-client';
+import { useToast } from '@/hooks/use-toast';
+import { Badge } from './badge';
+import { cn } from '@/lib/utils';
 
-export type AppCategory = 'Marketing' | 'Sales' | 'Creative' | 'Intelligence' | 'Web' | 'Editing' | 'Ads' | 'Social & Comms' | 'CRM' | 'Developer' | 'Lead Gen';
-
-export interface AppData {
-    name: string;
-    description: string;
-    price_monthly: number;
-    category: AppCategory;
+interface DashboardServiceCardProps {
+    tool: Feature;
+    isAdded: boolean;
+    setIsAdded: (isAdded: boolean) => void;
+    connectionRequired?: string;
+    paymentRequired?: boolean;
 }
 
-export interface PlanData {
-    id: string;
-    name: string;
-    tagline: string;
-    price_monthly: number;
-    popular: boolean;
-    features: string[];
-}
+export const DashboardServiceCard = ({ tool, isAdded, setIsAdded, connectionRequired, paymentRequired }: DashboardServiceCardProps) => {
+  const { toast } = useToast();
 
-interface PricingData {
-    apps: AppData[];
-    plans: PlanData[];
-}
+  const handleAdd = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsAdded(true);
+    toast({
+      title: `${tool.title} Added!`,
+      description: `The "${tool.title}" app is now available in your workspace.`,
+    });
+  };
 
-export const pricingData: PricingData = {
-    "apps": [
-        // This list can be kept for internal reference or other UI elements,
-        // but the primary pricing model will now be driven by the `plans` array.
-        { "name": "PRO SEARCH ENG. x3", "description": "The triple-engine of discovery: Fast, Smart, and Deep Search.", "price_monthly": 190, "category": "Intelligence" },
-        { "name": "ESTCHAT X3", "description": "The conversational frontline for your website, social media, and CRM.", "price_monthly": 149, "category": "CRM" },
-        { "name": "MEGA LISTING PRO 2", "description": "The unified market registry to consolidate and verify all listings.", "price_monthly": 68, "category": "Sales" },
-        { "name": "Insta Ads Designer", "description": "Create perfect ads for Instagram Stories & Feed.", "price_monthly": 15, "category": "Ads" },
-        { "name": "Reel Ads", "description": "Generate engaging video ads for Instagram Reels.", "price_monthly": 20, "category": "Ads" },
-    ],
-    "plans": [
-        {
-            "id": "agent",
-            "name": "Agent Suite",
-            "tagline": "For the individual agent focused on listings and closing deals.",
-            "price_monthly": 49,
-            "popular": false,
-            "features": [
-                "Listing Generator",
-                "Deal Analyzer",
-                "Payment Planner",
-                "WhatsApp Manager",
-                "AI Video Presenter",
-                "Landing Page Builder",
-                "Brochure Translator"
-            ]
-        },
-        {
-            "id": "super-agent",
-            "name": "Super Agent Suite",
-            "tagline": "For the marketing-savvy agent running multi-channel campaigns.",
-            "price_monthly": 99,
-            "popular": true,
-            "features": [
-                "Listing Generator",
-                "Deal Analyzer",
-                "Payment Planner",
-                "WhatsApp Manager",
-                "AI Video Presenter",
-                "Landing Page Builder",
-                "Brochure Translator",
-                "Marketing Agency Agent",
-                "Campaign Connector",
-                "Brand Search Optimization",
-                "Insta Ads Designer",
-                "Reel Ads",
-                "UGC Script Writer",
-                "AI YouTube Video Editor",
-                "Lead Investigator AI",
-                "CRM Memory Assistant"
-            ]
-        },
-        {
-            "id": "full-power",
-            "name": "Full Power",
-            "tagline": "For brokerages and developers managing teams & portfolios.",
-            "price_monthly": 199,
-            "popular": false,
-            "features": [
-                 "Listing Generator",
-                "Deal Analyzer",
-                "Payment Planner",
-                "WhatsApp Manager",
-                "AI Video Presenter",
-                "Landing Page Builder",
-                "Brochure Translator",
-                "Marketing Agency Agent",
-                "Campaign Connector",
-                "Brand Search Optimization",
-                "Insta Ads Designer",
-                "Reel Ads",
-                "UGC Script Writer",
-                "AI YouTube Video Editor",
-                "Lead Investigator AI",
-                "CRM Memory Assistant",
-                "Market Analyst Agent",
-                "Market Reports",
-                "Market Library",
-                "Property Finder Pilot",
-                "Bayut Pilot",
-                "Automated Rebranding",
-                "AI Brand Creator",
-                "Centralized Brand Control",
-                "Team Management & Collaboration Features",
-                "Priority Support & Onboarding"
-            ]
-        }
-    ]
+  const handleRemove = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsAdded(false);
+    toast({
+      title: `${tool.title} Removed`,
+      description: `The app has been removed from your workspace.`,
+      variant: 'destructive',
+    });
+  };
+
+  const actionButton = isAdded ? (
+    <Button variant="outline" size="sm" onClick={handleRemove} className="w-full">
+      <Check className="mr-2 h-4 w-4" /> Added
+    </Button>
+  ) : (
+    <Button size="sm" onClick={handleAdd} className="w-full">
+      <Plus className="mr-2 h-4 w-4" /> Add to Workspace
+    </Button>
+  );
+
+  return (
+    <Link href={tool.href} className="block group">
+        <Card className="h-full flex flex-col hover:border-primary/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <CardHeader>
+                <div className="flex justify-between items-start">
+                     <div className="p-3 rounded-lg text-white mb-4" style={{ backgroundColor: tool.color }}>
+                        {React.cloneElement(tool.icon, { className: 'h-6 w-6' })}
+                    </div>
+                    {tool.badge && <Badge variant={tool.badge === 'DEPRECATED' ? 'destructive' : 'default'}>{tool.badge}</Badge>}
+                </div>
+                <CardTitle className="text-lg">{tool.title}</CardTitle>
+                <CardDescription className="text-xs line-clamp-2">{tool.description}</CardDescription>
+            </CardHeader>
+            <CardFooter className="mt-auto">
+                <div className="w-full space-y-2">
+                    {connectionRequired && (
+                        <div className="text-xs text-muted-foreground flex items-center gap-1">
+                            <Zap className="h-3 w-3 text-amber-500" />
+                            Requires {connectionRequired} connection
+                        </div>
+                    )}
+                    {actionButton}
+                </div>
+            </CardFooter>
+        </Card>
+    </Link>
+  );
 };

@@ -15,6 +15,8 @@ import { tools } from '@/lib/tools-data';
 import { marketingSuites } from '@/lib/suites-data';
 import { useToast } from '@/hooks/use-toast';
 import { Badge } from '@/components/ui/badge';
+import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
+import { tools as allTools } from '@/lib/tools-client';
 
 export default function SuiteDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -24,7 +26,34 @@ export default function SuiteDetailPage() {
     notFound();
   }
 
-  const suiteTools = tools.filter(tool => tool.suite === suite.name);
+  const suiteTools = allTools.filter(tool => tool.suite === suite.name);
+  const [addedApps, setAddedApps] = React.useState<string[]>([]);
+  
+  React.useEffect(() => {
+    const savedState = localStorage.getItem('addedApps');
+    if (savedState) {
+        setAddedApps(JSON.parse(savedState));
+    }
+  }, []);
+
+  const handleSetIsAdded = (toolId: string, isAdded: boolean) => {
+    const newAddedApps = isAdded 
+        ? [...addedApps, toolId]
+        : addedApps.filter(id => id !== toolId);
+    setAddedApps(newAddedApps);
+    localStorage.setItem('addedApps', JSON.stringify(newAddedApps));
+  }
+
+  
+  const appsThatNeedConnection: { [key: string]: string } = {
+    'meta-ads-copilot': 'Facebook',
+    'audience-creator': 'Facebook',
+    'insta-ads-designer': 'Instagram',
+    'instagram-admin-ai': 'Instagram',
+    'email-creator': 'Gmail / Outlook',
+    'whatsapp-manager': 'WhatsApp Business',
+  };
+
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -42,23 +71,17 @@ export default function SuiteDetailPage() {
                     <h2 className="text-3xl md:text-4xl font-bold tracking-tight">Apps Included in This Suite</h2>
                     <p className="mt-4 text-lg text-muted-foreground">This is the complete arsenal of tools you unlock.</p>
                 </div>
-                <div className="max-w-4xl mx-auto">
-                    <Card>
-                        <CardContent className="p-6">
-                            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                                {suiteTools.map(tool => (
-                                    <Link href={`/products/${tool.id}`} key={tool.id} className="group">
-                                        <div className="flex flex-col items-center text-center gap-2 p-3 rounded-lg hover:bg-muted transition-colors">
-                                            <div className="p-3 rounded-lg text-white" style={{ backgroundColor: tool.color }}>
-                                                {React.cloneElement(tool.icon, { className: 'h-6 w-6' })}
-                                            </div>
-                                            <p className="text-sm font-semibold">{tool.title}</p>
-                                        </div>
-                                    </Link>
-                                ))}
-                            </div>
-                        </CardContent>
-                    </Card>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {suiteTools.map(tool => (
+                         <DashboardServiceCard 
+                            key={tool.id} 
+                            tool={tool}
+                            isAdded={addedApps.includes(tool.id)}
+                            setIsAdded={(isAdded) => handleSetIsAdded(tool.id, isAdded)}
+                            connectionRequired={appsThatNeedConnection[tool.id]}
+                            paymentRequired={true} // Assume all apps on this page are part of a paid suite
+                        />
+                    ))}
                 </div>
             </div>
         </section>
