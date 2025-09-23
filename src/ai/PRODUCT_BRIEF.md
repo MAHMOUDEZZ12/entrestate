@@ -1,4 +1,4 @@
-# Entrestate - Product & Technical Brief
+# Entrestate - Product & Technical Brief (AI Brain)
 
 This document outlines the core vision, data sources, and technical capabilities of the Entrestate platform. It serves as the primary training and reference material for all AI-driven development.
 
@@ -10,27 +10,32 @@ Our primary mission is to build a sophisticated system that can ingest, analyze,
 
 ### Core Product Pillars
 
-Our ecosystem is built on three interconnected product pillars that form the foundation of our AI-native platform.
+Our ecosystem is built on three interconnected product pillars that form the foundation of our AI-native platform. These pillars represent the "brain" of the system.
 
 #### 1. PRO SEARCH ENG. x3: The Triple Engine of Discovery
 -   **Vision & DNA**: Redefines search by combining three engines into one: Fast Search (keyword), Smart Search (semantic AI), and Deep Search (historical & predictive). It extends beyond listings into trends, history, and opportunity discovery.
--   **Core Function**: A multi-layered engine that directs user queries to the optimal search type, from instant keyword filtering to deep, predictive analytics on market trends.
+-   **Current State**: The platform simulates this with the `/discover/search` endpoint. It uses basic keyword filtering.
+-   **Future Plan**:
+    -   **Fast Search**: Will be powered by a dedicated search service like Elasticsearch or Algolia, indexed from our `projects_catalog`.
+    -   **Smart Search**: Will use Gemini to interpret natural language queries (e.g., "villas with a private pool under AED 5M near a good school") and translate them into structured database queries.
+    -   **Deep Search**: Will use AI models trained on historical data from the `Developer Archive` to answer predictive questions (e.g., "which off-plan projects have the highest potential ROI?").
 
 #### 2. ESTCHAT X3: The Conversational Frontline
 -   **Vision & DNA**: Unifies all communication into a single, intelligent, and commercially productive stream. It engages users proactively, captures intent, and translates conversations into structured data.
--   **Core Function**: A multi-channel AI assistant that engages users on Instagram, websites, and CRMs, using a prompt builder for customized dialogues and enriching lead profiles with every interaction.
+-   **Current State**: Implemented as the `AI Assistant` in `/dashboard/assistant`. It can hold a conversation and has access to the user's chat history.
+-   **Future Plan**:
+    -   **Deepen Integration**: The assistant will be given "tools" (Genkit tools) to directly interact with other platform services. For example, the command "rebrand my brochure" will trigger the `rebrandBrochure` flow directly.
+    -   **Proactive Engagement**: The assistant will monitor user actions (via the `events` collection) and proactively offer suggestions or start workflows.
+    -   **Multi-channel Deployment**: The same "brain" will power the embeddable website chatbot and integrations with WhatsApp and Instagram DMs.
 
 #### 3. MEGA LISTING PRO 2: The Unified Market Registry
 -   **Vision & DNA**: Creates a single source of truth for real estate data by consolidating, verifying, and archiving all listings to eliminate noise and enforce accuracy.
--   **Core Function**: An intelligent listing engine that aggregates data from portals and developers, uses AI to detect duplicates and false pricing, and outputs a clean, verified feed for all other systems to use.
+-   **Current State**: The concept is represented by the `Market Library` (`/dashboard/tool/projects-finder`) and the `Developer Archive` (`/dev/archive`). The data is currently sourced from mock files and basic scrapers.
+-   **Future Plan**:
+    -   **Robust Ingestion**: Implement the full `DATA_INGESTION_POLICY.yml` using Cloud Functions and Dataflow jobs to continuously pull data from all specified sources.
+    -   **AI Verification**: Use Gemini Vision and Natural Language models to compare listings from different sources, flag duplicates, identify false pricing, and calculate a "quality score" for each property.
+    -   **Unified API**: Expose the clean, verified data through an internal API that all other tools (like `Market Reports` and `AI Price Estimator`) will use as their source of truth.
 
-
-### Entrestate Application: The Premier Use Case
-
-The Entrestate application serves as the first and primary implementation of this engine. It provides real estate professionals with:
-- **Onboarding & Intelligence**: Using our search engine to provide market insights from day one.
-- **App & Tool Integration**: A suite of powerful, AI-driven tools that all draw from the central intelligence engine.
-- **Workflow Automation**: AI agents ("Pilots") that can orchestrate complex workflows across multiple tools.
 
 ## 2. Primary Data Sources
 

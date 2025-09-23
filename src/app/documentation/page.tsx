@@ -21,7 +21,7 @@ const technologies = [
   },
   {
     name: 'Tailwind CSS & ShadCN UI',
-    description: 'Styling is handled by Tailwind CSS for utility-first design, with a component library built on top of ShadCN UI for a consistent and professional look and feel. The app is fully themable via CSS variables, offering several curated themes including Light, Dark, and Pink/Purple.',
+    description: 'Styling is handled by Tailwind CSS for utility-first design, with a component library built on top of ShadCN UI for a consistent and professional look and feel. The app is fully themable via CSS variables.',
     icon: <Wind className="h-8 w-8" />,
   },
   {
@@ -31,23 +31,29 @@ const technologies = [
   },
 ];
 
-const SchemaDisplay = ({ schema }: { schema: any }) => {
-    if (!schema) {
-        return <CodeBlock>{`// No schema defined for this tool.`}</CodeBlock>;
-    }
-    const fields = Object.entries(schema.shape).map(([key, value]: [string, any]) => {
-        let type = 'string';
-        if (value.constructor.name.includes('ZodNumber')) type = 'number';
-        if (value.constructor.name.includes('ZodArray')) type = 'array';
-        if (value.constructor.name.includes('ZodObject')) type = 'object';
-        if (value._def.typeName === 'ZodEffects') { // for refine, etc.
-             if(value._def.schema._def.typeName === 'ZodCustom') type = 'file';
-        }
-       
-        return `  ${key}: ${type}${value.isOptional() ? '?' : ''}; // ${value.description || ''}`;
-    }).join('\n');
+const SchemaDisplay = ({ tool }: { tool: any }) => {
+    // In a real app, we would dynamically import or fetch schemas.
+    // For now, we'll create a simplified representation from the `creationFields`.
+    const fields = tool.creationFields.map((field: any) => {
+        if (field.type === 'group-header' || field.type === 'button') return null;
+        const type = field.type === 'number' ? 'number' : field.type === 'file' ? 'file' : 'string';
+        return `  ${field.id}: ${type}; // ${field.description || ''}`;
+    }).filter(Boolean).join('\n');
 
-    return <CodeBlock>{`{\n${fields}\n}`}</CodeBlock>
+    const outputExample = `{\n  "result": "..." // Output varies by tool\n}`;
+
+    return (
+        <div className="space-y-4">
+            <div>
+                <h4 className="font-semibold text-base mb-2">Input Schema (from UI)</h4>
+                <CodeBlock>{`{\n${fields}\n}`}</CodeBlock>
+            </div>
+             <div>
+                <h4 className="font-semibold text-base mb-2">Generic Output Schema</h4>
+                <CodeBlock>{outputExample}</CodeBlock>
+            </div>
+        </div>
+    );
 };
 
 
@@ -81,34 +87,24 @@ export default function DocumentationPage() {
 
             <section>
             <h2 className="text-3xl font-bold mb-8 text-center">AI Flows &amp; Features</h2>
+            <p className="text-center text-muted-foreground mb-12 max-w-3xl mx-auto">
+                Each tool in the Entrestate suite is powered by a dedicated Genkit AI flow located in `src/ai/flows`. These server-side functions define the AI's logic, its inputs, and its outputs. The frontend UI, defined in `src/lib/tools-client.tsx`, provides a user-friendly interface to interact with these flows.
+            </p>
             <div className="space-y-12">
-                {tools.map((tool) => {
-                // Schemas would need to be imported or passed in a different way
-                // For now, this will render without schemas
-                const inputSchema = undefined;
-                const outputSchema = undefined;
-
-                return (
+                {tools.map((tool) => (
                 <Card key={tool.id} className="bg-card/50 backdrop-blur-lg border-primary/10 overflow-hidden">
                     <CardHeader>
                     <CardTitle className="flex items-center gap-3 text-2xl text-primary">
                         <GitBranch />
-                        {tool.id}
+                        Flow: {tool.id}
                     </CardTitle>
                     <p className="text-foreground/70 pt-2">{tool.description}</p>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                        <div>
-                            <h3 className="font-semibold text-lg mb-2 text-foreground/90">Input Schema</h3>
-                            <SchemaDisplay schema={inputSchema} />
-                        </div>
-                        <div>
-                            <h3 className="font-semibold text-lg mb-2 text-foreground/90">Output Schema</h3>
-                            <SchemaDisplay schema={outputSchema} />
-                        </div>
+                        <SchemaDisplay tool={tool} />
                     </CardContent>
                 </Card>
-                )})}
+                ))}
             </div>
             </section>
 
@@ -136,7 +132,7 @@ export default function DocumentationPage() {
                         </p>
                         <ul>
                             <li><strong>Google AI (Gemini):</strong> To power all AI features, the application requires a <code>GEMINI_API_KEY</code>. You obtain this from Google AI Studio and set it up once in your local environment file or server configuration.</li>
-                            <li><strong>Future Integrations (e.g., Google Ads):</strong> Advanced tools like the upcoming "Gemini for Google Ads" co-expert will likely require you to generate an API key from your Google Ads account and provide it to the suite.</li>
+                            <li><strong>Portal APIs (Bayut, Property Finder):</strong> To use the automated listing pilots, you need an enterprise API key from each portal, which can be configured in the Developer Admin section.</li>
                         </ul>
                         <p>
                             We securely encrypt and store all API keys you provide. This method is used when a direct user-based authentication flow like OAuth is not suitable for the type of integration.
@@ -149,5 +145,3 @@ export default function DocumentationPage() {
     </div>
   );
 }
-
-    

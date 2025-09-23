@@ -1,24 +1,24 @@
-# Entrestate
+# Entrestate Internal Documentation
 
 ## Overview
 Entrestate is a **real estate–focused AI productivity hub**.  
 It connects **projects, brands, storage, and sales tools** into one unified system that empowers agents to create, manage, and sell faster.  
 
-The system is built on a **modular architecture**: each feature is an AI-driven service card that plugs into a shared core (auth, storage, brand kit, project library).
+The system is built on a **modular architecture**: each feature is an AI-driven "Service Card" that plugs into a shared core (auth, storage, brand kit, project library). The complete technical vision is outlined in `src/ai/PRODUCT_BRIEF.md`.
 
 ---
 
 ## Core Concepts
-- **Projects** → AI-curated library, stored per user.  
-- **Brand Kit** → logos, colors, contact info applied across tools.  
-- **Storage** → central bucket for uploads, connected to projects and outputs.  
-- **Service Cards** → independent AI-powered tools (ads, reels, emails, PDFs, etc.).  
-- **AI Co-Pilot** → assistant that guides flows, connects data, and suggests next steps.  
+- **Projects** → AI-curated library, stored per user in Firestore (`users/{uid}/projects`).
+- **Brand Kit** → Logos, colors, contact info applied across tools, stored in `users/{uid}`.
+- **Storage** → Central bucket for uploads, connected to projects and outputs.
+- **Service Cards** → Independent AI-powered tools, defined in `src/lib/tools-client.tsx`, each powered by a Genkit flow.
+- **AI Co-Pilot** → The central assistant that guides workflows, connects data, and suggests next steps.
 
 ---
 
-## Features
-- Instant Ad Creation  
+## Core Features (Service Cards)
+- Insta Ad Creation  
 - Automated Rebranding  
 - PDF Smart Editor  
 - Landing Page Generator  
@@ -34,45 +34,55 @@ The system is built on a **modular architecture**: each feature is an AI-driven 
 - Investor Matching  
 - Market Trend Reports  
 
-(Each service runs as a card in `/dashboard` and connects back to **Projects + Brand + Storage**).  
+(Each service runs as a card in `/dashboard/marketing` and connects back to **Projects + Brand + Storage**).  
 
 ---
 
 ## Data Model (Firestore)
+
 `users/{uid}`
   - `profile: { name, city, email }`
   - `brandKit: { logoUrl, colors:{primary,accent}, contact:{phone,email} }`
-  - `projects: [projectId]`
-  - `storageRefs: [fileId]`
-  - `servicesUsed: { [serviceId]: timestamp }`
-  - `aiMemory: { notes:[], tasks:[] }`
+  - `projects (subcollection)`
+    - `projects/{projectId}`
+      - `name, developer, city, priceFrom, unitTypes[], handover`
+  - `knowledgeBase (subcollection)`
+      - `files/{fileId}`
+          - `fileName, fileUrl, type, status, summary`
 
-`projects/{projectId}`
-  - `name, developer, city, priceFrom, unitTypes[], handover`
+`projects_catalog/{projectId}`
+  - `name, developer, city, priceFrom, unitTypes[], handover` (Public, searchable library)
 
-`storage/{fileId}`
-  - `fileUrl, ownerUid, type, tags[], linkedProjectId?`
+`events/{eventId}`
+  - `event, uid, props, ts` (For analytics and AI training)
+
+`xmlImports/{importId}`
+  - `type, fileName, storagePath, ownerUid, status, preview, createdAt`
 
 ---
 
-## Flows
+## Key Flows
 ### Onboarding
 
 1. Auto-detect location (via cookies/IP).
-2. Select developers → fetch initial projects.
-3. Generate shortlist → load into Projects.
-4. Add Brand Kit (logo, colors, contact).
-5. Ready → land in /dashboard.
+2. User selects key developers, which seeds their initial project library.
+3. User adds their Brand Kit (logo, colors, contact).
+4. User connects external accounts (Meta, WhatsApp, etc.).
+5. User lands in `/dashboard`, ready to use the tools.
 
-### Service Use
+### Service Use (Generic Flow)
 
-1. User selects a service card.
-2. Card pulls from Projects + Brand + Storage.
-3. AI generates output → saved back to Storage.
+1. User opens a tool from the `/dashboard/marketing` page.
+2. The UI in `/dashboard/tool/[toolId]` renders the form based on `tools-client.tsx`.
+3. User fills out the form and submits.
+4. The request is sent to the `/api/run` endpoint.
+5. The endpoint maps the `toolId` to the correct Genkit flow in `src/ai/flows`.
+6. The Genkit flow executes (calling the Gemini API).
+7. The result is returned to the UI and rendered by the tool's `renderResult` function.
 
 ### AI Co-Pilot
 
-- Observes user actions.
+- Observes user actions via the `events` collection.
 - Suggests next tools (“You edited a brochure → want to generate an ad?”).
 - Guides onboarding for new users.
 
@@ -80,24 +90,18 @@ The system is built on a **modular architecture**: each feature is an AI-driven 
 
 ## APIs / Integrations
 
-- **Google Cloud / Firebase** → Auth, Firestore, Storage, Hosting.
-- **Meta / TikTok / Snap / Google Ads APIs** → for campaign deployment.
-- **Gemini API (Google AI)** → for AI generation.
-- **Twilio / WhatsApp Business API** → comms integration.
+- **Google Cloud / Firebase** → Auth, Firestore, Storage, Hosting, Cloud Functions.
+- **Meta / TikTok / Google Ads APIs** → For campaign deployment via Pilots.
+- **Gemini API (Google AI)** → For all generative AI capabilities via Genkit.
+- **Twilio / WhatsApp Business API** → Comms integration.
+- **PayPal API** → For transaction lookups and future payments.
 
 ---
 
 ## Deployment
 
-- **Framework**: Next.js + Tailwind
-- **Hosting**: Vercel
+- **Framework**: Next.js + Tailwind CSS
+- **Hosting**: Firebase App Hosting (preferred) or Vercel
 - **Database**: Firestore
 - **Storage**: Firebase Storage
 - **Auth**: Firebase Auth
-
----
-
-## Vision
-
-Entrestate empowers every salesperson by giving them tools, not just tasks.
-With projects, brand, and storage unified, Entrestate becomes the AI co-pilot for real estate sales.

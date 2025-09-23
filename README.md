@@ -4,7 +4,7 @@ Welcome to Entrestate, an AI-native operating system designed to give real estat
 
 ![Executive Brain Map](https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.appspot.com/o/executive_brain_map.png?alt=media&token=167a5704-ca13-43e6-997c-9b73715d31f0)
 
-*A high-level diagram of the event-driven architecture. See the full SVG in `src/components/diagrams/ExecutiveBrainMap.tsx`.*
+*A high-level diagram of our AI-native architecture. See the full SVG in `src/components/diagrams/ExecutiveBrainMap.tsx` and read the detailed explanation in `src/ai/PRODUCT_BRIEF.md`.*
 
 ---
 
@@ -12,7 +12,7 @@ Welcome to Entrestate, an AI-native operating system designed to give real estat
 
 The system is built on a modular, event-driven architecture designed for scalability and extensibility.
 
--   **Frontend**: A responsive and performant UI built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, and **ShadCN UI** components. Hosted on Vercel or Firebase Hosting.
+-   **Frontend**: A responsive and performant UI built with **Next.js (App Router)**, **TypeScript**, **Tailwind CSS**, and **ShadCN UI** components.
 -   **AI Core**: All AI capabilities are powered by **Genkit**, Google's open-source framework for building production-grade AI flows, using the latest **Gemini** models.
 -   **Backend & Data**: The backend is serverless, utilizing **Firebase** for Authentication, **Firestore** for the database (e.g., user profiles, project libraries), and **Cloud Storage** for assets.
 -   **Event Bus**: Cloud Pub/Sub and Cloud Functions form the backbone of our event-driven system, allowing services to communicate asynchronously and enabling complex, multi-step workflows.
