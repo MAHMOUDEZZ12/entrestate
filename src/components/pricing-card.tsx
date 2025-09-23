@@ -16,7 +16,7 @@ interface PricingCardProps {
 
 export function PricingCard({ plan, isAnnual }: PricingCardProps) {
   const finalPrice = isAnnual ? plan.price_monthly * 12 * 0.8 : plan.price_monthly; // 20% discount for annual
-  const priceString = isAnnual ? (finalPrice / 12).toFixed(2) : finalPrice.toFixed(2);
+  const priceString = isAnnual ? (finalPrice / 12).toFixed(0) : finalPrice.toFixed(0);
   
   return (
     <Card className={cn(
@@ -33,9 +33,9 @@ export function PricingCard({ plan, isAnnual }: PricingCardProps) {
             <span className="text-4xl font-bold">${priceString}</span>
             <span className="text-muted-foreground ml-1">/month</span>
         </div>
-         {isAnnual && plan.id !== 'custom' && <p className="text-xs text-muted-foreground -mt-2">Billed annually at ${finalPrice.toFixed(2)}</p>}
+         {isAnnual && plan.id !== 'custom' && <p className="text-xs text-muted-foreground -mt-2">Billed annually at ${finalPrice.toFixed(0)}</p>}
         
-        <p className="font-semibold text-sm pt-4">{plan.id === 'custom' ? 'Selected Apps:' : 'What you can do:'}</p>
+        <p className="font-semibold text-sm pt-4">{plan.id === 'custom' ? 'Selected Apps:' : 'Includes:'}</p>
         <ul className="space-y-2">
           {plan.features.slice(0, 7).map((feature) => (
             <li key={feature} className="flex items-start gap-3">
@@ -53,9 +53,9 @@ export function PricingCard({ plan, isAnnual }: PricingCardProps) {
       </CardContent>
       <CardFooter>
         <Link href="/login" className="w-full">
-            <Button className="w-full" size="lg" variant={plan.popular || plan.id === 'custom' ? 'default' : 'outline'} disabled={plan.id === 'custom' && plan.features.length === 0}>
-                {plan.id === 'custom' && plan.features.length === 0 ? 'Select Apps Above' : 'Get Started'}
-                {!(plan.id === 'custom' && plan.features.length === 0) && <ArrowRight className="ml-2 h-4 w-4" />}
+            <Button className="w-full" size="lg" variant={plan.popular ? 'default' : 'outline'}>
+                Get Started
+                <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
         </Link>
       </CardFooter>

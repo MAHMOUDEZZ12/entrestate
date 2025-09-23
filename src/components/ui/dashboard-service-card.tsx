@@ -72,16 +72,7 @@ export function DashboardServiceCard({
 
   const handlePayment = (e: React.MouseEvent) => {
     e.preventDefault();
-    setIsConnecting(true);
-    setTimeout(() => {
-        setIsConnecting(false);
-        setIsAdded(true);
-        track('app_added', { toolId: tool.id, connectionType: 'payment' });
-        toast({
-            title: `${title} Unlocked!`,
-            description: `You can now use this premium tool.`
-        });
-    }, 1500);
+    router.push('/pricing');
   }
   
   const handleOpenApp = () => {
@@ -119,18 +110,14 @@ export function DashboardServiceCard({
         actionText = `Connect to ${connectionRequired}`;
         actionHandler = handleConnect;
     } else if (paymentRequired) {
-        titleText = `Unlock "${title}"?`;
-        dialogContent = (
+        titleText = `Upgrade Required`;
+         dialogContent = (
             <div>
-                <p>The "{title}" tool is a premium feature. To activate it, please confirm your subscription or add a payment method.</p>
-                {guideHref && (
-                    <p className="mt-2 text-sm text-muted-foreground">
-                        Read the <Link href={guideHref} className="underline hover:text-primary">Handbook guide</Link> to learn more.
-                    </p>
-                )}
+                <p>The "{title}" tool is a premium feature not included in your current plan.</p>
+                <p className="mt-2">Please upgrade your subscription to access this and other powerful tools.</p>
             </div>
         );
-        actionText = "Confirm & Unlock";
+        actionText = "View Plans";
         actionHandler = handlePayment;
     } else {
         dialogContent = (
