@@ -1,9 +1,9 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { Settings, Palette, User, CreditCard, Paintbrush, Text, Sun, Moon, Laptop, Bot, BrainCircuit, Network, Database, Users, Instagram, Facebook, Linkedin, Mail, MessageCircle, Twitter, Share2, Building } from 'lucide-react';
+import { Settings, Palette, User, CreditCard, Paintbrush, Text, Sun, Moon, Laptop, Bot, BrainCircuit, Network, Database, Users, Instagram, Facebook, Linkedin, Mail, MessageCircle, Twitter, Share2, Building, MousePointer } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -50,6 +50,34 @@ export default function SettingsPage() {
     bayut: true,
     googleDrive: false,
   });
+
+  const [isDraggableSearch, setIsDraggableSearch] = useState(false);
+
+  useEffect(() => {
+    try {
+        const savedValue = localStorage.getItem('isSearchDraggable');
+        setIsDraggableSearch(savedValue === 'true');
+    } catch (e) {
+        // Handle cases where localStorage is not available
+    }
+  }, []);
+
+  const handleDraggableToggle = (checked: boolean) => {
+      setIsDraggableSearch(checked);
+      try {
+          localStorage.setItem('isSearchDraggable', String(checked));
+          toast({
+              title: "Search setting updated!",
+              description: `The search menu is now ${checked ? 'draggable' : 'fixed'}. The change will apply on next page load.`
+          });
+      } catch (e) {
+         toast({
+              title: "Could not save setting",
+              description: "Your browser does not seem to support local storage.",
+              variant: "destructive"
+          });
+      }
+  }
 
   const handleConnectionToggle = (key: keyof typeof connections) => {
     setConnections(prev => {
@@ -177,13 +205,16 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent className="space-y-6">
                 <div className="flex items-center justify-between rounded-lg border p-4">
-                  <div>
-                    <Label htmlFor="show-floating-chat">Show Floating Chat Button</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Display the assistant chat button on all pages.
-                    </p>
+                  <div className="flex items-center gap-3">
+                    <MousePointer className="h-5 w-5 text-muted-foreground"/>
+                    <div>
+                        <Label htmlFor="draggable-search">Enable Draggable Search Menu</Label>
+                        <p className="text-sm text-muted-foreground">
+                        Allows you to move the main search menu around the screen.
+                        </p>
+                    </div>
                   </div>
-                  <Switch id="show-floating-chat" defaultChecked />
+                  <Switch id="draggable-search" checked={isDraggableSearch} onCheckedChange={handleDraggableToggle} />
                 </div>
                  <Link href="/me/assistant">
                     <Button variant="outline">

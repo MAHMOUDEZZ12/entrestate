@@ -3,8 +3,8 @@
 
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, LayoutDashboard, Search, ChevronDown } from 'lucide-react';
-import React, from 'react';
+import { LogOut, Settings, Search, ChevronDown, Bot, BrainCircuit, Database, File, Home, LayoutGrid, Library, LineChart, Palette, Target, Users, Users2, Workflow, GitMerge, GanttChartSquare } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import {
@@ -14,31 +14,95 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
+  DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Logo } from './logo';
-import { GlobalSearch } from './ui/global-search';
+import { tools, Feature } from '@/lib/tools-client';
+import * as LucideIcons from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+
+const iconMap: { [key: string]: React.ReactElement } = Object.fromEntries(
+  Object.entries(LucideIcons).map(([name, Icon]) => [name, <Icon key={name} />])
+);
+
+const ListItem = React.forwardRef<
+  HTMLAnchorElement,
+  React.ComponentPropsWithoutRef<typeof Link> & { tool: Feature }
+>(({ className, title, tool, ...props }, ref) => {
+  return (
+    <li>
+      <Link href={tool.href} legacyBehavior passHref>
+        <a
+          ref={ref}
+          className={cn(
+            'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+            className
+          )}
+          {...props}
+        >
+          <div className="flex items-center gap-3">
+             <div className="p-2 rounded-md text-white" style={{backgroundColor: tool.color}}>
+                {React.cloneElement(iconMap[tool.iconName] || <Sparkles />, { className: 'h-4 w-4' })}
+            </div>
+            <div>
+                <div className="text-sm font-medium leading-none">{title}</div>
+            </div>
+          </div>
+        </a>
+      </Link>
+    </li>
+  )
+})
+ListItem.displayName = 'ListItem'
+
+
+const pageLinks = {
+  "Workspace": [
+    { title: 'Home', href: '/me', icon: <Home className="mr-2 h-4 w-4" /> },
+    { title: 'Apps', href: '/me/marketing', icon: <LayoutGrid className="mr-2 h-4 w-4" /> },
+    { title: 'Flow Builder', href: '/me/flows', icon: <Workflow className="mr-2 h-4 w-4" /> },
+    { title: 'AI Assistant', href: '/me/assistant', icon: <Bot className="mr-2 h-4 w-4" /> },
+    { title: 'Brand & Assets', href: '/me/brand', icon: <Palette className="mr-2 h-4 w-4" /> },
+    { title: 'Settings', href: '/me/settings', icon: <Settings className="mr-2 h-4 w-4" /> },
+  ],
+  "Intelligence": [
+    { title: 'Market Library', href: '/me/tool/projects-finder', icon: <Database className="mr-2 h-4 w-4" /> },
+    { title: 'Leads & CRM', href: '/me/leads', icon: <Target className="mr-2 h-4 w-4" /> },
+    { title: 'Listing Performance', href: '/me/tool/listing-performance', icon: <LineChart className="mr-2 h-4 w-4" /> },
+    { title: 'Contacts Directory', href: '/me/directory', icon: <Users2 className="mr-2 h-4 w-4" /> },
+  ],
+  "Public Site": [
+    { title: 'Solutions', href: '/solutions', icon: <BrainCircuit className="mr-2 h-4 w-4" /> },
+    { title: 'Pricing', href: '/pricing', icon: <File className="mr-2 h-4 w-4" /> },
+    { title: 'Market Pulse', href: '/market', icon: <LineChart className="mr-2 h-4 w-4" /> },
+    { title: 'Community', href: '/community', icon: <Users className="mr-2 h-4 w-4" /> },
+    { title: 'Blog', href: '/blog', icon: <File className="mr-2 h-4 w-4" /> },
+  ],
+   "Developer": [
+    { title: 'Dev Dashboard', href: '/dev', icon: <GanttChartSquare className="mr-2 h-4 w-4" /> },
+    { title: 'Sitemap', href: '/dev/sitemap', icon: <GitMerge className="mr-2 h-4 w-4" /> },
+  ],
+}
 
 
 export function DashboardHeader() {
   const { user } = useAuth();
-  const [isSearchOpen, setIsSearchOpen] = React.useState(false);
+  const [isDraggable, setIsDraggable] = useState(false);
+
+   useEffect(() => {
+    try {
+      const savedValue = localStorage.getItem('isSearchDraggable');
+      setIsDraggable(savedValue === 'true');
+    } catch (e) {
+      // Local storage might not be available
+    }
+  }, []);
 
   const handleLogout = async () => {
     await auth?.signOut();
   }
-
-  React.useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-        e.preventDefault();
-        setIsSearchOpen((open) => !open);
-      }
-    };
-    document.addEventListener('keydown', down);
-    return () => document.removeEventListener('keydown', down);
-  }, []);
-
 
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
@@ -47,20 +111,43 @@ export function DashboardHeader() {
         </div>
           
         <div className="flex-1 flex justify-center px-4">
-             <Button
-                variant="outline"
-                className="w-full max-w-lg justify-start text-muted-foreground h-10 px-4 text-base"
-                onClick={() => setIsSearchOpen(true)}
-            >
-                <div className="flex items-center gap-2">
-                    <Search className="h-4 w-4" />
-                    Search for anything...
-                </div>
-                <kbd className="pointer-events-none ml-auto hidden h-6 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-                    <span className="text-xs">⌘</span>K
-                </kbd>
-            </Button>
-            <GlobalSearch isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                   <Button
+                        variant="outline"
+                        className="w-full max-w-lg justify-start text-muted-foreground h-10 px-4 text-base"
+                    >
+                        <div className="flex items-center gap-2">
+                            <Search className="h-4 w-4" />
+                            Search for apps, pages, or projects...
+                        </div>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                    asChild 
+                    align="center" 
+                    className="w-[90vw] max-w-[960px] p-0"
+                >
+                    <motion.div drag={isDraggable} dragMomentum={false} className="cursor-grab active:cursor-grabbing">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 p-4">
+                            {Object.entries(pageLinks).map(([category, links]) => (
+                                <div key={category}>
+                                    <h3 className="font-semibold text-sm px-3 py-1.5">{category}</h3>
+                                    <div className="flex flex-col">
+                                        {links.map(link => (
+                                             <Link key={link.href} href={link.href} passHref legacyBehavior>
+                                                <a className="flex items-center gap-3 rounded-md p-3 text-sm transition-colors hover:bg-accent hover:text-accent-foreground">
+                                                    {link.icon} {link.title}
+                                                </a>
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </motion.div>
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
@@ -83,7 +170,7 @@ export function DashboardHeader() {
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                    <Link href="/me"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
+                    <Link href="/me"><LayoutGrid className="mr-2 h-4 w-4" /> Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
                     <Link href="/me/settings"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
