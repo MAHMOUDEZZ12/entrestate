@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -10,12 +10,17 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Palette, Upload, Save, BrainCircuit, FileText, ImageIcon, FileSpreadsheet, Loader2 } from 'lucide-react';
+import { Palette, Upload, Save, BrainCircuit, FileText, ImageIcon, Loader2, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { PageHeader } from '@/components/ui/page-header';
 import { useAuth } from '@/hooks/useAuth';
 import { Checkbox } from '@/components/ui/checkbox';
+import { addFileToKnowledgeBase, getKnowledgeBaseFiles, deleteFileFromKnowledgeBase } from '@/services/database';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import { auth } from '@/lib/firebase';
+import type { KnowledgeFile } from '@/types';
+
 
 const brandSchema = z.object({
   companyName: z.string().min(2, 'Company name is required.'),
@@ -26,27 +31,20 @@ const brandSchema = z.object({
 });
 
 type BrandFormValues = z.infer<typeof brandSchema>;
-type MockFile = { id: number; name: string; type: string; icon: React.ReactNode; size: string; };
-
-const initialMockFiles: MockFile[] = [
-  { id: 1, name: 'Emaar_Beachfront_Brochure.pdf', type: 'PDF', icon: <FileText className="h-10 w-10 text-destructive" />, size: '2.5 MB' },
-  { id: 2, name: 'Company_Logo_White.png', type: 'PNG', icon: <ImageIcon className="h-10 w-10 text-primary" />, size: '150 KB' },
-  { id: 3, name: 'Investor_List_Q2.csv', type: 'CSV', icon: <FileSpreadsheet className="h-10 w-10 text-green-500" />, size: '320 KB' },
-];
 
 export default function BrandPage() {
   const { toast } = useToast();
   const { user } = useAuth();
   const [logoPreview, setLogoPreview] = React.useState<string | null>(null);
   const [isTraining, setIsTraining] = useState(false);
-  const [files, setFiles] = useState<MockFile[]>(initialMockFiles);
+  const [files, setFiles] = useState<KnowledgeFile[]>([]);
+  const [isLoadingFiles, setIsLoadingFiles] = useState(true);
   const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const [selectedFiles, setSelectedFiles] = useState<number[]>([]);
+  const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
 
   const {
     control,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<BrandFormValues>({
@@ -58,6 +56,20 @@ export default function BrandPage() {
       contactInfo: '',
     },
   });
+
+   const fetchKnowledgeFiles = useCallback(async () => {
+    if (!user) return;
+    setIsLoadingFiles(true);
+    try {
+        const userFiles = await getKnowledgeBaseFiles(user.uid);
+        setFiles(userFiles);
+    } catch (e) {
+        console.error("Failed to fetch knowledge base files", e);
+        toast({ title: "Error", description: "Could not load your files.", variant: "destructive" });
+    } finally {
+        setIsLoadingFiles(false);
+    }
+  }, [user, toast]);
 
   useEffect(() => {
     if (user) {
@@ -85,8 +97,9 @@ export default function BrandPage() {
             } catch(e) { console.error("Failed to fetch user profile", e); }
         }
         fetchUserData();
+        fetchKnowledgeFiles();
     }
-  }, [user, reset]);
+  }, [user, reset, fetchKnowledgeFiles]);
 
 
   const onSubmit = async (data: BrandFormValues) => {
@@ -137,15 +150,31 @@ export default function BrandPage() {
     }
   };
   
+  const handleLogoUpload = async (file: File) => {
+     if (!user || !auth) return;
+     toast({ title: 'Uploading logo...'});
+     try {
+        const functions = getFunctions(auth.app);
+        const createUploadUrl = httpsCallable(functions, 'createUploadUrl');
+        const res: any = await createUploadUrl({ filename: file.name, type: 'logo', contentType: file.type });
+        const { uploadUrl, fileUrl } = res.data;
+
+        await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type }});
+        
+        setLogoPreview(fileUrl); // Set preview to the final storage URL
+        reset({ logoUrl: fileUrl }); // Update form state
+
+        toast({ title: 'Logo uploaded successfully!' });
+     } catch (e: any) {
+        console.error('Logo upload failed', e);
+        toast({ title: 'Logo Upload Failed', description: e.message, variant: 'destructive'});
+     }
+  }
+  
   const handleLogoFileChange = (files: FileList | null) => {
     const file = files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setLogoPreview(reader.result as string);
-        setValue("logoUrl", reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      handleLogoUpload(file);
     }
   }
 
@@ -162,28 +191,65 @@ export default function BrandPage() {
 
       // In a real application, you would send these files to be indexed in a vector database.
       await new Promise(resolve => setTimeout(resolve, 3000 + selectedFiles.length * 500));
+      
+      const filesToUpdate = files.filter(f => selectedFiles.includes(f.id));
+      for (const file of filesToUpdate) {
+          // This is a simulation. A real app would call a Cloud Function to update the status.
+          setFiles(prev => prev.map(f => f.id === file.id ? {...f, status: 'trained' as const} : f));
+      }
 
       toast({
           title: "AI Training Complete!",
           description: "The AI's knowledge base has been updated. You can now ask it questions about the content of your files.",
       });
       setIsTraining(false);
+      setSelectedFiles([]);
   }
   
-    const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        if (!user || !auth) return;
         const uploadedFiles = event.target.files;
-        if (uploadedFiles && uploadedFiles.length > 0) {
-            const newFiles = Array.from(uploadedFiles).map((file, index) => ({
-                id: Date.now() + index,
-                name: file.name,
-                type: file.type.split('/')[1]?.toUpperCase() || 'FILE',
-                icon: <FileText className="h-10 w-10 text-muted-foreground" />,
-                size: `${(file.size / 1024).toFixed(2)} KB`,
-            }));
-            setFiles(prev => [...prev, ...newFiles]);
-            toast({ title: `${newFiles.length} file(s) uploaded successfully.`});
+        if (!uploadedFiles || uploadedFiles.length === 0) return;
+
+        toast({ title: `Uploading ${uploadedFiles.length} file(s)...`});
+        
+        for (const file of Array.from(uploadedFiles)) {
+             try {
+                const functions = getFunctions(auth.app);
+                const createUploadUrl = httpsCallable(functions, 'createUploadUrl');
+                const res: any = await createUploadUrl({ filename: file.name, type: 'knowledge_base', contentType: file.type });
+                const { uploadUrl, fileUrl } = res.data;
+
+                await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type }});
+                
+                await addFileToKnowledgeBase(user.uid, {
+                    fileName: file.name,
+                    fileUrl: fileUrl,
+                    type: file.type,
+                    size: file.size,
+                    status: 'uploaded',
+                });
+
+            } catch (e: any) {
+                console.error(`Failed to upload ${file.name}`, e);
+                toast({ title: `Upload Failed for ${file.name}`, description: e.message, variant: 'destructive'});
+            }
         }
+        
+        toast({ title: "Uploads complete!"});
+        fetchKnowledgeFiles(); // Refresh the file list
     };
+
+    const handleDeleteFile = async (fileId: string) => {
+        if (!user) return;
+        try {
+            await deleteFileFromKnowledgeBase(user.uid, fileId);
+            toast({ title: 'File Deleted', description: 'The file has been removed from your knowledge base.' });
+            fetchKnowledgeFiles();
+        } catch(e: any) {
+            toast({ title: 'Error', description: `Could not delete file: ${e.message}`, variant: 'destructive'});
+        }
+    }
 
 
   return (
@@ -277,26 +343,31 @@ export default function BrandPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
-                        {files.map(file => (
-                            <div key={file.id} className="flex items-center gap-4 p-2 rounded-md bg-muted/50">
-                                <Checkbox 
-                                    id={`file-${file.id}`} 
-                                    onCheckedChange={(checked) => {
-                                        setSelectedFiles(prev => checked ? [...prev, file.id] : prev.filter(id => id !== file.id));
-                                    }}
-                                />
-                                {file.icon}
-                                <div className="overflow-hidden">
-                                    <p className="font-semibold text-sm truncate">{file.name}</p>
-                                    <p className="text-xs text-muted-foreground">{file.size}</p>
+                    {isLoadingFiles ? (
+                        <div className="flex justify-center items-center h-40"><Loader2 className="animate-spin"/></div>
+                    ) : (
+                        <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
+                            {files.map(file => (
+                                <div key={file.id} className="flex items-center gap-4 p-2 rounded-md bg-muted/50">
+                                    <Checkbox 
+                                        id={`file-${file.id}`} 
+                                        onCheckedChange={(checked) => {
+                                            setSelectedFiles(prev => checked ? [...prev, file.id] : prev.filter(id => id !== file.id));
+                                        }}
+                                    />
+                                    <FileText className="h-8 w-8 text-muted-foreground" />
+                                    <div className="overflow-hidden flex-1">
+                                        <p className="font-semibold text-sm truncate">{file.fileName}</p>
+                                        <p className="text-xs text-muted-foreground">{((file.size || 0) / 1024).toFixed(2)} KB</p>
+                                    </div>
+                                    <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => handleDeleteFile(file.id)}><Trash2 className="h-4 w-4 text-destructive/70 hover:text-destructive" /></Button>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                    )}
                      <Button onClick={() => fileInputRef.current?.click()} variant="outline" className="w-full mt-4">
                         <Upload className="mr-2 h-4 w-4" />
-                        Upload New File
+                        Upload New File(s)
                     </Button>
                     <Input ref={fileInputRef} type="file" className="hidden" multiple onChange={handleFileUpload} />
                 </CardContent>
@@ -312,3 +383,4 @@ export default function BrandPage() {
     </main>
   );
 }
+

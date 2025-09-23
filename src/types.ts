@@ -59,6 +59,18 @@ export interface AppEvent {
   ts?: any; // serverTimestamp()
 }
 
+// Knowledge Base File
+export interface KnowledgeFile {
+    id: string;
+    fileName: string;
+    fileUrl: string;
+    type: string;
+    size: number;
+    status: 'uploaded' | 'training' | 'trained' | 'error';
+    createdAt: Date;
+}
+
+
 // Schemas for Audience Creator (`suggest-targeting-options`)
 export const SuggestTargetingOptionsInputSchema = z.object({
   projectId: z.string().describe('The project ID to generate targeting for.'),

@@ -12,7 +12,7 @@
 
 import { adminDb } from '@/lib/firebaseAdmin';
 import { fail } from '@/lib/api-helpers';
-import type { Project, BrandKit } from '@/types';
+import type { Project, BrandKit, KnowledgeFile } from '@/types';
 
 
 /**
@@ -63,6 +63,58 @@ export async function saveUserData(userId: string, data: UserProfileData): Promi
         await userDocRef.set(data, { merge: true });
     } catch (error) {
         console.error(`Error saving data for user ${userId}:`, error);
+        throw fail(error);
+    }
+}
+
+
+/**
+ * Adds a file to a user's knowledge base.
+ * @param userId The UID of the user.
+ * @param fileData The file data to add.
+ * @returns The ID of the newly created document.
+ */
+export async function addFileToKnowledgeBase(userId: string, fileData: Omit<KnowledgeFile, 'id'>): Promise<string> {
+    if (!adminDb) throw new Error("Database service is unavailable.");
+    try {
+        const docRef = await adminDb.collection('users').doc(userId).collection('knowledgeBase').add({
+            ...fileData,
+            createdAt: new Date(),
+        });
+        return docRef.id;
+    } catch (error) {
+        console.error(`Error adding file to knowledge base for user ${userId}:`, error);
+        throw fail(error);
+    }
+}
+
+/**
+ * Retrieves all files from a user's knowledge base.
+ * @param userId The UID of the user.
+ * @returns An array of knowledge files.
+ */
+export async function getKnowledgeBaseFiles(userId: string): Promise<KnowledgeFile[]> {
+    if (!adminDb) throw new Error("Database service is unavailable.");
+    try {
+        const snapshot = await adminDb.collection('users').doc(userId).collection('knowledgeBase').orderBy('createdAt', 'desc').get();
+        return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as KnowledgeFile));
+    } catch (error) {
+        console.error(`Error getting knowledge base files for user ${userId}:`, error);
+        throw fail(error);
+    }
+}
+
+/**
+ * Deletes a file from a user's knowledge base.
+ * @param userId The UID of the user.
+ * @param fileId The ID of the file to delete.
+ */
+export async function deleteFileFromKnowledgeBase(userId: string, fileId: string): Promise<void> {
+    if (!adminDb) throw new Error("Database service is unavailable.");
+    try {
+        await adminDb.collection('users').doc(userId).collection('knowledgeBase').doc(fileId).delete();
+    } catch (error) {
+        console.error(`Error deleting file ${fileId} for user ${userId}:`, error);
         throw fail(error);
     }
 }
