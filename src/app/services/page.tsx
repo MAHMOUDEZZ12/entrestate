@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { Briefcase, Check, ArrowRight, Bot } from 'lucide-react';
+import { Briefcase, Check, ArrowRight, Bot, Database, Search, Code, Smartphone } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
@@ -13,33 +13,35 @@ import { ShinyButton } from '@/components/ui/shiny-button';
 
 const servicesData = [
   {
-    title: "Done-for-You Ad Campaigns",
-    description: "Our expert team, powered by our own AI tools, will design, launch, and manage your entire ad campaign on platforms like Meta and Google. We handle everything from audience creation to ad copy and optimization.",
-    deliverables: ["Full campaign setup", "Audience research & targeting", "Ad creative & copy", "Weekly performance reports"],
-    price: "From $999/mo + Ad Spend",
-    cta: "Request a Campaign"
+    title: "Market Data Listing",
+    description: "We handle the entire process of sourcing, verifying, and listing your property portfolio across all relevant market portals and our own internal library.",
+    icon: <Database className="h-8 w-8" />,
+    cta: "Request Data Service"
   },
   {
-    title: "Full Market Listing Service",
-    description: "We'll take your entire property portfolio and create optimized, high-quality listings for all major portals. This includes professional copywriting, data verification, and syndication management.",
-    deliverables: ["Professional listing copywriting", "Data verification & cleanup", "Multi-portal syndication (Bayut, Property Finder, etc.)", "Performance tracking"],
-    price: "From $499/project",
-    cta: "List Your Portfolio"
+    title: "Intel. Lead Generation",
+    description: "Our team runs targeted, AI-powered campaigns to find and qualify high-intent leads, delivering them directly to your sales team.",
+    icon: <Search className="h-8 w-8" />,
+    cta: "Get Qualified Leads"
   },
   {
-    title: "Lead Generation for Teams",
-    description: "A complete lead generation service for your brokerage or team. We use our AI to identify high-intent leads, run targeted outreach campaigns, and deliver qualified prospects directly to your CRM.",
-    deliverables: ["Guaranteed number of qualified leads per month", "Custom landing pages", "Multi-channel outreach (Email, WhatsApp)", "CRM integration"],
-    price: "Custom Pricing",
-    cta: "Get a Quote"
+    title: "Onsite SEO",
+    description: "We optimize your web properties with targeted keywords, technical improvements, and content strategies to dominate search engine rankings for your niche.",
+    icon: <ArrowRight className="h-8 w-8" />,
+    cta: "Improve My Ranking"
   },
   {
-    title: "CRM System Setup & AI Integration",
-    description: "Let us set up and configure your entire CRM. We will structure your data, train your AI Assistant on your client history, and build automated workflows to streamline your sales process.",
-    deliverables: ["CRM setup & data migration", "AI Assistant training", "Custom workflow automation", "Team training session"],
-    price: "One-time fee from $2,499",
-    cta: "Book a Consultation"
-  }
+    title: "Web Development",
+    description: "From stunning project microsites to robust brokerage portals, our team builds high-performance web applications tailored to the real estate industry.",
+    icon: <Code className="h-8 w-8" />,
+    cta: "Build My Website"
+  },
+  {
+    title: "Mobile Apps",
+    description: "Launch a custom-branded mobile app for your clients or agents, providing on-the-go access to listings, market data, and communication tools.",
+    icon: <Smartphone className="h-8 w-8" />,
+    cta: "Develop My App"
+  },
 ];
 
 export default function ServicesPage() {
@@ -49,37 +51,31 @@ export default function ServicesPage() {
       <main className="flex-1 w-full">
          <PageHeader
             title="Our Services"
-            description="Let us do the heavy lifting. Our team of experts, augmented by our powerful AI, can deliver end-to-end results for your business."
+            description="Let our expert team deliver end-to-end results for your business. We handle the execution, so you can focus on what you do best."
             icon={<Briefcase className="h-8 w-8" />}
           />
         
-        <div className="container mx-auto px-4 py-16 md:py-24 space-y-12">
-          {servicesData.map((service, index) => (
-            <Card key={index} className="bg-card/50 backdrop-blur-lg border-primary/10 shadow-lg">
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div className="lg:col-span-2 p-8">
-                  <h3 className="text-2xl font-bold font-heading mb-2">{service.title}</h3>
-                  <p className="text-muted-foreground mb-6">{service.description}</p>
-                  <h4 className="font-semibold mb-3">What's Included:</h4>
-                  <ul className="space-y-2">
-                    {service.deliverables.map((item, i) => (
-                      <li key={i} className="flex items-center gap-3">
-                        <Check className="h-5 w-5 text-primary" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="bg-muted/50 p-8 rounded-b-lg lg:rounded-r-lg lg:rounded-l-none flex flex-col items-center justify-center text-center">
-                  <p className="text-lg font-semibold">Pricing</p>
-                  <p className="text-3xl font-bold my-2">{service.price}</p>
-                  <Button size="lg" className="w-full mt-4">
-                    {service.cta} <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
+        <div className="container mx-auto px-4 py-16 md:py-24">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {servicesData.map((service, index) => (
+                    <Card key={index} className="flex flex-col bg-card/50 backdrop-blur-lg border-primary/10 shadow-lg text-center hover:-translate-y-1 transition-transform">
+                        <CardHeader>
+                            <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
+                                {service.icon}
+                            </div>
+                            <CardTitle>{service.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent className="flex-grow">
+                             <p className="text-muted-foreground">{service.description}</p>
+                        </CardContent>
+                        <CardContent>
+                             <Button size="lg" variant="outline">
+                                {service.cta}
+                            </Button>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
         </div>
 
         <section className="py-24 bg-muted/30">

@@ -59,7 +59,7 @@ export default function HomePage() {
                 The AI-Native Operating System for Real Estate
               </h1>
               <p className="mt-6 max-w-2xl text-lg md:text-xl text-foreground/70">
-                Explore the magical Realtors AI models
+                A complete ecosystem of Apps, Solutions, and Services to give real estate professionals an unparalleled advantage.
               </p>
                <div className="mt-10 w-full max-w-2xl">
                      <div className="relative group">
@@ -84,10 +84,10 @@ export default function HomePage() {
             <div className="container mx-auto px-4 space-y-20">
                  <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl md:text-5xl font-bold tracking-tight drop-shadow-md">
-                       <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Explore the magical Realtors AI models</span>
+                       <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Core AI Solutions</span>
                     </h2>
                     <p className="mt-4 text-lg text-muted-foreground">
-                        This is not a fancy product and no perfect website needed, they come with their perfection.
+                        These are not just features; they are powerful, standalone products designed to transform a core aspect of your business.
                     </p>
                 </div>
                 
@@ -95,16 +95,13 @@ export default function HomePage() {
                    <div className="space-y-4 text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Telescope className="h-8 w-8" /></div>
                        <h3 className="text-3xl font-bold font-heading">
-                          <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">PRO SEARCH ENG. x3</span>
+                          Market Search Engine
                        </h3>
-                       <p className="text-2xl font-semibold !leading-tight">We turned the untouched search bar into an unmatched search engine.</p>
-                        <p className="text-lg text-muted-foreground whitespace-pre-line">
-                            This model switches the life of your website. 
-We added a decentralized market library to it. 
-Try our discovery search to see how it works!
+                       <p className="text-lg text-muted-foreground">
+                            Redefine how you discover opportunities. Our triple-engine search combines keyword-based speed, semantic AI understanding, and predictive historical analysis to give you a complete market view.
                        </p>
-                       <Link href="/solutions/pro-search-eng-x3">
-                           <Button variant="outline" className="mt-6 shadow">Let's Go <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                       <Link href="/solutions/market-search-engine">
+                           <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                    <div>
@@ -116,16 +113,13 @@ Try our discovery search to see how it works!
                     <div className="space-y-4 text-left md:order-2">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><MessageCircle className="h-8 w-8" /></div>
                         <h3 className="text-3xl font-bold font-heading">
-                           <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">ESTCHAT X3</span>
+                           SalesAgentChat AI
                        </h3>
-                       <p className="text-2xl font-semibold !leading-tight">The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.</p>
-                       <p className="text-lg text-muted-foreground whitespace-pre-line">
-                            Imagine hiring a super agent with 15 years market experience.
-He knows everything and comes with a learning dashboard.
-Use it in social media, landing pages, company site, or QR code on business cards.
+                       <p className="text-lg text-muted-foreground">
+                            Deploy a super-intelligent agent on your website or social media. It engages users proactively, answers complex questions with market data, and captures qualified leads 24/7.
                        </p>
-                       <Link href={`/solutions/estchat-x3`}>
-                           <Button variant="outline" className="mt-6 shadow">Name your SuperAgent <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                       <Link href={`/solutions/sales-agent-chat-ai`}>
+                           <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                    <div className="md:order-1">
@@ -137,17 +131,13 @@ Use it in social media, landing pages, company site, or QR code on business card
                     <div className="space-y-4 text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><FileJson className="h-8 w-8" /></div>
                         <h3 className="text-3xl font-bold font-heading">
-                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">MEGA LISTING PRO 2</span>
+                            AI Listing Portal
                         </h3>
-                        <p className="text-2xl font-semibold !leading-tight">From Listings to MEGA PRO Listings.</p>
-                       <p className="text-lg text-muted-foreground whitespace-pre-line">
-                            You don’t need more listings, you need a perfect listing manager.
-A listing is a little far beyond good images, it’s word sensitive
-and requires not less than stock market attention.
-Name a project, and click "list it" - this is literally how it works.
+                        <p className="text-lg text-muted-foreground">
+                           Create a single source of truth for your property data. Our AI consolidates, verifies, and archives listings to eliminate noise, enforce accuracy, and syndicate perfectly formatted data to all major portals.
                        </p>
-                       <Link href={`/solutions/mega-listing-pro-2`}>
-                           <Button variant="outline" className="mt-6 shadow">Use it to stop blaming Portals <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                       <Link href={`/solutions/ai-listing-portal`}>
+                           <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                     <div>

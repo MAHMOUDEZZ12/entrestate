@@ -14,7 +14,7 @@ export const SolutionsCta = () => {
                    Ready to Build Your AI-Powered Agency?
                 </h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    Whether you're a solo agent or a major developer, Entrestate provides the tools, solutions, and services to unlock your full potential.
+                    Whether you're a solo agent or a major developer, Entrestate provides the apps, solutions, and services to unlock your full potential.
                 </p>
                 <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Link href="/login">

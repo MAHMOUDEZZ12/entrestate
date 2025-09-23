@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { Sparkles, Telescope, MessageCircle, FileJson } from 'lucide-react';
+import { Sparkles, Telescope, MessageCircle, FileJson, LayoutGrid, Users, Link as LinkIcon } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
@@ -12,22 +12,40 @@ import Link from 'next/link';
 
 const solutions = [
   {
-    slug: 'pro-search-eng-x3',
-    title: 'PRO SEARCH ENG. x3',
-    icon: <Telescope className="h-8 w-8" />,
-    description: "The triple-engine of discovery: Fast, Smart, and Deep Search for listings, trends, and opportunities.",
-  },
-  {
-    slug: 'estchat-x3',
-    title: 'ESTCHAT X3',
+    slug: 'social-media-chatbot',
+    title: 'Social Media Chatbot',
     icon: <MessageCircle className="h-8 w-8" />,
-    description: "The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.",
+    description: "Deploy an AI-powered chatbot on your social media channels to engage leads 24/7.",
   },
   {
-    slug: 'mega-listing-pro-2',
-    title: 'MEGA LISTING PRO 2',
-    icon: <FileJson className="h-8 w-8" />,
-    description: "The unified market registry to consolidate, verify, and archive all listings, creating a single source of truth for the market.",
+    slug: 'sales-agent-chat-ai',
+    title: 'SalesAgentChat AI',
+    icon: <Sparkles className="h-8 w-8" />,
+    description: "An advanced conversational AI that acts as a virtual sales agent on your website.",
+  },
+  {
+    slug: 'market-search-engine',
+    title: 'Market Search Engine',
+    icon: <Telescope className="h-8 w-8" />,
+    description: "A powerful, multi-layered search engine for listings, trends, and market data.",
+  },
+  {
+    slug: 'ai-listing-portal',
+    title: 'AI Listing Portal',
+    icon: <LayoutGrid className="h-8 w-8" />,
+    description: "A complete, AI-managed portal for showcasing your property portfolio.",
+  },
+   {
+    slug: 'crm-system',
+    title: 'CRM System',
+    icon: <Users className="h-8 w-8" />,
+    description: "An intelligent CRM that tracks leads, manages relationships, and automates follow-ups.",
+  },
+   {
+    slug: 'ai-insta-bio-link',
+    title: 'AI Insta BIO LINK',
+    icon: <LinkIcon className="h-8 w-8" />,
+    description: "A dynamic, AI-powered link-in-bio page that showcases your featured properties.",
   }
 ];
 
@@ -37,16 +55,16 @@ export default function SolutionsPage() {
       <LandingHeader />
       <main className="flex-1 w-full">
          <PageHeader
-            title="Core AI Solutions"
-            description="Explore our foundational AI models. Each is a powerful, standalone solution designed to transform a core aspect of the real estate industry."
+            title="Our Solutions"
+            description="High-level, outcome-oriented products that solve major business problems for the real estate industry."
             icon={<Sparkles className="h-8 w-8" />}
           />
         
         <div className="container mx-auto px-4 py-16 md:py-24">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {solutions.map(solution => (
                     <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
-                        <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all hover:-translate-y-1">
+                        <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg">
                             <CardHeader>
                                 <div className="p-4 bg-primary/10 text-primary rounded-2xl w-fit mb-4">
                                     {solution.icon}
