@@ -28,114 +28,19 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Logo } from './logo';
-
-
-const breadcrumbNameMap: { [key: string]: string } = {
-    '/me': 'Home',
-    '/me/marketing': 'Apps',
-    '/me/brand': 'Brand & Assets',
-    '/me/assistant': 'AI Command Center',
-    '/me/settings': 'Settings',
-    '/me/dev-admin': 'Developer Admin',
-    '/me/flows': 'Flow Builder',
-    '/me/clients': 'Client Pages',
-    '/me/leads': 'Leads (CRM)',
-    '/onboarding': 'Onboarding',
-    '/me/system-health': 'System Health',
-    '/me/projects': 'My Projects',
-    '/me/directory': 'Contacts Directory',
-    '/me/community/academy': 'Market Academy',
-    '/me/community/roadmap': 'Roadmap',
-    '/me/community/documentation': 'Documentation',
-    '/me/community': 'Community Notes',
-    '/me/resources/flows': 'Flow Library',
-    '/me/resources': 'Resources',
-    '/me/archive': 'Developer Archive',
-    '/me/data-importer': 'Data Importer',
-    '/me/tool/projects-finder': 'Market Library',
-};
-
-const getBreadcrumbName = (path: string) => {
-    if (breadcrumbNameMap[path]) return breadcrumbNameMap[path];
-    if (path.startsWith('/me/tool/')) {
-        const toolId = path.split('/')[3];
-        const tool = tools.find(t => t.id === toolId);
-        return tool?.title || 'Tool';
-    }
-    const name = path.split('/').pop()?.replace(/-/g, ' ') || 'Page';
-    return name.charAt(0).toUpperCase() + name.slice(1);
-}
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a"> & { icon: React.ReactElement }
->(({ className, title, children, icon, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-            <div className="flex items-center gap-x-2">
-                <div className="p-1.5 bg-primary/10 text-primary rounded-md">
-                    {React.cloneElement(icon, { className: 'h-4 w-4' })}
-                </div>
-                <div className="text-sm font-medium leading-none">{title}</div>
-          </div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
 
 
 export function DashboardHeader() {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
   const pathname = usePathname();
   const { openTabs, activeTab, removeTab } = useTabManager();
-  const pathSegments = pathname.split('/').filter(Boolean);
   const { user } = useAuth();
   
   const handleLogout = async () => {
     await auth?.signOut();
   }
-
-  const toolCategories = React.useMemo(() => {
-    const categories: Record<string, typeof tools> = {};
-    tools.forEach(tool => {
-        tool.categories.forEach(cat => {
-            if (cat !== 'All') {
-                if (!categories[cat]) categories[cat] = [];
-                categories[cat].push(tool);
-            }
-        })
-    });
-    return categories;
-  }, []);
-
-  const intelligenceTools = tools.filter(t => t.categories.includes('Market Intelligence'));
-  const crmTools = tools.filter(t => t.categories.includes('CRM') || t.categories.includes('Sales Tools'));
-
 
   return (
     <header className="sticky top-0 z-30 flex h-auto flex-col border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
@@ -143,85 +48,6 @@ export function DashboardHeader() {
             <Link href="/me">
                 <Logo href="/me"/>
             </Link>
-          
-          <NavigationMenu className="hidden md:flex ml-6">
-            <NavigationMenuList>
-                <NavigationMenuItem>
-                    <Link href="/me" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Home
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Apps</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                        <ul className="grid w-[600px] gap-3 p-4 md:grid-cols-2 lg:w-[700px] lg:grid-cols-3">
-                            {Object.entries(toolCategories).map(([category, toolsInCategory]) => (
-                                <li key={category}>
-                                     <p className="px-3 py-2 text-sm font-semibold text-muted-foreground">{category}</p>
-                                     <ul className="space-y-1">
-                                      {toolsInCategory.slice(0, 4).map((tool) => (
-                                        <ListItem key={tool.title} title={tool.title} href={tool.href} icon={tool.icon}>
-                                            {tool.description}
-                                        </ListItem>
-                                      ))}
-                                    </ul>
-                                </li>
-                            ))}
-                        </ul>
-                         <div className="p-4 pt-0 text-center">
-                            <Link href="/me/marketing">
-                                <Button variant="outline" className="w-full">
-                                    View All Apps
-                                </Button>
-                            </Link>
-                        </div>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>Intelligence</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                            {intelligenceTools.map((tool) => (
-                                <ListItem key={tool.title} title={tool.title} href={tool.href} icon={tool.icon}>
-                                    {tool.description}
-                                </ListItem>
-                            ))}
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Workspace</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 ">
-                             <ListItem title="Brand & Assets" href="/me/brand" icon={<Palette />}>Manage your logos, colors, and knowledge base.</ListItem>
-                             <ListItem title="AI Assistant" href="/me/assistant" icon={<Bot />}>Your command center for all AI tasks.</ListItem>
-                             <ListItem title="Leads & CRM" href="/me/leads" icon={<Target />}>Manage your client relationships and sales pipeline.</ListItem>
-                             <ListItem title="Contacts Directory" href="/me/directory" icon={<Users2 />}>Your private phone book of key contacts.</ListItem>
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <Link href="/me/flows" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Flows
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>Community</NavigationMenuTrigger>
-                     <NavigationMenuContent>
-                         <ul className="grid w-[300px] gap-3 p-4">
-                            <ListItem title="Community Notes" href="/me/community" icon={<Users2 />}>Connect and collaborate with other professionals.</ListItem>
-                            <ListItem title="Market Academy" href="/me/community/academy" icon={<School />}>Master the market with expert courses.</ListItem>
-                            <ListItem title="Product Roadmap" href="/me/community/roadmap" icon={<GitBranch />}>See what's next and vote on features.</ListItem>
-                            <ListItem title="Documentation" href="/me/community/documentation" icon={<BookOpen />}>Explore guides and technical docs.</ListItem>
-                        </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-            </NavigationMenuList>
-          </NavigationMenu>
           
            <div className="ml-auto flex items-center gap-2">
               <div className="relative flex-1 md:grow-0">

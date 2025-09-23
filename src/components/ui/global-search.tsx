@@ -77,15 +77,15 @@ export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
         <CommandSeparator />
         
         <CommandGroup heading="Navigation">
-           <CommandItem onSelect={() => handleSelect('/dashboard/settings', 'Settings')}>
+           <CommandItem onSelect={() => handleSelect('/me/settings', 'Settings')}>
             <Settings className="mr-2 h-4 w-4" />
             <span>Settings</span>
           </CommandItem>
-          <CommandItem onSelect={() => handleSelect('/dashboard/brand', 'Brand & Assets')}>
+          <CommandItem onSelect={() => handleSelect('/me/brand', 'Brand & Assets')}>
              <File className="mr-2 h-4 w-4" />
              <span>Brand & Assets</span>
            </CommandItem>
-            <CommandItem onSelect={() => handleSelect('/dashboard/assistant', 'AI Assistant')}>
+            <CommandItem onSelect={() => handleSelect('/me/assistant', 'AI Assistant')}>
               <Bot className="mr-2 h-4 w-4" />
               <span>AI Assistant</span>
             </CommandItem>
