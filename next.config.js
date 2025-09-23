@@ -7,9 +7,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  experimental: {
-    allowedDevOrigins: ["https://*.cloudworkstations.dev"],
-  },
   images: {
     remotePatterns: [
       {
@@ -54,6 +51,12 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: '*.paypal.com',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
   async redirects() {
