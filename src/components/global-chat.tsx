@@ -3,15 +3,16 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Bot, Send, Loader2, User, Sparkles, PlusCircle, ChevronUp } from 'lucide-react';
+import { Bot, Send, Loader2, User, Sparkles, PlusCircle, Copy } from 'lucide-react';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { secretCodes } from '@/lib/codes';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
+import { Sheet, SheetContent } from './ui/sheet';
 import { usePathname } from 'next/navigation';
 import { useSensitiveArea } from '@/context/SensitiveAreaContext';
+import { CommandMenu } from './ui/command-menu';
 
 
 type Message = {
@@ -42,6 +43,9 @@ export function GlobalChat() {
   const [isLoading, setIsLoading] = useState(false);
   const [chatHistory, setChatHistory] = useState<any[]>([]);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isCommandMenuOpen, setIsCommandMenuOpen] = useState(false);
+  const [lastResultToCopy, setLastResultToCopy] = useState<string | null>(null);
+
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const { activeHint, isHintActive } = useSensitiveArea();
@@ -53,28 +57,44 @@ export function GlobalChat() {
       }, 100);
     }
   }, [messages, isSheetOpen]);
+  
+  useEffect(() => {
+    if (input.startsWith('/')) {
+        setIsCommandMenuOpen(true);
+    } else {
+        setIsCommandMenuOpen(false);
+    }
+  }, [input]);
 
-  const sendMessage = async (text: string, history: any[]) => {
-      const userMessage: Message = { from: 'user', text: text };
+  const sendMessage = async (text: string, history: any[], isPrompt: boolean = false) => {
+      const userMessageText = isPrompt ? `= ${text}` : text;
+      const userMessage: Message = { from: 'user', text: userMessageText };
+      
       setMessages(prev => [...prev, userMessage]);
       setIsLoading(true);
+      setLastResultToCopy(null);
 
       if (!isSheetOpen) setIsSheetOpen(true);
 
       try {
-        const response = await fetch('/api/chat', {
+        const response = await fetch('/api/run', { // Assuming prompts run through the same endpoint for now
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text, history }),
+            body: JSON.stringify({ 
+                toolId: 'prompt-library', // A generic toolId for prompts
+                payload: { prompt: text, isPrompt }
+            }),
         });
 
         if (!response.ok) throw new Error("The AI is experiencing some turbulence. Please try again.");
 
         const data = await response.json();
-        const aiResponse: Message = { from: 'ai', text: data.text };
+        const aiResponseText = JSON.stringify(data, null, 2);
+        const aiResponse: Message = { from: 'ai', text: aiResponseText };
         
         setMessages(prev => [...prev, aiResponse]);
-        setChatHistory(prev => [...prev, { role: 'user', content: [{ text }] }, { role: 'model', content: [{ text: data.text }] }]);
+        setChatHistory(prev => [...prev, { role: 'user', content: [{ text: userMessageText }] }, { role: 'model', content: [{ text: aiResponseText }] }]);
+        setLastResultToCopy(aiResponseText);
     } catch(err: any) {
         const errorResponse: Message = { from: 'ai', text: err.message };
         setMessages(prev => [...prev, errorResponse]);
@@ -87,8 +107,13 @@ export function GlobalChat() {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
-    const currentInput = input;
+    let currentInput = input;
     setInput('');
+    
+    if (currentInput.startsWith('=')) {
+        await sendMessage(currentInput.substring(1), chatHistory, true);
+        return;
+    }
     
     const matchedCode = secretCodes.find(c => c.code.toLowerCase() === currentInput.toLowerCase());
     if (matchedCode) {
@@ -108,7 +133,6 @@ export function GlobalChat() {
     const handleMagicClick = async () => {
         if (isLoading) return;
         
-        // This is a simulation of reading the page content.
         const pageContent = `Current page is ${pathname}. The visible content includes a header titled "${document.title}".`;
         const prompt = `Analyze the following page content and generate a concise action plan with 2-3 bullet points of what I can do here.\n\nPage Content: ${pageContent}`;
         
@@ -116,82 +140,64 @@ export function GlobalChat() {
     }
     
     const getContextualInfo = (): { placeholder: string; leftKeys: ActionKey[]; rightKey: ActionKey | null } => {
-        const defaultRightKey = { label: 'Analyze Page', icon: <Sparkles className="h-5 w-5" />, action: handleMagicClick };
+        
+        let rightKey: ActionKey | null = { label: 'Analyze Page', icon: <Sparkles className="h-5 w-5" />, action: handleMagicClick };
+        if (lastResultToCopy) {
+            rightKey = { label: 'Copy Result', icon: <Copy className="h-5 w-5" />, action: () => copyToClipboard(lastResultToCopy || '', () => {}) };
+        }
+        
+        let leftKeys: ActionKey[] = [];
 
         if (isHintActive) {
             return { placeholder: activeHint, leftKeys: [], rightKey: null };
         }
-        if (pathname.startsWith('/me/tool/')) {
-            return {
-                placeholder: "Ask a question about this tool or enter your next command...",
-                leftKeys: [
-                    { label: "Save Result", href: "#", icon: <PlusCircle /> },
-                ],
-                rightKey: defaultRightKey
-            };
+        
+        if (pathname.startsWith('/me/marketing')) {
+             leftKeys = [
+                { label: "View Guide", href: "/documentation", icon: <Bot /> },
+                { label: "Get App", href: "/pricing", icon: <PlusCircle /> },
+            ];
+        } else if (pathname.startsWith('/me/tool/')) {
+             leftKeys = [
+                { label: "Run Flow", href: "/me/flows", icon: <Bot /> },
+                { label: "Use another App", href: "/me/marketing", icon: <PlusCircle /> },
+            ];
+        } else {
+             leftKeys = [
+                { label: "Add Project", href: "/me/tool/projects-finder", icon: <PlusCircle /> },
+                { label: "New Flow", href: "/me/flows", icon: <PlusCircle /> },
+            ];
         }
-         if (pathname.startsWith('/me/flows')) {
-            return {
-                placeholder: "Describe a workflow you want to automate...",
-                leftKeys: [
-                     { label: "New Flow", href: "/me/flows", icon: <PlusCircle /> },
-                ],
-                 rightKey: defaultRightKey
-            };
-        }
-        switch (pathname) {
-            case '/me/marketing':
-                return { 
-                    placeholder: "Search for an app or describe what you want to build...",
-                    leftKeys: [],
-                    rightKey: defaultRightKey
-                };
-            case '/me/brand':
-                return { 
-                    placeholder: "Ask about your brand assets or upload a new file...",
-                    leftKeys: [
-                        { label: "Upload File", href: "#", icon: <PlusCircle /> },
-                    ],
-                    rightKey: defaultRightKey
-                };
-             case '/me':
-                 return {
-                    placeholder: "Search your projects or ask the AI to perform a task...",
-                    leftKeys: [
-                        { label: "Add Project", href: "/me/tool/projects-finder", icon: <PlusCircle /> },
-                        { label: "New Flow", href: "/me/flows", icon: <PlusCircle /> },
-                    ],
-                    rightKey: defaultRightKey
-                 }
-            default:
-                return { 
-                    placeholder: "Send a message or type '/' for commands...",
-                    leftKeys: [],
-                    rightKey: defaultRightKey
-                };
-        }
+
+        return { 
+            placeholder: "Send a message or type '/' for commands...",
+            leftKeys,
+            rightKey
+        };
     }
     
     const { placeholder, leftKeys, rightKey } = getContextualInfo();
 
 
   return (
+    <>
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t">
-            <div className="container mx-auto p-4 max-w-5xl">
-                <form onSubmit={handleSendMessage} className="relative flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                         {leftKeys.map(key => {
-                            const button = (
-                                 <Button type="button" variant="outline" size="sm" className="hidden sm:flex" onClick={key.action}>
-                                    {React.cloneElement(key.icon as React.ReactElement, { className: 'mr-2 h-4 w-4' })}
-                                    {key.label}
-                                </Button>
-                            );
-                            return key.href ? <Link href={key.href} key={key.label}>{button}</Link> : button;
-                        })}
-                    </div>
-                    <div className="relative flex-1">
+            <div className="container mx-auto p-4 max-w-5xl flex items-center gap-4">
+                <div className="hidden md:block text-muted-foreground font-mono text-lg">&lt;</div>
+                <div className="flex items-center gap-2">
+                     {leftKeys.map((key, i) => {
+                        const button = (
+                             <Button key={i} type="button" variant="outline" size="sm" className="hidden sm:flex" onClick={key.action}>
+                                {React.cloneElement(key.icon as React.ReactElement, { className: 'mr-2 h-4 w-4' })}
+                                {key.label}
+                            </Button>
+                        );
+                        return key.href ? <Link href={key.href} key={i}>{button}</Link> : button;
+                    })}
+                </div>
+                <form onSubmit={handleSendMessage} className="relative flex-1">
+                    <div className="relative">
                         <Input 
                             placeholder={placeholder} 
                             className="w-full h-12 pl-4 pr-24 text-base"
@@ -206,17 +212,14 @@ export function GlobalChat() {
                                 {rightKey.icon}
                            </Button>
                            )}
-                           <SheetTrigger asChild>
-                                <Button type="button" variant="ghost" size="icon" title="View Chat History">
-                                    <ChevronUp className="h-5 w-5 text-muted-foreground" />
-                                </Button>
-                            </SheetTrigger>
+                           
                             <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
                                 {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                             </Button>
                         </div>
                     </div>
                 </form>
+                 <div className="hidden md:block text-muted-foreground font-mono text-lg">&gt;</div>
             </div>
         </div>
       <SheetContent side="bottom" className="h-4/5 flex flex-col p-0 border-t-2 z-40" hideCloseButton={true}>
@@ -247,5 +250,7 @@ export function GlobalChat() {
           </ScrollArea>
       </SheetContent>
     </Sheet>
+    <CommandMenu open={isCommandMenuOpen} setOpen={setIsCommandMenuOpen} />
+    </>
   );
 }

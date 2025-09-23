@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   CommandDialog,
@@ -13,8 +13,7 @@ import {
   CommandSeparator,
 } from '@/components/ui/command';
 import { tools, Feature } from '@/lib/tools-client';
-import { File, LayoutDashboard, Settings, User, Search, Bot, Sparkles } from 'lucide-react';
-import { LandingFooter } from '../landing-footer';
+import { File, LayoutDashboard, Settings, User, Sparkles } from 'lucide-react';
 
 interface CommandMenuProps {
   open: boolean;
@@ -41,14 +40,13 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
   };
 
   const handleSelectTool = (tool: Feature) => {
-    // Navigate to the public marketing page for the tool
-    runCommand(() => router.push(`/apps/${tool.id}`));
+    runCommand(() => router.push(tool.href));
   };
 
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput 
-        placeholder="Search for a tool or page..."
+        placeholder="Search for an app or page..."
       />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
