@@ -6,7 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Feature, Field } from '@/lib/tools-client';
-import { tools as clientTools } from '@/lib/tools-client';
+import { tools as clientTools, getToolCreationFields, getToolResultRenderer } from '@/lib/tools-client';
 import { fileToDataUri, filesToDataUris } from '@/lib/file-utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -59,7 +59,7 @@ const ToolPage = () => {
 
   const getToolSchema = (tool: Feature | undefined) => {
     if (!tool) return z.object({});
-    const shape = tool.creationFields.reduce((acc, field) => {
+    const shape = getToolCreationFields(tool.id).reduce((acc, field) => {
       if (field.type === 'button' || field.type === 'group-header' || field.type === 'file') return acc;
        let fieldSchema: z.ZodTypeAny;
 
@@ -351,8 +351,8 @@ const ToolPage = () => {
                     </div>
                 ) : tool.id === 'landing-pages' ? (
                     <LandingPageResult result={result} />
-                ) : tool.renderResult ? (
-                    tool.renderResult(result, toast)
+                ) : getToolResultRenderer(tool.id)(result, toast) ? (
+                     getToolResultRenderer(tool.id)(result, toast)
                 ) : (
                     <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap max-h-[70vh] overflow-auto">{JSON.stringify(result, null, 2)}</pre>
                 )}
@@ -400,7 +400,7 @@ const ToolPage = () => {
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {tool.creationFields.map(renderField)}
+                            {getToolCreationFields(tool.id).map(renderField)}
                         </div>
                     </CardContent>
                     <CardFooter>

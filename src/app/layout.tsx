@@ -1,19 +1,18 @@
+
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster";
 import './globals.css';
 import { Poppins, PT_Sans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { CookieConsent } from '@/components/cookie-consent';
-import { AuthProvider, useAuth } from '@/hooks/useAuth';
+import { AuthProvider } from '@/hooks/useAuth';
 import { ThemeProvider } from 'next-themes';
 import { TabProvider } from '@/context/TabManagerContext';
 import { CanvasProvider } from '@/context/CanvasContext';
 import { CreativeCanvas } from '@/components/creative-canvas';
 import { SensitiveAreaProvider } from '@/context/SensitiveAreaContext';
 import { SpotlightProvider } from '@/context/SpotlightContext';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
-import { usePathname } from 'next/navigation';
+import AppContentClient from '@/components/AppContent';
 import React from 'react';
 
 const fontSans = PT_Sans({ 
@@ -38,22 +37,6 @@ export const metadata: Metadata = {
   },
 };
 
-const AppContent = ({ children }: { children: React.ReactNode }) => {
-    const pathname = usePathname();
-    const { user, loading } = useAuth();
-    const isDashboard = user && (pathname.startsWith('/me') || pathname.startsWith('/gem'));
-
-    if (loading) return null; // Or a loading spinner
-
-    return (
-        <>
-            {!isDashboard && <LandingHeader />}
-            {children}
-            {!isDashboard && <LandingFooter />}
-        </>
-    )
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -77,16 +60,13 @@ export default function RootLayout({
                 <SpotlightProvider>
                   <TabProvider>
                       <CanvasProvider>
-                          <AppContent>
+                          <AppContentClient>
                             {children}
-                          </AppContent>
-                          <CreativeCanvas />
+                          </AppContentClient>
                       </CanvasProvider>
                   </TabProvider>
                 </SpotlightProvider>
               </SensitiveAreaProvider>
-                <Toaster />
-                <CookieConsent />
             </ThemeProvider>
         </AuthProvider>
       </body>
