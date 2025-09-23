@@ -62,7 +62,7 @@ export default function MePage() {
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+  }, [isClient]);
 
   const handleOpenApp = (tool: Feature) => {
     // This logic should now be handled by the GlobalSearch or a similar component
