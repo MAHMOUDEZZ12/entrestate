@@ -8,6 +8,7 @@ import React from 'react';
 import { GlobalSearch } from '@/components/ui/global-search';
 import {
   Breadcrumb,
+  BreadcrumbList,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbPage,
