@@ -9,7 +9,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Link from 'next/link';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { getPaypalTransaction } from '@/ai/flows/developer-backend/get-paypal-transaction';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
 
@@ -75,8 +74,9 @@ export default function InstagramAdValuePage() {
             // For this simulation, we'll use a hardcoded ID for our backend flow.
             const transactionId = 'SIMULATED_ORDER_ID_12345';
             
-            // This calls our Genkit flow which in turn calls the PayPal Sandbox API.
-            await getPaypalTransaction({ transactionId });
+            // This would be a call to a server action or API route in a real app
+            // For now, we simulate success after payment capture.
+            await new Promise(resolve => setTimeout(resolve, 2000));
             
             toast({
                 title: "Payment Successful!",
