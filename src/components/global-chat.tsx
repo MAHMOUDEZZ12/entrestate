@@ -3,7 +3,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Bot, Send, Loader2, User, Sparkles, PlusCircle, Copy, Workflow, ArrowLeft, ArrowRight } from 'lucide-react';
+import { Bot, Send, Loader2, User, Sparkles, PlusCircle, Copy, Workflow, ArrowLeft, ArrowRight, Settings2 } from 'lucide-react';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
@@ -181,18 +181,18 @@ export function GlobalChat() {
             ];
         } else if (pathname.startsWith('/me/marketing')) {
              leftKeys = [
-                { label: "View Guide", href: "/documentation", icon: <Bot /> },
+                { label: "Options", href: undefined, icon: <Settings2 />, action: () => toast({title: "Options clicked!"}) },
                 { label: "Get App", href: "/pricing", icon: <PlusCircle /> },
             ];
         } else if (pathname.startsWith('/me/tool/')) {
              leftKeys = [
-                { label: "Run Flow", href: "/me/flows", icon: <Bot /> },
-                { label: "Use another App", href: "/me/marketing", icon: <PlusCircle /> },
+                { label: "Run Flow", href: "/me/flows", icon: <Workflow /> },
+                { label: "Options", href: undefined, icon: <Settings2 />, action: () => toast({title: "Options clicked!"}) },
             ];
         } else {
              leftKeys = [
                 { label: "Add Project", href: "/me/tool/projects-finder", icon: <PlusCircle /> },
-                { label: "New Flow", href: "/me/flows", icon: <PlusCircle /> },
+                { label: "New Flow", href: "/me/flows", icon: <Workflow /> },
             ];
         }
 
