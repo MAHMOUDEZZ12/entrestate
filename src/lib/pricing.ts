@@ -44,7 +44,7 @@ export const pricingData = {
       "flow": "Works with Insta Ads Designer to create full creative campaigns.",
       "level_of_knowledge_required": "Zero",
       "expected_results": "Increase user engagement and conversions via video ads.",
-      "pricing": 4.69
+      "pricing": 20.00
     },
     {
       "name": "Listing Manager",
@@ -98,7 +98,7 @@ export const pricingData = {
       "flow": "Supports listing creation and investor matching.",
       "level_of_knowledge_required": "Zero",
       "expected_results": "Accurate, AI-driven pricing for listings.",
-      "pricing": 4.69
+      "pricing": 20.00
     },
     {
       "name": "Commission Calculator",

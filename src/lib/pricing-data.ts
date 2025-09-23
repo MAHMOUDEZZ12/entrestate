@@ -55,6 +55,7 @@ export const pricingData: {
         // Sales Tools
         { "name": "Listing Generator", "description": "Craft perfect listings for portals like Property Finder & Bayut.", "price_monthly": 10, "category": "Sales" },
         { "name": "Listing Manager", "description": "Your central hub to prepare and syndicate listings.", "price_monthly": 20, "category": "Sales" },
+        { "name": "AI Price Estimator", "description": "Get AI-powered price estimates for any property.", "price_monthly": 20, "category": "Sales" },
         { "name": "Commission Calculator", "description": "Instantly calculate your sales commission.", "price_monthly": 5, "category": "Sales" },
         { "name": "Payment Planner", "description": "Generate tailored payment plans for off-plan properties.", "price_monthly": 10, "category": "Sales" },
         { "name": "Multi-Offer Builder", "description": "Compare property options side-by-side for clients.", "price_monthly": 15, "category": "Sales" },
