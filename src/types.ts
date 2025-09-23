@@ -94,7 +94,7 @@ export const GenerateAdFromBrochureOutputSchema = z.object({
   adDesign: z.string().describe('The data URI of the generated ad design.'),
   landingPage: z.string().describe('The data URI of the generated landing page.'),
 });
-
+export type GenerateAdFromBrochureOutput = z.infer<typeof GenerateAdFromBrochureOutputSchema>;
 
 // Schemas for Meta Ads Co-Pilot (`create-meta-campaign`)
 export const CreateMetaCampaignInputSchema = z.object({
@@ -179,4 +179,3 @@ export const MetaAutoPilotOutputSchema = z.object({
 export type MetaAutoPilotInput = z.infer<typeof MetaAutoPilotInputSchema>;
 export type MetaAutoPilotOutput = z.infer<typeof MetaAutoPilotOutputSchema>;
 
-    

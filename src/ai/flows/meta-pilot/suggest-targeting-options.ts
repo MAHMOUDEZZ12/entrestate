@@ -34,9 +34,9 @@ const prompt = ai.definePrompt({
   input: {schema: z.object({
     projectId: z.string(),
     projectName: z.string(),
-    area: z.string(),
+    area: z.string().optional(),
     city: z.string(),
-    priceFrom: z.string(),
+    priceFrom: z.string().optional(),
   })},
   output: {schema: SuggestTargetingOptionsOutputSchema},
   prompt: `You are an expert in digital marketing and advertising, specializing in real estate.

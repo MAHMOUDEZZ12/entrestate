@@ -14,7 +14,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { suggestTargetingOptions } from './suggest-targeting-options';
-import { generateAdFromBrochure, GenerateAdFromBrochureInput } from '../content/generate-ad-from-brochure';
+import { generateAdFromBrochure } from '../content/generate-ad-from-brochure';
 import { createMetaCampaign } from './create-meta-campaign';
 import { getProjectById } from '@/services/database'; 
 import { 
@@ -25,6 +25,7 @@ import {
     SuggestTargetingOptionsInputSchema,
     SuggestTargetingOptionsOutputSchema,
     GenerateAdFromBrochureOutputSchema,
+    GenerateAdFromBrochureOutput,
     CreateMetaCampaignInputSchema,
     CreateMetaCampaignOutputSchema,
 } from '@/types';
@@ -52,7 +53,7 @@ const generateCreativeTool = ai.defineTool(
     }),
     outputSchema: GenerateAdFromBrochureOutputSchema,
   },
-  async (input: GenerateAdFromBrochureInput) => generateAdFromBrochure(input)
+  async (input: z.infer<typeof GenerateAdFromBrochureOutputSchema>) => generateAdFromBrochure(input)
 );
 
 const assembleCampaignTool = ai.defineTool(
@@ -65,9 +66,9 @@ const assembleCampaignTool = ai.defineTool(
   async (input) => createMetaCampaign(input)
 );
 
-export const runMetaAutoPilot = ai.defineFlow(
+const metaAutoPilotFlow = ai.defineFlow(
     {
-        name: 'runMetaAutoPilot',
+        name: 'metaAutoPilotFlow',
         inputSchema: MetaAutoPilotInputSchema,
         outputSchema: MetaAutoPilotOutputSchema,
         tools: [suggestTargetingTool, generateCreativeTool, assembleCampaignTool],
@@ -110,3 +111,7 @@ export const runMetaAutoPilot = ai.defineFlow(
         return result;
     }
 );
+
+export async function runMetaAutoPilot(input: MetaAutoPilotInput): Promise<MetaAutoPilotOutput> {
+    return metaAutoPilotFlow(input);
+}
