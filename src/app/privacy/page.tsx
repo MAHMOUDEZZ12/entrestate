@@ -1,5 +1,3 @@
-
-
 'use client';
 import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
@@ -83,5 +81,3 @@ export default function PrivacyPage() {
     </div>
   );
 }
-
-    
