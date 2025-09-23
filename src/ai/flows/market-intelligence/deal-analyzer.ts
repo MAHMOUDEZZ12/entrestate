@@ -92,7 +92,7 @@ const dealAnalyzerPrompt = ai.definePrompt({
       closingCosts: z.number(),
   })},
   output: { schema: DealAnalyzerOutputSchema.shape.analysis },
-  prompt: `You are an expert real estate investment analyst. First, use the fetchMarketData tool to get estimates for the property. Then, analyze the following deal and provide a professional financial breakdown.
+  prompt: `You are an expert real estate investment analyst. You have been provided with market data for a property. Analyze the following deal and provide a professional financial breakdown.
 
   **Property Details:**
   - Address: {{{propertyAddress}}}
