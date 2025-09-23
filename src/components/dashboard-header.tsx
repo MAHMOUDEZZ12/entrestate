@@ -1,5 +1,4 @@
 
-
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -34,33 +33,33 @@ import { Avatar, AvatarFallback } from './ui/avatar';
 
 
 const breadcrumbNameMap: { [key: string]: string } = {
-    '/dashboard': 'Home',
-    '/dashboard/marketing': 'Apps',
-    '/dashboard/brand': 'Brand & Assets',
-    '/dashboard/assistant': 'AI Command Center',
-    '/dashboard/settings': 'Settings',
-    '/dashboard/dev-admin': 'Developer Admin',
-    '/dashboard/flows': 'Flow Builder',
-    '/dashboard/clients': 'Client Pages',
-    '/dashboard/leads': 'Leads (CRM)',
+    '/me': 'Home',
+    '/me/marketing': 'Apps',
+    '/me/brand': 'Brand & Assets',
+    '/me/assistant': 'AI Command Center',
+    '/me/settings': 'Settings',
+    '/me/dev-admin': 'Developer Admin',
+    '/me/flows': 'Flow Builder',
+    '/me/clients': 'Client Pages',
+    '/me/leads': 'Leads (CRM)',
     '/onboarding': 'Onboarding',
-    '/dashboard/system-health': 'System Health',
-    '/dashboard/projects': 'My Projects',
-    '/dashboard/directory': 'Contacts Directory',
+    '/me/system-health': 'System Health',
+    '/me/projects': 'My Projects',
+    '/me/directory': 'Contacts Directory',
     '/community/academy': 'Market Academy',
     '/community/roadmap': 'Roadmap',
     '/community/documentation': 'Documentation',
     '/community': 'Community Notes',
     '/resources/flows': 'Flow Library',
     '/resources': 'Resources',
-    '/dashboard/archive': 'Developer Archive',
-    '/dashboard/data-importer': 'Data Importer',
-    '/dashboard/tool/projects-finder': 'Market Library',
+    '/me/archive': 'Developer Archive',
+    '/me/data-importer': 'Data Importer',
+    '/me/tool/projects-finder': 'Market Library',
 };
 
 const getBreadcrumbName = (path: string) => {
     if (breadcrumbNameMap[path]) return breadcrumbNameMap[path];
-    if (path.startsWith('/dashboard/tool/')) {
+    if (path.startsWith('/me/tool/')) {
         const toolId = path.split('/')[3];
         const tool = tools.find(t => t.id === toolId);
         return tool?.title || 'Tool';
@@ -157,10 +156,10 @@ export function DashboardHeader() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                        <Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
+                        <Link href="/me"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                        <Link href="/dashboard/settings"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
+                        <Link href="/me/settings"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout}>

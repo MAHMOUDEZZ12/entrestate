@@ -37,22 +37,22 @@ import { cn } from '@/lib/utils';
 import { Logo } from './logo';
 
 const mainNavLinks = [
-  { href: '/dashboard', icon: <Home className="h-5 w-5" />, label: 'Home' },
-  { href: '/dashboard/marketing', icon: <LayoutGrid className="h-5 w-5" />, label: 'Apps' },
-  { href: '/dashboard/tool/prompt-library', icon: <Library className="h-5 w-5" />, label: 'Prompt Library' },
-  { href: '/dashboard/flows', icon: <Workflow className="h-5 w-5" />, label: 'Flows' },
-  { href: '/dashboard/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },
-  { href: '/dashboard/assistant', icon: <Bot className="h-5 w-5" />, label: 'AI Assistant' },
-  { href: '/dashboard/tool/projects-finder', icon: <Database className="h-5 w-5" />, label: 'Market Library' },
-  { href: '/dashboard/leads', icon: <Target className="h-5 w-5" />, label: 'Leads & CRM' },
-  { href: '/dashboard/directory', icon: <Users className="h-5 w-5" />, label: 'Contacts Directory' },
+  { href: '/me', icon: <Home className="h-5 w-5" />, label: 'Home' },
+  { href: '/me/marketing', icon: <LayoutGrid className="h-5 w-5" />, label: 'Apps' },
+  { href: '/me/tool/prompt-library', icon: <Library className="h-5 w-5" />, label: 'Prompt Library' },
+  { href: '/me/flows', icon: <Workflow className="h-5 w-5" />, label: 'Flows' },
+  { href: '/me/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },
+  { href: '/me/assistant', icon: <Bot className="h-5 w-5" />, label: 'AI Assistant' },
+  { href: '/me/tool/projects-finder', icon: <Database className="h-5 w-5" />, label: 'Market Library' },
+  { href: '/me/leads', icon: <Target className="h-5 w-5" />, label: 'Leads & CRM' },
+  { href: '/me/directory', icon: <Users className="h-5 w-5" />, label: 'Contacts Directory' },
 ];
 
 const secondaryNavLinks = [
     { href: '/community/academy', icon: <School className="h-5 w-5" />, label: 'Market Academy' },
     { href: '/resources/flows', icon: <BookOpen className="h-5 w-5" />, label: 'Resources' },
-    { href: '/dashboard/tool/superfreetime', icon: <Brain className="h-5 w-5" />, label: 'Market Memory' },
-    { href: '/dashboard/settings', icon: <Settings className="h-5 w-5" />, label: 'Settings' }
+    { href: '/me/tool/superfreetime', icon: <Brain className="h-5 w-5" />, label: 'Market Memory' },
+    { href: '/me/settings', icon: <Settings className="h-5 w-5" />, label: 'Settings' }
 ];
 
 export function DashboardSidebar() {
@@ -78,7 +78,7 @@ export function DashboardSidebar() {
   return (
     <aside className="fixed inset-y-0 left-0 z-40 hidden w-60 flex-col border-r bg-background sm:flex">
         <div className="flex h-16 items-center border-b px-6">
-            <Link href="/dashboard">
+            <Link href="/me">
                 <Logo />
             </Link>
         </div>

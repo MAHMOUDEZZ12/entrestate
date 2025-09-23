@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import Image from "next/image"
@@ -38,7 +37,7 @@ export default function AuthPage() {
       } else {
         await signInWithEmailAndPassword(auth, email, password);
         toast({ title: "Login Successful", description: "Welcome back!" });
-        router.push('/');
+        router.push('/me');
       }
     } catch (err: any) {
       setError(err.message);
@@ -55,7 +54,7 @@ export default function AuthPage() {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
       toast({ title: "Authentication Successful!", description: "Redirecting..." });
-      router.push('/');
+      router.push('/me');
     } catch (err: any) {
       setError(err.message);
       toast({ title: "Google Auth Failed", description: err.message, variant: "destructive" });
