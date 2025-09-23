@@ -15,11 +15,11 @@ This document outlines the organizational structure of our AI workforce. Our sys
 - **Role:** Head of Content & Design
 - **Primary Flows:** All flows in `src/ai/flows/content` and `src/ai/flows/video`
 - **Description:** The Creative Director manages a team of "digital artists." This team is responsible for all content generation.
-- **Key Team Members under the Director:**
-    - **Brochure Desk:** Handles `rebrand-brochure.ts` and `translate-brochure.ts`.
-    - **Web Design Unit:** Manages `generate-landing-page.ts`.
-    - **Video Production Team:** Operates `generate-reel.ts`, `generate-story.ts`, and `edit-youtube-video.ts`.
-    - **Copywriting Desk:** Runs `ugc-script-writer.ts` and `generate-social-post.ts`.
+- **Key Team Members (Flows) under the Director:**
+    - **Brochure & Document Desk:** `rebrand-brochure.ts`, `translate-brochure.ts`, `edit-pdf.ts`
+    - **Web & Brand Unit:** `generate-landing-page.ts`, `ai-brand-creator.ts`
+    - **Video Production Team:** `generate-reel.ts`, `generate-story.ts`, `edit-youtube-video.ts`, `generate-tiktok-video.ts`, `generate-video-presenter.ts`
+    - **Copywriting Desk:** `ugc-script-writer.ts`, `generate-social-post.ts`
 
 ---
 
@@ -27,17 +27,30 @@ This document outlines the organizational structure of our AI workforce. Our sys
 - **Role:** Head of Research & Intelligence
 - **Primary Flows:** All flows in `src/ai/flows/market-intelligence`
 - **Description:** The Analyst is our data expert. It watches the market, synthesizes trends, analyzes deals, and generates reports. It provides the data-driven insights that the Strategist and Sales teams rely on.
+- **Key Team Members (Flows) under the Analyst:**
+    - **Reporting Unit:** `generate-market-report.ts`, `generate-multi-offer.ts`
+    - **Forecasting Unit:** `get-market-trends.ts`, `deal-analyzer.ts`
+    - **SEM/SEO Unit:** `generate-keyword-plan.ts`
 
 ---
 
 ## 4. The Sales Associate
 - **Role:** Lead Management & Listing Specialist
 - **Primary Flows:** All flows in `src/ai/flows/listing-crm`
-- **Description:** This agent is the frontline workhorse. It manages the day-to-day tasks of creating listings (`generate-listing.ts`), managing client data (`get-crm-memory.ts`), and handling initial outreach (`manage-whatsapp-campaign.ts`).
+- **Description:** This agent is the frontline workhorse. It manages the day-to-day tasks of creating listings, managing client data, and handling initial outreach.
+- **Key Team Members (Flows) under the Associate:**
+    - **Listings Desk:** `generate-listing.ts`, `generate-payment-plan.ts`
+    - **Lead Management Desk:** `get-crm-memory.ts`, `investigate-lead.ts`
+    - **Client Outreach Desk:** `manage-whatsapp-campaign.ts`, `create-email-campaign.ts`
+    - **Investor Relations Desk:** `match-investors.ts`
 
 ---
 
 ## 5. The Backend Engineer
 - **Role:** Integrations & External Systems Specialist
 - **Primary Flows:** All flows in `src/ai/flows/developer-backend`
-- **Description:** The Engineer is responsible for communicating with the outside world. It handles the technical work of syncing listings with external portals like Bayut and Property Finder, and fetching data from third-party APIs like PayPal.
+- **Description:** The Engineer is responsible for communicating with the outside world. It handles the technical work of syncing listings with external portals like Bayut and Property Finder, and fetching data from third-party APIs.
+- **Key Team Members (Flows) under the Engineer:**
+    - **Portal Syndication:** `sync-bayut-listing.ts`, `sync-property-finder-listing.ts`
+    - **External APIs:** `get-paypal-transaction.ts`
+    - **Cloud & DB Tools:** `scan-for-alloydb.ts`
