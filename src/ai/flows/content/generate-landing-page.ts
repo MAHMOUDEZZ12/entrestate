@@ -135,7 +135,7 @@ const landingPagePrompt = ai.definePrompt({
       -   **HTML Structure:** Create a full HTML5 document structure (\`<!DOCTYPE html>\`, \`<html>\`, \`<head>\`, \`<body>\`).
       -   **SEO & Metadata**: In the \`<head>\`, include a compelling \`<title>\` tag and relevant meta tags (description, og:title, og:description).
       -   **Tailwind CSS:** Use the Tailwind CSS CDN script in the \`<head>\` for styling: \`<script src="https://cdn.tailwindcss.com"></script>\`.
-      -   **Hero Section:** Create a visually impressive hero section using a high-quality placeholder image from picsum.photos. It must feature the headline and CTA from your **first** generated strategy.
+      -   **Hero Section:** Create a visually impressive hero section using a high-quality placeholder image from picsum.photos. It must feature the headline and CTA from your **first** generated strategy. Use a class 'cta-button' for the main call-to-action link.
       -   **Content Sections:** Based on the 'numberOfSections' parameter, build out the page (Hero, Key Features, Gallery, Location, Lead Form). Use placeholder images from picsum.photos.
       -   **Lead Capture Form:** This is critical. Include a prominent lead capture form with fields for Name, Email, and Phone Number.
       -   **Branding:** Ensure the design reflects the specified 'Branding Style(s)'.
@@ -167,5 +167,3 @@ const generateLandingPageFlow = ai.defineFlow(
     };
   }
 );
-
-    
