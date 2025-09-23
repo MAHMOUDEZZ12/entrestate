@@ -88,6 +88,14 @@ export type SuggestTargetingOptionsInput = z.infer<typeof SuggestTargetingOption
 export type SuggestTargetingOptionsOutput = z.infer<typeof SuggestTargetingOptionsOutputSchema>;
 
 
+// Schemas for Ad Creative Generation (`generate-ad-from-brochure`)
+export const GenerateAdFromBrochureOutputSchema = z.object({
+  adCopy: z.string().describe('The generated ad copy.'),
+  adDesign: z.string().describe('The data URI of the generated ad design.'),
+  landingPage: z.string().describe('The data URI of the generated landing page.'),
+});
+
+
 // Schemas for Meta Ads Co-Pilot (`create-meta-campaign`)
 export const CreateMetaCampaignInputSchema = z.object({
   campaignGoal: z.string().describe("The user's primary objective for the campaign. e.g. 'Lead Generation to Landing Page'"),
@@ -161,7 +169,7 @@ export const MetaAutoPilotOutputSchema = z.object({
   status: z.string(),
   finalCampaignId: z.string().optional(),
   audienceStrategy: SuggestTargetingOptionsOutputSchema.optional(),
-  adCreative: z.any().optional(),
+  adCreative: GenerateAdFromBrochureOutputSchema.optional(),
   finalCampaignPlan: CreateMetaCampaignOutputSchema.optional(),
 });
 export type MetaAutoPilotInput = z.infer<typeof MetaAutoPilotInputSchema>;

@@ -13,11 +13,21 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { suggestTargetingOptions, SuggestTargetingOptionsOutputSchema, SuggestTargetingOptionsInputSchema } from './suggest-targeting-options';
-import { generateAdFromBrochure, GenerateAdFromBrochureOutputSchema } from '../content/generate-ad-from-brochure';
-import { createMetaCampaign, CreateMetaCampaignInputSchema, CreateMetaCampaignOutputSchema } from './create-meta-campaign';
+import { suggestTargetingOptions } from './suggest-targeting-options';
+import { generateAdFromBrochure } from '../content/generate-ad-from-brochure';
+import { createMetaCampaign } from './create-meta-campaign';
 import { getProjectById } from '@/services/database'; 
-import { MetaAutoPilotInputSchema, MetaAutoPilotOutputSchema, MetaAutoPilotInput, MetaAutoPilotOutput } from '@/types';
+import { 
+    MetaAutoPilotInputSchema, 
+    MetaAutoPilotOutputSchema, 
+    MetaAutoPilotInput, 
+    MetaAutoPilotOutput,
+    SuggestTargetingOptionsInputSchema,
+    SuggestTargetingOptionsOutputSchema,
+    GenerateAdFromBrochureOutputSchema,
+    CreateMetaCampaignInputSchema,
+    CreateMetaCampaignOutputSchema,
+} from '@/types';
 
 // Define tools that the main flow can call
 const suggestTargetingTool = ai.defineTool(
