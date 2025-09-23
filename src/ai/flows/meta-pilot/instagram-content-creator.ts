@@ -1,3 +1,4 @@
+
 'use server';
 
 import { ai } from '@/ai/genkit';
@@ -22,28 +23,26 @@ export const InstagramContentCreatorInputSchema = z.object({
   topic: z.string().describe("The central topic, property name, or URL to base the content on."),
   platform: z.enum(['Instagram', 'Facebook', 'LinkedIn', 'X']).default('Instagram').describe("The target social media platform."),
 });
+export type InstagramContentCreatorInput = z.infer<typeof InstagramContentCreatorInputSchema>;
+
 
 // Output schema for the flow
 export const InstagramContentCreatorOutputSchema = z.object({
   posts: z.array(DailyPostSchema).describe("A unique, engaging post for each day of the week (Monday to Sunday)."),
   hashtagStrategy: HashtagStrategySchema,
 });
+export type InstagramContentCreatorOutput = z.infer<typeof InstagramContentCreatorOutputSchema>;
 
-// The Genkit Flow
-export const instagramContentCreatorFlow = ai.defineFlow(
-  {
-    name: 'instagramContentCreatorFlow',
-    inputSchema: InstagramContentCreatorInputSchema,
-    outputSchema: InstagramContentCreatorOutputSchema,
-  },
-  async (input) => {
-    const { topic, platform } = input;
 
-    const prompt = `
-      You are an expert real estate social media strategist. Your task is to generate a complete, one-week social media content plan for the ${platform} platform based on the provided source content.
+const instagramContentCreatorPrompt = ai.definePrompt({
+    name: 'instagramContentCreatorPrompt',
+    input: { schema: InstagramContentCreatorInputSchema },
+    output: { schema: InstagramContentCreatorOutputSchema },
+    prompt: `
+      You are an expert real estate social media strategist. Your task is to generate a complete, one-week social media content plan for the {{{platform}}} platform based on the provided source content.
 
       **Source Content / Topic:**
-      ${topic}
+      {{{topic}}}
 
       **Instructions:**
 
@@ -55,21 +54,22 @@ export const instagramContentCreatorFlow = ai.defineFlow(
           *   **Location:** 3-5 hashtags for the specific city or neighborhood mentioned or implied in the source (e.g., #miamirealestate, #downtownliving).
       
       Structure the output to be a complete, ready-to-use strategy for a busy real estate professional.
-    `;
+    `
+});
 
-    const llmResponse = await ai.get-default-model().generate({
-      prompt,
-      output: {
-        format: 'json',
-        schema: InstagramContentCreatorOutputSchema,
-      },
-    });
-    
-    const output = llmResponse.output();
+
+// The Genkit Flow
+export const instagramContentCreatorFlow = ai.defineFlow(
+  {
+    name: 'instagramContentCreatorFlow',
+    inputSchema: InstagramContentCreatorInputSchema,
+    outputSchema: InstagramContentCreatorOutputSchema,
+  },
+  async (input) => {
+    const { output } = await instagramContentCreatorPrompt(input);
     if (!output) {
       throw new Error("The AI failed to generate a valid social media plan.");
     }
-    
     return output;
   }
 );
