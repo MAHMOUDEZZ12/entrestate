@@ -40,7 +40,7 @@ export function DashboardHeader() {
           
         <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
             <div className="relative ml-auto flex-1 md:grow-0">
-                <Button variant="outline" className="w-full justify-start text-muted-foreground md:w-[300px] lg:w-[450px] text-base py-5" onClick={() => setIsSearchOpen(true)}>
+                <Button variant="outline" className="w-full justify-start text-muted-foreground md:w-[400px] lg:w-[600px] text-base py-5" onClick={() => setIsSearchOpen(true)}>
                     <Search className="mr-3 h-5 w-5" />
                     <span className="truncate">Search tools, projects, and pages...</span>
                      <kbd className="pointer-events-none ml-auto hidden h-6 select-none items-center gap-1 rounded border bg-muted px-2 font-mono text-xs font-medium text-muted-foreground opacity-100 sm:flex">
