@@ -1,3 +1,4 @@
+
 import {
     Bot, BrainCircuit, CheckCircle, Plus, Sparkles, Upload, Megaphone, User,
     ShieldQuestion, Search, MessageCircle, PenTool, Clock2, Wallet, BadgeCheck,
@@ -41,7 +42,6 @@ export const tools: ToolData[] = [
     { id: 'landing-pages', title: 'Landing Page Builder', dashboardTitle: 'Landing Pages', description: 'Launch high-converting landing pages in minutes.', iconName: 'Globe', color: '#1E90FF', categories: ['Web', 'Lead Gen'], cta: 'Generate Page' },
     { id: 'rebranding', title: 'Automated Rebranding', description: 'Apply your brand identity to any brochure with text commands.', iconName: 'Palette', color: '#1E90FF', categories: ['Editing', 'Creative'], cta: 'Rebrand Document' },
     { id: 'brochure-translator', title: 'Brochure Translator', description: 'Translate any brochure to multiple languages in seconds.', iconName: 'Languages', color: '#1E90FF', categories: ['Editing'], cta: 'Translate Brochure' },
-    { id: 'pdf-editor', title: 'Visual PDF Editor (Deprecated)', dashboardTitle: 'PDF Editor', description: 'A legacy tool for simple PDF edits.', iconName: 'Edit', color: '#696969', categories: ['Editing'], badge: 'DEPRECATED', cta: 'Edit PDF' },
     { id: 'pdf-editor-ai', title: 'PDF EDITOR AI', description: 'Edit PDF documents with AI-powered tools.', iconName: 'Wand2', color: '#1E90FF', categories: ['Editing', 'Creative'], cta: 'Edit with AI' },
     { id: 'images-hq-ai', title: 'Images HQ AI', description: 'Generate high-quality, royalty-free images for listings and ads.', iconName: 'ImageIcon', color: '#1E90FF', categories: ['Creative'], cta: 'Generate Image' },
     { id: 'logo-creator-ai', title: 'Logo Creator AI', description: 'Create a professional logo for your brand in seconds.', iconName: 'Sparkles', color: '#1E90FF', categories: ['Creative'], cta: 'Create Logo' },
@@ -85,5 +85,3 @@ export const tools: ToolData[] = [
     { id: 'superfreetime', title: 'Super Free Time', description: 'A secret tool for some fun.', iconName: 'KeyRound', color: '#FFD700', categories: [], cta: 'Play' },
     { id: 'paypal-transaction', title: 'PayPal Transaction', description: 'A developer tool to fetch details for a PayPal transaction.', iconName: 'CreditCard', color: '#003087', categories: ['Developer'], cta: 'Fetch Transaction' },
 ];
-
-    

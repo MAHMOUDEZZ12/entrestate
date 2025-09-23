@@ -57,6 +57,7 @@ export interface Feature extends ToolData {
         use_cases: string[];
     };
     icon: React.ReactElement; // Override icon to be ReactElement
+    price: number;
 }
 
 
@@ -86,7 +87,7 @@ const Languages = () => <svg xmlns="http://www.w3.org/2000/svg" width="24" heigh
 
 const iconMap: { [key: string]: React.ReactElement } = {
     ...Object.fromEntries(
-        Object.entries(LucideIcons).map(([name, Icon]) => [name, <Icon />])
+        Object.entries(LucideIcons).map(([name, Icon]) => [name, <Icon key={name} />])
     ),
     'Languages': <Languages />,
 };

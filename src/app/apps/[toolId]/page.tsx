@@ -3,81 +3,20 @@
 
 import React from 'react';
 import { notFound, useParams } from 'next/navigation';
-import { tools } from '@/lib/tools-client';
-import { appDetails } from '@/lib/blog-content';
-import { pricingData } from '@/lib/pricing-data';
+import { tools, Feature } from '@/lib/tools-client';
 import { PublicToolPageLayout } from '@/app/public-tool-page-layout';
-import { Sparkles, Clock2, Wallet, BadgeCheck, Upload, Download } from 'lucide-react';
-
-
-// Function to merge data with details
-const mergeToolData = (toolId: string) => {
-    const toolData = tools.find(t => t.id === toolId);
-    if (!toolData) return null;
-
-    const detailsContent = appDetails.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === toolId.toLowerCase());
-    const priceInfo = pricingData.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === toolId.toLowerCase());
-    
-    // Define a robust default details structure
-    const defaultDetails = {
-        steps: [
-            { icon: <Upload />, text: 'Provide your source content or instructions.' },
-            { icon: <Sparkles />, text: 'The AI analyzes your input and generates the content.' },
-            { icon: <Download />, text: 'Review, refine, and use your new AI-generated asset.' },
-        ],
-        aiVsManual: [
-            { metric: "Time to Complete", manual: "Hours to Days", ai: "Seconds to Minutes", icon: <Clock2 /> },
-            { metric: "Cost", manual: "$$$ - $$$$", ai: "$", icon: <Wallet /> },
-            { metric: "Quality & Consistency", manual: "Variable", ai: "Consistently High", icon: <BadgeCheck /> },
-        ],
-        synergy: [],
-        faqs: [],
-        use_cases: []
-    };
-
-    let finalDetails = defaultDetails;
-
-    if (detailsContent) {
-      finalDetails = {
-          steps: detailsContent.flow.split('. ').filter(s => s.trim()).map((s, i) => ({ 
-              icon: i === 0 ? <Upload /> : i === 1 ? <Sparkles /> : <Download />, 
-              text: s.replace(/step \d+: /i, '').trim()
-          })),
-          aiVsManual: [
-              { metric: "Time to Complete", manual: "Hours to Days", ai: "Seconds to Minutes", icon: <Clock2 /> },
-              { metric: "Cost", manual: "$$$ - $$$$", ai: "$", icon: <Wallet /> },
-              { metric: "Quality & Consistency", manual: "Variable", ai: detailsContent.expected_results || "Consistent", icon: <BadgeCheck /> },
-          ],
-          synergy: detailsContent.integrations.map(integration => ({
-              tool: integration,
-              benefit: `Integrates seamlessly with ${integration} to create powerful, automated workflows.`
-          })),
-          faqs: detailsContent.faqs.map(faq => ({
-              question: faq.q,
-              answer: faq.a
-          })),
-          use_cases: detailsContent.use_cases || []
-      };
-    }
-    
-    // Ensure steps are never empty
-    if (finalDetails.steps.length === 0) {
-        finalDetails.steps = defaultDetails.steps;
-    }
-    
-    return {
-        ...(toolData as any),
-        price: priceInfo?.price_monthly || 0,
-        longDescription: detailsContent?.full_description || toolData.description,
-        details: finalDetails,
-    };
-};
 
 export default function ToolPage() {
   const params = useParams();
   const toolId = params.toolId as string;
   
-  const feature = React.useMemo(() => mergeToolData(toolId), [toolId]);
+  const feature: Feature | undefined = React.useMemo(() => {
+    const tool = tools.find(t => t.id === toolId);
+    if (!tool) {
+      return undefined;
+    }
+    return tool;
+  }, [toolId]);
 
   if (!feature) {
     notFound();
