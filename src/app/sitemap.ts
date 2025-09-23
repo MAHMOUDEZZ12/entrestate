@@ -37,7 +37,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/gem/data-importer',
     '/gem/keys',
     // Main User Dashboard
-    '/me'
+    '/me',
+    '/me/solutions',
+    '/me/marketing',
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),
@@ -46,7 +48,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
   
   const suiteRoutes = marketingSuites.map((suite) => ({
-      url: `${siteUrl}/solutions/${suite.id}`,
+      url: `${siteUrl}/me/solutions/${suite.id}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.9,

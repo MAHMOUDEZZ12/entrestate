@@ -1,12 +1,6 @@
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: {
     remotePatterns: [
       {
@@ -59,20 +53,6 @@ const nextConfig = {
       }
     ],
   },
-  async redirects() {
-    return [
-       {
-        source: '/apps',
-        destination: '/me/marketing',
-        permanent: true,
-      },
-       {
-        source: '/apps/:slug*',
-        destination: '/me/marketing',
-        permanent: true,
-      }
-    ]
-  }
 };
 
 module.exports = nextConfig

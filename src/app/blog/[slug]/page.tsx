@@ -1,8 +1,9 @@
+
 'use client';
 
 import React from 'react';
 import { useParams, notFound } from 'next/navigation';
-import { tools as allToolsClient, tools } from '@/lib/tools-client';
+import { tools as allToolsClient } from '@/lib/tools-client';
 import { appDetails } from '@/lib/blog-content';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowRight, Plus } from 'lucide-react';
@@ -77,7 +78,7 @@ export default function BlogPage() {
                         </Card>
 
                         <div className="mt-8">
-                            <Link href={`/dashboard/flows`}>
+                            <Link href={`/me/flows`}>
                                 <ShinyButton>
                                     Run This Flow
                                     <ArrowRight />

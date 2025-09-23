@@ -47,12 +47,17 @@ const generateGridState = () => {
 
 export default function SuperFreeTimePage() {
     const { toast } = useToast();
-    const [gameState, setGameState] = useState(generateGridState());
+    const [gameState, setGameState] = useState<{grid: any[], hint: string, secretCode: string} | null>(null);
     const [gameOver, setGameOver] = useState(false);
     const [foundKey, setFoundKey] = useState(false);
     const [attempts, setAttempts] = useState(0);
     const [timeLeft, setTimeLeft] = useState(TIME_LIMIT_SECONDS);
     const [showReward, setShowReward] = useState(false);
+
+    useEffect(() => {
+        // Generate the game state on the client side to avoid hydration errors
+        setGameState(generateGridState());
+    }, []);
 
     useEffect(() => {
         if (gameOver || timeLeft <= 0) {
@@ -70,7 +75,7 @@ export default function SuperFreeTimePage() {
     }, [gameOver, timeLeft]);
 
     const handleCellClick = (id: number) => {
-        if (gameOver) return;
+        if (gameOver || !gameState) return;
 
         const newAttempts = attempts + 1;
         setAttempts(newAttempts);
@@ -90,7 +95,7 @@ export default function SuperFreeTimePage() {
             }
         }
         
-        setGameState(prev => ({ ...prev, grid: newGrid }));
+        setGameState(prev => prev ? ({ ...prev, grid: newGrid }) : null);
     };
 
     const resetGame = () => {
@@ -103,6 +108,7 @@ export default function SuperFreeTimePage() {
     };
 
     const copyCode = () => {
+        if (!gameState) return;
         navigator.clipboard.writeText(gameState.secretCode);
         toast({
             title: "Code Copied!",
@@ -113,6 +119,14 @@ export default function SuperFreeTimePage() {
     const attemptsLeft = MAX_ATTEMPTS - attempts;
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
+
+    if (!gameState) {
+        return (
+            <div className="flex items-center justify-center h-full">
+                <p>Loading Game...</p>
+            </div>
+        );
+    }
 
     return (
         <main className="p-4 md:p-10 space-y-8">

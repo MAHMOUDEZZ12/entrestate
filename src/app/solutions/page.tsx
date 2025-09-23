@@ -41,7 +41,7 @@ export default function SolutionsPage() {
         <div className="container mx-auto px-4 py-16 md:py-24">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {solutions.map(solution => (
-                    <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
+                    <Link href={`/me/solutions/${solution.slug}`} key={solution.slug}>
                         <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg">
                             <CardHeader>
                                 <div className="p-4 bg-primary/10 text-primary rounded-2xl w-fit mb-4">
