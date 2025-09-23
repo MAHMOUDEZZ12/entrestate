@@ -1,9 +1,9 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
-import { ArrowRight, PlusCircle, GanttChartSquare, LayoutGrid } from 'lucide-react';
+import { ArrowRight, PlusCircle, GanttChartSquare, LayoutGrid, Trash2 } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import { tools, Feature } from '@/lib/tools-client';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,8 @@ import { ProjectCard } from '@/components/ui/project-card';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
 import { SensitiveArea } from '@/components/ui/sensitive-area';
+import { useToast } from '@/hooks/use-toast';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 
 const AppIcon = ({ tool, onOpen }: { tool: Feature; onOpen: (tool: Feature) => void }) => {
   return (
@@ -41,6 +43,7 @@ export default function MePage() {
   const [isLoadingProjects, setIsLoadingProjects] = useState(true);
 
   const { user } = useAuth();
+  const { toast } = useToast();
 
   useEffect(() => {
     setIsClient(true);
@@ -50,36 +53,55 @@ export default function MePage() {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchUserProjects = async () => {
-        if (!user) {
-            setIsLoadingProjects(false);
-            return;
-        };
-        try {
-            setIsLoadingProjects(true);
-            const idToken = await user.getIdToken();
-            const response = await fetch('/api/user/projects', {
-                headers: { 'Authorization': `Bearer ${idToken}` }
-            });
-            const data = await response.json();
-            if (data.ok) {
-                setUserProjects(data.data);
-            }
-        } catch (error) {
-            console.error("Failed to fetch user projects:", error);
-        } finally {
-            setIsLoadingProjects(false);
-        }
+  const fetchUserProjects = useCallback(async () => {
+    if (!user) {
+        setIsLoadingProjects(false);
+        return;
     };
-    fetchUserProjects();
+    try {
+        setIsLoadingProjects(true);
+        const idToken = await user.getIdToken();
+        const response = await fetch('/api/user/projects', {
+            headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        const data = await response.json();
+        if (data.ok) {
+            setUserProjects(data.data);
+        }
+    } catch (error) {
+        console.error("Failed to fetch user projects:", error);
+    } finally {
+        setIsLoadingProjects(false);
+    }
   }, [user]);
+
+  useEffect(() => {
+    fetchUserProjects();
+  }, [fetchUserProjects]);
 
   const handleOpenApp = (tool: Feature) => {
     // This logic should now be handled by the GlobalSearch or a similar component
     // For now, we can just log it or navigate directly.
     window.location.href = tool.href;
   };
+  
+    const handleDeleteProject = async (projectId: string) => {
+        if (!user) return;
+        try {
+            const idToken = await user.getIdToken();
+            const response = await fetch(`/api/user/projects?projectId=${projectId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${idToken}` },
+            });
+            const data = await response.json();
+            if (!data.ok) throw new Error(data.error);
+
+            toast({ title: "Project Removed", description: "The project has been removed from your library." });
+            fetchUserProjects(); // Refresh the list
+        } catch (error: any) {
+            toast({ title: "Error", description: `Could not remove project: ${error.message}`, variant: "destructive" });
+        }
+    };
 
   const myApps = React.useMemo(() => {
     if (!isClient) return [];
@@ -145,7 +167,28 @@ export default function MePage() {
                     ) : userProjects.length > 0 ? (
                         userProjects.slice(0, 3).map(p => (
                             <SensitiveArea hint={`View details for ${p.name}`} key={p.id}>
-                                <ProjectCard project={p} />
+                                <ProjectCard
+                                    project={p}
+                                    actions={
+                                         <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button variant="ghost" size="icon" className="h-7 w-7">
+                                                    <Trash2 className="h-4 w-4 text-destructive/70 hover:text-destructive" />
+                                                </Button>
+                                            </AlertDialogTrigger>
+                                            <AlertDialogContent>
+                                                <AlertDialogHeader>
+                                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                                                    <AlertDialogDescription>This will permanently remove "{p.name}" from your library. This action cannot be undone.</AlertDialogDescription>
+                                                </AlertDialogHeader>
+                                                <AlertDialogFooter>
+                                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                    <AlertDialogAction onClick={() => handleDeleteProject(p.id)} className="bg-destructive hover:bg-destructive/90 text-destructive-foreground">Delete</AlertDialogAction>
+                                                </AlertDialogFooter>
+                                            </AlertDialogContent>
+                                        </AlertDialog>
+                                    }
+                                />
                             </SensitiveArea>
                         ))
                     ) : (

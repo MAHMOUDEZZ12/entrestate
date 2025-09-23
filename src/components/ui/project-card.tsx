@@ -13,16 +13,13 @@ export function ProjectCard({
   project: {
     id: string;
     badge?: string; name: string; developer: string; area: string;
-    priceFrom?: string; unitTypes?: string[]; handover?: string; thumbnailUrl?: string;
+    priceFrom?: string | number; unitTypes?: string[]; handover?: string; thumbnailUrl?: string;
   };
   selectable?: boolean; selected?: boolean;
   onToggle?: () => void; actions?: React.ReactNode;
 }) {
-  const CardBody = (
-     <div className={cn(
-        "rounded-lg border bg-card text-card-foreground h-full flex flex-col hover:border-primary/50 transition-colors overflow-hidden",
-        selected && "border-primary ring-2 ring-primary/50"
-      )}>
+  const cardContent = (
+    <>
       <div className="relative w-full h-32 bg-muted">
         <Image 
             src={project.thumbnailUrl || `https://picsum.photos/seed/${project.id}/300/200`}
@@ -37,14 +34,27 @@ export function ProjectCard({
         <h4 className="font-semibold flex-grow">{project.name}</h4>
         <p className="text-sm text-muted-foreground">{project.developer} • {project.area}</p>
         {project.priceFrom && <p className="mt-1 text-sm">From {project.priceFrom}</p>}
-        {actions && <div className="mt-4 flex gap-2">{actions}</div>}
+        {actions && <div className="mt-4 flex gap-2 items-center">{actions}</div>}
       </div>
-    </div>
+    </>
+  );
+
+  const cardContainerClasses = cn(
+    "rounded-lg border bg-card text-card-foreground h-full flex flex-col hover:border-primary/50 transition-colors overflow-hidden",
+    selected && "border-primary ring-2 ring-primary/50"
   );
 
   if (selectable) {
-    return <button onClick={onToggle} className="w-full text-left h-full">{CardBody}</button>;
+    return (
+      <button onClick={onToggle} className={cn("w-full text-left h-full", cardContainerClasses)}>
+        {cardContent}
+      </button>
+    );
   }
 
-  return CardBody;
+  return (
+    <div className={cardContainerClasses}>
+      {cardContent}
+    </div>
+  );
 }
