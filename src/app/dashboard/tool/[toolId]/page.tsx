@@ -14,7 +14,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Sparkles, AlertCircle, Upload, Info, PlusCircle, CreditCard, ArrowRight, Wand2 } from 'lucide-react';
+import { Loader2, Sparkles, AlertCircle, Upload, Info, PlusCircle, CreditCard, ArrowRight, Wand2, Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Confetti } from '@/components/confetti';
 import Link from 'next/link';
@@ -35,6 +35,15 @@ import {
 import { notFound, useParams } from 'next/navigation';
 import { PageHeader } from '@/components/ui/page-header';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+
+
+const copyToClipboard = (text: string, toast: (options: any) => void) => {
+    navigator.clipboard.writeText(text);
+    toast({
+        title: "Copied to clipboard!",
+        description: "The HTML code has been copied successfully.",
+    });
+};
 
 
 const ToolPage = () => {
@@ -400,5 +409,3 @@ const ToolPage = () => {
 }
 
 export default ToolPage;
-
-    

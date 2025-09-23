@@ -431,25 +431,11 @@ export const tools: Feature[] = mergeToolData().map(tool => {
                 { id: 'customDomain', name: 'Custom Domain (Optional)', type: 'text', placeholder: 'e.g., my-awesome-project.com' },
                 { id: 'path', name: 'URL Path (Optional)', type: 'text', placeholder: 'e.g., /exclusive-offer' },
             ];
-            tool.renderResult = (result, toast) => (
-                 <div>
-                    {result.publishUrl &&
-                        <div className="mb-4">
-                             <h3 className="font-semibold mb-2">Publish URL:</h3>
-                            <a href={result.publishUrl} target="_blank" rel="noopener noreferrer" className="text-primary underline flex items-center gap-2">
-                               {result.publishUrl} <LinkIcon className="h-4 w-4" />
-                            </a>
-                        </div>
-                    }
-                    <h3 className="font-semibold mb-2">Generated Landing Page HTML:</h3>
-                    <div className="relative">
-                        <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap max-h-96 overflow-auto">{result.landingPageHtml}</pre>
-                        <Button variant="ghost" size="icon" className="absolute top-2 right-2" onClick={() => copyToClipboard(result.landingPageHtml, toast)}>
-                            <Copy className="h-4 w-4"/>
-                        </Button>
-                    </div>
-                </div>
-            );
+             tool.renderResult = (result, toast) => {
+                // This is now handled by the live preview in the main component.
+                // This function can be used for secondary results if needed.
+                return null;
+            };
             break;
         case 'instagram-content-creator':
             tool.creationFields = [
