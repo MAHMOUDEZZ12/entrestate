@@ -41,7 +41,7 @@ export default function BayutSyncPage() {
   const [workflow, setWorkflow] = useState<Step[]>([]);
   const [pastedPlan, setPastedPlan] = useState('');
   const [pullId, setPullId] = useState('');
-  const [pulledData, setPulledData] = useState<any>(null);
+  const [pulledData, setPulledData = useState<any>(null);
 
 
   const handleExecute = async () => {
@@ -212,3 +212,5 @@ export default function BayutSyncPage() {
     </main>
   );
 }
+
+    

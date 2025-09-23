@@ -49,7 +49,7 @@ export default function ListingManagerPage() {
     const [listingPlan, setListingPlan] = useState<any>(null);
 
     const [portalName, setPortalName] = useState('');
-    const [portalScreenshot, setPortalScreenshot] = useState<File | null>(null);
+    const [portalScreenshot, setPortalScreenshot = useState<File | null>(null);
 
     const handleProjectSelect = (projectId: string) => {
         setSelectedProject(projectId);
@@ -252,3 +252,5 @@ export default function ListingManagerPage() {
         </main>
     );
 }
+
+    
