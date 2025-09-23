@@ -99,9 +99,7 @@ export function DashboardHeader() {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
        <div className="flex items-center gap-4 flex-shrink-0">
-            <Link href="/me">
-                <Logo />
-            </Link>
+            <Logo href="/me" />
         </div>
           
         <div className="flex-1 flex justify-center">
