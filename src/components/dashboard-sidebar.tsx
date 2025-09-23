@@ -36,7 +36,7 @@ const mainNavLinks = [
 
 const secondaryNavLinks = [
     { href: '/me/community/academy', icon: <School className="h-5 w-5" />, label: 'Market Academy' },
-    { href: '/me/resources/flows', icon: <BookOpen className="h-5 w-5" />, label: 'Resources' },
+    { href: '/resources/flows', icon: <BookOpen className="h-5 w-5" />, label: 'Resources' },
     { href: '/me/tool/superfreetime', icon: <Brain className="h-5 w-5" />, label: 'Market Memory' },
     { href: '/me/settings', icon: <Settings className="h-5 w-5" />, label: 'Settings' }
 ];
