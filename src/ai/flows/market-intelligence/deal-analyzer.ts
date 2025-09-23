@@ -71,7 +71,7 @@ const dealAnalyzerPrompt = ai.definePrompt({
   4.  **Calculate the Total Initial Investment**: Down Payment Amount + closingCosts.
   5.  **Calculate the Monthly Cash Flow**: expectedMonthlyRent - monthlyMortgagePayment - monthlyExpenses.
   6.  **Calculate the Annual Cash Flow**: monthlyCashFlow * 12.
-  7.  **Calculate the Cash on Cash ROI**: (Annual Cash Flow / Total Initial Investment) * 100.
+  7.  **Calculate the Cash on Cash ROI**: (Annual Cash Flow / Total InitialInvestment) * 100.
   8.  **Calculate the Net Operating Income (NOI)**: (expectedMonthlyRent - monthlyExpenses) * 12.
   9.  **Calculate the Capitalization Rate (Cap Rate)**: (NOI / purchasePrice) * 100.
 

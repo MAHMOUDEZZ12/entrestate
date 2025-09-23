@@ -83,6 +83,7 @@ export const tools: ToolData[] = [
     { id: 'alloydb-scanner', title: 'AlloyDB Scanner', description: 'Scan for databases and analyze suitability for AlloyDB migration.', iconName: 'Database', color: '#6a788c', categories: ['Developer'], cta: 'Scan Environment' },
     
     // Deprecated
+    { id: 'ai-price-estimator', title: 'AI Price Estimator', description: 'Get an AI-powered price estimate for any property.', iconName: 'Wallet', color: '#808080', categories: ['Sales Tools', 'Market Intelligence'], badge: 'DEPRECATED', cta: 'Estimate Price' },
     { id: 'pdf-editor', title: 'Visual PDF Editor', description: 'A legacy tool for simple PDF edits.', iconName: 'Edit', color: '#808080', categories: ['Editing'], badge: 'DEPRECATED', cta: 'Open Editor' },
     
     // Placeholder / Coming Soon

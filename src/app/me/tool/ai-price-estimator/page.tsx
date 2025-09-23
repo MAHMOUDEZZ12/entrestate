@@ -174,7 +174,7 @@ const ToolPage = () => {
                              <Controller name="interestRate" control={control} render={({ field }) => (
                                 <div className="space-y-2">
                                     <Label htmlFor="interestRate">Interest Rate (%)</Label>
-                                    <Input id="interestRate" type="number" {...field} />
+                                    <Input id="interestRate" type="number" step="0.1" {...field} />
                                 </div>
                             )} />
                               <Controller name="loanTermYears" control={control} render={({ field }) => (
@@ -208,7 +208,7 @@ const ToolPage = () => {
                         {isLoading ? (
                             <>
                             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                            Generating...
+                            Analyzing...
                             </>
                         ) : (
                              <>
@@ -236,4 +236,3 @@ const ToolPage = () => {
 }
 
 export default ToolPage;
-
