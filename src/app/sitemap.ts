@@ -2,6 +2,7 @@
 import { MetadataRoute } from 'next';
 import { tools } from '@/lib/tools-data';
 import { appDetails } from '@/lib/blog-content';
+import { suites } from '@/lib/suites-data';
 
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -11,7 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/',
     '/apps',
     '/pricing',
-    '/solutions',
     '/services',
     '/login',
     '/privacy',
@@ -47,12 +47,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route === '/' ? 1.0 : 0.8,
   }));
   
-  const solutionRoutes = [
-    '/solutions/pro-search-eng-x3',
-    '/solutions/estchat-x3',
-    '/solutions/mega-listing-pro-2',
-  ].map((route) => ({
-      url: `${siteUrl}${route}`,
+  const suiteRoutes = suites.map((suite) => ({
+      url: `${siteUrl}/apps/${suite.id}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.9,
@@ -65,13 +61,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
   }));
   
-  const productRoutes = tools.map((tool) => ({
-    url: `${siteUrl}/products/${tool.id}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly' as const,
-    priority: 0.7,
-  }));
-
   const meToolRoutes = tools.map((tool) => ({
       url: `${siteUrl}/me/tool/${tool.id}`,
       lastModified: new Date(),
@@ -80,5 +69,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
 
-  return [...staticRoutes, ...solutionRoutes, ...blogRoutes, ...productRoutes, ...meToolRoutes];
+  return [...staticRoutes, ...suiteRoutes, ...blogRoutes, ...meToolRoutes];
 }

@@ -11,7 +11,6 @@ import { useAuth } from '@/hooks/useAuth';
 import { usePathname } from 'next/navigation';
 
 const navLinks = [
-    { name: 'Solutions', href: '/solutions' },
     { name: 'Apps', href: '/apps' },
     { name: 'Services', href: '/services' },
     { name: 'Pricing', href: '/pricing' },
