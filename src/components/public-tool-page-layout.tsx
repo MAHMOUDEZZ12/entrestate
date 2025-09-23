@@ -16,6 +16,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { CodeBlock } from './code-block';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { PurchaseDialog } from '@/components/ui/purchase-dialog';
+import Image from 'next/image';
 
 
 interface PublicToolPageLayoutProps {
@@ -66,7 +67,7 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
                                     <div>
                                         <Label className="text-sm">Example Output</Label>
                                         <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg">
-                                            <img src={ex.outputImage} alt={ex.title} className="absolute inset-0 w-full h-full object-cover" data-ai-hint={ex.imageHint} />
+                                            <Image src={ex.outputImage} alt={ex.title} layout="fill" objectFit="cover" data-ai-hint={ex.imageHint} />
                                         </div>
                                     </div>
                                 </div>
@@ -287,4 +288,3 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
   );
 }
 
-    
