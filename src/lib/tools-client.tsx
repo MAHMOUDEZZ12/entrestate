@@ -332,18 +332,19 @@ export const tools: Feature[] = mergeToolData().map(tool => {
             break;
         case 'insta-ads-designer':
             tool.creationFields = [
-                { id: 'projectId', name: 'Project', type: 'select', placeholder: 'Select a project from your library', options: ['emaar-beachfront', 'damac-hills-2', 'sobha-hartland', 'Add New Project...'], description: "Select a project you've saved to your library to use its assets." },
-                { id: 'brochureDataUri', name: 'OR Upload Brochure', type: 'file', description: "If the project isn't in your library, upload its brochure (PDF)." },
-                { id: 'focusArea', name: 'Ad Focus', type: 'text', placeholder: 'e.g., Luxury amenities, investment potential', description: 'What is the main selling point for this ad?' },
-                { id: 'toneOfVoice', name: 'Tone of Voice', type: 'select', options: ['Professional', 'Friendly', 'Urgent', 'Luxury'], description: 'The desired tone for the ad copy.' },
+                { id: 'projectName', name: 'Project Name (Optional)', type: 'text', placeholder: 'e.g., Emaar Beachfront', description: "Used if no brochure is provided." },
+                { id: 'brochureDataUri', name: 'Project Brochure (Optional)', type: 'file', description: "Upload a PDF brochure to extract details." },
+                { id: 'additionalInformation', name: 'Additional Info', type: 'textarea', placeholder: 'e.g., 2-bedroom units starting from AED 2.5M. Private beach access.' },
+                { id: 'focusArea', name: 'Ad Focus', type: 'select', options: ['Luxury amenities', 'Investment potential', 'Family lifestyle', 'Limited-time offer'] },
+                { id: 'toneOfVoice', name: 'Tone of Voice', type: 'select', options: ['Professional', 'Friendly', 'Urgent', 'Exclusive'] },
             ];
             tool.renderResult = (result, toast) => (
                 <div className="space-y-4">
                     <h3 className="font-semibold">Ad Copy:</h3>
                     <pre className="p-4 bg-muted rounded-md text-sm whitespace-pre-wrap">{result.adCopy}</pre>
                     <Button onClick={() => copyToClipboard(result.adCopy, toast)}><Copy className="mr-2"/> Copy Text</Button>
-                     <h3 className="font-semibold mt-4">Generated Brochure:</h3>
-                    <iframe src={result.adDesign} className="w-full h-96 rounded-md border" title="Generated Brochure Preview" />
+                     <h3 className="font-semibold mt-4">Generated Ad Design:</h3>
+                    <iframe src={result.adDesign} className="w-full h-96 rounded-md border" title="Generated Ad Preview" />
                      <h3 className="font-semibold mt-4">Generated Landing Page:</h3>
                      <iframe src={result.landingPage} className="w-full h-96 rounded-md border" title="Generated Landing Page Preview" />
                 </div>
