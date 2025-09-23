@@ -11,8 +11,8 @@ import { ShinyButton } from './ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { LandingHeader } from './landing-header';
-import { LandingFooter } from './landing-footer';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 import { PurchaseDialog } from '@/components/ui/purchase-dialog';
 import { AutoPilotPlan } from '@/components/ui/autopilot-plan';
 import {
