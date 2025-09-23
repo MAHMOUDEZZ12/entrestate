@@ -10,7 +10,7 @@ import Link from 'next/link';
 import { ArrowRight, BookOpen, MessageSquare, Newspaper, Check } from 'lucide-react';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { tools } from '@/lib/tools-data';
-import { suites } from '@/lib/suites-data';
+import { marketingSuites } from '@/lib/suites-data';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
 import { useToast } from '@/hooks/use-toast';
 
@@ -36,7 +36,7 @@ export default function SuiteDetailPage() {
   }
 
 
-  const suite = suites.find(s => s.id === slug);
+  const suite = marketingSuites.find(s => s.id === slug);
   if (!suite) {
     notFound();
   }

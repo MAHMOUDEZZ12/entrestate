@@ -6,11 +6,11 @@ import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
-import { tools, Suite } from '@/lib/tools-data';
+import { tools } from '@/lib/tools-data';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { ArrowRight, LayoutGrid } from 'lucide-react';
-import { suites } from '@/lib/suites-data';
+import { marketingSuites } from '@/lib/suites-data';
 
 export default function AppsPage() {
     
@@ -25,7 +25,7 @@ export default function AppsPage() {
         />
         <div className="w-full max-w-7xl mx-auto px-4 md:px-6 py-12 md:py-20">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {suites.map((suite) => (
+            {marketingSuites.map((suite) => (
               <Link href={`/apps/${suite.id}`} key={suite.id} className="block group">
                 <Card className="h-full flex flex-col hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
                   <CardHeader>

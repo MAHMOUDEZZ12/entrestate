@@ -12,7 +12,7 @@ import { ShinyButton } from '@/components/ui/shiny-button';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { tools } from '@/lib/tools-data';
-import { suites } from '@/lib/suites-data';
+import { marketingSuites } from '@/lib/suites-data';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
 import { useToast } from '@/hooks/use-toast';
 
@@ -38,7 +38,7 @@ export default function SuiteDetailPage() {
   }
 
 
-  const suite = suites.find(s => s.id === slug);
+  const suite = marketingSuites.find(s => s.id === slug);
   if (!suite) {
     notFound();
   }

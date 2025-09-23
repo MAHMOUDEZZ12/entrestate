@@ -3,7 +3,7 @@ import {
     Sparkles, Building, Briefcase, BrainCircuit, LayoutGrid, Wrench
 } from 'lucide-react';
 
-export const suites = [
+export const marketingSuites = [
   {
     id: 'meta-marketing-suite',
     name: 'Meta Marketing Suite',

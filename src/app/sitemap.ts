@@ -2,7 +2,7 @@
 import { MetadataRoute } from 'next';
 import { tools } from '@/lib/tools-data';
 import { appDetails } from '@/lib/blog-content';
-import { suites } from '@/lib/suites-data';
+import { marketingSuites } from '@/lib/suites-data';
 
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -46,7 +46,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route === '/' ? 1.0 : 0.8,
   }));
   
-  const suiteRoutes = suites.map((suite) => ({
+  const suiteRoutes = marketingSuites.map((suite) => ({
       url: `${siteUrl}/apps/${suite.id}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,

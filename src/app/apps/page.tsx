@@ -7,7 +7,7 @@ import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { ArrowRight, LayoutGrid } from 'lucide-react';
-import { suites } from '@/lib/suites-data';
+import { marketingSuites } from '@/lib/suites-data';
 import { solutions } from '@/lib/solutions-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -17,7 +17,7 @@ export default function AppsPage() {
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
         <PageHeader
-          title="The Cloudstore"
+          title="The Entrestate Marketplace"
           description="Explore our ecosystem of Suites and Solutions, designed to give you an unparalleled advantage in the real estate market."
           icon={<LayoutGrid className="h-8 w-8" />}
         />
@@ -31,7 +31,7 @@ export default function AppsPage() {
             </div>
             <TabsContent value="suites">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {suites.map((suite) => (
+                {marketingSuites.map((suite) => (
                   <Link href={`/apps/${suite.id}`} key={suite.id} className="block group">
                     <Card className="h-full flex flex-col hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
                       <CardHeader>
