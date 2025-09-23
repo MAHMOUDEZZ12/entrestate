@@ -7,14 +7,15 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Feature } from '@/lib/tools-client';
-import { ShinyButton } from '@/components/ui/shiny-button';
+import { ShinyButton } from './ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Label } from '@/components/ui/label';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
+import { LandingHeader } from './landing-header';
+import { LandingFooter } from './landing-footer';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { CodeBlock } from '@/components/code-block';
-import { PurchaseDialog } from '@/components/ui/purchase-dialog';
+import { CodeBlock } from './code-block';
+import { PurchaseDialog } from './ui/purchase-dialog';
+import { AutoPilotPlan } from './ui/autopilot-plan';
 
 
 interface PublicToolPageLayoutProps {
@@ -22,77 +23,9 @@ interface PublicToolPageLayoutProps {
 }
 
 
-const ToolShowcase = ({ feature }: { feature: Feature }) => {
-    // Examples are now purely text/data-based.
-    const examples = [
-        {
-            title: "Generate Ad Copy",
-            description: "Create high-converting ad copy for a luxury property.",
-            input: `{\n  "projectName": "Emaar Beachfront",\n  "focusArea": "Luxury amenities",\n  "toneOfVoice": "Luxury"\n}`,
-            output: `{\n  "headline": "Emaar Beachfront: Where Luxury Meets the Sea",\n  "body": "Discover an exclusive island lifestyle with private beach access and unparalleled amenities. Your key to elegance awaits."\n}`,
-            output_type: 'code'
-        },
-        {
-            title: "Rebrand a Brochure",
-            description: "Apply a new brand identity to an existing document.",
-            input: `{\n  "brochure": "source.pdf",\n  "colors": "Navy and Gold",\n  "logo": "new_logo.png"\n}`,
-            output: `data:application/pdf;base64,JVBERi0xLjQKJ...`,
-            output_type: 'iframe'
-        },
-        {
-            title: "Build a Landing Page Plan",
-            description: "Quickly generate the HTML structure for a new development's landing page.",
-            input: `{\n  "projectName": "DAMAC Hills 2",\n  "brandingStyle": "Modern & Minimalist"\n}`,
-            output: `<!DOCTYPE html>\n<html>\n  <head>...\n  <body>\n    <h1>Welcome to DAMAC Hills 2</h1>\n    ...\n  </body>\n</html>`,
-            output_type: 'code'
-        }
-    ];
-
-    const renderOutput = (ex: typeof examples[0]) => {
-        if (ex.output_type === 'iframe') {
-            return (
-                <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg bg-background flex items-center justify-center">
-                    <p className="text-muted-foreground text-sm">[PDF Preview]</p>
-                </div>
-            )
-        }
-        return <CodeBlock>{ex.output}</CodeBlock>;
-    }
-
-    return (
-        <Card className="bg-muted/30 border-border/50">
-            <CardContent className="p-6 md:p-10">
-                <Carousel>
-                    <CarouselContent>
-                        {examples.map((ex, index) => (
-                            <CarouselItem key={index}>
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-                                    <div className="space-y-4">
-                                        <h4 className="text-xl font-bold mb-2">{ex.title}</h4>
-                                        <p className="text-muted-foreground mb-4">{ex.description}</p>
-                                        <div>
-                                            <Label className="text-sm">Example Input</Label>
-                                            <CodeBlock>{ex.input}</CodeBlock>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <Label className="text-sm">Example Output</Label>
-                                        {renderOutput(ex)}
-                                    </div>
-                                </div>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-2" />
-                    <CarouselNext className="right-2"/>
-                </Carousel>
-            </CardContent>
-        </Card>
-    )
-}
-
-
 export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
+  const isAutoPilot = feature.id === 'meta-auto-pilot';
+
   return (
     <div className="flex min-h-screen flex-col bg-background">
     <LandingHeader />
@@ -138,11 +71,11 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
        <section className="py-24 md:py-32 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">A Radically Simple Workflow</h2>
-            <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, elegant process powered by AI.</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">The AI-Powered Plan</h2>
+             <p className="mt-4 text-lg text-muted-foreground">The Auto Pilot executes a complete, intelligent plan to build and launch your campaign.</p>
           </div>
 
-          <ToolShowcase feature={feature} />
+          <AutoPilotPlan />
 
         </div>
       </section>
@@ -181,7 +114,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                     <Card key={index} className="text-center bg-card">
                         <CardHeader>
                             <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
-                                {React.cloneElement(item.icon as React.ReactElement, { className: 'h-8 w-8' })}
+                                {React.cloneElement(item.icon, { className: 'h-8 w-8' })}
                             </div>
                             <CardTitle>{item.metric}</CardTitle>
                         </CardHeader>
@@ -257,3 +190,5 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
     </div>
   );
 }
+
+    
