@@ -7,17 +7,12 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard, Workflow, Clock2, Wallet, BadgeCheck } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Feature, tools } from '@/lib/tools-client';
-import Image from 'next/image';
-import { ShinyButton } from '@/components/ui/shiny-button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { ShinyButton } from './ui/shiny-button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { LandingHeader } from '@/components/landing-header';
-import { LandingFooter } from '@/components/landing-footer';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { CodeBlock } from '@/components/code-block';
+import { LandingHeader } from './landing-header';
+import { LandingFooter } from './landing-footer';
 import { PurchaseDialog } from '@/components/ui/purchase-dialog';
 import { AutoPilotPlan } from '@/components/ui/autopilot-plan';
 import {
@@ -34,61 +29,46 @@ interface PublicToolPageLayoutProps {
   feature: Feature;
 }
 
-const ToolShowcase = ({ feature }: { feature: Feature }) => {
-    // Simple examples. In a real app, these would be more detailed and specific.
-    const examples = [
-        {
-            title: "Generate a Luxury Ad",
-            description: "Create a high-end, professional ad for a luxury property.",
-            input: `{\n  "projectName": "Emaar Beachfront",\n  "focusArea": "Luxury amenities",\n  "toneOfVoice": "Luxury"\n}`,
-            outputImage: "https://picsum.photos/seed/luxury-ad/800/450",
-            imageHint: "luxury apartment interior"
-        },
-        {
-            title: "Create a Market Report",
-            description: "Generate an in-depth market report for a specific area.",
-            input: `{\n  "location": "Dubai Marina",\n  "propertyType": "Luxury Condos",\n  "reportType": "Investor"\n}`,
-            outputImage: "https://picsum.photos/seed/market-report/800/450",
-            imageHint: "dubai skyline"
-        },
-        {
-            title: "Build a Landing Page",
-            description: "Quickly generate a landing page for a new development.",
-            input: `{\n  "projectName": "DAMAC Hills 2",\n  "projectDetails": "3-bedroom villas with lagoon access",\n  "brandingStyle": "Modern & Minimalist"\n}`,
-            outputImage: "https://picsum.photos/seed/villa-exterior/800/450",
-            imageHint: "modern villa exterior"
-        }
-    ];
+const ToolWorkflowSteps = ({ steps }: { steps: { icon: React.ReactNode, text: string }[] }) => {
+    if (!steps || steps.length === 0) {
+        return null;
+    }
 
     return (
-        <Card className="bg-muted/30 border-border/50">
-            <CardContent className="p-6 md:p-10">
-                <Carousel>
-                    <CarouselContent>
-                        {examples.map((ex, index) => (
-                            <CarouselItem key={index}>
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                                    <div>
-                                        <h4 className="text-xl font-bold mb-2">{ex.title}</h4>
-                                        <p className="text-muted-foreground mb-4">{ex.description}</p>
-                                        <Label className="text-sm">Example Input</Label>
-                                        <CodeBlock>{ex.input}</CodeBlock>
-                                    </div>
-                                    <div>
-                                        <Label className="text-sm">Example Output</Label>
-                                        <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg">
-                                            <Image src={ex.outputImage} alt={ex.title} layout="fill" objectFit="cover" data-ai-hint={ex.imageHint} />
-                                        </div>
-                                    </div>
-                                </div>
-                            </CarouselItem>
-                        ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-2" />
-                    <CarouselNext className="right-2"/>
-                </Carousel>
-            </CardContent>
-        </Card>
+        <div className="flex flex-col md:flex-row items-center justify-center gap-8 md:gap-4">
+            {steps.map((step, index) => (
+                <React.Fragment key={index}>
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.2 }}
+                    viewport={{ once: true, amount: 0.5 }}
+                    className="w-full max-w-sm text-center"
+                >
+                    <Card className="bg-card/80 h-full">
+                    <CardContent className="p-8">
+                        <div className="p-4 bg-primary/10 rounded-full w-fit mx-auto mb-4">
+                        {React.cloneElement(step.icon as React.ReactElement, { className: 'h-8 w-8 text-primary' })}
+                        </div>
+                        <h3 className="text-xl font-bold font-heading">Step {index + 1}</h3>
+                        <p className="text-muted-foreground mt-2">{step.text}</p>
+                    </CardContent>
+                    </Card>
+                </motion.div>
+                {index < steps.length - 1 && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: (index * 0.2) + 0.1 }}
+                        viewport={{ once: true }}
+                        className="hidden md:block"
+                    >
+                    <ArrowRight className="h-8 w-8 text-muted-foreground" />
+                    </motion.div>
+                )}
+                </React.Fragment>
+            ))}
+        </div>
     )
 }
 
@@ -149,7 +129,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">A Radically Simple Workflow</h2>
              <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, elegant process powered by AI.</p>
           </div>
-           {isAutoPilot ? <AutoPilotPlan /> : <ToolShowcase feature={feature} />}
+           {isAutoPilot ? <AutoPilotPlan /> : <ToolWorkflowSteps steps={feature.details.steps} />}
         </div>
       </section>
 
@@ -186,39 +166,41 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       )}
 
       {/* AI vs Manual */}
-       <section className="py-24 md:py-32 bg-muted/30">
-        <div className="container mx-auto px-4">
-           <div className="text-center max-w-2xl mx-auto mb-16">
-                 <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">The AI Advantage</h2>
-                 <p className="mt-4 text-lg text-muted-foreground">See how much time and effort you save by using the AI.</p>
-            </div>
-            <Card className="max-w-4xl mx-auto bg-card/80 backdrop-blur-lg">
-                <CardContent className="p-2">
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="w-[200px]">Metric</TableHead>
-                                <TableHead>Manual Process</TableHead>
-                                <TableHead className="text-primary">With Entrestate AI</TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {aiVsManual.map((item, index) => (
-                                <TableRow key={index}>
-                                    <TableCell className="font-semibold flex items-center gap-2">
-                                        {item.icon ? React.cloneElement(item.icon as React.ReactElement, { className: 'h-5 w-5' }) : null}
-                                        {item.metric}
-                                    </TableCell>
-                                    <TableCell>{item.manual}</TableCell>
-                                    <TableCell className="font-semibold text-primary">{item.ai}</TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
-        </div>
-      </section>
+       {aiVsManual.length > 0 && (
+            <section className="py-24 md:py-32 bg-muted/30">
+                <div className="container mx-auto px-4">
+                <div className="text-center max-w-2xl mx-auto mb-16">
+                        <h2 className="text-3xl md:text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">The AI Advantage</h2>
+                        <p className="mt-4 text-lg text-muted-foreground">See how much time and effort you save by using the AI.</p>
+                    </div>
+                    <Card className="max-w-4xl mx-auto bg-card/80 backdrop-blur-lg">
+                        <CardContent className="p-2">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="w-[200px]">Metric</TableHead>
+                                        <TableHead>Manual Process</TableHead>
+                                        <TableHead className="text-primary">With Entrestate AI</TableHead>
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {aiVsManual.map((item, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell className="font-semibold flex items-center gap-2">
+                                                {item.icon ? React.cloneElement(item.icon as React.ReactElement, { className: 'h-5 w-5' }) : null}
+                                                {item.metric}
+                                            </TableCell>
+                                            <TableCell>{item.manual}</TableCell>
+                                            <TableCell className="font-semibold text-primary">{item.ai}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </CardContent>
+                    </Card>
+                </div>
+            </section>
+        )}
 
 
       {/* Flows Section */}
