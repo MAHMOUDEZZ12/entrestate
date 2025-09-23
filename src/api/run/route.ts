@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { ai } from '@/ai/genkit';
 
 // Import all flow functions directly here
-import { generateAdFromBrochure } from '@/ai/flows/content/generate-ad-from-brochure';
+import { generateAdFromBrochure } from '@/ai/flows/meta-pilot/generate-ad-from-brochure';
 import { generateLandingPage } from '@/ai/flows/content/generate-landing-page';
 import { rebrandBrochure } from '@/ai/flows/content/rebrand-brochure';
 import { generateSocialPost } from '@/ai/flows/meta-pilot/generate-social-post';
@@ -38,7 +38,7 @@ import { dealAnalyzer } from '@/ai/flows/market-intelligence/deal-analyzer';
 import { ugcScriptWriter } from '@/ai/flows/content/ugc-script-writer';
 import { leaseReviewerFlow } from '@/ai/flows/utility/lease-reviewer';
 import { chatbotCreatorFlow } from '@/ai/flows/utility/chatbot-creator';
-import { metaAutoPilotFlow } from '@/ai/flows/meta-pilot/meta-auto-pilot';
+import { runMetaAutoPilot } from '@/ai/flows/meta-pilot/meta-auto-pilot';
 import { getPaypalTransaction } from '@/ai/flows/developer-backend/get-paypal-transaction';
 import { commissionCalculator } from '@/ai/flows/sales/commission-calculator';
 import { scanForAlloyDB } from '@/ai/flows/developer-backend/scan-for-alloydb';
@@ -86,7 +86,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'paypal-transaction': getPaypalTransaction,
     'alloydb-scanner': scanForAlloyDB,
     'prompt-library': (payload) => Promise.resolve({ message: "Executed from library", payload }), // Added for library execution
-    'meta-auto-pilot': metaAutoPilotFlow,
+    'meta-auto-pilot': runMetaAutoPilot,
 };
 
 export async function POST(req: NextRequest) {
@@ -103,7 +103,7 @@ export async function POST(req: NextRequest) {
     
     const runner = flowRunnerMap[toolId];
     if (!runner) {
-      return NextResponse.json({ error: `Tool with id "${toolId}" not found.` }, { status: 404 });
+      return NextResponse.json({ error: `Tool with id "${toolId}" not found. Check the 'flowRunnerMap' in /api/run/route.ts.` }, { status: 404 });
     }
 
     const result = await runner(payload);
