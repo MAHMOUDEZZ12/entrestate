@@ -51,15 +51,13 @@ const AccordionContent = React.forwardRef<
     {...props}
   >
     <div
-      className={cn('pb-4 pt-0', className)}
-      // Pass dangerouslySetInnerHTML to the inner div if children are not provided
-      {...(children ? {} : { dangerouslySetInnerHTML: props.dangerouslySetInnerHTML })}
+      className={cn("pb-4 pt-0", className)}
+      dangerouslySetInnerHTML={!children ? props.dangerouslySetInnerHTML : undefined}
     >
       {children}
     </div>
   </AccordionPrimitive.Content>
 ));
-
 AccordionContent.displayName = AccordionPrimitive.Content.displayName
 
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent }
