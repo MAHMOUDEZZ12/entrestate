@@ -22,20 +22,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/cookies',
     '/blog',
     '/market',
-    '/community',
-    '/community/academy',
-    '/community/roadmap',
-    '/community/documentation',
-    '/technology',
-    '/resources/flows',
-    '/sx3-mindmap',
     '/support',
+    '/sx3-mindmap',
+    // Community pages are now under /me
+    '/me/community',
+    '/me/community/academy',
+    '/me/community/roadmap',
+    '/me/community/documentation',
+    // Resources
+    '/resources/flows',
+    // Gem Admin
     '/gem',
     '/gem/sitemap',
     '/gem/system-health',
     '/gem/archive',
     '/gem/data-importer',
     '/gem/keys',
+    // Main User Dashboard
     '/me'
   ].map((route) => ({
     url: `${siteUrl}${route}`,
@@ -45,6 +48,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
   
   const solutionRoutes = [
+    '/solutions/pro-search-eng-x3',
+    '/solutions/estchat-x3',
+    '/solutions/mega-listing-pro-2',
+    // These seem to be old slugs, keeping for now but should be reviewed
     '/solutions/instagram-ad-value',
     '/solutions/social-media-chatbot',
     '/solutions/sales-agent-chat-ai',
@@ -73,6 +80,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  const meToolRoutes = tools.map((tool) => ({
+      url: `${siteUrl}/me/tool/${tool.id}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+  }));
 
-  return [...staticRoutes, ...solutionRoutes, ...blogRoutes, ...appRoutes];
+
+  return [...staticRoutes, ...solutionRoutes, ...blogRoutes, ...appRoutes, ...meToolRoutes];
 }
