@@ -3,19 +3,26 @@
 
 import React, { useState } from 'react';
 import { Button } from './button';
-import { Play, Loader2 } from 'lucide-react';
+import { Play, Loader2, Mic, FileText, ImageIcon, Video, Bot, BarChart3, Palette, LayoutTemplate, Sparkles } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useTabManager } from '@/context/TabManagerContext';
 import { track } from '@/lib/events';
 import { useToast } from '@/hooks/use-toast';
 import { PromptCardProps } from '@/lib/prompt-library';
 
+const icons: { [key: string]: React.ReactElement } = {
+    Mic: <Mic />, FileText: <FileText />, ImageIcon: <ImageIcon />, Video: <Video />, Bot: <Bot />,
+    BarChart3: <BarChart3 />, Palette: <Palette />, LayoutTemplate: <LayoutTemplate />, Sparkles: <Sparkles />
+};
+
 export function PromptCard({ prompt }: { prompt: PromptCardProps }) {
-    const { title, description, icon, color, toolId, payload } = prompt;
+    const { title, description, iconName, color, toolId, payload } = prompt;
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
     const { addTab } = useTabManager();
     const { toast } = useToast();
+    
+    const icon = icons[iconName] || <Sparkles />;
 
     const handleRun = async (e: React.MouseEvent) => {
         e.stopPropagation();

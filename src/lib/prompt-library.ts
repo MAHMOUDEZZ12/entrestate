@@ -7,7 +7,7 @@ import React from 'react';
 export interface PromptCardProps {
     title: string;
     description: string;
-    icon: React.ReactNode;
+    iconName: string; // Changed from React.ReactNode to string
     color: string;
     mediaType: 'Audio' | 'Document' | 'Image' | 'Text' | 'Video';
     toolId: string;
@@ -18,7 +18,7 @@ export const promptLibrary: PromptCardProps[] = [
     {
         title: 'Ad Copy from Video',
         description: 'Write a creative ad copy based on a video.',
-        icon: <Video />,
+        iconName: 'Video',
         color: 'bg-blue-500',
         mediaType: 'Video',
         toolId: 'ugc-script-writer',
@@ -31,7 +31,7 @@ export const promptLibrary: PromptCardProps[] = [
     {
         title: 'Add an object to a photo',
         description: 'Generates a new image with the reference photo and object.',
-        icon: <ImageIcon />,
+        iconName: 'ImageIcon',
         color: 'bg-pink-500',
         mediaType: 'Image',
         toolId: 'images-hq-ai',
@@ -39,7 +39,7 @@ export const promptLibrary: PromptCardProps[] = [
     {
         title: 'Advertising Campaign',
         description: 'The AI is tasked to create advertising campaigns for its clients.',
-        icon: <BarChart3 />,
+        iconName: 'BarChart3',
         color: 'bg-teal-500',
         mediaType: 'Text',
         toolId: 'meta-ads-copilot',
@@ -47,7 +47,7 @@ export const promptLibrary: PromptCardProps[] = [
     {
         title: 'Animal Information Chatbot',
         description: 'The animal assistant chatbot answers questions about animals.',
-        icon: <Bot />,
+        iconName: 'Bot',
         color: 'bg-teal-500',
         mediaType: 'Text',
         toolId: 'ai-assistant',
@@ -55,7 +55,7 @@ export const promptLibrary: PromptCardProps[] = [
     {
         title: 'Audio Summarization',
         description: 'Summarize an audio file.',
-        icon: <Mic />,
+        iconName: 'Mic',
         color: 'bg-orange-500',
         mediaType: 'Audio',
         toolId: 'brochure-translator' // Placeholder
@@ -63,7 +63,7 @@ export const promptLibrary: PromptCardProps[] = [
     {
         title: 'Audio Transcription',
         description: 'Generate the transcription for a piece of audio recording.',
-        icon: <Mic />,
+        iconName: 'Mic',
         color: 'bg-orange-500',
         mediaType: 'Audio',
         toolId: 'brochure-translator' // Placeholder
@@ -71,7 +71,7 @@ export const promptLibrary: PromptCardProps[] = [
     {
         title: 'Blog Post Creator',
         description: 'Generate a blog post from a simple topic.',
-        icon: <FileText />,
+        iconName: 'FileText',
         color: 'bg-pink-500',
         mediaType: 'Document',
         toolId: 'instagram-content-creator'
@@ -79,7 +79,7 @@ export const promptLibrary: PromptCardProps[] = [
     {
         title: 'Brand Kit Creator',
         description: 'Create a full brand kit from a company name and description.',
-        icon: <Palette />,
+        iconName: 'Palette',
         color: 'bg-indigo-500',
         mediaType: 'Text',
         toolId: 'ai-brand-creator',
@@ -87,7 +87,7 @@ export const promptLibrary: PromptCardProps[] = [
     {
         title: 'Landing Page from Brochure',
         description: 'Generate a full landing page from an uploaded brochure.',
-        icon: <LayoutTemplate />,
+        iconName: 'LayoutTemplate',
         color: 'bg-sky-500',
         mediaType: 'Document',
         toolId: 'landing-pages',

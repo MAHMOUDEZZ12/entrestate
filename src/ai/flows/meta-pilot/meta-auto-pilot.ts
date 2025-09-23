@@ -14,7 +14,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 import { suggestTargetingOptions } from './suggest-targeting-options';
-import { generateAdFromBrochure } from '../content/generate-ad-from-brochure';
+import { generateAdFromBrochure } from '@/ai/flows/meta-pilot/generate-ad-from-brochure';
 import { createMetaCampaign } from './create-meta-campaign';
 import { getProjectById } from '@/services/database'; 
 import { 
