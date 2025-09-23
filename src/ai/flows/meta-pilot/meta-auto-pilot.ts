@@ -13,56 +13,96 @@
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
-import { suggestTargetingOptions, SuggestTargetingOptionsOutput } from './suggest-targeting-options';
-import { generateAdFromBrochure, GenerateAdFromBrochureOutput } from './generate-ad-from-brochure';
-import { createMetaCampaign, CreateMetaCampaignOutput } from './create-meta-campaign';
-import { getProjectById } from '@/services/database'; // Using the new database service
+import { suggestTargetingOptions, SuggestTargetingOptionsOutputSchema, SuggestTargetingOptionsInputSchema } from './suggest-targeting-options';
+import { generateAdFromBrochure, GenerateAdFromBrochureOutputSchema } from '../content/generate-ad-from-brochure';
+import { createMetaCampaign, CreateMetaCampaignInputSchema, CreateMetaCampaignOutputSchema } from './create-meta-campaign';
+import { getProjectById } from '@/services/database'; 
 import { MetaAutoPilotInputSchema, MetaAutoPilotOutputSchema, MetaAutoPilotInput, MetaAutoPilotOutput } from '@/types';
+
+// Define tools that the main flow can call
+const suggestTargetingTool = ai.defineTool(
+  {
+    name: 'suggestTargetingOptions',
+    description: 'Suggests targeting options for an ad campaign based on project details.',
+    inputSchema: SuggestTargetingOptionsInputSchema,
+    outputSchema: SuggestTargetingOptionsOutputSchema,
+  },
+  async (input) => suggestTargetingOptions(input)
+);
+
+const generateCreativeTool = ai.defineTool(
+  {
+    name: 'generateAdCreative',
+    description: 'Generates ad creatives (copy and visuals) from project information.',
+    inputSchema: z.object({
+        projectName: z.string(),
+        focusArea: z.string(),
+        toneOfVoice: z.string(),
+    }),
+    outputSchema: GenerateAdFromBrochureOutputSchema,
+  },
+  async (input) => generateAdFromBrochure(input)
+);
+
+const assembleCampaignTool = ai.defineTool(
+  {
+    name: 'assembleMetaCampaign',
+    description: 'Assembles the final Meta campaign structure with ad sets and creatives.',
+    inputSchema: CreateMetaCampaignInputSchema,
+    outputSchema: CreateMetaCampaignOutputSchema,
+  },
+  async (input) => createMetaCampaign(input)
+);
+
+export const metaAutoPilotFlow = ai.defineFlow(
+    {
+        name: 'metaAutoPilotFlow',
+        inputSchema: MetaAutoPilotInputSchema,
+        outputSchema: MetaAutoPilotOutputSchema,
+        tools: [suggestTargetingTool, generateCreativeTool, assembleCampaignTool],
+    },
+    async (input) => {
+        
+        // 1. Fetch Project Data using the new database service
+        const projectData = await getProjectById(input.projectId);
+        if (!projectData) {
+            throw new Error(`Project with ID "${input.projectId}" not found.`);
+        }
+
+        // 2. Suggest Targeting Options
+        const audienceSuggestions = await suggestTargetingTool({ projectId: input.projectId });
+
+        // 3. Generate Ad Creative
+        const adCreative = await generateCreativeTool({
+            projectName: projectData.name,
+            focusArea: 'The luxury lifestyle and investment potential.',
+            toneOfVoice: 'Professional and aspirational',
+        });
+
+        // 4. Create the final Campaign Structure
+        const finalCampaignPlan = await assembleCampaignTool({
+            campaignGoal: input.campaignGoal,
+            projectBrochureDataUri: adCreative.adDesign, // Use the generated ad design as the 'brochure'
+            budget: 500, // Example budget
+            durationDays: 14, // Example duration
+        });
+
+        // 5. Final Output
+        const result: MetaAutoPilotOutput = {
+            status: 'Campaign Plan Assembled Successfully.',
+            finalCampaignId: finalCampaignPlan.publishedCampaignId,
+            audienceStrategy: audienceSuggestions,
+            adCreative: adCreative,
+            finalCampaignPlan: finalCampaignPlan,
+        };
+
+        return result;
+    }
+);
 
 
 export async function runMetaAutoPilot(
   input: MetaAutoPilotInput,
 ): Promise<MetaAutoPilotOutput> {
-
-  try {
-    // 1. Fetch Project Data using the new database service
-    const projectData = await getProjectById(input.projectId);
-    if (!projectData) {
-      throw new Error(`Project with ID "${input.projectId}" not found.`);
-    }
-
-    // 2. Suggest Targeting Options
-    const audienceSuggestions: SuggestTargetingOptionsOutput = await suggestTargetingOptions({ projectId: input.projectId });
-
-    // 3. Generate Ad Creative
-    const adCreative: GenerateAdFromBrochureOutput = await generateAdFromBrochure({
-        projectName: projectData.name,
-        focusArea: 'The luxury lifestyle and investment potential.',
-        toneOfVoice: 'Professional and aspirational',
-    });
-
-    // 4. Create the final Campaign Structure
-    const finalCampaignPlan: CreateMetaCampaignOutput = await createMetaCampaign({
-        campaignGoal: input.campaignGoal,
-        projectBrochureDataUri: adCreative.adDesign, // Use the generated ad design as the 'brochure'
-        budget: 500,
-        durationDays: 14,
-    });
-
-    // 5. Final Output
-    const result: MetaAutoPilotOutput = {
-      status: 'Campaign Plan Assembled Successfully.',
-      finalCampaignId: finalCampaignPlan.publishedCampaignId,
-      audienceStrategy: audienceSuggestions,
-      adCreative: adCreative,
-      finalCampaignPlan: finalCampaignPlan,
-    };
-
-    return result;
-
-  } catch (e: any) {
-    console.error("Meta Auto Pilot execution failed:", e);
-    // Re-throw the error to be caught by the API route handler
-    throw e;
-  }
+    return await metaAutoPilotFlow(input);
 }
