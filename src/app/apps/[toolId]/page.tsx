@@ -7,7 +7,7 @@ import { tools } from '@/lib/tools-client';
 import { appDetails } from '@/lib/blog-content';
 import { pricingData } from '@/lib/pricing-data';
 import { PublicToolPageLayout } from '@/app/public-tool-page-layout';
-import { BrainCircuit, Clock2, CheckCircle, Upload, Sparkles, Download } from 'lucide-react';
+import { BrainCircuit, Clock2, CheckCircle, Upload, Sparkles, Download, Wallet, BadgeCheck } from 'lucide-react';
 
 
 // Function to merge data with details
@@ -19,7 +19,7 @@ const mergeToolData = (toolId: string) => {
     const priceInfo = pricingData.apps.find(app => app.name === toolData.title);
     
     if (!detailsContent) {
-      // Fallback if no specific details are found
+      // Fallback if no specific details are found, using the default structure
       return {
         ...(toolData as any),
         price: priceInfo?.price_monthly || 0,
@@ -31,9 +31,9 @@ const mergeToolData = (toolId: string) => {
             { icon: <Download />, text: 'Review, refine, and use your new AI-generated asset.' },
           ],
           aiVsManual: [
-            { metric: "Knowledge Required", manual: "High", ai: "Low", icon: <BrainCircuit /> },
-            { metric: "Efficiency", manual: "Manual", ai: "Automated", icon: <Clock2 /> },
-            { metric: "Expected Result", manual: "Variable", ai: "Consistent", icon: <CheckCircle /> },
+            { metric: "Time to Complete", manual: "Hours to Days", ai: "Seconds to Minutes", icon: <Clock2 /> },
+            { metric: "Cost", manual: "$$$ - $$$$", ai: "$", icon: <Wallet /> },
+            { metric: "Quality & Consistency", manual: "Variable", ai: "Consistently High", icon: <BadgeCheck /> },
           ],
           synergy: [],
           faqs: [],
@@ -46,12 +46,12 @@ const mergeToolData = (toolId: string) => {
     const newDetails = {
         steps: detailsContent?.flow.split('. ').filter(s => s.trim()).map((s, i) => ({ 
             icon: i === 0 ? <Upload /> : i === 1 ? <Sparkles /> : <Download />, 
-            text: s.trim() 
+            text: s.replace(/step \d+: /i, '').trim()
         })) || [],
         aiVsManual: [
-            { metric: "Knowledge Required", manual: "High", ai: detailsContent?.level_of_knowledge_required || "Low", icon: <BrainCircuit /> },
-            { metric: "Efficiency", manual: detailsContent?.difference_vs_native.split('.')[0] || "Manual", ai: detailsContent?.difference_vs_native.split('.')[1] || "Automated", icon: <Clock2 /> },
-            { metric: "Expected Result", manual: "Variable", ai: detailsContent?.expected_results || "Consistent", icon: <CheckCircle /> },
+            { metric: "Time to Complete", manual: "Hours to Days", ai: "Seconds to Minutes", icon: <Clock2 /> },
+            { metric: "Cost", manual: "$$$ - $$$$", ai: "$", icon: <Wallet /> },
+            { metric: "Quality & Consistency", manual: "Variable", ai: detailsContent?.expected_results || "Consistent", icon: <BadgeCheck /> },
         ],
         synergy: detailsContent?.integrations.map(integration => ({
             tool: integration,

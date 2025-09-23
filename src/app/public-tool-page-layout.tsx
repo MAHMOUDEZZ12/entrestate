@@ -287,7 +287,7 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                     <Accordion type="single" collapsible className="w-full">
                         {[...feature.details.faqs, ...additionalFaqs].map((faq, index) => (
                             <AccordionItem value={`item-${index}`} key={index}>
-                                <AccordionTrigger className="text-left text-lg">{faq.question}</AccordionTrigger>
+                                <AccordionTrigger className="text-left text-lg hover:no-underline">{faq.question}</AccordionTrigger>
                                 <AccordionContent className="text-base text-muted-foreground" dangerouslySetInnerHTML={{ __html: faq.answer }} />
                             </AccordionItem>
                         ))}
