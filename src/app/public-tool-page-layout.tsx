@@ -8,18 +8,26 @@ import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard, Workflow } 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Feature, tools } from '@/lib/tools-client';
 import Image from 'next/image';
-import { ShinyButton } from '@/components/ui/shiny-button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { ShinyButton } from './ui/shiny-button';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from './ui/accordion';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { CodeBlock } from '@/components/code-block';
-import { PurchaseDialog } from '@/components/ui/purchase-dialog';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from './ui/carousel';
+import { CodeBlock } from './code-block';
+import { PurchaseDialog } from './ui/purchase-dialog';
 import { AutoPilotPlan } from '@/components/ui/autopilot-plan';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
 
 
 interface PublicToolPageLayoutProps {
@@ -169,28 +177,31 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
                  <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">The AI Advantage</h2>
                  <p className="mt-4 text-lg text-muted-foreground">See how much time and effort you save by using the AI.</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {feature.details.aiVsManual.map((item, index) => (
-                    <Card key={index} className="text-center bg-card">
-                        <CardHeader>
-                            <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mx-auto mb-4">
-                                {React.cloneElement(item.icon, { className: 'h-8 w-8' })}
-                            </div>
-                            <CardTitle>{item.metric}</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div>
-                                <p className="text-sm text-muted-foreground">MANUAL</p>
-                                <p className="font-semibold text-lg">{item.manual}</p>
-                            </div>
-                             <div>
-                                <p className="text-sm text-primary">WITH ENTRESTATE AI</p>
-                                <p className="font-semibold text-lg text-primary">{item.ai}</p>
-                            </div>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
+            <Card className="max-w-4xl mx-auto bg-card/80 backdrop-blur-lg">
+                <CardContent className="p-2">
+                    <Table>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[200px]">Metric</TableHead>
+                                <TableHead>Manual Process</TableHead>
+                                <TableHead className="text-primary">With Entrestate AI</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {feature.details.aiVsManual.map((item, index) => (
+                                <TableRow key={index}>
+                                    <TableCell className="font-semibold flex items-center gap-2">
+                                        {React.cloneElement(item.icon as React.ReactElement, { className: 'h-5 w-5' })}
+                                        {item.metric}
+                                    </TableCell>
+                                    <TableCell>{item.manual}</TableCell>
+                                    <TableCell className="font-semibold text-primary">{item.ai}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
         </div>
       </section>
 
