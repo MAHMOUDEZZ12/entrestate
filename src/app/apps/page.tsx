@@ -16,9 +16,11 @@ import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { pricingData } from '@/lib/pricing-data';
 import { Badge } from '@/components/ui/badge';
+import { PurchaseDialog } from '@/components/ui/purchase-dialog';
+
 
 // Merge pricing data into tools
-const features = allTools.map(tool => {
+const features: (Feature & { price: number })[] = allTools.map(tool => {
   const priceInfo = pricingData.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === tool.id.toLowerCase());
   return {
     ...tool,
@@ -41,7 +43,7 @@ const FeatureCard = ({
         className="group flex flex-col h-full bg-card/80 backdrop-blur-lg border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
     >
       <CardContent className="flex flex-col flex-grow p-6">
-        <div className='flex items-center justify-between mb-4'>
+        <div className='flex items-start justify-between mb-4'>
             <div 
               className="p-3 rounded-lg w-fit text-white"
               style={{ backgroundColor: feature.color }}
@@ -82,10 +84,12 @@ const FeatureCard = ({
         <h2 className="text-2xl font-bold font-heading text-foreground mb-2">{feature.title}</h2>
         <p className="text-lg text-foreground/70 flex-grow">{feature.description}</p>
          <div className="mt-6 flex justify-end items-center">
-            <Button variant="link" className="p-0 text-base text-primary">
-                Explore App
-                <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-            </Button>
+            <Link href={`/apps/${feature.id}`}>
+              <Button variant="link" className="p-0 text-base text-primary">
+                  Explore App
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Button>
+            </Link>
          </div>
       </CardContent>
     </Card>
@@ -140,11 +144,10 @@ export default function AppsPage() {
         <div className="container mx-auto px-4 md:px-6 lg:px-8 pb-12 md:pb-20">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6">
               {filteredFeatures.map((feature) => (
-                 <Link href={`/apps/${feature.id}`} key={feature.id}>
-                    <FeatureCard 
-                        feature={feature} 
-                    />
-                </Link>
+                <FeatureCard 
+                    key={feature.id}
+                    feature={feature} 
+                />
               ))}
             </div>
         </div>

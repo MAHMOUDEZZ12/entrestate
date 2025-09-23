@@ -7,10 +7,19 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { Feature, tools as features, FilterCategory } from '@/lib/tools-client';
+import { Feature, tools as allTools, FilterCategory } from '@/lib/tools-client';
 import { PageHeader } from '@/components/ui/page-header';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
+import { pricingData } from '@/lib/pricing-data';
 
+// Merge pricing data into tools
+const features: (Feature & { price: number })[] = allTools.map(tool => {
+  const priceInfo = pricingData.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === tool.id.toLowerCase());
+  return {
+    ...tool,
+    price: priceInfo?.price_monthly || 0,
+  };
+});
 
 const filterCategories: FilterCategory[] = [
     'All', 'Marketing', 'Lead Gen', 'Creative', 'Sales Tools', 'Social & Comms', 
@@ -45,7 +54,7 @@ export default function MarketingDashboardPage() {
   const filteredFeatures = activeFilter === 'All'
     ? features
     : features.filter(feature => feature.categories.includes(activeFilter));
-
+  
   const appsThatNeedConnection: { [key: string]: string } = {
     'meta-ads-copilot': 'Facebook',
     'audience-creator': 'Facebook',
@@ -55,20 +64,13 @@ export default function MarketingDashboardPage() {
     'whatsapp-manager': 'WhatsApp Business',
   };
 
-  const appsThatNeedPayment: string[] = [
-      'rebranding',
-      'pdf-editor-ai',
-      'landing-pages',
-      'investor-matching',
-      'market-reports',
-      'market-trends'
-  ];
+  const appsThatNeedPayment: string[] = features.filter(f => f.price > 0).map(f => f.id);
 
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1 w-full max-w-full px-4 md:px-6 lg:px-8 py-8">
         <PageHeader
-            title="Apps"
+            title="App Store"
             description="The complete arsenal for the modern real estate professional. Explore the tools, add them to your workspace, and dominate your market."
             icon={<LayoutTemplate />}
         />

@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { notFound, useParams } from 'next/navigation';
-import { tools, Feature } from '@/lib/tools-client';
+import { tools } from '@/lib/tools-client';
 import { PublicToolPageLayout } from '@/app/public-tool-page-layout';
 import { pricingData } from '@/lib/pricing-data';
 
@@ -11,7 +11,7 @@ export default function ToolPage() {
   const params = useParams();
   const toolId = params.toolId as string;
   
-  const feature: Feature | undefined = React.useMemo(() => {
+  const feature: (typeof tools[0] & { price: number }) | undefined = React.useMemo(() => {
     const tool = tools.find(t => t.id === toolId);
     if (!tool) {
       return undefined;
