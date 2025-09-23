@@ -3,7 +3,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Bot, Send, Loader2, User, Sparkles, PlusCircle } from 'lucide-react';
+import { Bot, Send, Loader2, User, Sparkles, PlusCircle, ChevronUp } from 'lucide-react';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
@@ -26,6 +26,13 @@ const InitialAssistantMessage = () => (
         <p className="text-sm">Ask a question, or tell me what you'd like to do.</p>
     </div>
 );
+
+type ActionKey = {
+    label: string;
+    icon: React.ReactNode;
+    href?: string;
+    action?: () => void;
+}
 
 export function GlobalChat() {
   const [messages, setMessages] = useState<Message[]>([
@@ -108,55 +115,64 @@ export function GlobalChat() {
         await sendMessage(prompt, []);
     }
     
-    const getContextualInfo = () => {
+    const getContextualInfo = (): { placeholder: string; leftKeys: ActionKey[]; rightKey: ActionKey | null } => {
+        const defaultRightKey = { label: 'Analyze Page', icon: <Sparkles className="h-5 w-5" />, action: handleMagicClick };
+
         if (isHintActive) {
-            return { placeholder: activeHint, actions: [] };
+            return { placeholder: activeHint, leftKeys: [], rightKey: null };
         }
         if (pathname.startsWith('/me/tool/')) {
             return {
                 placeholder: "Ask a question about this tool or enter your next command...",
-                actions: [
+                leftKeys: [
                     { label: "Save Result", href: "#", icon: <PlusCircle /> },
-                ]
+                ],
+                rightKey: defaultRightKey
             };
         }
          if (pathname.startsWith('/me/flows')) {
             return {
                 placeholder: "Describe a workflow you want to automate...",
-                actions: [
+                leftKeys: [
                      { label: "New Flow", href: "/me/flows", icon: <PlusCircle /> },
-                ]
+                ],
+                 rightKey: defaultRightKey
             };
         }
         switch (pathname) {
             case '/me/marketing':
                 return { 
                     placeholder: "Search for an app or describe what you want to build...",
-                    actions: [] 
+                    leftKeys: [],
+                    rightKey: defaultRightKey
                 };
             case '/me/brand':
                 return { 
                     placeholder: "Ask about your brand assets or upload a new file...",
-                    actions: [
+                    leftKeys: [
                         { label: "Upload File", href: "#", icon: <PlusCircle /> },
-                    ]
+                    ],
+                    rightKey: defaultRightKey
                 };
              case '/me':
                  return {
                     placeholder: "Search your projects or ask the AI to perform a task...",
-                    actions: [
+                    leftKeys: [
                         { label: "Add Project", href: "/me/tool/projects-finder", icon: <PlusCircle /> },
-                    ]
+                        { label: "New Flow", href: "/me/flows", icon: <PlusCircle /> },
+                    ],
+                    rightKey: defaultRightKey
                  }
             default:
                 return { 
                     placeholder: "Send a message or type '/' for commands...",
-                    actions: []
+                    leftKeys: [],
+                    rightKey: defaultRightKey
                 };
         }
     }
     
-    const { placeholder, actions } = getContextualInfo();
+    const { placeholder, leftKeys, rightKey } = getContextualInfo();
 
 
   return (
@@ -164,14 +180,17 @@ export function GlobalChat() {
         <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t">
             <div className="container mx-auto p-4 max-w-5xl">
                 <form onSubmit={handleSendMessage} className="relative flex items-center gap-4">
-                    {actions.map(action => (
-                        <Link href={action.href} key={action.label}>
-                            <Button type="button" variant="outline" size="sm" className="hidden sm:flex">
-                            {React.cloneElement(action.icon as React.ReactElement, { className: 'mr-2 h-4 w-4' })}
-                            {action.label}
-                            </Button>
-                        </Link>
-                    ))}
+                    <div className="flex items-center gap-2">
+                         {leftKeys.map(key => {
+                            const button = (
+                                 <Button type="button" variant="outline" size="sm" className="hidden sm:flex" onClick={key.action}>
+                                    {React.cloneElement(key.icon as React.ReactElement, { className: 'mr-2 h-4 w-4' })}
+                                    {key.label}
+                                </Button>
+                            );
+                            return key.href ? <Link href={key.href} key={key.label}>{button}</Link> : button;
+                        })}
+                    </div>
                     <div className="relative flex-1">
                         <Input 
                             placeholder={placeholder} 
@@ -182,9 +201,16 @@ export function GlobalChat() {
                             autoComplete="off"
                         />
                         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                           <Button type="button" variant="ghost" size="icon" onClick={handleMagicClick} disabled={isLoading}>
-                                <Sparkles className="h-5 w-5 text-muted-foreground" />
+                           {rightKey && (
+                            <Button type="button" variant="ghost" size="icon" onClick={rightKey.action} disabled={isLoading} title={rightKey.label}>
+                                {rightKey.icon}
                            </Button>
+                           )}
+                           <SheetTrigger asChild>
+                                <Button type="button" variant="ghost" size="icon" title="View Chat History">
+                                    <ChevronUp className="h-5 w-5 text-muted-foreground" />
+                                </Button>
+                            </SheetTrigger>
                             <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
                                 {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                             </Button>
