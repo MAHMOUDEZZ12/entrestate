@@ -102,6 +102,13 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       "A chain leader for all the meta ads apps",
       "handle a full agency  ads tasks within a mins"
   ];
+  
+  const additionalFaqs = [
+    { question: "Which facebook page is used in the ads?", answer: "Your connected Facebook Page and Instagram profile are used." },
+    { question: "Can I stop the ad?", answer: "Yes, at any time. You have full control through your Meta Ads Manager." },
+    { question: "Where do I pay for the ads?", answer: "Your ad budget is paid directly to Meta through the payment method registered in your Meta Ads Manager account." },
+    { question: "What if I have no Facebook Page?", answer: "Please visit this <a href='/blog' class='underline'>blog</a> for a full guide on how to create your page and activate your business suite." }
+  ];
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
@@ -277,10 +284,10 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
             <Card className="max-w-3xl mx-auto bg-card">
                 <CardContent className="p-6">
                     <Accordion type="single" collapsible className="w-full">
-                        {feature.details.faqs.map((faq, index) => (
+                        {[...feature.details.faqs, ...additionalFaqs].map((faq, index) => (
                             <AccordionItem value={`item-${index}`} key={index}>
                                 <AccordionTrigger className="text-left text-lg">{faq.question}</AccordionTrigger>
-                                <AccordionContent className="text-base text-muted-foreground">{faq.answer}</AccordionContent>
+                                <AccordionContent className="text-base text-muted-foreground" dangerouslySetInnerHTML={{ __html: faq.answer }} />
                             </AccordionItem>
                         ))}
                     </Accordion>
@@ -294,3 +301,4 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
     </div>
   );
 }
+
