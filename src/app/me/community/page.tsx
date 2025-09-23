@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, 'useState', 'useEffect';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
 import { MessageSquarePlus, User, Users2 } from 'lucide-react';
@@ -28,7 +28,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 
-const noteSchema = z.object({
+const requestSchema = z.object({
     title: z.string().min(5, 'Title must be at least 5 characters.'),
     type: z.enum(['Connection', 'Investor Request', 'Opinion', 'Review', 'Question', 'Self Intro']),
     content: z.string().min(10, 'Content is required.'),
@@ -40,7 +40,7 @@ const noteSchema = z.object({
     notifyFirst: z.boolean().optional(),
 });
 
-type NoteFormValues = z.infer<typeof noteSchema>;
+type RequestFormValues = z.infer<typeof requestSchema>;
 
 type Note = {
     id: string;
@@ -52,7 +52,7 @@ type Note = {
     createdAt: any;
 };
 
-const noteTypes = ['Connection', 'Investor Request', 'Opinion', 'Review', 'Question', 'Self Intro'] as const;
+const requestTypes = ['Connection', 'Investor Request', 'Opinion', 'Review', 'Question', 'Self Intro'] as const;
 
 const typeColors: { [key: string]: string } = {
   'Connection': 'hsl(var(--primary))',
@@ -63,7 +63,7 @@ const typeColors: { [key: string]: string } = {
   'Self Intro': 'hsl(300, 50%, 60%)',
 }
 
-const NewNoteForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => void, onNoteCreated: () => void }) => {
+const NewRequestForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => void, onNoteCreated: () => void }) => {
     const { toast } = useToast();
     const { user } = useAuth();
     
@@ -73,8 +73,8 @@ const NewNoteForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => v
         watch,
         setValue,
         formState: { errors, isSubmitting },
-    } = useForm<NoteFormValues>({
-        resolver: zodResolver(noteSchema),
+    } = useForm<RequestFormValues>({
+        resolver: zodResolver(requestSchema),
         defaultValues: {
             title: '',
             content: '',
@@ -90,9 +90,9 @@ const NewNoteForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => v
         toast({ title: "AI Introduction Generated!", description: "Your self-introduction has been drafted." });
     }
 
-    const onSubmit = async (data: NoteFormValues) => {
+    const onSubmit = async (data: RequestFormValues) => {
         if (!user) {
-            toast({ title: 'Not Authenticated', description: 'Please log in to post a note.', variant: 'destructive'});
+            toast({ title: 'Not Authenticated', description: 'Please log in to post a request.', variant: 'destructive'});
             return;
         }
 
@@ -109,12 +109,12 @@ const NewNoteForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => v
 
             const result = await response.json();
             if (!response.ok) {
-                throw new Error(result.error || "Failed to publish note.");
+                throw new Error(result.error || "Failed to publish request.");
             }
 
             toast({
-                title: "Note Published!",
-                description: "Your note has been successfully added to the community board."
+                title: "Request Published!",
+                description: "Your request has been successfully added to the community board."
             });
             onNoteCreated();
             setOpen(false);
@@ -122,7 +122,7 @@ const NewNoteForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => v
         } catch (error: any) {
             toast({
                 title: "Error",
-                description: `Failed to publish note: ${error.message}`,
+                description: `Failed to publish request: ${error.message}`,
                 variant: 'destructive',
             });
         }
@@ -133,18 +133,18 @@ const NewNoteForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => v
             <Controller name="title" control={control} render={({ field }) => (
                 <div className="space-y-2">
                     <Label htmlFor="title">Title</Label>
-                    <Input id="title" placeholder="A clear and concise title for your note" {...field} />
+                    <Input id="title" placeholder="A clear and concise title for your request" {...field} />
                     {errors.title && <p className="text-sm text-destructive">{errors.title.message}</p>}
                 </div>
             )} />
             
             <Controller name="type" control={control} render={({ field }) => (
                 <div className="space-y-2">
-                    <Label htmlFor="type">Type of Note</Label>
+                    <Label htmlFor="type">Type of Request</Label>
                     <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <SelectTrigger><SelectValue placeholder="Select a note type..." /></SelectTrigger>
+                        <SelectTrigger><SelectValue placeholder="Select a request type..." /></SelectTrigger>
                         <SelectContent>
-                            {noteTypes.map(type => <SelectItem key={type} value={type}>{type}</SelectItem>)}
+                            {requestTypes.map(type => <SelectItem key={type} value={type}>{type}</SelectItem>)}
                         </SelectContent>
                     </Select>
                      {errors.type && <p className="text-sm text-destructive">{errors.type.message}</p>}
@@ -156,7 +156,7 @@ const NewNoteForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => v
                     <div className="p-4 bg-muted/50 rounded-lg border space-y-2">
                         <Label htmlFor="developerName">Developer Name</Label>
                         <Input id="developerName" placeholder="e.g., Emaar, DAMAC" {...field} />
-                        <p className="text-xs text-muted-foreground">Our team will be notified and will assist you in finding a contact.</p>
+                        <p className="text-xs text-muted-foreground">Our AI Community Manager will be notified and will assist you in finding a contact.</p>
                     </div>
                 )} />
             )}
@@ -183,7 +183,7 @@ const NewNoteForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => v
             )}
              <Controller name="content" control={control} render={({ field }) => (
                 <div className="space-y-2">
-                    <Label htmlFor="content">Content</Label>
+                    <Label htmlFor="content">Details</Label>
                     <Textarea id="content" placeholder="Share your thoughts, questions, or requests..." rows={6} {...field} />
                     {errors.content && <p className="text-sm text-destructive">{errors.content.message}</p>}
                 </div>
@@ -211,7 +211,7 @@ const NewNoteForm = ({ setOpen, onNoteCreated }: { setOpen: (open: boolean) => v
             <DialogFooter>
                 <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                    Publish Note
+                    Publish Request
                 </Button>
             </DialogFooter>
         </form>
@@ -249,20 +249,20 @@ export default function CommunityPage() {
     <div className="flex flex-col">
       <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-8">
         <PageHeader
-          title="Community Notes"
-          description="Connect, learn, and grow with a network of forward-thinking real estate professionals."
+          title="Personalized Shopping"
+          description="Your dedicated space for tailored requests, managed by our AI Community Manager."
           icon={<Users2 className="h-8 w-8" />}
         >
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild>
-                    <Button><MessageSquarePlus className="mr-2 h-4 w-4" /> Create a Note</Button>
+                    <Button><MessageSquarePlus className="mr-2 h-4 w-4" /> Create a Request</Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[625px]">
                     <DialogHeader>
-                        <DialogTitle>Create a New Note</DialogTitle>
-                        <DialogDescription>Share your thoughts with the community. Select a type to get started.</DialogDescription>
+                        <DialogTitle>Create a New Request</DialogTitle>
+                        <DialogDescription>Submit your request and our AI Community Manager will get to work.</DialogDescription>
                     </DialogHeader>
-                    <NewNoteForm setOpen={setOpen} onNoteCreated={fetchNotes} />
+                    <NewRequestForm setOpen={setOpen} onNoteCreated={fetchNotes} />
                 </DialogContent>
             </Dialog>
         </PageHeader>

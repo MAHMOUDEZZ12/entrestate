@@ -5,7 +5,7 @@ import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, fail, bad, getUidFromRequest } from "@/lib/api-helpers";
 import { z } from 'zod';
 
-const noteSchema = z.object({
+const requestSchema = z.object({
     title: z.string().min(5, 'Title must be at least 5 characters.'),
     type: z.enum(['Connection', 'Investor Request', 'Opinion', 'Review', 'Question', 'Self Intro']),
     content: z.string().min(10, 'Content is required.'),
@@ -29,13 +29,13 @@ export async function POST(req: Request) {
     const authorName = userData?.displayName || userData?.brandKit?.contact?.name || 'Anonymous';
 
     const body = await req.json();
-    const validation = noteSchema.safeParse(body);
+    const validation = requestSchema.safeParse(body);
 
     if (!validation.success) {
         return bad(validation.error.formErrors.fieldErrors);
     }
     
-    const noteData = {
+    const requestData = {
         ...validation.data,
         author: authorName,
         authorId: uid,
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
         comments: 0,
     };
     
-    const docRef = await adminDb.collection('community_notes').add(noteData);
+    const docRef = await adminDb.collection('community_notes').add(requestData);
 
     return ok({ success: true, noteId: docRef.id });
 
