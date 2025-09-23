@@ -5,7 +5,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook
 } from 'lucide-react';
 import type { ReactElement } from 'react';
 import type { FilterCategory, BadgeType } from './tools-client';
@@ -27,6 +27,7 @@ export interface ToolData {
 
 export const tools: ToolData[] = [
     // Meta Ads Pilot
+    { id: 'meta-dashboard', title: 'Meta Ads Dashboard', description: 'Your command center for all Facebook & Instagram advertising tools.', iconName: 'Facebook', color: '#1877F2', categories: ['Ads', 'Marketing'], cta: 'Open Dashboard' },
     { id: 'meta-auto-pilot', title: 'Meta Auto Pilot', dashboardTitle: 'Meta Auto Pilot', description: 'Single-click manager for your entire Meta suite.', iconName: 'Sparkles', color: '#4B0082', categories: ['Ads', 'Marketing'], badge: 'AUTO', cta: 'Launch Campaign' },
     { id: 'campaign-builder', title: 'Campaign Builder', description: 'Your dedicated agent for Facebook & Instagram advertising.', iconName: 'LayoutTemplate', color: '#4B0082', categories: ['Ads', 'Marketing'], cta: 'Build Campaign' },
     { id: 'audience-creator', title: 'Audience Creator', description: 'Find high-intent buyers before they search.', iconName: 'Users2', color: '#4B0082', categories: ['Ads', 'Lead Gen'], cta: 'Create Audience' },
