@@ -25,10 +25,9 @@ import {
     SuggestTargetingOptionsInputSchema,
     SuggestTargetingOptionsOutputSchema,
     GenerateAdFromBrochureOutputSchema,
-    GenerateAdFromBrochureOutput,
     CreateMetaCampaignInputSchema,
     CreateMetaCampaignOutputSchema,
-} from '@/types';
+} from '@/ai/flows/types';
 
 
 // Define tools that the main flow can call

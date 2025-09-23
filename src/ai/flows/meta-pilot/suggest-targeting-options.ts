@@ -11,8 +11,8 @@
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
-import { SuggestTargetingOptionsInputSchema, SuggestTargetingOptionsOutputSchema, SuggestTargetingOptionsInput, SuggestTargetingOptionsOutput } from '@/types';
+import {z} from 'zod';
+import { SuggestTargetingOptionsInputSchema, SuggestTargetingOptionsOutputSchema, SuggestTargetingOptionsInput, SuggestTargetingOptionsOutput } from '@/ai/flows/types';
 import { getProjectById } from '@/services/database';
 
 

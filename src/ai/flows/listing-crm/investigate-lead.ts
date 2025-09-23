@@ -18,7 +18,7 @@ import {
   InvestigateLeadOutputSchema,
   InvestigateLeadInput,
   InvestigateLeadOutput,
-} from '@/types';
+} from '@/ai/flows/types';
 
 
 const investigateLeadPrompt = ai.definePrompt({
