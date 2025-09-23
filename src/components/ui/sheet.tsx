@@ -66,6 +66,7 @@ const SheetContent = React.forwardRef<
       ref={ref}
       className={cn(sheetVariants({ side }), className)}
       {...props}
+      onOpenAutoFocus={(e) => e.preventDefault()}
     >
       {children}
       {!hideCloseButton && (

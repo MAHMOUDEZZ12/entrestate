@@ -3,16 +3,17 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Bot, Send, Loader2, User, Sparkles, PlusCircle, Copy } from 'lucide-react';
+import { Bot, Send, Loader2, User, Sparkles, PlusCircle, Copy, ChevronUp, Workflow } from 'lucide-react';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { secretCodes } from '@/lib/codes';
-import { Sheet, SheetContent } from './ui/sheet';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { usePathname } from 'next/navigation';
 import { useSensitiveArea } from '@/context/SensitiveAreaContext';
 import { CommandMenu } from './ui/command-menu';
+import { useToast } from '@/hooks/use-toast';
 
 
 type Message = {
@@ -36,6 +37,7 @@ type ActionKey = {
 }
 
 export function GlobalChat() {
+  const { toast } = useToast();
   const [messages, setMessages] = useState<Message[]>([
     { from: 'ai', text: <InitialAssistantMessage /> },
   ]);
@@ -152,7 +154,19 @@ export function GlobalChat() {
             return { placeholder: activeHint, leftKeys: [], rightKey: null };
         }
         
-        if (pathname.startsWith('/me/marketing')) {
+        if (pathname === '/me/flows') {
+            leftKeys = [
+                { 
+                    label: "Start Building", 
+                    href: undefined, 
+                    icon: <Workflow />, 
+                    action: () => {
+                        console.log("Entering Flow Building Mode...");
+                        toast({ title: "Flow Builder Activated", description: "You've opened the 'second door'. Ready to build."});
+                    }
+                },
+            ];
+        } else if (pathname.startsWith('/me/marketing')) {
              leftKeys = [
                 { label: "View Guide", href: "/documentation", icon: <Bot /> },
                 { label: "Get App", href: "/pricing", icon: <PlusCircle /> },
@@ -200,13 +214,18 @@ export function GlobalChat() {
                     <div className="relative">
                         <Input 
                             placeholder={placeholder} 
-                            className="w-full h-12 pl-4 pr-24 text-base"
+                            className="w-full h-12 pl-4 pr-36 text-base"
                             value={input}
                             onChange={(e) => setInput(e.target.value)}
                             disabled={isLoading}
                             autoComplete="off"
                         />
                         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
+                            <SheetTrigger asChild>
+                                 <Button type="button" variant="ghost" size="icon">
+                                    <Sparkles className="h-5 w-5 text-muted-foreground" />
+                                </Button>
+                            </SheetTrigger>
                            {rightKey && (
                             <Button type="button" variant="ghost" size="icon" onClick={rightKey.action} disabled={isLoading} title={rightKey.label}>
                                 {rightKey.icon}
