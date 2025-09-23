@@ -1,6 +1,4 @@
 
-'use client';
-
 import React from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
@@ -111,7 +109,7 @@ export default function HomePage() {
                        <p className="text-lg text-muted-foreground">
                             Redefine how you discover opportunities. Our triple-engine search combines keyword-based speed, semantic AI understanding, and predictive historical analysis to give you a complete market view.
                        </p>
-                       <Link href="/apps">
+                       <Link href="/me/marketing">
                            <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
@@ -129,7 +127,7 @@ export default function HomePage() {
                        <p className="text-lg text-muted-foreground">
                             Deploy a super-intelligent agent on your website or social media. It engages users proactively, answers complex questions with market data, and captures qualified leads 24/7.
                        </p>
-                       <Link href="/apps">
+                       <Link href="/me/marketing">
                            <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
@@ -147,7 +145,7 @@ export default function HomePage() {
                         <p className="text-lg text-muted-foreground">
                            Create a single source of truth for your property data. Our AI consolidates, verifies, and archives listings to eliminate noise, enforce accuracy, and syndicate perfectly formatted data to all major portals.
                        </p>
-                       <Link href="/apps">
+                       <Link href="/me/marketing">
                            <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
