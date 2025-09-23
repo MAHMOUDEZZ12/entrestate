@@ -193,7 +193,7 @@ export default function BrandPage() {
         const urlResponse = await fetch('/api/user/knowledge-upload-url', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
-            body: JSON.stringify({ filename: file.name, type: 'logo', contentType: file.type })
+            body: JSON.stringify({ filename: file.name, contentType: file.type })
         });
         const { ok, data, error } = await urlResponse.json();
         if (!ok) throw new Error(error);
