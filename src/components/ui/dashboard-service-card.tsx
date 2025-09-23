@@ -181,11 +181,11 @@ export function DashboardServiceCard({
                     >
                         {React.cloneElement(icon as React.ReactElement, { className: 'h-6 w-6' })}
                     </div>
-                    <CardTitle className="text-xl font-heading">{dashboardTitle || title}</CardTitle>
+                     <CardTitle className="text-base font-semibold font-heading leading-tight">{dashboardTitle || title}</CardTitle>
                 </div>
                 {isAdded && <Check className="h-5 w-5 text-green-500" />}
             </div>
-            <CardDescription>{description}</CardDescription>
+            <CardDescription className="text-xs">{description}</CardDescription>
         </CardHeader>
         <CardFooter className="mt-auto flex justify-end gap-2">
             {guideHref && (
