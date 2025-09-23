@@ -162,14 +162,22 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {newUseCases.map((useCase, index) => (
-              <Card key={index} className="bg-card/80">
-                <CardHeader>
-                  <CardTitle className="flex items-start gap-3">
-                    <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                    <span>{useCase}</span>
-                  </CardTitle>
-                </CardHeader>
-              </Card>
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
+                viewport={{ once: true, amount: 0.5 }}
+              >
+                <Card className="bg-card/80 h-full">
+                  <CardHeader>
+                    <CardTitle className="flex items-start gap-3">
+                      <CheckCircle className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
+                      <span>{useCase}</span>
+                    </CardTitle>
+                  </CardHeader>
+                </Card>
+              </motion.div>
             ))}
           </div>
         </div>
