@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React from 'react';
@@ -12,7 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
 const services = [
-    { name: 'Platform &amp; APIs', status: 'Operational' },
+    { name: 'Platform & APIs', status: 'Operational' },
     { name: 'AI Generation (Gemini)', status: 'Operational' },
     { name: 'Database (Firestore)', status: 'Operational' },
     { name: 'Authentication Services', status: 'Operational' },
@@ -72,5 +71,3 @@ export default function StatusPage() {
     </div>
   );
 }
-
-    
