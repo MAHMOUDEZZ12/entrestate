@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, Sparkles, Circle, CheckCircle, Play, Building, Upload, Bot, Download, Server } from 'lucide-react';
+import { Loader2, Sparkles, Circle, CheckCircle, Play, Building, Upload, Bot, Download, Server, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PageHeader } from '@/components/ui/page-header';
 import { cn } from '@/lib/utils';

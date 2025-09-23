@@ -1,3 +1,4 @@
+
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
@@ -85,11 +86,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'paypal-transaction': getPaypalTransaction,
     'alloydb-scanner': scanForAlloyDB,
     'prompt-library': (payload) => Promise.resolve({ message: "Executed from library", payload }), // Added for library execution
-    'meta-auto-pilot': async (payload) => {
-      // The real-time updates are simulated on the client,
-      // so this endpoint can just run the whole flow and return the final result.
-      return await runMetaAutoPilot(payload, () => {});
-    },
+    'meta-auto-pilot': runMetaAutoPilot,
 };
 
 export async function POST(req: NextRequest) {
@@ -106,7 +103,7 @@ export async function POST(req: NextRequest) {
     
     const runner = flowRunnerMap[toolId];
     if (!runner) {
-      return NextResponse.json({ error: `Tool with id "${toolId}" not found.` }, { status: 404 });
+      return NextResponse.json({ error: `Tool with id "${toolId}" not found. Check the 'flowRunnerMap' in /api/run/route.ts.` }, { status: 404 });
     }
 
     const result = await runner(payload);

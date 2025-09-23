@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { Loader2, Sparkles, Circle, CheckCircle, Play, Building, Upload, Bot, Download, Server } from 'lucide-react';
+import { Loader2, Sparkles, Circle, CheckCircle, Play, Building, Upload, Bot, Download, Server, AlertCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PageHeader } from '@/components/ui/page-header';
 import { cn } from '@/lib/utils';
@@ -113,6 +113,7 @@ export default function PropertyFinderSyncPage() {
     switch (status) {
       case 'running': return <Loader2 className="h-5 w-5 animate-spin text-primary" />;
       case 'completed': return <CheckCircle className="h-5 w-5 text-green-500" />;
+      case 'error': return <AlertCircle className="h-5 w-5 text-destructive" />;
       default: return <Circle className="h-5 w-5 text-muted-foreground/50" />;
     }
   };
@@ -210,5 +211,3 @@ export default function PropertyFinderSyncPage() {
     </main>
   );
 }
-
-    
