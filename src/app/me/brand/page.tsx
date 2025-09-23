@@ -18,7 +18,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { Checkbox } from '@/components/ui/checkbox';
 import { addFileToKnowledgeBase, getKnowledgeBaseFiles, deleteFileFromKnowledgeBase } from '@/services/database';
 import { getFunctions, httpsCallable } from 'firebase/functions';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
 import type { KnowledgeFile } from '@/types';
 
 
@@ -162,7 +162,7 @@ export default function BrandPage() {
         await fetch(uploadUrl, { method: 'PUT', body: file, headers: { 'Content-Type': file.type }});
         
         setLogoPreview(fileUrl); // Set preview to the final storage URL
-        reset({ logoUrl: fileUrl }); // Update form state
+        reset({ ...control._formValues, logoUrl: fileUrl }); // Update form state
 
         toast({ title: 'Logo uploaded successfully!' });
      } catch (e: any) {
@@ -383,4 +383,3 @@ export default function BrandPage() {
     </main>
   );
 }
-
