@@ -16,19 +16,20 @@ export default function MeLayout({
   const { user, loading } = useAuth();
   const router = useRouter();
 
-  React.useEffect(() => {
-      if (!loading && !user) {
-          router.push('/login');
-      }
-  }, [user, loading, router]);
+  // This check is disabled for now to remove the login requirement.
+  // React.useEffect(() => {
+  //     if (!loading && !user) {
+  //         router.push('/login');
+  //     }
+  // }, [user, loading, router]);
 
-  if (loading || !user) {
-      return (
-          <div className="flex h-screen w-full items-center justify-center">
-              <Loader2 className="h-8 w-8 animate-spin" />
-          </div>
-      );
-  }
+  // if (loading || !user) {
+  //     return (
+  //         <div className="flex h-screen w-full items-center justify-center">
+  //             <Loader2 className="h-8 w-8 animate-spin" />
+  //         </div>
+  //     );
+  // }
 
   return (
     <div className="flex min-h-screen w-full flex-col">

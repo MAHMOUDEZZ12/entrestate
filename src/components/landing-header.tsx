@@ -23,7 +23,7 @@ export function LandingHeader() {
   const pathname = usePathname();
 
   // Don't render the header for logged-in users on dashboard routes
-  if (!loading && user && (pathname.startsWith('/me') || pathname.startsWith('/dev'))) {
+  if (!loading && user && (pathname.startsWith('/me') || pathname.startsWith('/gem'))) {
       return null;
   }
 
@@ -41,6 +41,15 @@ export function LandingHeader() {
                 </Link>
             ))}
           </nav>
+        </div>
+
+        <div className="hidden md:flex items-center gap-2">
+           <Link href="/me">
+              <Button variant="ghost">Dashboard</Button>
+          </Link>
+          <Link href="/me">
+              <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
+          </Link>
         </div>
         
         {/* Mobile Menu */}
