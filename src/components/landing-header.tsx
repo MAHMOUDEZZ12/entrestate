@@ -1,11 +1,10 @@
 
-
 'use client';
 
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, LayoutDashboard, LogOut, Menu, Settings } from 'lucide-react';
+import { ArrowRight, LayoutDashboard, LogOut, Menu, Settings, Users2, Workflow } from 'lucide-react';
 import { Logo } from './logo';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { useAuth } from '@/hooks/useAuth';
@@ -57,10 +56,10 @@ export function LandingHeader() {
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem asChild>
-            <Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
+            <Link href="/me"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/dashboard/settings"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
+            <Link href="/me/settings"><Settings className="mr-2 h-4 w-4" /> Settings</Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
@@ -126,7 +125,7 @@ export function LandingHeader() {
                          <div className="mt-8 pt-8 border-t border-border/40 flex flex-col gap-4">
                            {!loading && user ? (
                                <SheetClose asChild>
-                                 <Link href="/dashboard">
+                                 <Link href="/me">
                                     <Button className="w-full">Go to Dashboard <ArrowRight className="ml-2 h-4 w-4" /></Button>
                                 </Link>
                                </SheetClose>

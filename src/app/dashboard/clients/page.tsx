@@ -2,107 +2,17 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal, UserPlus, Eye } from 'lucide-react';
-import { PageHeader } from '@/components/ui/page-header';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 
-const mockClients = [
-  { id: 1, name: 'Alice Johnson', status: 'Active Buyer', pageStatus: 'Live' },
-  { id: 2, name: 'Bob Williams', status: 'Past Seller', pageStatus: 'Archived' },
-  { id: 3, name: 'Charlie Brown', status: 'Active Investor', pageStatus: 'Live' },
-  { id: 4, name: 'Diana Miller', status: 'Prospect', pageStatus: 'Not Created' },
-];
-
-const statusVariant: { [key: string]: "default" | "secondary" | "destructive" | "outline" } = {
-  'Active Buyer': 'default',
-  'Past Seller': 'secondary',
-  'Active Investor': 'default',
-  'Prospect': 'outline',
-};
-
-const pageStatusVariant: { [key: string]: "default" | "secondary" | "outline" } = {
-    'Live': 'default',
-    'Archived': 'secondary',
-    'Not Created': 'outline',
-};
-
-export default function ClientsPage() {
+export default function DeprecatedClientsPage() {
   return (
-    <main className="p-4 md:p-10 space-y-8">
-       <PageHeader
-        title="Client Pages"
-        description="Manage dedicated pages and assets for each of your clients."
-        icon={<UserPlus className="h-8 w-8" />}
-      >
-         <Button>
-            <UserPlus className="mr-2 h-4 w-4" />
-            Add New Client
-        </Button>
-      </PageHeader>
-
-      <div className="border rounded-lg w-full">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Client Name</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Client Page</TableHead>
-              <TableHead><span className="sr-only">Actions</span></TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {mockClients.map((client) => (
-              <TableRow key={client.id}>
-                <TableCell className="font-medium">{client.name}</TableCell>
-                <TableCell>
-                  <Badge variant={statusVariant[client.status] || 'secondary'}>{client.status}</Badge>
-                </TableCell>
-                <TableCell>
-                  <Badge variant={pageStatusVariant[client.pageStatus] || 'secondary'}>{client.pageStatus}</Badge>
-                </TableCell>
-                <TableCell>
-                   <div className="flex items-center justify-end gap-2">
-                    <Button variant="outline" size="sm">
-                        <Eye className="mr-2 h-4 w-4" />
-                        View Page
-                    </Button>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                        <Button aria-haspopup="true" size="icon" variant="ghost">
-                            <MoreHorizontal className="h-4 w-4" />
-                            <span className="sr-only">Toggle menu</span>
-                        </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Edit Client</DropdownMenuItem>
-                        <DropdownMenuItem>Update Page</DropdownMenuItem>
-                        <DropdownMenuItem>Archive Client</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                   </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+    <main className="p-4 md:p-10 text-center">
+      <h1 className="text-2xl font-bold">This page has moved</h1>
+      <p className="text-muted-foreground">The Clients page is now part of the new authenticated experience.</p>
+      <Link href="/me/clients">
+        <Button className="mt-4">Go to Clients Page</Button>
+      </Link>
     </main>
   );
 }

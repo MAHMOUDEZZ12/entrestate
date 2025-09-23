@@ -2,10 +2,10 @@
 'use client';
 
 import React from 'react';
-import { PageHeader } from '@/components/ui/page-header';
 import { GanttChartSquare } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { PageHeader } from '@/components/ui/page-header';
 
 export default function DeprecatedDevAdminPage() {
   return (
