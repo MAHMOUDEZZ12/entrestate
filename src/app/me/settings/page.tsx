@@ -210,7 +210,7 @@ export default function SettingsPage() {
                     <div>
                         <Label htmlFor="draggable-search">Enable Draggable Search Menu</Label>
                         <p className="text-sm text-muted-foreground">
-                        Allows you to move the main search menu around the screen.
+                         When enabled, the search menu becomes a movable window when you start typing.
                         </p>
                     </div>
                   </div>

@@ -13,7 +13,7 @@ import {
   CommandSeparator,
 } from '@/components/ui/command';
 import { tools, Feature, FilterCategory } from '@/lib/tools-client';
-import { File, LayoutDashboard, Settings, User, Search, Bot, Sparkles, Palette, Database } from 'lucide-react';
+import { File, LayoutDashboard, Settings, User, Search, Bot, Sparkles, Palette, Database, Clock, Star, Plus } from 'lucide-react';
 import { useTabManager } from '@/context/TabManagerContext';
 
 interface GlobalSearchProps {
@@ -23,14 +23,16 @@ interface GlobalSearchProps {
 
 const allTools = tools.filter(t => t.id !== 'superfreetime');
 
-const navigationItems = [
+const shortcutItems = [
     { href: '/me/settings', label: 'Settings', icon: <Settings className="mr-2 h-4 w-4" />},
     { href: '/me/brand', label: 'Brand & Assets', icon: <Palette className="mr-2 h-4 w-4" />},
     { href: '/me/assistant', label: 'AI Assistant', icon: <Bot className="mr-2 h-4 w-4" />},
     { href: '/me/tool/projects-finder', label: 'Market Library', icon: <Database className="mr-2 h-4 w-4" />}
 ];
 
-const categories: FilterCategory[] = ['Marketing', 'Creative', 'Sales Tools', 'Lead Gen', 'Social & Comms', 'Web', 'Editing', 'Ads', 'Market Intelligence', 'CRM', 'Developer'];
+const mostSearchedItems = allTools.slice(0, 4);
+const recentlyViewedItems = allTools.slice(4, 8);
+
 
 export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
   const [query, setQuery] = useState('');
@@ -51,43 +53,38 @@ export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
     addTab({ href, label });
     router.push(href);
     setIsOpen(false);
+    setQuery('');
   };
   
   const handleToolSelect = (tool: Feature) => {
     handleSelect(tool.href, tool.title);
   }
 
-  const groupedTools = useMemo(() => {
-    if (query.trim() === '') {
-        return categories.map(category => ({
-            category,
-            tools: allTools.filter(tool => tool.categories.includes(category))
-        })).filter(group => group.tools.length > 0);
-    } else {
-        const filtered = allTools.filter(tool =>
-            tool.title.toLowerCase().includes(query.toLowerCase()) ||
-            tool.description.toLowerCase().includes(query.toLowerCase())
-        );
-        if (filtered.length > 0) {
-            return [{ category: 'Search Results', tools: filtered }];
-        }
-        return [];
-    }
+  const searchResults = useMemo(() => {
+    if (query.trim() === '') return [];
+    
+    return allTools.filter(tool =>
+        tool.title.toLowerCase().includes(query.toLowerCase()) ||
+        tool.description.toLowerCase().includes(query.toLowerCase())
+    );
   }, [query]);
 
   return (
-    <CommandDialog open={isOpen} onOpenChange={setIsOpen} isDraggable={isDraggable}>
+    <CommandDialog open={isOpen} onOpenChange={(open) => {
+      setIsOpen(open);
+      if (!open) setQuery('');
+    }} isDraggable={isDraggable && query.length > 0}>
       <CommandInput 
         placeholder="Search for tools, projects, or actions..."
         value={query}
         onValueChange={setQuery}
       />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
-        
-        {groupedTools.map(group => (
-            <CommandGroup key={group.category} heading={group.category}>
-                {group.tools.map((tool) => (
+        {query.length > 0 ? (
+            <>
+              <CommandEmpty>No results found for "{query}".</CommandEmpty>
+              <CommandGroup heading="Apps & Tools">
+                {searchResults.map((tool) => (
                     <CommandItem key={tool.id} onSelect={() => handleToolSelect(tool)} value={`${tool.title} ${tool.description}`}>
                         <div className="p-1.5 rounded-md text-white mr-2" style={{backgroundColor: tool.color}}>
                             {React.cloneElement(tool.icon, { className: 'h-4 w-4' })}
@@ -95,19 +92,49 @@ export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
                         <span>{tool.title}</span>
                     </CommandItem>
                 ))}
-            </CommandGroup>
-        ))}
-
-        <CommandSeparator />
-        
-        <CommandGroup heading="Navigation">
-           {navigationItems.map(item => (
-                <CommandItem key={item.href} onSelect={() => handleSelect(item.href, item.label)}>
-                   {item.icon}
-                   <span>{item.label}</span>
-                </CommandItem>
-           ))}
-         </CommandGroup>
+              </CommandGroup>
+            </>
+        ) : (
+            <div className="p-4 grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div className="space-y-3">
+                    <h4 className="font-semibold text-sm px-2 flex items-center gap-2"><Sparkles className="h-4 w-4" /> Shortcuts</h4>
+                    {shortcutItems.map(item => (
+                       <CommandItem key={item.href} onSelect={() => handleSelect(item.href, item.label)} className="text-muted-foreground">
+                           {item.icon}
+                           <span>{item.label}</span>
+                       </CommandItem>
+                    ))}
+                </div>
+                <div className="space-y-3">
+                     <h4 className="font-semibold text-sm px-2 flex items-center gap-2"><Star className="h-4 w-4" /> Most Searched</h4>
+                     {mostSearchedItems.map(tool => (
+                        <CommandItem key={tool.id} onSelect={() => handleToolSelect(tool)} className="text-muted-foreground">
+                             <div className="p-1.5 rounded-md text-white mr-2" style={{backgroundColor: tool.color}}>
+                                {React.cloneElement(tool.icon, { className: 'h-4 w-4' })}
+                            </div>
+                           <span>{tool.title}</span>
+                       </CommandItem>
+                     ))}
+                </div>
+                 <div className="space-y-3">
+                     <h4 className="font-semibold text-sm px-2 flex items-center gap-2"><Clock className="h-4 w-4" /> Recently Viewed</h4>
+                      {recentlyViewedItems.map(tool => (
+                        <CommandItem key={tool.id} onSelect={() => handleToolSelect(tool)} className="text-muted-foreground">
+                             <div className="p-1.5 rounded-md text-white mr-2" style={{backgroundColor: tool.color}}>
+                                {React.cloneElement(tool.icon, { className: 'h-4 w-4' })}
+                            </div>
+                           <span>{tool.title}</span>
+                       </CommandItem>
+                     ))}
+                </div>
+                 <div className="space-y-3">
+                     <h4 className="font-semibold text-sm px-2 flex items-center gap-2"><Plus className="h-4 w-4" /> My Prompts</h4>
+                     <CommandItem onSelect={() => {}} className="text-muted-foreground">
+                        <span>Create new prompt...</span>
+                     </CommandItem>
+                </div>
+            </div>
+        )}
       </CommandList>
     </CommandDialog>
   );
