@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, notFound } from 'next/navigation';
 import { tools } from '@/lib/tools-client';
 import { appDetails } from '@/lib/blog-content';
 import { Card, CardContent } from '@/components/ui/card';
@@ -11,6 +11,8 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { cn } from '@/lib/utils';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 export default function BlogPage() {
     const { slug } = useParams<{ slug: string }>();
@@ -18,16 +20,7 @@ export default function BlogPage() {
     const content = appDetails.apps.find(app => app.name.toLowerCase().replace(/\s/g, '-') === slug);
 
     if (!feature || !content) {
-        return (
-            <div className="flex min-h-screen flex-col bg-background">
-                <main className="flex-1 text-center py-20">
-                    <h1 className="text-4xl font-bold">Sorry, we couldn't find that post.</h1>
-                    <Link href="/blog">
-                        <Button variant="link" className="mt-4">Return to Blog</Button>
-                    </Link>
-                </main>
-            </div>
-        );
+        return notFound();
     }
     
     const flowChain = content.chain.split('→').map(s => s.trim());
@@ -35,10 +28,11 @@ export default function BlogPage() {
 
     return (
         <div className="flex min-h-screen flex-col bg-background">
+            <LandingHeader />
             <main className="flex-1 w-full max-w-4xl mx-auto px-4 md:px-6 lg:px-8 py-12 md:py-20">
                 <article>
                     <header className="mb-12 text-center">
-                        <div className={cn("inline-block p-4 mb-6 text-white rounded-2xl bg-gradient-to-br")} style={{ backgroundColor: feature.color }}>
+                        <div className={cn("inline-block p-4 mb-6 text-white rounded-2xl")} style={{ backgroundColor: feature.color }}>
                             {React.cloneElement(feature.icon, { className: 'h-12 w-12' })}
                         </div>
                         <h1 className="text-4xl md:text-5xl font-bold tracking-tighter mb-4 bg-clip-text text-transparent bg-gradient-to-b from-foreground/90 to-foreground/60">
@@ -97,6 +91,9 @@ export default function BlogPage() {
                     </section>
                 </article>
             </main>
+            <LandingFooter />
         </div>
     );
 }
+
+    

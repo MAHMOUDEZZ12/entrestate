@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React from 'react';
@@ -63,7 +62,7 @@ export default function BlogPage() {
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
             {filteredPosts.map((post) => (
               <Link href={`/blog/${post.slug}`} key={post.slug} className="block break-inside-avoid">
-                <Card className="flex flex-col bg-card/80 backdrop-blur-lg hover:-translate-y-1 transition-transform duration-300 hover:shadow-xl border-b-4"
+                <Card className="flex flex-col h-full bg-card/80 backdrop-blur-lg hover:-translate-y-1 transition-transform duration-300 hover:shadow-xl border-b-4"
                       style={{'--card-border-color': post.color, borderColor: 'var(--card-border-color)'} as React.CSSProperties} >
                   <CardHeader>
                     <div className="flex flex-wrap gap-2 mb-2">

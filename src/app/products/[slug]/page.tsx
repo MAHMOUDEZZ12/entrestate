@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React from 'react';
@@ -25,7 +24,7 @@ const productsData: {[key: string]: any} = {
     icon: <MessageCircle className="h-8 w-8" />,
     tagline: 'The conversational frontline that unifies all communication into a single, intelligent, and commercially productive stream.',
     vision: 'Imagine hiring a super agent with 15 years market experience. He knows everything and comes with a learning dashboard. Use it in social media, landing pages, company site, or QR code on a business card.',
-    dna: 'The DNA of chatENT is engagement-first intelligence. It doesn’t wait for the user to figure out what to ask; it guides, proposes, and translates. Whether on Instagram, a project landing page, or inside an enterprise learning dashboard, chatENT behaves as the frontline of interaction, never missing a lead, never losing a question, and always capturing intent.',
+    dna: 'Its DNA is engagement-first intelligence. It doesn’t wait for the user to figure out what to ask; it guides, proposes, and translates. Whether on Instagram, a project landing page, or inside an enterprise learning dashboard, chatENT behaves as the frontline of interaction, never missing a lead, never losing a question, and always capturing intent.',
     productCore: [
       'Engages users on Instagram, websites, campaigns, landing pages, and CRMs.',
       'Includes a prompt builder for brokers and marketers to customize campaign dialogues.',
@@ -272,5 +271,7 @@ export default function ProductPage() {
     </div>
   );
 }
+
+    
 
     
