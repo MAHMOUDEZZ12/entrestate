@@ -29,6 +29,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/technology',
     '/resources/flows',
     '/sx3-mindmap',
+    '/support',
     '/dev',
     '/dev/sitemap',
     '/dev/system-health',
