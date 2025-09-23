@@ -1,4 +1,3 @@
-
 'use client';
 import React from 'react';
 import { appDetails as blogContent } from './blog-content';
