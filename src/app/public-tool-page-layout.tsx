@@ -5,7 +5,7 @@ import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard, Workflow } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
 import { Feature, tools } from '@/lib/tools-client';
 import Image from 'next/image';
 import { ShinyButton } from '@/components/ui/shiny-button';
@@ -33,51 +33,52 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
             title: "Generate a Luxury Ad",
             description: "Create a high-end, professional ad for a luxury property.",
             input: `{\n  "projectName": "Emaar Beachfront",\n  "focusArea": "Luxury amenities",\n  "toneOfVoice": "Luxury"\n}`,
-            output: `{\n  "adCopy": "Experience unparalleled luxury at Emaar Beachfront...",\n  "headline": "Your Private Beachfront Haven Awaits"\n}`,
-            outputType: 'code',
+            outputImage: "https://picsum.photos/seed/luxury-ad/800/450",
+            imageHint: "luxury apartment interior"
         },
         {
-            title: "Rebrand a Brochure",
-            description: "Apply your brand to an existing document instantly.",
-            input: `{\n  "brochure": "[PDF_DATA]",\n  "colors": {\n    "primary": "#0A2F5B",\n    "accent": "#C4B59E"\n  }\n}`,
-            output: 'https://www.lipsum.com/feed/html', // Placeholder URL for iframe
-            outputType: 'iframe',
+            title: "Create a Market Report",
+            description: "Generate an in-depth market report for a specific area.",
+            input: `{\n  "location": "Dubai Marina",\n  "propertyType": "Luxury Condos",\n  "reportType": "Investor"\n}`,
+            outputImage: "https://picsum.photos/seed/market-report/800/450",
+            imageHint: "dubai skyline"
         },
         {
             title: "Build a Landing Page",
             description: "Quickly generate a landing page for a new development.",
-            input: `{\n  "projectName": "DAMAC Hills 2",\n  "details": "3-bedroom villas with lagoon access"\n}`,
-            output: 'https://www.lipsum.com/feed/html', // Placeholder URL for iframe
-            outputType: 'iframe',
+            input: `{\n  "projectName": "DAMAC Hills 2",\n  "projectDetails": "3-bedroom villas with lagoon access",\n  "brandingStyle": "Modern & Minimalist"\n}`,
+            outputImage: "https://picsum.photos/seed/villa-exterior/800/450",
+            imageHint: "modern villa exterior"
         }
     ];
-
-    const currentExample = examples.find(ex => ex.title.toLowerCase().includes(feature.title.toLowerCase())) || examples[0];
-
 
     return (
         <Card className="bg-muted/30 border-border/50">
             <CardContent className="p-6 md:p-10">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <h4 className="text-xl font-bold mb-2">{currentExample.title}</h4>
-                        <p className="text-muted-foreground mb-4">{currentExample.description}</p>
-                        <Label className="text-sm">Example Input</Label>
-                        <CodeBlock>{currentExample.input}</CodeBlock>
-                    </div>
-                    <div>
-                        <Label className="text-sm">Example Output</Label>
-                        <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg bg-background">
-                             {currentExample.outputType === 'iframe' ? (
-                                <iframe src={currentExample.output} className="w-full h-full" title="Output preview" />
-                            ) : (
-                                <div className="p-4">
-                                  <CodeBlock>{currentExample.output}</CodeBlock>
+                <Carousel>
+                    <CarouselContent>
+                        {examples.map((ex, index) => (
+                            <CarouselItem key={index}>
+                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                                    <div>
+                                        <h4 className="text-xl font-bold mb-2">{ex.title}</h4>
+                                        <p className="text-muted-foreground mb-4">{ex.description}</p>
+                                        <Label className="text-sm">Example Input</Label>
+                                        <CodeBlock>{ex.input}</CodeBlock>
+                                    </div>
+                                    <div>
+                                        <Label className="text-sm">Example Output</Label>
+                                        <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg">
+                                            <Image src={ex.outputImage} alt={ex.title} layout="fill" objectFit="cover" data-ai-hint={ex.imageHint} />
+                                        </div>
+                                    </div>
                                 </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="left-2" />
+                    <CarouselNext className="right-2"/>
+                </Carousel>
             </CardContent>
         </Card>
     )
