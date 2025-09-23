@@ -88,8 +88,7 @@ export function GlobalChat() {
   };
 
   return (
-    <>
-      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <SheetContent side="bottom" className="h-4/5 flex flex-col p-0 border-t-2">
             <SheetHeader className="p-4 border-b flex-row justify-between items-center">
                 <SheetTitle className="flex items-center gap-2">
@@ -126,7 +125,6 @@ export function GlobalChat() {
                 </div>
             </ScrollArea>
         </SheetContent>
-      </Sheet>
 
       <div className="fixed bottom-0 left-0 right-0 z-40 bg-background/80 backdrop-blur-lg border-t">
         <div className="container mx-auto p-4 max-w-4xl">
@@ -153,7 +151,6 @@ export function GlobalChat() {
             </form>
         </div>
       </div>
-    </>
+    </Sheet>
   );
 }
-
