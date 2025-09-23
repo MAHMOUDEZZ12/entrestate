@@ -1,14 +1,4 @@
 
-
-import {
-    Bot, BrainCircuit, CheckCircle, Plus, Sparkles, Upload, Megaphone, User,
-    ShieldQuestion, Search, MessageCircle, PenTool, Clock2, Wallet, BadgeCheck,
-    ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
-    Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
-    Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Wrench, Briefcase
-} from 'lucide-react';
-import type { ReactElement } from 'react';
 import type { FilterCategory, BadgeType } from './tools-client';
 
 // This file is build-safe and can be imported in server-side files like sitemap.ts.

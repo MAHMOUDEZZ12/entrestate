@@ -12,6 +12,16 @@ import { solutions, type Solution } from '@/lib/solutions-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
+import {
+    Telescope, MessageCircle, FileJson 
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
+
+const solutionIcons: {[key: string]: LucideIcon} = {
+    'pro-search-eng-x3': Telescope,
+    'estchat-x3': MessageCircle,
+    'mega-listing-pro-2': FileJson
+}
 
 export default function AppsPage() {
     
@@ -56,24 +66,27 @@ export default function AppsPage() {
             </TabsContent>
             <TabsContent value="solutions">
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {solutions.map((solution: Solution) => (
-                    <Link href={`/solutions/${solution.slug}`} key={solution.slug} className="block group">
-                        <Card className="h-full flex flex-col hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
-                            <CardHeader>
-                                <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mb-4">
-                                    {React.createElement(solution.icon, { className: 'h-8 w-8' })}
-                                </div>
-                                <CardTitle className="text-2xl font-bold font-heading">{solution.title}</CardTitle>
-                                <CardDescription>{solution.description}</CardDescription>
-                            </CardHeader>
-                             <CardFooter className="mt-auto">
-                                <Button variant="outline" className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                                    Learn More <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    </Link>
-                ))}
+                {solutions.map((solution: Solution) => {
+                    const Icon = solutionIcons[solution.slug] || Sparkles;
+                    return (
+                        <Link href={`/solutions/${solution.slug}`} key={solution.slug} className="block group">
+                            <Card className="h-full flex flex-col hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/10 transition-all duration-300 hover:-translate-y-1">
+                                <CardHeader>
+                                    <div className="p-4 bg-primary/10 text-primary rounded-full w-fit mb-4">
+                                        <Icon className="h-8 w-8" />
+                                    </div>
+                                    <CardTitle className="text-2xl font-bold font-heading">{solution.title}</CardTitle>
+                                    <CardDescription>{solution.description}</CardDescription>
+                                </CardHeader>
+                                 <CardFooter className="mt-auto">
+                                    <Button variant="outline" className="group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                                        Learn More <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                        </Link>
+                    )
+                })}
               </div>
             </TabsContent>
           </Tabs>

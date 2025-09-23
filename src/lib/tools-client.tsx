@@ -8,10 +8,10 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Link as LinkIcon
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Wrench, Briefcase, Languages, Link as LinkIcon
 } from 'lucide-react';
 import type { ReactElement } from 'react';
-import { tools as toolDetails, ToolData, Suite } from './tools-data';
+import { tools as toolsData, ToolData } from './tools-data';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -110,7 +110,10 @@ const icons: { [key: string]: ReactElement } = {
     CreditCard: <CreditCard />,
     Library: <Library />,
     Facebook: <Facebook />,
-    Languages: <Globe />,
+    Languages: <Languages />,
+    LinkIcon: <LinkIcon />,
+    Briefcase: <Briefcase />,
+    Wrench: <Wrench />,
 };
 
 const copyToClipboard = (text: string, toast: (options: any) => void) => {
@@ -120,7 +123,7 @@ const copyToClipboard = (text: string, toast: (options: any) => void) => {
     });
 };
 
-export const tools: Feature[] = toolDetails.map(tool => ({
+export const tools: Feature[] = toolsData.map(tool => ({
     ...tool,
     icon: icons[tool.iconName] || <Sparkles />,
     href: `/me/tool/${tool.id}`,
