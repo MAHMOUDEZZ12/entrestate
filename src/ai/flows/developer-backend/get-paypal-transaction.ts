@@ -44,6 +44,33 @@ export const GetPaypalTransactionOutputSchema = z.object({
 });
 export type GetPaypalTransactionOutput = z.infer<typeof GetPaypalTransactionOutputSchema>;
 
+
+// Type for the PayPal API response
+type PaypalOrderResponse = {
+    id: string;
+    status: string;
+    purchase_units: {
+        amount: {
+            currency_code: string;
+            value: string;
+        };
+    }[];
+    payer: {
+        email_address: string;
+        name: {
+            given_name: string;
+            surname: string;
+        };
+    };
+    create_time: string;
+};
+
+// Type for the PayPal Auth response
+type PaypalAuthResponse = {
+    access_token: string;
+};
+
+
 /**
  * Main function to fetch PayPal transaction details.
  * @param {GetPaypalTransactionInput} input - The transaction ID.
@@ -71,7 +98,7 @@ async function getPayPalAccessToken(clientId: string, clientSecret: string): Pro
         throw new Error(`PayPal Auth Error: ${response.statusText} - ${errorBody}`);
     }
 
-    const data = await response.json() as { access_token: string };
+    const data = await response.json() as PaypalAuthResponse;
     return data.access_token;
 }
 
@@ -104,7 +131,7 @@ const getPaypalTransactionFlow = ai.defineFlow(
             throw new Error(`PayPal API Error: ${response.statusText} - ${errorBody}`);
         }
 
-        const data = await response.json();
+        const data = await response.json() as PaypalOrderResponse;
         
         // Map the PayPal response to our output schema
         return {
