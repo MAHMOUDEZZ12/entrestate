@@ -1,5 +1,6 @@
 
 'use client';
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { LogOut, Settings, LayoutDashboard, Search, ChevronDown } from 'lucide-react';
@@ -17,24 +18,31 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { Logo } from './logo';
-import { tools } from '@/lib/tools-data';
+import { tools, ToolData } from '@/lib/tools-data';
 import * as LucideIcons from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from './ui/scroll-area';
-
 
 const iconMap: { [key: string]: React.ReactElement } = Object.fromEntries(
   Object.entries(LucideIcons).map(([name, Icon]) => [name, <Icon key={name} />])
 );
 
+interface MegaMenuItem extends Partial<ToolData> {
+    id: string;
+    title: string;
+    href: string;
+    iconName: string;
+    color?: string;
+}
+
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a"> & { tool: typeof tools[0] }
->(({ className, title, children, tool, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<"a"> & { item: MegaMenuItem }
+>(({ className, title, children, item, ...props }, ref) => {
   return (
     <li>
-      <Link href={`/me/tool/${tool.id}`} passHref legacyBehavior>
+      <Link href={item.href} passHref legacyBehavior>
         <a
           ref={ref}
           className={cn(
@@ -44,15 +52,10 @@ const ListItem = React.forwardRef<
           {...props}
         >
            <div className="flex items-center gap-3">
-                 <div className="p-2 rounded-md text-white" style={{backgroundColor: tool.color}}>
-                    {React.cloneElement(iconMap[tool.iconName] || <LucideIcons.Sparkles />, { className: 'h-4 w-4' })}
+                 <div className="p-2 rounded-md text-white" style={{backgroundColor: item.color || 'hsl(var(--primary))'}}>
+                    {React.cloneElement(iconMap[item.iconName] || <LucideIcons.Sparkles />, { className: 'h-4 w-4' })}
                 </div>
-                <div>
-                    <div className="text-sm font-medium leading-none">{title}</div>
-                    <p className="line-clamp-2 text-xs leading-snug text-muted-foreground">
-                    {children}
-                    </p>
-                </div>
+                <div className="text-sm font-medium leading-none">{title}</div>
            </div>
         </a>
       </Link>
@@ -69,16 +72,24 @@ export function DashboardHeader() {
     await auth?.signOut();
   }
 
-  const categorizedTools = {
-      "Marketing & Ads": tools.filter(t => t.categories.includes('Marketing') || t.categories.includes('Ads')),
-      "Creative Suite": tools.filter(t => t.categories.includes('Creative') || t.categories.includes('Editing')),
-      "Sales & CRM": tools.filter(t => t.categories.includes('Sales Tools') || t.categories.includes('CRM') || t.categories.includes('Lead Gen')),
-      "Market Intelligence": tools.filter(t => t.categories.includes('Market Intelligence')),
-      "Core": [
-          {id: 'brand', title: 'Brand & Assets', description: 'Manage your brand identity and AI knowledge base.', iconName: 'Palette', color: '#DA70D6', href:'/me/brand'},
-          {id: 'flows', title: 'Flow Builder', description: 'Create powerful, automated workflows.', iconName: 'Workflow', color: '#DA70D6', href:'/me/flows'},
-          {id: 'assistant', title: 'AI Assistant', description: 'Your AI co-pilot for the entire suite.', iconName: 'Bot', color: '#DA70D6', href:'/me/assistant'},
-      ]
+ const categorizedTools: Record<string, MegaMenuItem[]> = {
+      "Core Workspace": [
+          {id: 'home', title: 'Home', href:'/me', iconName: 'Home', color: '#8A2BE2'},
+          {id: 'marketing', title: 'Apps', href:'/me/marketing', iconName: 'LayoutGrid', color: '#8A2BE2'},
+          {id: 'flows', title: 'Flow Builder', href:'/me/flows', iconName: 'Workflow', color: '#8A2BE2'},
+          {id: 'brand', title: 'Brand & Assets', href:'/me/brand', iconName: 'Palette', color: '#8A2BE2'},
+          {id: 'assistant', title: 'AI Assistant', href:'/me/assistant', iconName: 'Bot', color: '#8A2BE2'},
+      ],
+      "Sales & CRM": tools.filter(t => t.categories.includes('Sales Tools') || t.categories.includes('CRM') || t.categories.includes('Lead Gen')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      "Marketing & Ads": tools.filter(t => t.categories.includes('Marketing') || t.categories.includes('Ads')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      "Creative & Content": tools.filter(t => t.categories.includes('Creative') || t.categories.includes('Web') || t.categories.includes('Editing')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      "Market Intelligence": tools.filter(t => t.categories.includes('Market Intelligence') || t.categories.includes('Market Library')).map(t => ({...t, href: `/me/tool/${t.id}`})),
+      "Community": [
+          {id: 'community-notes', title: 'Community Notes', href:'/me/community', iconName: 'Users2', color: '#6a788c'},
+          {id: 'academy', title: 'Academy', href:'/me/community/academy', iconName: 'School', color: '#6a788c'},
+          {id: 'roadmap', title: 'Roadmap', href:'/me/community/roadmap', iconName: 'GitFork', color: '#6a788c'},
+      ],
+      "Developer & Utility": tools.filter(t => t.categories.includes('Developer')).map(t => ({...t, href: `/me/tool/${t.id}`})),
   }
 
   return (
@@ -92,13 +103,15 @@ export function DashboardHeader() {
                 <DropdownMenuTrigger asChild>
                     <Button
                         variant="outline"
-                        className="w-full max-w-xl justify-between text-muted-foreground h-10 px-4 text-base"
+                        className="w-full max-w-2xl justify-between text-muted-foreground h-10 px-4 text-base"
                     >
                         <div className="flex items-center gap-2">
                             <Search className="h-4 w-4" />
-                            Explore Apps & Tools
+                            Explore Workspace & Apps...
                         </div>
-                        <ChevronDown className="h-4 w-4" />
+                        <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+                          <span className="text-xs">⌘</span>K
+                        </kbd>
                     </Button>
                 </DropdownMenuTrigger>
                  <DropdownMenuContent className="w-[var(--radix-dropdown-menu-trigger-width)] max-h-[80vh] p-4" align="start">
@@ -109,15 +122,12 @@ export function DashboardHeader() {
                                 <DropdownMenuLabel>{category}</DropdownMenuLabel>
                                 <DropdownMenuGroup>
                                     <ul className="space-y-1">
-                                    {items.map((tool: any) => (
+                                    {items.map((item) => (
                                         <ListItem
-                                            key={tool.title}
-                                            title={tool.title}
-                                            tool={tool}
-                                            href={tool.href || `/me/tool/${tool.id}`}
-                                        >
-                                            {tool.description}
-                                        </ListItem>
+                                            key={item.id}
+                                            title={item.title}
+                                            item={item}
+                                        />
                                     ))}
                                     </ul>
                                 </DropdownMenuGroup>
