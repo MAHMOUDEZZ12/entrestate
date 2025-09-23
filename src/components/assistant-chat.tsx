@@ -6,11 +6,14 @@ import { Button } from './ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from './ui/card';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
-import { Bot, Send, X, Sparkles, Loader2, BookOpen } from 'lucide-react';
+import { Bot, Send, Sparkles, Loader2, BookOpen, User, Code, LayoutDashboard } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback } from './ui/avatar';
 import { secretCodes } from '@/lib/codes';
 import Link from 'next/link';
+import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
+import { Command, CommandGroup, CommandItem, CommandList } from './ui/command';
+import { tools } from '@/lib/tools-client';
 
 type Message = {
     from: 'ai' | 'user';
@@ -20,22 +23,32 @@ type Message = {
 const InitialAssistantMessage = () => (
     <div>
         <p className="font-semibold mb-2">Hello! I'm your AI co-pilot.</p>
-        <p className="mb-3">Train me by uploading your brochures, price lists, and market reports to the <Link href="/dashboard/brand" className="underline font-semibold hover:text-primary">Brand & Assets</Link> page. This gives me a knowledge base to help you better.</p>
-        <p className="text-sm">What can I help you accomplish today? You can ask a question, give a command, or enter a secret code.</p>
+        <p className="mb-3">Train me by uploading your brochures, price lists, and market reports to the <Link href="/me/brand" className="underline font-semibold hover:text-primary">Brand & Assets</Link> page. This gives me a knowledge base to help you better.</p>
+        <p className="text-sm">What can I help you accomplish today? You can ask a question or type `/` to see available commands.</p>
     </div>
 );
 
+const allSuggestions = [
+    { type: 'group', value: 'Quick Actions' },
+    { type: 'item', value: 'Create a market report for Downtown Dubai', icon: <BookOpen className="h-4 w-4" /> },
+    { type: 'item', value: 'Draft a follow-up email to a new lead', icon: <Sparkles className="h-4 w-4" /> },
+    { type: 'group', value: 'Apps' },
+    ...tools.map(tool => ({ type: 'item' as const, value: `Open ${tool.title}`, icon: React.cloneElement(tool.icon, {className: 'h-4 w-4'}) })),
+    { type: 'group', value: 'Secret Codes' },
+    ...secretCodes.map(code => ({ type: 'item' as const, value: code.code, icon: <Code className="h-4 w-4" /> })),
+];
 
 export function AssistantChat() {
-  const [isOpen, setIsOpen] = useState(true); // Keep it open by default on the assistant page
   const [messages, setMessages] = useState<Message[]>([
     { from: 'ai', text: <InitialAssistantMessage /> },
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [chatHistory, setChatHistory] = useState<any[]>([]);
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -45,14 +58,23 @@ export function AssistantChat() {
     }
   }, [messages]);
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
+  useEffect(() => {
+    if (input.trim().length > 0) {
+        setIsSuggestionsOpen(true);
+    } else {
+        setIsSuggestionsOpen(false);
+    }
+  }, [input]);
 
-    const userMessage: Message = { from: 'user', text: input };
+  const handleSendMessage = async (e: React.FormEvent, messageText?: string) => {
+    e.preventDefault();
+    const currentInput = messageText || input;
+    if (!currentInput.trim() || isLoading) return;
+
+    const userMessage: Message = { from: 'user', text: currentInput };
     setMessages(prev => [...prev, userMessage]);
-    const currentInput = input;
     setInput('');
+    setIsSuggestionsOpen(false);
     setIsLoading(true);
 
     // Check for secret codes first
@@ -92,6 +114,18 @@ export function AssistantChat() {
     }
   };
 
+  const handleSuggestionClick = (value: string) => {
+    setInput(value);
+    // Directly submit the form
+    handleSendMessage({ preventDefault: () => {} } as React.FormEvent, value);
+    setIsSuggestionsOpen(false);
+  };
+  
+  const filteredSuggestions = input.startsWith('/') 
+    ? allSuggestions 
+    : allSuggestions.filter(s => s.type === 'item' && s.value.toLowerCase().includes(input.toLowerCase()));
+
+
   return (
     <>
         <CardHeader>
@@ -130,7 +164,9 @@ export function AssistantChat() {
                     </div>
                     {msg.from === 'user' && (
                     <Avatar className="h-8 w-8">
-                        <AvatarFallback>U</AvatarFallback>
+                        <AvatarFallback>
+                            <User className="h-4 w-4"/>
+                        </AvatarFallback>
                     </Avatar>
                     )}
                 </div>
@@ -152,17 +188,48 @@ export function AssistantChat() {
         </CardContent>
         
          <CardFooter className="p-4 border-t">
-            <form onSubmit={handleSendMessage} className="flex w-full items-center gap-2">
-                <Input 
-                    placeholder="Ask anything or enter a secret code..." 
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    disabled={isLoading}
-                />
-                <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
-                    <Send className="h-4 w-4" />
-                </Button>
-            </form>
+            <Popover open={isSuggestionsOpen} onOpenChange={setIsSuggestionsOpen}>
+                <PopoverTrigger asChild>
+                    <form onSubmit={handleSendMessage} className="flex w-full items-center gap-2">
+                        <Input 
+                            ref={inputRef}
+                            placeholder="Ask a question or type '/' for commands..."
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            disabled={isLoading}
+                            autoComplete="off"
+                        />
+                        <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
+                            <Send className="h-4 w-4" />
+                        </Button>
+                    </form>
+                </PopoverTrigger>
+                <PopoverContent className="w-[--radix-popover-trigger-width] p-0" align="start">
+                    <Command>
+                         <CommandList>
+                            {filteredSuggestions.length > 0 ? (
+                                filteredSuggestions.map((suggestion, index) => 
+                                    suggestion.type === 'group' ? (
+                                        <CommandGroup key={index} heading={suggestion.value} className="text-xs">
+                                        {filteredSuggestions.slice(index + 1).filter(i => i.type === 'item').map(item => (
+                                            <CommandItem key={item.value} onSelect={() => handleSuggestionClick(item.value)} className="cursor-pointer">
+                                                 {item.icon}
+                                                <span className="ml-2">{item.value}</span>
+                                            </CommandItem>
+                                        )).filter((_, i, arr) => {
+                                            const nextGroupIndex = filteredSuggestions.slice(index + 1).findIndex(s => s.type === 'group');
+                                            return nextGroupIndex === -1 || i < nextGroupIndex;
+                                        })}
+                                        </CommandGroup>
+                                    ) : null
+                                ).filter((el, index) => el !== null && (index === 0 || filteredSuggestions[index-1].type !== 'group'))
+                            ) : (
+                                <div className="p-4 text-sm text-center text-muted-foreground">No suggestions found.</div>
+                            )}
+                        </CommandList>
+                    </Command>
+                </PopoverContent>
+            </Popover>
         </CardFooter>
     </>
   );
