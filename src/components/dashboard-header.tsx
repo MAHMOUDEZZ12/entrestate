@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/breadcrumb"
 import { usePathname } from 'next/navigation';
 import { tools, FilterCategory } from '@/lib/tools-client';
-import { DashboardSidebar } from './dashboard-sidebar';
 import { useTabManager } from '@/context/TabManagerContext';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
@@ -39,6 +38,7 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
 import { Avatar, AvatarFallback } from './ui/avatar';
+import { Logo } from './logo';
 
 
 const breadcrumbNameMap: { [key: string]: string } = {
@@ -187,6 +187,20 @@ export function DashboardHeader() {
                     <Link href="/me/community" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Community
+                        </NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
+                 <NavigationMenuItem>
+                    <Link href="/me/services" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            Services
+                        </NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                    <Link href="/me/solutions" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            Solutions
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
