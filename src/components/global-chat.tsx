@@ -3,7 +3,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Button } from './ui/button';
-import { Bot, Send, Loader2, User, Sparkles, PlusCircle, Copy, ChevronUp, Workflow } from 'lucide-react';
+import { Bot, Send, Loader2, User, Sparkles, PlusCircle, Copy, Workflow, ArrowLeft, ArrowRight } from 'lucide-react';
 import { Input } from './ui/input';
 import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
@@ -48,10 +48,22 @@ export function GlobalChat() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isCommandMenuOpen, setIsCommandMenuOpen] = useState(false);
   const [lastResultToCopy, setLastResultToCopy] = useState<string | null>(null);
+  
+  const [isBarOnTop, setIsBarOnTop] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const { activeHint, isHintActive } = useSensitiveArea();
+  
+  useEffect(() => {
+    setIsClient(true);
+    try {
+        const savedValue = localStorage.getItem('isAnalogBarOnTop');
+        setIsBarOnTop(savedValue === 'true');
+    } catch(e) {}
+  }, []);
 
   useEffect(() => {
     if (scrollAreaRef.current && isSheetOpen) {
@@ -197,7 +209,10 @@ export function GlobalChat() {
   return (
     <>
     <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        <div className="fixed bottom-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-t">
+        <div className={cn(
+            "fixed left-0 right-0 z-50 bg-background/80 backdrop-blur-lg",
+            isBarOnTop ? "top-14 border-b" : "bottom-0 border-t"
+        )}>
             <div className="container mx-auto p-4 max-w-5xl flex items-center gap-4">
                 <button onClick={() => router.back()} className="hidden md:block text-muted-foreground font-mono text-lg hover:text-primary transition-colors" aria-label="Go back">&lt;</button>
                 <div className="flex items-center gap-2">
@@ -242,7 +257,7 @@ export function GlobalChat() {
                  <button onClick={() => router.forward()} className="hidden md:block text-muted-foreground font-mono text-lg hover:text-primary transition-colors" aria-label="Go forward">&gt;</button>
             </div>
         </div>
-      <SheetContent side="bottom" className="h-4/5 flex flex-col p-0 border-t-2 z-40" hideCloseButton={true}>
+      <SheetContent side={isBarOnTop ? "top" : "bottom"} className="h-4/5 flex flex-col p-0 border-t-2 z-40" hideCloseButton={true}>
           <ScrollArea className="flex-1 p-4" ref={scrollAreaRef as any}>
               <div className="space-y-4 max-w-4xl mx-auto w-full">
                   {messages.map((msg, index) => (

@@ -3,7 +3,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { Settings, Palette, User, CreditCard, Paintbrush, Text, Sun, Moon, Laptop, Bot, BrainCircuit, Network, Database, Users, Instagram, Facebook, Linkedin, Mail, MessageCircle, Twitter, Share2, Building, MousePointer, Sparkles } from 'lucide-react';
+import { Settings, Palette, User, CreditCard, Paintbrush, Text, Sun, Moon, Laptop, Bot, BrainCircuit, Network, Database, Users, Instagram, Facebook, Linkedin, Mail, MessageCircle, Twitter, Share2, Building, MousePointer, Sparkles, ArrowUp, ArrowDown } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
@@ -53,11 +53,14 @@ export default function SettingsPage() {
   });
 
   const [isDraggableSearch, setIsDraggableSearch] = useState(false);
+  const [isBarOnTop, setIsBarOnTop] = useState(false);
 
   useEffect(() => {
     try {
-        const savedValue = localStorage.getItem('isSearchDraggable');
-        setIsDraggableSearch(savedValue === 'true');
+        const draggable = localStorage.getItem('isSearchDraggable');
+        const barOnTop = localStorage.getItem('isAnalogBarOnTop');
+        setIsDraggableSearch(draggable === 'true');
+        setIsBarOnTop(barOnTop === 'true');
     } catch (e) {
         // Handle cases where localStorage is not available
     }
@@ -70,6 +73,23 @@ export default function SettingsPage() {
           toast({
               title: "Search setting updated!",
               description: `The search menu is now ${checked ? 'draggable' : 'fixed'}. The change will apply on next page load.`
+          });
+      } catch (e) {
+         toast({
+              title: "Could not save setting",
+              description: "Your browser does not seem to support local storage.",
+              variant: "destructive"
+          });
+      }
+  }
+
+  const handleBarPositionToggle = (checked: boolean) => {
+      setIsBarOnTop(checked);
+      try {
+          localStorage.setItem('isAnalogBarOnTop', String(checked));
+          toast({
+              title: "Analog Bar position updated!",
+              description: `The bar will now be at the ${checked ? 'top' : 'bottom'}. Please reload the page to see the change.`
           });
       } catch (e) {
          toast({
@@ -206,6 +226,18 @@ export default function SettingsPage() {
               <CardDescription>Customize the behavior of your "Play Analog" sensitive control bar.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
+                 <div className="flex items-center justify-between rounded-lg border p-4">
+                  <div className="flex items-center gap-3">
+                    <ArrowUp className="h-5 w-5 text-muted-foreground"/>
+                    <div>
+                        <Label htmlFor="bar-position">Position Analog Bar at Top</Label>
+                        <p className="text-sm text-muted-foreground">
+                         Move the command bar to the top of the screen, below the header.
+                        </p>
+                    </div>
+                  </div>
+                  <Switch id="bar-position" checked={isBarOnTop} onCheckedChange={handleBarPositionToggle} />
+                </div>
                  <div className="flex items-center justify-between rounded-lg border p-4">
                   <div className="flex items-center gap-3">
                     <MousePointer className="h-5 w-5 text-muted-foreground"/>
