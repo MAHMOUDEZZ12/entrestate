@@ -45,13 +45,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
   
   const solutionRoutes = [
+    '/solutions/instagram-ad-value',
     '/solutions/social-media-chatbot',
     '/solutions/sales-agent-chat-ai',
     '/solutions/market-search-engine',
     '/solutions/ai-listing-portal',
     '/solutions/crm-system',
     '/solutions/ai-insta-bio-link',
-    '/solutions/instagram-ad-value'
   ].map((route) => ({
       url: `${siteUrl}${route}`,
       lastModified: new Date(),

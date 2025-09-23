@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { Bot, BrainCircuit, Sparkles, Megaphone, Upload, FileText } from 'lucide-react';
+import { Bot, BrainCircuit, Sparkles, Upload } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { AssistantChat } from '@/components/assistant-chat';
 import { PageHeader } from '@/components/ui/page-header';

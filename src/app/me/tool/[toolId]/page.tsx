@@ -5,7 +5,7 @@ import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { Feature, Field } from '@/lib/tools-client.tsx';
+import { Feature, Field } from '@/lib/tools-client';
 import { tools as clientTools, fileToDataUri, filesToDataUris } from '@/lib/tools-client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,16 +14,16 @@ import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Sparkles, AlertCircle, Upload, Info, PlusCircle, CreditCard, ArrowRight, Wand2, Copy } from 'lucide-react';
+import { Loader2, Sparkles, AlertCircle, Wand2, Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Confetti } from '@/components/confetti';
-import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import { track } from '@/lib/events';
 import { notFound, useParams } from 'next/navigation';
 import { PageHeader } from '@/components/ui/page-header';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { useAuth } from '@/hooks/useAuth';
 
 
 const copyToClipboard = (text: string, toast: (options: any) => void) => {
@@ -45,6 +45,7 @@ const ToolPage = () => {
   const [showConfetti, setShowConfetti] = React.useState(false);
   const { toast } = useToast();
   const [filePayload, setFilePayload] = React.useState<Record<string, any>>({});
+  const { user } = useAuth();
   
   // Specific state for landing page tool to manage live preview
   const [liveHtml, setLiveHtml] = React.useState<string | null>(null);
@@ -101,11 +102,16 @@ const ToolPage = () => {
 
 
   if (!tool) {
-    return (
+    // Let's check if it's a valid, but non-UI tool
+    const validTool = clientTools.find(t => t.id === toolId);
+    if(validTool) {
+       return (
         <div className="flex h-[80vh] items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin" />
         </div>
-    );
+        );
+    }
+    notFound();
   }
   
   const handleGeneration = async (data: Record<string, any>) => {
@@ -115,13 +121,27 @@ const ToolPage = () => {
     setLiveHtml(null);
     setShowConfetti(false);
     
+    if (!user) {
+        toast({
+            title: 'Authentication Required',
+            description: 'Please log in to use the AI tools.',
+            variant: 'destructive',
+        });
+        setIsLoading(false);
+        return;
+    }
+    
     try {
+        const idToken = await user.getIdToken();
         let payload: Record<string, any> = {...data, ...filePayload};
         track('tool_run_started', { toolId });
 
         const response = await fetch('/api/run', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${idToken}`,
+            },
             body: JSON.stringify({ toolId, payload }),
         });
 

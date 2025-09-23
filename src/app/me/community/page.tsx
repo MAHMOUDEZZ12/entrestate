@@ -226,7 +226,7 @@ const NewNoteForm = ({ setOpen }: { setOpen: (open: boolean) => void }) => {
 export default function CommunityPage() {
     const [open, setOpen] = useState(false);
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col">
       <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-8">
         <PageHeader
           title="Community Notes"

@@ -3,10 +3,8 @@
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { GitFork, Check, ListTodo, TestTube2, Rocket } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import { GitFork, Check, ListTodo, Rocket } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 
 const roadmapItems = {
     'In Progress': [
@@ -67,5 +65,3 @@ export default function RoadmapPage() {
     </div>
   );
 }
-
-    
