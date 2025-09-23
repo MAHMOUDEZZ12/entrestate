@@ -49,7 +49,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/solutions/market-search-engine',
     '/solutions/ai-listing-portal',
     '/solutions/crm-system',
-    '/solutions/ai-insta-bio-link'
+    '/solutions/ai-insta-bio-link',
+    '/solutions/instagram-ad-value'
   ].map((route) => ({
       url: `${siteUrl}${route}`,
       lastModified: new Date(),
