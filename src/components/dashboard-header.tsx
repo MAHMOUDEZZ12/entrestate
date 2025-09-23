@@ -47,7 +47,7 @@ export function DashboardHeader() {
                         <span className="text-sm">⌘</span>K
                     </kbd>
                 </Button>
-                <GlobalSearch isOpen={isSearchOpen} setIsOpen={setIsOpen} />
+                <GlobalSearch isOpen={isSearchOpen} setIsOpen={setIsSearchOpen} />
             </div>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
