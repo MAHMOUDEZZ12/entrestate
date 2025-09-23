@@ -35,6 +35,14 @@ export const GetMarketTrendsOutputSchema = z.object({
     description: z.string().describe('A brief description of the trend and its potential impact.'),
   })).describe('A list of 2-4 key emerging trends identified from the sources.'),
   futureOutlook: z.string().describe('A forward-looking statement on what to expect based on the analyzed trends.'),
+  keyOpportunities: z.array(z.object({
+      opportunity: z.string().describe("A specific, actionable opportunity."),
+      rationale: z.string().describe("The data-driven reason this opportunity exists."),
+  })).describe("A list of 2-3 actionable opportunities for an agent or investor."),
+  optimizationSuggestions: z.array(z.object({
+      suggestion: z.string().describe("A concrete suggestion for optimizing a strategy."),
+      impact: z.string().describe("The potential impact of implementing this suggestion."),
+  })).describe("A list of 2-3 optimization suggestions."),
 });
 export type GetMarketTrendsOutput = z.infer<typeof GetMarketTrendsOutputSchema>;
 
@@ -54,16 +62,17 @@ const prompt = ai.definePrompt({
   name: 'getMarketTrendsPrompt',
   input: {schema: GetMarketTrendsInputSchema},
   output: {schema: GetMarketTrendsOutputSchema},
-  prompt: `You are an expert real estate market analyst. Your task is to analyze the latest articles and data from the Property Finder Insights Hub (https://www.propertyfinder.ae/en/insightshub) to provide a synthesized report on a given topic.
+  prompt: `You are an expert real estate market analyst, combining the skills of an LLM Auditor, an Optimizer, and a Data Scientist. Your task is to provide a comprehensive market intelligence report based on the provided topic, using simulated data from sources like Property Finder Insights Hub, Bayut, and DLD.
 
   **Topic:** {{{topic}}}
 
   **Instructions:**
 
-  1.  **Synthesize Information:** Based on the likely content of recent articles on the Insights Hub related to the topic, provide a high-level analysis.
-  2.  **Determine Overall Sentiment:** Summarize the general feeling of the market regarding the topic. Is it positive, negative, or neutral?
-  3.  **Identify Key Emerging Trends:** List 2-4 of the most significant new trends you can infer from the articles. For each trend, provide a brief description.
-  4.  **Offer a Future Outlook:** Based on the trends, provide a brief forecast of what to expect in the next 3-6 months related to this topic.
+  1.  **Synthesize Information & Determine Sentiment:** Based on the topic, provide a high-level summary of the market sentiment (e.g., "Optimistic," "Cautious").
+  2.  **Identify Key Emerging Trends:** List 2-4 significant new trends. For each, provide a brief description.
+  3.  **Offer a Future Outlook:** Based on the trends, provide a brief forecast for the next 3-6 months.
+  4.  **Uncover Key Opportunities (Data Science):** Identify 2-3 specific, actionable opportunities that a real estate professional could capitalize on based on the data. For each, provide a clear rationale. (e.g., "Opportunity: Target 1-bedroom apartments in JVC for rental investment. Rationale: Rental yields in JVC for 1-beds have increased by 8% YoY, while sales prices have only risen 4%, indicating a strong rental market.").
+  5.  **Provide Optimization Suggestions (Optimizer/Auditor):** Give 2-3 concrete suggestions for how an agent or developer could optimize their strategy in response to these trends. For each, state the potential impact. (e.g., "Suggestion: Audit your existing listings in Downtown Dubai. Impact: Listings with 'Burj Khalifa view' in the title have a 15% higher click-through rate.").
   `,
 });
 
