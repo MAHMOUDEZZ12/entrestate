@@ -4,8 +4,9 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Menu } from 'lucide-react';
 import { Logo } from './logo';
+import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 
 const navLinks = [
     { name: 'Products', href: '/#pillars' },
@@ -40,7 +41,45 @@ export function LandingHeader() {
               <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
           </Link>
         </div>
-        {/* Mobile menu can be added here if needed */}
+
+        {/* Mobile Menu */}
+        <div className="md:hidden">
+            <Sheet>
+                <SheetTrigger asChild>
+                    <Button variant="outline" size="icon">
+                        <Menu className="h-5 w-5" />
+                        <span className="sr-only">Open menu</span>
+                    </Button>
+                </SheetTrigger>
+                <SheetContent side="left">
+                    <div className="p-6">
+                        <Logo />
+                        <nav className="mt-8 flex flex-col gap-4">
+                            {navLinks.map((link) => (
+                                <SheetClose asChild key={link.name}>
+                                    <Link href={link.href}>
+                                        <Button variant="ghost" className="w-full justify-start text-lg">{link.name}</Button>
+                                    </Link>
+                                </SheetClose>
+                            ))}
+                        </nav>
+                         <div className="mt-8 pt-8 border-t border-border/40 flex flex-col gap-4">
+                           <SheetClose asChild>
+                             <Link href="/login">
+                                <Button variant="outline" className="w-full">Log In</Button>
+                            </Link>
+                           </SheetClose>
+                           <SheetClose asChild>
+                             <Link href="/login">
+                                <Button className="w-full">Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
+                            </Link>
+                           </SheetClose>
+                        </div>
+                    </div>
+                </SheetContent>
+            </Sheet>
+        </div>
+
       </div>
     </header>
   );
