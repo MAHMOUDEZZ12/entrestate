@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       const isPublicPath = PUBLIC_PATHS.includes(pathname) || pathname.startsWith('/_next') || pathname === '/';
       
-      if (!user && !isPublicPath && !pathname.startsWith('/solutions') && !pathname.startsWith('/apps') && !pathname.startsWith('/community') && !pathname.startsWith('/services')) {
+      if (!user && !isPublicPath && !pathname.startsWith('/solutions') && !pathname.startsWith('/apps') && !pathname.startsWith('/community') && !pathname.startsWith('/services') && !pathname.startsWith('/blog') && !pathname.startsWith('/market')) {
         router.push('/login');
       } else if (user && (pathname === '/login' || pathname === '/signup')) {
         router.push('/me');

@@ -87,7 +87,7 @@ export function LandingHeader() {
       <div className="container flex h-16 max-w-screen-2xl items-center">
         <div className="mr-auto flex">
           <div className="mr-6 flex items-center space-x-2">
-            <Logo />
+            <Logo href={user ? "/me" : "/"} />
           </div>
           <nav className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => (
@@ -112,7 +112,7 @@ export function LandingHeader() {
                 </SheetTrigger>
                 <SheetContent side="left">
                     <div className="p-6">
-                        <Logo />
+                        <Logo href={user ? "/me" : "/"} />
                         <nav className="mt-8 flex flex-col gap-4">
                             {navLinks.map((link) => (
                                 <SheetClose asChild key={link.name}>
