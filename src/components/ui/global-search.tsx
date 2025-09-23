@@ -34,8 +34,18 @@ const categories: FilterCategory[] = ['Marketing', 'Creative', 'Sales Tools', 'L
 
 export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
   const [query, setQuery] = useState('');
+  const [isDraggable, setIsDraggable] = useState(false);
   const router = useRouter();
   const { addTab } = useTabManager();
+  
+  useEffect(() => {
+    try {
+        const savedValue = localStorage.getItem('isSearchDraggable');
+        setIsDraggable(savedValue === 'true');
+    } catch (e) {
+        // Handle cases where localStorage is not available
+    }
+  }, [isOpen]);
 
   const handleSelect = (href: string, label: string) => {
     addTab({ href, label });
@@ -66,7 +76,7 @@ export function GlobalSearch({ isOpen, setIsOpen }: GlobalSearchProps) {
   }, [query]);
 
   return (
-    <CommandDialog open={isOpen} onOpenChange={setIsOpen}>
+    <CommandDialog open={isOpen} onOpenChange={setIsOpen} isDraggable={isDraggable}>
       <CommandInput 
         placeholder="Search for tools, projects, or actions..."
         value={query}
