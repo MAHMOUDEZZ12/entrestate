@@ -27,7 +27,7 @@ interface PublicToolPageLayoutProps {
 
 
 const ToolShowcase = ({ feature }: { feature: Feature }) => {
-    // Simple examples. In a real app, these would be more detailed and specific.
+    // Examples are now purely text/data-based.
     const examples = [
         {
             title: "Generate Ad Copy",
@@ -45,7 +45,7 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
             title: "Build a Landing Page Plan",
             description: "Quickly generate the HTML structure for a new development's landing page.",
             input: `{\n  "projectName": "DAMAC Hills 2",\n  "projectDetails": "3-bedroom villas with lagoon access",\n  "brandingStyle": "Modern & Minimalist"\n}`,
-            output: `{\n  "landingPageHtml": "<!DOCTYPE html><html><head>...</head><body><section class=\\"hero\\">...</section></body></html>",\n  "headlineOptions": [...]\n}`
+            output: `{\n  "landingPageHtml": "<!DOCTYPE html><html>...",\n  "headlineOptions": [\n    {\n      "strategy": "Urgency-Focused",\n      "headline": "Limited Villas Available at DAMAC Hills 2!",\n      "cta": "Enquire Before They're Gone"\n    }\n  ]\n}`
         }
     ];
 
@@ -249,3 +249,5 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
     </div>
   );
 }
+
+    
