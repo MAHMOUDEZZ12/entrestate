@@ -28,7 +28,7 @@ const INITIAL_DRAFT: OnboardingDraft = {
     devFocus: ['Emaar', 'Damac'],
     shortlist: [],
     brandKit: { logoUrl: null, colors: { primary: '#36454F', accent: '#98FF98' }, contact: { name: '', phone: '', email: '' } },
-    connections: { 'meta': true },
+    connections: { 'meta': true, 'google': false },
 };
 
 function OnboardingComponent() {
@@ -56,6 +56,17 @@ function OnboardingComponent() {
     const updateDraft = (data: Partial<OnboardingDraft>) => {
         setDraft(prev => ({ ...prev, ...data }));
     };
+    
+    const updateConnection = (key: 'meta' | 'google', value: boolean) => {
+        setDraft(prev => ({
+            ...prev,
+            connections: {
+                ...prev.connections,
+                [key]: value
+            }
+        }));
+         track('onboarding_connect_toggled', { provider: key, selected: value });
+    }
 
     const handleFileChange = (files: FileList | null) => {
         const file = files?.[0];
@@ -99,13 +110,20 @@ function OnboardingComponent() {
             devFocus: draft.devFocus,
             shortlistCount: draft.shortlist?.length,
             brandKitProvided: !!draft.brandKit?.contact?.name,
+            connections: draft.connections,
         });
 
         try {
-            // 1. Save user profile data (brand kit, etc.)
+            // 1. Save user profile data
             await saveUserData(user.uid, {
                 companyName: draft.brandKit?.contact?.name,
-                brandKit: draft.brandKit
+                brandKit: draft.brandKit,
+                onboarding: {
+                    city: draft.city,
+                    country: draft.country,
+                    devFocus: draft.devFocus,
+                    connections: draft.connections,
+                }
             });
 
             // 2. Save shortlisted projects to user's library
@@ -220,8 +238,8 @@ function OnboardingComponent() {
                              <CardDescription>Unlock automations by connecting external accounts.</CardDescription>
                         </CardHeader>
                          <CardContent className="space-y-2">
-                            <ProviderTile name="Meta (Facebook & Instagram)" onClick={() => track('onboarding_connect_clicked', { provider: 'meta' })} />
-                            <ProviderTile name="Google (Gmail & YouTube)" onClick={() => track('onboarding_connect_clicked', { provider: 'google' })} />
+                            <ProviderTile name="Meta (Facebook & Instagram)" status={draft.connections?.meta ? 'connected' : 'connect'} onClick={() => updateConnection('meta', !draft.connections?.meta)} />
+                            <ProviderTile name="Google (Gmail & YouTube)" status={draft.connections?.google ? 'connected' : 'connect'} onClick={() => updateConnection('google', !draft.connections?.google)} />
                          </CardContent>
                     </Card>
                 </div>
@@ -248,3 +266,5 @@ export default function OnboardingPage() {
         </div>
     )
 }
+
+    

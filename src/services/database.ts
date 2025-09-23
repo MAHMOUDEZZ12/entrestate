@@ -12,7 +12,7 @@
 
 import { adminDb } from '@/lib/firebaseAdmin';
 import { fail } from '@/lib/api-helpers';
-import type { Project, BrandKit, KnowledgeFile } from '@/types';
+import type { Project, BrandKit, KnowledgeFile, OnboardingDraft } from '@/types';
 
 
 /**
@@ -44,7 +44,7 @@ export async function getProjectById(projectId: string): Promise<Project | null>
 interface UserProfileData {
     companyName?: string;
     brandKit?: BrandKit;
-    // Add any other user profile fields here
+    onboarding?: Partial<OnboardingDraft>;
 }
 
 /**
@@ -118,3 +118,5 @@ export async function deleteFileFromKnowledgeBase(userId: string, fileId: string
         throw fail(error);
     }
 }
+
+    

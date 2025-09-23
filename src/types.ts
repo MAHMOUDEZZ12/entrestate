@@ -46,7 +46,7 @@ export interface OnboardingDraft {
   scanSelected?: string[];
   shortlist?: string[];
   brandKit?: BrandKit;
-  connections?: Record<string, "connected" | "skipped">;
+  connections?: Record<string, boolean>;
   payment?: { status?: "added" | "skipped" };
   progress?: { step: number; ts: number };
 }
@@ -166,3 +166,5 @@ export const MetaAutoPilotOutputSchema = z.object({
 });
 export type MetaAutoPilotInput = z.infer<typeof MetaAutoPilotInputSchema>;
 export type MetaAutoPilotOutput = z.infer<typeof MetaAutoPilotOutputSchema>;
+
+    
