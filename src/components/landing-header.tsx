@@ -11,10 +11,10 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 const navLinks = [
     { name: 'Products', href: '/#pillars' },
     { name: 'Apps', href: '/apps' },
-    { name: 'Pricing', href: '/pricing' },
     { name: 'Solutions', href: '/solutions' },
+    { name: 'Services', href: '/services' },
+    { name: 'Pricing', href: '/pricing' },
     { name: 'Community', href: '/community' },
-    { name: 'Blog', href: '/blog' },
 ];
 
 export function LandingHeader() {
