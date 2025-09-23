@@ -32,7 +32,7 @@ const addIssueToChangeLog = (description: string) => {
         };
         const updatedLog = [newLogEntry, ...changeLog];
         localStorage.setItem('changeLog', JSON.stringify(updatedLog));
-        console.log("Issue logged to dev-admin:", newLogEntry);
+        console.log("Issue logged to gem-admin:", newLogEntry);
     } catch (error) {
         console.error("Failed to update changelog in localStorage", error);
     }
@@ -67,9 +67,9 @@ export default function ListingManagerPage() {
                 addIssueToChangeLog(`Project "Damac Hills 2" is missing high-quality images. Please source and upload them to the project library.`);
                 toast({
                     title: "Asset Request Sent",
-                    description: `The selected project is missing HQ images. An admin request has been sent to source them. Check the Dev Admin log for details.`,
+                    description: `The selected project is missing HQ images. An admin request has been sent to source them. Check the Gem Admin log for details.`,
                     duration: 10000,
-                    action: <Link href="/dev"><Button size="sm">View Log</Button></Link>
+                    action: <Link href="/gem"><Button size="sm">View Log</Button></Link>
                 });
             } else {
                 setAssetsOk(true);
@@ -108,14 +108,14 @@ export default function ListingManagerPage() {
     const handlePortalSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (!portalName || !portalScreenshot) {
-            toast({ title: "Missing Information", description: "Please provide a portal name and a screenshot.", variant: 'destructive'});
+            toast({ title: "Missing Information", description: "Please provide both a portal name and a screenshot.", variant: 'destructive'});
             return;
         }
         addIssueToChangeLog(`New portal submission: "${portalName}". User has uploaded a screenshot of the form. Please review and add support.`);
         toast({
             title: "Portal Submitted for Review",
             description: `Thank you! "${portalName}" has been added to our queue. An admin will review it shortly.`,
-            action: <Link href="/dev"><Button size="sm">View Log</Button></Link>
+            action: <Link href="/gem"><Button size="sm">View Log</Button></Link>
         });
         setPortalName('');
         setPortalScreenshot(null);
@@ -171,7 +171,7 @@ export default function ListingManagerPage() {
                                         <AlertTriangle className="h-4 w-4" />
                                         <AlertTitle>Missing Assets</AlertTitle>
                                         <AlertDescription>
-                                            This project is missing required high-quality images. An admin request has been logged. You can check its status on the <Link href="/dev" className="underline font-semibold">Dev Admin</Link> page.
+                                            This project is missing required high-quality images. An admin request has been logged. You can check its status on the <Link href="/gem" className="underline font-semibold">Gem Admin</Link> page.
                                         </AlertDescription>
                                     </Alert>
                                 )}
@@ -205,10 +205,10 @@ export default function ListingManagerPage() {
                                     <Button onClick={() => copyToClipboard(JSON.stringify(listingPlan, null, 2))}>
                                         <Pen className="mr-2 h-4 w-4" /> Copy Plan
                                     </Button>
-                                    <Link href="/dashboard/tool/property-finder-sync">
+                                    <Link href="/me/tool/property-finder-sync">
                                         <Button variant="outline">Go to Property Finder Pilot</Button>
                                     </Link>
-                                     <Link href="/dashboard/tool/bayut-sync">
+                                     <Link href="/me/tool/bayut-sync">
                                         <Button variant="outline">Go to Bayut Pilot</Button>
                                     </Link>
                                 </div>
