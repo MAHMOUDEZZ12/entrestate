@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React from 'react';
@@ -69,7 +70,7 @@ const ToolShowcase = ({ feature }: { feature: Feature }) => {
                                     <div>
                                         <Label className="text-sm">Example Output</Label>
                                         <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg">
-                                            <Image src={ex.outputImage} alt={ex.title} layout="fill" objectFit="cover" data-ai-hint={ex.imageHint} />
+                                            <Image src={ex.outputImage} alt={ex.title} fill={true} className="object-cover" data-ai-hint={ex.imageHint} />
                                         </div>
                                     </div>
                                 </div>

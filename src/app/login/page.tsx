@@ -161,13 +161,12 @@ export default function AuthPage() {
 
               </div>
           </div>
-          <div className="hidden bg-muted lg:block">
+          <div className="hidden bg-muted lg:block relative">
               <Image
               src="https://picsum.photos/seed/auth/1920/1080"
               alt="Image"
-              width="1920"
-              height="1080"
-              className="h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+              fill
+              className="object-cover dark:brightness-[0.2] dark:grayscale"
               data-ai-hint="abstract architecture"
               priority
               />
@@ -178,5 +177,3 @@ export default function AuthPage() {
     </div>
   )
 }
-
-    
