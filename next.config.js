@@ -61,12 +61,7 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: '/me/marketing',
-        destination: '/apps',
-        permanent: true,
-      },
-      {
+       {
         source: '/apps',
         destination: '/me/marketing',
         permanent: true,
