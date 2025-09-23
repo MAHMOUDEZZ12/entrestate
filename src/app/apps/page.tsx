@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import {
-  ArrowRight, Sparkles, LayoutTemplate, CreditCard
+  ArrowRight, Sparkles, LayoutTemplate, CreditCard, Loader2
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -16,7 +16,9 @@ import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { pricingData } from '@/lib/pricing-data';
 import { Badge } from '@/components/ui/badge';
-import { PurchaseDialog } from '@/components/ui/purchase-dialog';
+import { useToast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 
 // Merge pricing data into tools
@@ -38,6 +40,23 @@ const FeatureCard = ({
 }: {
   feature: Feature & { price: number };
 }) => {
+  const { toast } = useToast();
+  const [showPurchase, setShowPurchase] = React.useState(false);
+  const [isProcessing, setIsProcessing] = React.useState(false);
+
+  const handlePurchase = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    setIsProcessing(true);
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    setIsProcessing(false);
+    setShowPurchase(false);
+    toast({
+        title: 'Purchase Successful!',
+        description: `You have successfully purchased "${feature.title}".`,
+    });
+  };
+
   return (
     <Card 
         className="group flex flex-col h-full bg-card/80 backdrop-blur-lg border-border hover:border-primary/30 transition-all duration-300 hover:-translate-y-1"
@@ -83,13 +102,40 @@ const FeatureCard = ({
         </div>
         <h2 className="text-2xl font-bold font-heading text-foreground mb-2">{feature.title}</h2>
         <p className="text-lg text-foreground/70 flex-grow">{feature.description}</p>
+        
+        {showPurchase && feature.price > 0 && (
+            <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mt-4 overflow-hidden">
+                <form onSubmit={handlePurchase} className="space-y-3 pt-4 border-t">
+                    <div className="space-y-1">
+                        <Label htmlFor={`email-${feature.id}`} className="text-xs">Email</Label>
+                        <Input id={`email-${feature.id}`} type="email" placeholder="you@example.com" required onClick={e => e.stopPropagation()} />
+                    </div>
+                     <div className="space-y-1">
+                        <Label htmlFor={`card-${feature.id}`} className="text-xs">Card Number</Label>
+                        <Input id={`card-${feature.id}`} placeholder="Card Details" required onClick={e => e.stopPropagation()} />
+                    </div>
+                    <Button type="submit" disabled={isProcessing} className="w-full">
+                        {isProcessing && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {isProcessing ? 'Processing...' : `Pay $${feature.price}`}
+                    </Button>
+                </form>
+            </motion.div>
+        )}
+
          <div className="mt-6 flex justify-end items-center">
-            <Link href={`/apps/${feature.id}`}>
-              <Button variant="link" className="p-0 text-base text-primary">
-                  Explore App
-                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </Button>
-            </Link>
+            {feature.price > 0 ? (
+                <Button variant="link" className="p-0 text-base text-primary" onClick={(e) => { e.preventDefault(); setShowPurchase(!showPurchase); }}>
+                  {showPurchase ? 'Cancel' : 'Buy App'}
+                  {!showPurchase && <CreditCard className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />}
+                </Button>
+            ) : (
+                <Link href={`/apps/${feature.id}`}>
+                    <Button variant="link" className="p-0 text-base text-primary">
+                        Explore App
+                        <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+                    </Button>
+                </Link>
+            )}
          </div>
       </CardContent>
     </Card>

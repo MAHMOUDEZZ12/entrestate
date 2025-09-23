@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Loader2, CreditCard, ArrowRight } from 'lucide-react';
+import { Loader2, CreditCard } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import type { Feature } from '@/lib/tools-client';
 
