@@ -51,14 +51,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/solutions/pro-search-eng-x3',
     '/solutions/estchat-x3',
     '/solutions/mega-listing-pro-2',
-    // These seem to be old slugs, keeping for now but should be reviewed
-    '/solutions/instagram-ad-value',
-    '/solutions/social-media-chatbot',
-    '/solutions/sales-agent-chat-ai',
-    '/solutions/market-search-engine',
-    '/solutions/ai-listing-portal',
-    '/solutions/crm-system',
-    '/solutions/ai-insta-bio-link',
   ].map((route) => ({
       url: `${siteUrl}${route}`,
       lastModified: new Date(),
@@ -73,8 +65,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
   }));
   
-  const appRoutes = tools.map((tool) => ({
-    url: `${siteUrl}/apps/${tool.id}`,
+  const productRoutes = tools.map((tool) => ({
+    url: `${siteUrl}/products/${tool.id}`,
     lastModified: new Date(),
     changeFrequency: 'weekly' as const,
     priority: 0.7,
@@ -88,5 +80,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
   }));
 
 
-  return [...staticRoutes, ...solutionRoutes, ...blogRoutes, ...appRoutes, ...meToolRoutes];
+  return [...staticRoutes, ...solutionRoutes, ...blogRoutes, ...productRoutes, ...meToolRoutes];
 }

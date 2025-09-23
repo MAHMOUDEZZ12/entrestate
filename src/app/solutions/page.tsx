@@ -3,15 +3,14 @@
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { Sparkles, Telescope, MessageCircle, FileJson, LayoutGrid, Users, Link as LinkIcon } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Sparkles, Telescope, MessageCircle, FileJson } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
-import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 const solutions = [
-    {
+  {
     slug: 'pro-search-eng-x3',
     title: 'PRO SEARCH ENG. x3',
     icon: <Telescope className="h-8 w-8" />,

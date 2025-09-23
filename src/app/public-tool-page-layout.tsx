@@ -97,7 +97,6 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
-    <LandingHeader />
     <main className="flex-1 w-full bg-background">
       {/* Hero Section */}
       <section className="relative py-20 md:py-32 border-b overflow-hidden">
@@ -289,7 +288,6 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       )}
 
     </main>
-    <LandingFooter />
     </div>
   );
 }
