@@ -37,6 +37,7 @@ function OnboardingComponent() {
     const { user } = useAuth();
     
     const [isLoading, setIsLoading] = useState(false);
+    const [isFinishing, setIsFinishing] = useState(false);
     const [suggestedProjects, setSuggestedProjects] = useState<Project[]>([]);
     const [draft, setDraft] = useState<OnboardingDraft>(INITIAL_DRAFT);
     const [logoPreview, setLogoPreview] = React.useState<string | null>(null);
@@ -105,7 +106,7 @@ function OnboardingComponent() {
             router.push('/login');
             return;
         }
-        setIsLoading(true);
+        setIsFinishing(true);
         track('onboarding_completed', {
             devFocus: draft.devFocus,
             shortlistCount: draft.shortlist?.length,
@@ -114,8 +115,10 @@ function OnboardingComponent() {
         });
 
         try {
+            const idToken = await user.getIdToken();
+
             // 1. Save user profile data
-            await saveUserData(user.uid, {
+            const userProfilePayload = {
                 companyName: draft.brandKit?.contact?.name,
                 brandKit: draft.brandKit,
                 onboarding: {
@@ -124,17 +127,31 @@ function OnboardingComponent() {
                     devFocus: draft.devFocus,
                     connections: draft.connections,
                 }
+            };
+
+            const profileResponse = await fetch('/api/user/profile', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}`},
+                body: JSON.stringify(userProfilePayload)
             });
+
+            if (!profileResponse.ok) {
+                const errorData = await profileResponse.json();
+                throw new Error(errorData.error || "Failed to save user profile.");
+            }
+
 
             // 2. Save shortlisted projects to user's library
             const shortlistedProjectObjects = suggestedProjects.filter(p => draft.shortlist?.includes(p.id));
-             const idToken = await user.getIdToken();
             for (const project of shortlistedProjectObjects) {
-                 await fetch('/api/user/projects', {
+                 const projectResponse = await fetch('/api/user/projects', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}`},
                     body: JSON.stringify(project)
                 });
+                if (!projectResponse.ok) {
+                    console.warn(`Failed to save project ${project.id}.`);
+                }
             }
             
             toast({ title: "Setup Complete!", description: "Welcome to your new workspace." });
@@ -143,7 +160,7 @@ function OnboardingComponent() {
         } catch (error: any) {
             toast({ title: "Setup Failed", description: error.message, variant: "destructive"});
         } finally {
-            setIsLoading(false);
+            setIsFinishing(false);
         }
     }
 
@@ -246,8 +263,8 @@ function OnboardingComponent() {
             </div>
 
             <div className="text-center pt-8">
-                <Button size="lg" onClick={finishOnboarding} disabled={isLoading}>
-                    {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Sparkles className="mr-2 h-4 w-4" />}
+                <Button size="lg" onClick={finishOnboarding} disabled={isFinishing}>
+                    {isFinishing ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Sparkles className="mr-2 h-4 w-4" />}
                     Finish Setup & Go to Dashboard
                 </Button>
             </div>
@@ -266,5 +283,3 @@ export default function OnboardingPage() {
         </div>
     )
 }
-
-    
