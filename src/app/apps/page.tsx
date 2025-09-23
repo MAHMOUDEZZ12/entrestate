@@ -10,11 +10,14 @@ import { ArrowRight, LayoutGrid } from 'lucide-react';
 import { marketingSuites } from '@/lib/suites-data';
 import { solutions } from '@/lib/solutions-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { LandingHeader } from '@/components/landing-header';
+import { LandingFooter } from '@/components/landing-footer';
 
 export default function AppsPage() {
     
   return (
     <div className="flex flex-col min-h-screen">
+      <LandingHeader />
       <main className="flex-1">
         <PageHeader
           title="The Entrestate Marketplace"
@@ -76,6 +79,7 @@ export default function AppsPage() {
           </Tabs>
         </div>
       </main>
+      <LandingFooter />
     </div>
   );
 }

@@ -18,13 +18,14 @@ import {
   School,
   Brain,
   Library,
+  Store,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Logo } from './logo';
 
 const mainNavLinks = [
   { href: '/me', icon: <Home className="h-5 w-5" />, label: 'Home' },
-  { href: '/me/marketing', icon: <LayoutGrid className="h-5 w-5" />, label: 'Apps' },
+  { href: '/apps', icon: <Store className="h-5 w-5" />, label: 'Marketplace' },
   { href: '/me/tool/prompt-library', icon: <Library className="h-5 w-5" />, label: 'Prompt Library' },
   { href: '/me/flows', icon: <Workflow className="h-5 w-5" />, label: 'Flows' },
   { href: '/me/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },

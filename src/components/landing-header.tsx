@@ -7,8 +7,6 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Menu } from 'lucide-react';
 import { Logo } from './logo';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
-import { useAuth } from '@/hooks/useAuth';
-import { usePathname } from 'next/navigation';
 
 const navLinks = [
     { name: 'Apps', href: '/apps' },
