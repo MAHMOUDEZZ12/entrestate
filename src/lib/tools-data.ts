@@ -1,3 +1,4 @@
+
 import {
     Bot, BrainCircuit, CheckCircle, Plus, Sparkles, Upload, Megaphone, User,
     ShieldQuestion, Search, MessageCircle, PenTool, Clock2, Wallet, BadgeCheck,
@@ -27,11 +28,11 @@ export interface ToolData {
 export const tools: ToolData[] = [
     // Meta Ads Pilot
     { id: 'meta-dashboard', title: 'Ads Manager Intelligence', description: 'Your command center, powered by a team of AI agents for advertising.', iconName: 'Megaphone', color: '#1877F2', categories: ['Ads', 'Marketing'], cta: 'Open Dashboard' },
-    { id: 'meta-auto-pilot', title: 'Meta Auto Pilot', dashboardTitle: 'Meta Auto Pilot', description: 'Single-click manager for your entire Meta suite.', iconName: 'Sparkles', color: '#4B0082', categories: ['Ads', 'Marketing'], badge: 'AUTO', cta: 'Launch Campaign' },
-    { id: 'campaign-builder', title: 'Campaign Builder', description: 'Your dedicated agent for Facebook & Instagram advertising.', iconName: 'LayoutTemplate', color: '#4B0082', categories: ['Ads', 'Marketing'], cta: 'Build Campaign' },
-    { id: 'audience-creator', title: 'Audience Creator', description: 'Find high-intent buyers before they search.', iconName: 'Users2', color: '#4B0082', categories: ['Ads', 'Lead Gen'], cta: 'Create Audience' },
-    { id: 'insta-ads-designer', title: 'Insta Ads Designer', dashboardTitle: 'Insta Ads', description: 'Create perfect ads for Instagram Stories & Feed.', iconName: 'Instagram', color: '#E1306C', categories: ['Creative', 'Ads'], cta: 'Design Ad' },
-    { id: 'reel-ads', title: 'Reel Ads', description: 'Generate engaging video ads for Instagram Reels.', iconName: 'Video', color: '#E1306C', categories: ['Creative', 'Ads'], cta: 'Generate Reel' },
+    { id: 'meta-auto-pilot', title: 'Marketing Agency Agent', dashboardTitle: 'Marketing Agency Agent', description: 'The master agent that orchestrates the entire marketing campaign from start to finish.', iconName: 'Sparkles', color: '#4B0082', categories: ['Ads', 'Marketing'], badge: 'AUTO', cta: 'Launch Campaign' },
+    { id: 'campaign-builder', title: 'Campaign Connector', description: 'Your dedicated agent for Facebook & Instagram advertising. Acts as the connector between strategy and execution.', iconName: 'LayoutTemplate', color: '#4B0082', categories: ['Ads', 'Marketing'], cta: 'Build Campaign' },
+    { id: 'audience-creator', title: 'Brand Search Optimization', description: 'The agent that finds and optimizes your target audience for brand search.', iconName: 'Users2', color: '#4B0082', categories: ['Ads', 'Lead Gen'], cta: 'Create Audience' },
+    { id: 'insta-ads-designer', title: 'Insta Ads Designer', dashboardTitle: 'Insta Ads', description: 'The media agent. Creates perfect image ads for Instagram Stories & Feed.', iconName: 'Instagram', color: '#E1306C', categories: ['Creative', 'Ads'], cta: 'Design Ad' },
+    { id: 'reel-ads', title: 'Reel Ads', description: 'The video media agent. Generates engaging video ads for Instagram Reels.', iconName: 'Video', color: '#E1306C', categories: ['Creative', 'Ads'], cta: 'Generate Reel' },
     { id: 'instagram-admin-ai', title: 'Instagram Admin AI', dashboardTitle: 'Instagram Admin', description: 'Schedules posts and handles replies on Instagram.', iconName: 'BotMessageSquare', color: '#E1306C', categories: ['Social & Comms', 'CRM'], badge: 'AUTO', cta: 'Manage Page' },
     { id: 'story-planner', title: 'Story Planner', description: 'Plan and design animated Instagram stories.', iconName: 'Album', color: '#E1306C', categories: ['Creative', 'Social & Comms'], cta: 'Plan Story' },
 
