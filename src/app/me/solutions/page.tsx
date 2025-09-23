@@ -3,48 +3,29 @@
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { Sparkles, Telescope, MessageCircle, FileJson, LayoutGrid, Users, Link as LinkIcon } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Sparkles, Telescope, MessageCircle, FileJson } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
 
 const solutions = [
   {
-    slug: 'social-media-chatbot',
-    title: 'Social Media Chatbot',
-    icon: <MessageCircle className="h-8 w-8" />,
-    description: "Deploy an AI-powered chatbot on your social media channels to engage leads 24/7.",
-  },
-  {
-    slug: 'sales-agent-chat-ai',
-    title: 'SalesAgentChat AI',
-    icon: <Sparkles className="h-8 w-8" />,
-    description: "An advanced conversational AI that acts as a virtual sales agent on your website.",
-  },
-  {
-    slug: 'market-search-engine',
-    title: 'Market Search Engine',
+    slug: 'pro-search-eng-x3',
+    title: 'PRO SEARCH ENG. x3',
     icon: <Telescope className="h-8 w-8" />,
-    description: "A powerful, multi-layered search engine for listings, trends, and market data.",
+    description: "The triple-engine of discovery: Fast, Smart, and Deep Search.",
   },
   {
-    slug: 'ai-listing-portal',
-    title: 'AI Listing Portal',
-    icon: <LayoutGrid className="h-8 w-8" />,
-    description: "A complete, AI-managed portal for showcasing your property portfolio.",
+    slug: 'estchat-x3',
+    title: 'ESTCHAT X3',
+    icon: <MessageCircle className="h-8 w-8" />,
+    description: "The conversational frontline for your website, social media, and CRM.",
   },
-   {
-    slug: 'crm-system',
-    title: 'CRM System',
-    icon: <Users className="h-8 w-8" />,
-    description: "An intelligent CRM that tracks leads, manages relationships, and automates follow-ups.",
+  {
+    slug: 'mega-listing-pro-2',
+    title: 'MEGA LISTING PRO 2',
+    icon: <FileJson className="h-8 w-8" />,
+    description: "The unified market registry to consolidate and verify all listings.",
   },
-   {
-    slug: 'ai-insta-bio-link',
-    title: 'AI Insta BIO LINK',
-    icon: <LinkIcon className="h-8 w-8" />,
-    description: "A dynamic, AI-powered link-in-bio page that showcases your featured properties.",
-  }
 ];
 
 export default function SolutionsPage() {
