@@ -45,14 +45,22 @@ const generateGridState = () => {
     return { grid, hint, secretCode };
 }
 
-export default function SuperFreeTimePage() {
+export default function MarketMemoryPage() {
     const { toast } = useToast();
-    const [gameState, setGameState] = useState(generateGridState());
+    const [gameState, setGameState] = useState<{grid: any[], hint: string, secretCode: string} | null>(null);
+    const [flippedIndices, setFlippedIndices] = useState<number[]>([]);
+    const [isChecking, setIsChecking] = useState(false);
+    const [moves, setMoves] = useState(0);
     const [gameOver, setGameOver] = useState(false);
-    const [foundKey, setFoundKey] = useState(false);
-    const [attempts, setAttempts] = useState(0);
+    const [wonGame, setWonGame] = useState(false);
+    const [points, setPoints] = useState(100); // Mock user points
     const [timeLeft, setTimeLeft] = useState(TIME_LIMIT_SECONDS);
     const [showReward, setShowReward] = useState(false);
+
+    useEffect(() => {
+        // Generate the game state on the client side to avoid hydration errors
+        setGameState(generateGridState());
+    }, []);
 
     useEffect(() => {
         if (gameOver || timeLeft <= 0) {
@@ -69,30 +77,75 @@ export default function SuperFreeTimePage() {
         return () => clearInterval(timer);
     }, [gameOver, timeLeft]);
 
-    const handleCellClick = (id: number) => {
-        if (gameOver) return;
+    useEffect(() => {
+        if (!gameState) return;
 
-        const newAttempts = attempts + 1;
-        setAttempts(newAttempts);
+        if (flippedIndices.length === 2) {
+            setIsChecking(true);
+            const [firstIndex, secondIndex] = flippedIndices;
+            const firstCard = gameState.grid[firstIndex];
+            const secondCard = gameState.grid[secondIndex];
 
-        const newGrid = [...gameState.grid];
-        const cell = newGrid[id];
-        cell.isClicked = true;
-
-        if (cell.hasKey) {
-            cell.icon = 'key';
-            setFoundKey(true);
-            setGameOver(true);
-        } else {
-            cell.icon = 'bomb';
-            if (newAttempts >= MAX_ATTEMPTS) {
-                setGameOver(true);
+            if (firstCard.pairId === secondCard.pairId) {
+                // Match
+                setTimeout(() => {
+                     setGameState(prev => prev ? ({ ...prev, grid: prev.grid.map(card => card.pairId === firstCard.pairId ? { ...card, isMatched: true } : card) }) : null);
+                    setFlippedIndices([]);
+                    setIsChecking(false);
+                }, 500);
+            } else {
+                // No match, flip back after a delay
+                setTimeout(() => {
+                    setFlippedIndices([]);
+                    setIsChecking(false);
+                }, 1500); // User sees the mismatch for 1.5s
             }
+            setMoves(prev => prev + 1);
         }
-        
-        setGameState(prev => ({ ...prev, grid: newGrid }));
-    };
+    }, [flippedIndices, gameState]);
+    
+    useEffect(() => {
+        if (!gameState) return;
+        const allMatched = gameState.grid.every(card => card.isMatched);
+        if (allMatched && gameState.grid.length > 0) {
+            setWonGame(true);
+            setGameOver(true);
+            setPoints(prev => prev + 50); // Award points
+        } else if (moves >= 15 && !allMatched) { // Example losing condition
+            setWonGame(false);
+            setGameOver(true);
+        }
+    }, [gameState, moves]);
 
+    const handleCellClick = (id: number) => {
+        if (gameOver || !gameState || isChecking || gameState.grid[id].isClicked || flippedIndices.length >= 2) {
+            return;
+        }
+
+        const newFlipped = [...flippedIndices, id];
+        setFlippedIndices(newFlipped);
+        
+        setGameState(prev => {
+            if (!prev) return null;
+            const newGrid = [...prev.grid];
+            const cell = newGrid[id];
+            cell.isClicked = true;
+
+             if (cell.hasKey) {
+                cell.icon = 'key';
+                setFoundKey(true);
+                setGameOver(true);
+            } else {
+                cell.icon = 'bomb';
+                if (moves + 1 >= MAX_ATTEMPTS) {
+                    setGameOver(true);
+                }
+            }
+            return { ...prev, grid: newGrid };
+        });
+        setAttempts(prev => prev + 1);
+    };
+    
     const resetGame = () => {
         setGameState(generateGridState());
         setGameOver(false);
@@ -100,9 +153,12 @@ export default function SuperFreeTimePage() {
         setAttempts(0);
         setTimeLeft(TIME_LIMIT_SECONDS);
         setShowReward(false);
+        setFlippedIndices([]);
+        setIsChecking(false);
     };
 
     const copyCode = () => {
+        if (!gameState) return;
         navigator.clipboard.writeText(gameState.secretCode);
         toast({
             title: "Code Copied!",
@@ -114,13 +170,21 @@ export default function SuperFreeTimePage() {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
 
+    if (!gameState) {
+        return (
+            <div className="flex items-center justify-center h-full">
+                <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+        );
+    }
+
     return (
         <main className="p-4 md:p-10 space-y-8">
             {foundKey && <Confetti />}
             <PageHeader 
-                icon={<Key className="h-8 w-8" />}
-                title="Find The Key"
-                description={`You have ${MAX_ATTEMPTS} chances to find the key using the hint below. Good luck!`}
+                icon={<Brain className="h-8 w-8" />}
+                title="Market Memory"
+                description={`Match the pairs to test your market knowledge. Total Moves: ${moves}`}
             />
 
             <div className="flex justify-center">
@@ -219,3 +283,16 @@ export default function SuperFreeTimePage() {
         </main>
     );
 }
+
+// Minimal CSS for 3D flip effect
+const style = document.createElement('style');
+style.innerHTML = `
+  .transform-style-3d { transform-style: preserve-3d; }
+  .rotate-y-180 { transform: rotateY(180deg); }
+  .backface-hidden { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+`;
+if (typeof document !== 'undefined') {
+    document.head.appendChild(style);
+}
+
+    
