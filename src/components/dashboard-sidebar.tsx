@@ -30,7 +30,7 @@ const mainNavLinks = [
   { href: '/me/brand', icon: <Palette className="h-5 w-5" />, label: 'Brand & Assets' },
   { href: '/me/assistant', icon: <Bot className="h-5 w-5" />, label: 'AI Assistant' },
   { href: '/me/tool/projects-finder', icon: <Database className="h-5 w-5" />, label: 'Market Library' },
-  { href: '/me/leads', icon: <Target className="h-5 w-5" />, label: 'Leads & CRM' },
+  { href: '/me/leads', icon: <Target className="h-5 w-5" />, label: 'Leads (CRM)' },
   { href: '/me/directory', icon: <Users className="h-5 w-5" />, label: 'Contacts Directory' },
 ];
 

@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal, UserPlus, Eye } from 'lucide-react';
+import { MoreHorizontal, UserPlus, Eye, Link as LinkIcon } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import {
   DropdownMenu,
@@ -23,10 +23,10 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const mockClients = [
-  { id: 1, name: 'Alice Johnson', status: 'Active Buyer', pageStatus: 'Live' },
-  { id: 2, name: 'Bob Williams', status: 'Past Seller', pageStatus: 'Archived' },
-  { id: 3, name: 'Charlie Brown', status: 'Active Investor', pageStatus: 'Live' },
-  { id: 4, name: 'Diana Miller', status: 'Prospect', pageStatus: 'Not Created' },
+  { id: 1, name: 'Alice Johnson', status: 'Active Buyer', pageStatus: 'Live', pageUrl: '/clients/alice-johnson' },
+  { id: 2, name: 'Bob Williams', status: 'Past Seller', pageStatus: 'Archived', pageUrl: '#' },
+  { id: 3, name: 'Charlie Brown', status: 'Active Investor', pageStatus: 'Live', pageUrl: '/clients/charlie-brown' },
+  { id: 4, name: 'Diana Miller', status: 'Prospect', pageStatus: 'Not Created', pageUrl: '#' },
 ];
 
 const statusVariant: { [key: string]: "default" | "secondary" | "destructive" | "outline" } = {
@@ -63,7 +63,7 @@ export default function ClientsPage() {
               <TableHead>Client Name</TableHead>
               <TableHead>Status</TableHead>
               <TableHead>Client Page</TableHead>
-              <TableHead><span className="sr-only">Actions</span></TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -76,11 +76,13 @@ export default function ClientsPage() {
                 <TableCell>
                   <Badge variant={pageStatusVariant[client.pageStatus] || 'secondary'}>{client.pageStatus}</Badge>
                 </TableCell>
-                <TableCell>
+                <TableCell className="text-right">
                    <div className="flex items-center justify-end gap-2">
-                    <Button variant="outline" size="sm">
-                        <Eye className="mr-2 h-4 w-4" />
-                        View Page
+                    <Button variant="outline" size="sm" asChild>
+                        <a href={client.pageUrl} target="_blank" rel="noopener noreferrer">
+                            <LinkIcon className="mr-2 h-4 w-4" />
+                            View Page
+                        </a>
                     </Button>
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
