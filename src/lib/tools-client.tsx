@@ -1,3 +1,4 @@
+
 'use client';
 import React from 'react';
 import { appDetails as blogContent } from './blog-content';
@@ -748,10 +749,17 @@ export const tools: Feature[] = mergeToolData().map(tool => {
             break;
         case 'bayut-sync':
              tool.creationFields = [
+                { id: 'group-header-1', name: 'Basic Details', type: 'group-header' },
                 { id: 'listingReferenceNo', name: 'Listing Reference No.', type: 'text', placeholder: 'Your unique ID for the listing' },
                 { id: 'propertyTitle', name: 'Property Title', type: 'text', placeholder: 'e.g., Luxury 2BR with Full Marina View' },
                 { id: 'propertyDescription', name: 'Property Description', type: 'textarea' },
                 { id: 'price', name: 'Price (AED)', type: 'number' },
+                { id: 'group-header-2', name: 'Property Features', type: 'group-header' },
+                { id: 'propertyType', name: 'Property Type', type: 'select', options: ['Apartment', 'Villa', 'Townhouse', 'Penthouse'] },
+                { id: 'size', name: 'Size (sqft)', type: 'number', placeholder: 'e.g., 1500' },
+                { id: 'bedrooms', name: 'Bedrooms', type: 'number', placeholder: 'e.g., 2' },
+                { id: 'bathrooms', name: 'Bathrooms', type: 'number', placeholder: 'e.g., 3' },
+                { id: 'amenities', name: 'Amenities', type: 'text', placeholder: 'e.g., "Pool, Gym, Security"' },
                 { id: 'imageUrls', name: 'Image URLs', type: 'textarea', placeholder: 'One URL per line' },
             ];
             break;

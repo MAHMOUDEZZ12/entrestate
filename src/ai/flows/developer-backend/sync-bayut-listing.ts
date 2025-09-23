@@ -23,7 +23,12 @@ export const SyncBayutListingInputSchema = z.object({
     listingReferenceNo: z.string().describe("The unique reference number for the listing."),
     propertyTitle: z.string().describe("The title of the property listing."),
     propertyDescription: z.string().describe("The detailed description of the property."),
+    propertyType: z.string().optional().describe("e.g., 'Apartment', 'Villa', 'Townhouse'"),
     price: z.number().positive().describe("The price of the property."),
+    size: z.number().optional().describe("The size of the property in square feet."),
+    bedrooms: z.number().optional().describe("The number of bedrooms."),
+    bathrooms: z.number().optional().describe("The number of bathrooms."),
+    amenities: z.string().optional().describe("A comma-separated list of amenities."),
     imageUrls: z.array(z.string().url()).describe("An array of URLs for the property images."),
 });
 
@@ -66,15 +71,18 @@ const syncBayutListingFlow = ai.defineFlow(
       throw new Error("Bayut API key is not configured in environment variables.");
     }
 
-    // Construct the JSON payload from the input
+    // Construct the JSON payload from the input, including new optional fields
     const listingPayload = {
       reference: input.listingReferenceNo,
-      title: input.propertyTitle,
-      description: input.propertyDescription,
+      title_en: input.propertyTitle,
+      description_en: input.propertyDescription,
       price: input.price,
-      // Assuming a static structure for simplicity. This would be more dynamic in a real app.
-      category_id: 1, // Residential
-      type_id: 3, // Apartment
+      category_id: 1, // Residential - this would be dynamic in a real app
+      property_type: input.propertyType,
+      size: input.size,
+      bedrooms: input.bedrooms,
+      bathrooms: input.bathrooms,
+      amenities: input.amenities?.split(',').map(a => a.trim()).filter(Boolean),
       status: 'active',
       permit_number: '12345',
       images: input.imageUrls.map(url => ({ url }))
