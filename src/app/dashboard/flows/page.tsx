@@ -16,5 +16,4 @@ export default function DeprecatedFlowsPage() {
     </main>
   );
 }
-
     
