@@ -1,8 +1,9 @@
+
 'use client';
 
 import * as React from 'react';
 import { useTheme as useNextTheme } from 'next-themes';
-import { Sun, Moon, Laptop } from 'lucide-react';
+import { Sun, Moon, Laptop, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,7 +16,7 @@ import {
 export { ThemeProvider } from 'next-themes';
 
 export function useTheme() {
-    const { setTheme, resolvedTheme } = useNextTheme();
+    const { setTheme, resolvedTheme, themes: nextThemes } = useNextTheme();
     return {
         theme: resolvedTheme,
         setTheme,
@@ -23,12 +24,13 @@ export function useTheme() {
             { value: 'light', label: 'Light', icon: Sun },
             { value: 'dark', label: 'Dark', icon: Moon },
             { value: 'system', label: 'System', icon: Laptop },
+            { value: 'theme-pinkpurple', label: 'Pink/Purple', icon: Bot },
         ]
     };
 }
 
 export function ThemeSwitcher() {
-  const { setTheme, themes } = useNextTheme();
+  const { setTheme } = useNextTheme();
 
   return (
     <DropdownMenu>
@@ -51,6 +53,10 @@ export function ThemeSwitcher() {
         <DropdownMenuItem onClick={() => setTheme('system')}>
           <Laptop className="mr-2 h-4 w-4" />
           <span>System</span>
+        </DropdownMenuItem>
+         <DropdownMenuItem onClick={() => setTheme('theme-pinkpurple')}>
+          <Bot className="mr-2 h-4 w-4" />
+          <span>Pink/Purple</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

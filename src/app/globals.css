@@ -64,6 +64,28 @@
     --input: 180 20% 20%;
     --ring: 180 30% 80%;
   }
+
+  .theme-pinkpurple {
+    --background: 270 20% 98%;
+    --foreground: 270 25% 15%;
+    --card: 270 20% 98%;
+    --card-foreground: 270 25% 15%;
+    --popover: 270 20% 98%;
+    --popover-foreground: 270 25% 15%;
+    --primary: 330 80% 55%; /* Hot Pink */
+    --primary-foreground: 330 20% 98%;
+    --secondary: 270 15% 94%;
+    --secondary-foreground: 270 25% 15%;
+    --muted: 270 15% 94%;
+    --muted-foreground: 270 20% 40%;
+    --accent: 270 90% 60%; /* Bright Purple */
+    --accent-foreground: 270 10% 98%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 270 20% 85%;
+    --input: 270 20% 85%;
+    --ring: 330 80% 55%;
+  }
 }
  
 @layer base {
