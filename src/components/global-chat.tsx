@@ -48,6 +48,7 @@ export function GlobalChat() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isCommandMenuOpen, setIsCommandMenuOpen] = useState(false);
   const [lastResultToCopy, setLastResultToCopy] = useState<string | null>(null);
+  const [showFlowsButton, setShowFlowsButton] = useState(false);
   
   const [isBarOnTop, setIsBarOnTop] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -80,6 +81,11 @@ export function GlobalChat() {
         setIsCommandMenuOpen(false);
     }
   }, [input]);
+  
+  // Reset special button states when path changes
+  useEffect(() => {
+      setShowFlowsButton(false);
+  }, [pathname]);
 
   const sendMessage = async (text: string, history: any[], isPrompt: boolean = false) => {
       const userMessageText = isPrompt ? `= ${text}` : text;
@@ -181,9 +187,29 @@ export function GlobalChat() {
             ];
         } else if (pathname.startsWith('/me/marketing')) {
              leftKeys = [
-                { label: "Options", href: undefined, icon: <Settings2 />, action: () => toast({title: "Options clicked!"}) },
+                { label: "Options", href: undefined, icon: <Settings2 />, 
+                  action: () => toast({title: "Options clicked!"}) 
+                },
                 { label: "Get App", href: "/pricing", icon: <PlusCircle /> },
             ];
+        } else if (pathname.startsWith('/me/tool/meta-auto-pilot')) {
+             if (showFlowsButton) {
+                leftKeys = [
+                    { label: "Flows", href: "/me/flows", icon: <Workflow /> },
+                ];
+             } else {
+                 leftKeys = [
+                    { label: "Options", href: undefined, icon: <Settings2 />, 
+                      action: () => {
+                          toast({
+                              title: "TOP META AUTOMATION APP",
+                              description: "RATE: 95%, VALUE: 98%, FLOWS: 4"
+                          });
+                          setShowFlowsButton(true);
+                      }
+                    },
+                ];
+             }
         } else if (pathname.startsWith('/me/tool/')) {
              leftKeys = [
                 { label: "Run Flow", href: "/me/flows", icon: <Workflow /> },
@@ -289,3 +315,5 @@ export function GlobalChat() {
     </>
   );
 }
+
+    
