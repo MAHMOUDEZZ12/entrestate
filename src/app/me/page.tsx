@@ -12,22 +12,25 @@ import type { Project } from '@/types';
 import { ProjectCard } from '@/components/ui/project-card';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Loader2 } from 'lucide-react';
+import { SensitiveArea } from '@/components/ui/sensitive-area';
 
 const AppIcon = ({ tool, onOpen }: { tool: Feature; onOpen: (tool: Feature) => void }) => {
   return (
-    <button
-      onClick={() => onOpen(tool)}
-      className="flex flex-col items-center justify-center text-center gap-2 group"
-      aria-label={`Open ${tool.title}`}
-    >
-      <div
-        className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-hover:shadow-xl transition-all duration-200"
-        style={{ backgroundColor: tool.color }}
+    <SensitiveArea hint={`Open the "${tool.title}" app`}>
+      <button
+        onClick={() => onOpen(tool)}
+        className="flex flex-col items-center justify-center text-center gap-2 group"
+        aria-label={`Open ${tool.title}`}
       >
-        {React.cloneElement(tool.icon, { className: 'h-8 w-8' })}
-      </div>
-      <p className="text-xs font-medium text-foreground truncate w-20">{tool.title}</p>
-    </button>
+        <div
+          className="w-16 h-16 rounded-2xl flex items-center justify-center text-white shadow-lg group-hover:scale-105 group-hover:shadow-xl transition-all duration-200"
+          style={{ backgroundColor: tool.color }}
+        >
+          {React.cloneElement(tool.icon, { className: 'h-8 w-8' })}
+        </div>
+        <p className="text-xs font-medium text-foreground truncate w-20">{tool.title}</p>
+      </button>
+    </SensitiveArea>
   );
 };
 
@@ -85,16 +88,18 @@ export default function MePage() {
 
   return (
     <div className="p-4 md:p-10 space-y-8 container mx-auto">
-      <PageHeader
+       <PageHeader
         title="Home"
         description="Your workspace. Launch apps, run flows, and manage your real estate universe."
       >
-        <Link href="/gem">
-          <Button variant="outline">
-            <GanttChartSquare className="mr-2 h-4 w-4" />
-            Gem Admin
-          </Button>
-        </Link>
+        <SensitiveArea hint="Navigate to the Gem Admin dashboard">
+            <Link href="/gem">
+            <Button variant="outline">
+                <GanttChartSquare className="mr-2 h-4 w-4" />
+                Gem Admin
+            </Button>
+            </Link>
+        </SensitiveArea>
       </PageHeader>
       
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
@@ -138,24 +143,32 @@ export default function MePage() {
                             <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                         </div>
                     ) : userProjects.length > 0 ? (
-                        userProjects.slice(0, 3).map(p => <ProjectCard key={p.id} project={p} />)
+                        userProjects.slice(0, 3).map(p => (
+                            <SensitiveArea hint={`View details for ${p.name}`} key={p.id}>
+                                <ProjectCard project={p} />
+                            </SensitiveArea>
+                        ))
                     ) : (
                         <div className="text-center py-8 border-2 border-dashed rounded-lg">
                             <p className="text-sm text-muted-foreground">No projects in your library yet.</p>
-                            <Link href="/me/tool/projects-finder" className="mt-2 inline-block">
-                                <Button size="sm" variant="outline">
-                                    <PlusCircle className="mr-2 h-4 w-4" />
-                                    Add from Market Library
-                                </Button>
-                            </Link>
+                             <SensitiveArea hint="Add a new project to your library">
+                                <Link href="/me/tool/projects-finder" className="mt-2 inline-block">
+                                    <Button size="sm" variant="outline">
+                                        <PlusCircle className="mr-2 h-4 w-4" />
+                                        Add from Market Library
+                                    </Button>
+                                </Link>
+                            </SensitiveArea>
                         </div>
                     )}
-                     <Link href="/me/tool/projects-finder" className="w-full">
-                        <Button variant="outline" className="w-full">
-                            <PlusCircle className="mr-2 h-4 w-4" />
-                            {userProjects.length > 0 ? "Manage Projects" : "Add Projects"}
-                        </Button>
-                    </Link>
+                     <SensitiveArea hint="Add or manage your projects">
+                        <Link href="/me/tool/projects-finder" className="w-full">
+                            <Button variant="outline" className="w-full">
+                                <PlusCircle className="mr-2 h-4 w-4" />
+                                {userProjects.length > 0 ? "Manage Projects" : "Add Projects"}
+                            </Button>
+                        </Link>
+                    </SensitiveArea>
                 </CardContent>
             </Card>
         </div>

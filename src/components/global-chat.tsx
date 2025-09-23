@@ -11,6 +11,8 @@ import Link from 'next/link';
 import { secretCodes } from '@/lib/codes';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from './ui/sheet';
 import { usePathname } from 'next/navigation';
+import { useSensitiveArea } from '@/context/SensitiveAreaContext';
+
 
 type Message = {
     from: 'ai' | 'user';
@@ -35,43 +37,28 @@ export function GlobalChat() {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
+  const { activeHint, isHintActive } = useSensitiveArea();
 
   useEffect(() => {
-    if (scrollAreaRef.current) {
+    if (scrollAreaRef.current && isSheetOpen) {
       setTimeout(() => {
           scrollAreaRef.current?.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
       }, 100);
     }
   }, [messages, isSheetOpen]);
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!input.trim() || isLoading) return;
+  const sendMessage = async (text: string, history: any[]) => {
+      const userMessage: Message = { from: 'user', text: text };
+      setMessages(prev => [...prev, userMessage]);
+      setIsLoading(true);
 
-    if (!isSheetOpen) setIsSheetOpen(true);
+      if (!isSheetOpen) setIsSheetOpen(true);
 
-    const userMessage: Message = { from: 'user', text: input };
-    setMessages(prev => [...prev, userMessage]);
-    const currentInput = input;
-    setInput('');
-    setIsLoading(true);
-
-    const matchedCode = secretCodes.find(c => c.code.toLowerCase() === currentInput.toLowerCase());
-    if (matchedCode) {
-        const rewardMessage: Message = {
-            from: 'ai',
-            text: `Secret code accepted! Here is your reward: ${matchedCode.reward}`
-        };
-        setMessages(prev => [...prev, rewardMessage]);
-        setIsLoading(false);
-        return;
-    }
-
-    try {
+      try {
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text: currentInput, history: chatHistory }),
+            body: JSON.stringify({ text, history }),
         });
 
         if (!response.ok) throw new Error("The AI is experiencing some turbulence. Please try again.");
@@ -80,16 +67,51 @@ export function GlobalChat() {
         const aiResponse: Message = { from: 'ai', text: data.text };
         
         setMessages(prev => [...prev, aiResponse]);
-        setChatHistory(prev => [...prev, { role: 'user', content: [{ text: currentInput }] }, { role: 'model', content: [{ text: data.text }] }]);
+        setChatHistory(prev => [...prev, { role: 'user', content: [{ text }] }, { role: 'model', content: [{ text: data.text }] }]);
     } catch(err: any) {
         const errorResponse: Message = { from: 'ai', text: err.message };
         setMessages(prev => [...prev, errorResponse]);
     } finally {
         setIsLoading(false);
     }
+  }
+
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!input.trim() || isLoading) return;
+
+    const currentInput = input;
+    setInput('');
+    
+    const matchedCode = secretCodes.find(c => c.code.toLowerCase() === currentInput.toLowerCase());
+    if (matchedCode) {
+        const userMessage: Message = { from: 'user', text: currentInput };
+        const rewardMessage: Message = {
+            from: 'ai',
+            text: `Secret code accepted! Here is your reward: ${matchedCode.reward}`
+        };
+        setMessages(prev => [...prev, userMessage, rewardMessage]);
+        setIsLoading(false);
+        return;
+    }
+
+    await sendMessage(currentInput, chatHistory);
   };
   
+    const handleMagicClick = async () => {
+        if (isLoading) return;
+        
+        // This is a simulation of reading the page content.
+        const pageContent = `Current page is ${pathname}. The visible content includes a header titled "${document.title}".`;
+        const prompt = `Analyze the following page content and generate a concise action plan with 2-3 bullet points of what I can do here.\n\nPage Content: ${pageContent}`;
+        
+        await sendMessage(prompt, []);
+    }
+    
     const getContextualInfo = () => {
+        if (isHintActive) {
+            return { placeholder: activeHint, actions: [] };
+        }
         if (pathname.startsWith('/me/tool/')) {
             return {
                 placeholder: "Ask a question about this tool or enter your next command...",
@@ -160,11 +182,9 @@ export function GlobalChat() {
                             autoComplete="off"
                         />
                         <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-2">
-                            <SheetTrigger asChild>
-                                <Button type="button" variant="ghost" size="icon">
-                                    <Sparkles className="h-5 w-5 text-muted-foreground" />
-                                </Button>
-                            </SheetTrigger>
+                           <Button type="button" variant="ghost" size="icon" onClick={handleMagicClick} disabled={isLoading}>
+                                <Sparkles className="h-5 w-5 text-muted-foreground" />
+                           </Button>
                             <Button type="submit" size="icon" disabled={isLoading || !input.trim()}>
                                 {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Send className="h-4 w-4" />}
                             </Button>

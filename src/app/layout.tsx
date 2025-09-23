@@ -10,6 +10,7 @@ import { ThemeProvider } from 'next-themes';
 import { TabProvider } from '@/context/TabManagerContext';
 import { CanvasProvider } from '@/context/CanvasContext';
 import { CreativeCanvas } from '@/components/creative-canvas';
+import { SensitiveAreaProvider } from '@/context/SensitiveAreaContext';
 
 const fontSans = PT_Sans({ 
   subsets: ['latin'],
@@ -52,12 +53,14 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
             >
+              <SensitiveAreaProvider>
                 <TabProvider>
                     <CanvasProvider>
                         {children}
                         <CreativeCanvas />
                     </CanvasProvider>
                 </TabProvider>
+              </SensitiveAreaProvider>
                 <Toaster />
                 <CookieConsent />
             </ThemeProvider>
