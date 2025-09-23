@@ -1,7 +1,7 @@
 
 import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, fail } from "@/lib/api-helpers";
-import * as cheerio from 'cheerio';
+import cheerio from 'cheerio';
 
 async function scrapeDxbOffplan() {
   const baseUrl = "https://dxboffplan.com";
