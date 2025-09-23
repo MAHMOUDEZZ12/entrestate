@@ -39,37 +39,7 @@ Our ecosystem is built on three interconnected product pillars that form the fou
 
 ## 2. Primary Data Sources
 
-The Entrestate intelligence engine will be trained and continuously updated using the following primary data sources, as specified in the ingestion policy. These sites are the foundation of our market knowledge.
-
-### Core UAE Portals & Blogs:
-- www.dxboffplan.com
-- www.bayut.com
-- www.propertyfinder.ae
-- www.dxbinteract.com
-- www.dubizzle.com/blog/property/off-plan/
-
-### Key Developer & Governance Sites:
-- www.dubailand.gov.ae
-- www.emaar.com
-- www.damacproperties.com
-- www.nakheel.com
-- www.aldar.com
-- www.wasl.ae
-
-### Other Relevant Real Estate Portals:
-- www.promotions.damacproperties.com
-- www.mourjan.com
-- www.propertyfinder.com
-- tanamiproperties.com
-- www.propertymonitor.ae
-- www.propsearch.ae
-- www.rightmove.co.uk
-- www.zameen.com
-- www.9acres.com
-- www.magicbricks.com
-
-### Ad & Marketing Intelligence:
-- www.facebook.com/ads/library/housing
+The Entrestate intelligence engine will be trained and continuously updated using the prioritized sources defined in the official `DATA_INGESTION_POLICY.yml` document. This policy governs the ingestion methods, cadence, and priority for all external data, from official Ads APIs and government registries to social media signals. This is the single source of truth for our data strategy.
 
 ## 3. Enabled APIs & Technical Capabilities
 

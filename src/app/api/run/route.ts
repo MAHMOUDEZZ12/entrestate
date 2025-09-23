@@ -28,7 +28,7 @@ import { manageWhatsAppCampaign } from '@/ai/flows/listing-crm/manage-whatsapp-c
 import { createMetaCampaign } from '@/ai/flows/meta-pilot/create-meta-campaign';
 import { syncPropertyFinderListing } from '@/ai/flows/developer-backend/sync-property-finder-listing';
 import { syncBayutListing } from '@/ai/flows/developer-backend/sync-bayut-listing';
-import { generatePaymentPlan } from '@/aiflows/listing-crm/generate-payment-plan';
+import { generatePaymentPlan } from '@/ai/flows/listing-crm/generate-payment-plan';
 import { translateBrochure } from '@/ai/flows/content/translate-brochure';
 import { editYoutubeVideo } from '@/ai/flows/video/edit-youtube-video';
 import { investigateLead } from '@/ai/flows/listing-crm/investigate-lead';
