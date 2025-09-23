@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { syncPropertyFinderListing } from '@/ai/flows/developer-backend/sync-property-finder-listing';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
 
 type Status = 'pending' | 'running' | 'completed' | 'error';
 
@@ -36,6 +37,7 @@ const generateStepsFromPayload = (payload: any): Step[] => {
 
 export default function PropertyFinderSyncPage() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isExecuting, setIsExecuting] = useState(false);
   const [workflow, setWorkflow] = useState<Step[]>([]);
@@ -45,6 +47,10 @@ export default function PropertyFinderSyncPage() {
 
 
   const handleExecute = async () => {
+    if (!user) {
+      toast({ title: 'Authentication Required', variant: 'destructive' });
+      return;
+    }
     let parsedPlan;
     try {
       parsedPlan = JSON.parse(pastedPlan);
@@ -63,27 +69,31 @@ export default function PropertyFinderSyncPage() {
     setIsExecuting(true);
 
     const runStep = (index: number) => {
-      if (index >= steps.length) {
-        syncPropertyFinderListing(parsedPlan)
-            .then(result => {
-                if (result.success) {
-                    toast({ title: 'Synchronization Complete!', description: result.message });
-                } else {
-                    throw new Error(result.message);
-                }
-            })
-            .catch(err => {
-                toast({ title: 'Sync Failed', description: err.message, variant: 'destructive' });
-            })
-            .finally(() => {
-                setIsExecuting(false);
-            });
-        return;
-      }
+        setWorkflow(prev => prev.map((step, i) => i < index ? { ...step, status: 'completed' } : i === index ? { ...step, status: 'running' } : step));
+        
+        if (index >= steps.length -1) { // After the last visual step
+            setTimeout(() => {
+                syncPropertyFinderListing(parsedPlan)
+                .then(result => {
+                    if (result.success) {
+                        toast({ title: 'Synchronization Complete!', description: result.message });
+                        setWorkflow(prev => prev.map(step => ({...step, status: 'completed'})));
+                    } else {
+                        throw new Error(result.message);
+                    }
+                })
+                .catch(err => {
+                    toast({ title: 'Sync Failed', description: err.message, variant: 'destructive' });
+                    setWorkflow(prev => prev.map((step, i) => i === index ? {...step, status: 'error'} : step));
+                })
+                .finally(() => {
+                    setIsExecuting(false);
+                });
+            }, 800);
+            return;
+        }
       
-      setWorkflow(prev => prev.map((step, i) => i === index ? { ...step, status: 'running' } : step));
       setTimeout(() => {
-        setWorkflow(prev => prev.map((step, i) => i === index ? { ...step, status: 'completed' } : step));
         runStep(index + 1);
       }, 800);
     };

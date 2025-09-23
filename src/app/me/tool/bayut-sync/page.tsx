@@ -14,6 +14,7 @@ import { Label } from '@/components/ui/label';
 import { syncBayutListing } from '@/ai/flows/developer-backend/sync-bayut-listing';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { useAuth } from '@/hooks/useAuth';
 
 type Status = 'pending' | 'running' | 'completed' | 'error';
 
@@ -36,6 +37,7 @@ const generateStepsFromPayload = (payload: any): Step[] => {
 
 export default function BayutSyncPage() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [isExecuting, setIsExecuting] = useState(false);
   const [workflow, setWorkflow] = useState<Step[]>([]);
@@ -45,6 +47,10 @@ export default function BayutSyncPage() {
 
 
   const handleExecute = async () => {
+    if (!user) {
+      toast({ title: 'Authentication Required', variant: 'destructive' });
+      return;
+    }
     let parsedPlan;
     try {
       parsedPlan = JSON.parse(pastedPlan);
@@ -62,31 +68,40 @@ export default function BayutSyncPage() {
     setWorkflow(steps);
     setIsExecuting(true);
 
-    // Simulate API calls
-    const runStep = (index: number) => {
-      if (index >= steps.length) {
-        // Final API call
-        syncBayutListing(parsedPlan)
+    const runStep = (index: number, errorOccurred: boolean = false) => {
+      setWorkflow(prev => prev.map((step, i) => {
+        if (i < index) return { ...step, status: 'completed' };
+        if (i === index) return { ...step, status: errorOccurred ? 'error' : 'running' };
+        return step;
+      }));
+
+      if (errorOccurred || index >= steps.length) {
+        setIsExecuting(false);
+        return;
+      }
+      
+      setTimeout(() => {
+        // Final API call happens after the last visual step
+        if (index === steps.length - 1) {
+             syncBayutListing(parsedPlan)
             .then(result => {
                 if (result.success) {
                     toast({ title: 'Synchronization Complete!', description: result.message });
+                    setWorkflow(prev => prev.map(step => ({...step, status: 'completed'})));
                 } else {
                     throw new Error(result.message);
                 }
             })
             .catch(err => {
                 toast({ title: 'Sync Failed', description: err.message, variant: 'destructive' });
+                setWorkflow(prev => prev.map((step, i) => i === index ? {...step, status: 'error'} : step));
             })
             .finally(() => {
                 setIsExecuting(false);
             });
-        return;
-      }
-      
-      setWorkflow(prev => prev.map((step, i) => i === index ? { ...step, status: 'running' } : step));
-      setTimeout(() => {
-        setWorkflow(prev => prev.map((step, i) => i === index ? { ...step, status: 'completed' } : step));
-        runStep(index + 1);
+        } else {
+            runStep(index + 1);
+        }
       }, 800);
     };
 
