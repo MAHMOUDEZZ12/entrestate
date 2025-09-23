@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import Link from 'next/link';
@@ -14,12 +15,12 @@ export const SolutionsCta = () => {
                    Ready to Build Your AI-Powered Agency?
                 </h2>
                 <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-                    Whether you're a solo agent or a major developer, Entrestate provides the tools to unlock your full potential. Explore our solutions and start your free trial today.
+                    Whether you're a solo agent or a major developer, Entrestate provides the tools to unlock your full potential. Explore our solutions and get started today.
                 </p>
                 <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
                     <Link href="/login">
                         <ShinyButton>
-                            Start Free Trial
+                            Get Started
                             <ArrowRight />
                         </ShinyButton>
                     </Link>

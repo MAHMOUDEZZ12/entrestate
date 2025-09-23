@@ -261,7 +261,7 @@ export default function ProductPage() {
             <div className="mt-8">
                 <Link href="/login">
                     <ShinyButton>
-                        Start Your Free Trial <ArrowRight />
+                        Get Started <ArrowRight />
                     </ShinyButton>
                 </Link>
             </div>
