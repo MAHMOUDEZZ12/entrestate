@@ -1,7 +1,9 @@
+
 'use server';
 
 import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, fail, bad, getUidFromRequest } from "@/lib/api-helpers";
+import { saveUserData } from "@/services/database";
 
 export async function GET(req: Request) {
   if (!adminDb) {
@@ -35,8 +37,8 @@ export async function POST(req: Request) {
 
     const profileData = await req.json();
     
-    const userDocRef = adminDb.collection('users').doc(uid);
-    await userDocRef.set(profileData, { merge: true });
+    // Use the database service to handle the logic
+    await saveUserData(uid, profileData);
 
     return ok({ success: true });
   } catch (e) {

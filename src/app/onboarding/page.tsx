@@ -41,6 +41,7 @@ function OnboardingComponent() {
     const [suggestedProjects, setSuggestedProjects] = useState<Project[]>([]);
     const [draft, setDraft] = useState<OnboardingDraft>(INITIAL_DRAFT);
     const [logoPreview, setLogoPreview] = React.useState<string | null>(null);
+    const [logoFile, setLogoFile] = useState<File | null>(null);
 
     useEffect(() => {
         setIsLoading(true);
@@ -72,11 +73,12 @@ function OnboardingComponent() {
     const handleFileChange = (files: FileList | null) => {
         const file = files?.[0];
         if (file) {
+          setLogoFile(file);
           const reader = new FileReader();
           reader.onloadend = () => {
             const result = reader.result as string;
             setLogoPreview(result);
-            updateDraft({ brandKit: { ...draft.brandKit!, logoUrl: result }});
+            // We don't save the Data URI to the draft anymore, just the preview
           };
           reader.readAsDataURL(file);
         }
@@ -116,11 +118,28 @@ function OnboardingComponent() {
 
         try {
             const idToken = await user.getIdToken();
+            let finalLogoUrl = draft.brandKit?.logoUrl || null;
 
-            // 1. Save user profile data
+            // 1. Upload logo if a new one was selected
+            if (logoFile) {
+                toast({ title: 'Uploading logo...' });
+                const urlResponse = await fetch('/api/user/knowledge-upload-url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+                    body: JSON.stringify({ filename: logoFile.name, contentType: logoFile.type })
+                });
+                const { ok, data, error } = await urlResponse.json();
+                if (!ok) throw new Error(error || 'Failed to get upload URL.');
+                
+                await fetch(data.uploadUrl, { method: 'PUT', body: logoFile, headers: { 'Content-Type': logoFile.type }});
+                finalLogoUrl = data.fileUrl;
+                toast({ title: 'Logo uploaded!' });
+            }
+
+            // 2. Save user profile data
             const userProfilePayload = {
                 companyName: draft.brandKit?.contact?.name,
-                brandKit: draft.brandKit,
+                brandKit: { ...draft.brandKit, logoUrl: finalLogoUrl },
                 onboarding: {
                     city: draft.city,
                     country: draft.country,
@@ -128,20 +147,12 @@ function OnboardingComponent() {
                     connections: draft.connections,
                 }
             };
-
-            const profileResponse = await fetch('/api/user/profile', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}`},
-                body: JSON.stringify(userProfilePayload)
-            });
-
-            if (!profileResponse.ok) {
-                const errorData = await profileResponse.json();
-                throw new Error(errorData.error || "Failed to save user profile.");
-            }
+            
+            await saveUserData(user.uid, userProfilePayload);
+            toast({ title: "Profile Saved!" });
 
 
-            // 2. Save shortlisted projects to user's library
+            // 3. Save shortlisted projects to user's library
             const shortlistedProjectObjects = suggestedProjects.filter(p => draft.shortlist?.includes(p.id));
             for (const project of shortlistedProjectObjects) {
                  const projectResponse = await fetch('/api/user/projects', {
@@ -153,6 +164,7 @@ function OnboardingComponent() {
                     console.warn(`Failed to save project ${project.id}.`);
                 }
             }
+            toast({ title: `${shortlistedProjectObjects.length} projects added to library.`});
             
             toast({ title: "Setup Complete!", description: "Welcome to your new workspace." });
             router.push('/me');

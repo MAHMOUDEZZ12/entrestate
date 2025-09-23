@@ -26,13 +26,16 @@ export async function getProjectById(projectId: string): Promise<Project | null>
     throw new Error("Database service is unavailable.");
   }
   try {
+    // First, try to get from the main catalog
     const projectDocRef = adminDb.collection('projects_catalog').doc(projectId);
     const projectDoc = await projectDocRef.get();
 
     if (projectDoc.exists) {
         return { id: projectDoc.id, ...projectDoc.data() } as Project;
     } else {
-        console.warn(`Project with ID "${projectId}" not found in projects_catalog.`);
+        // If not in catalog, it might be a user's custom project.
+        // This is a simplified lookup. A real app might need a more complex query.
+        console.warn(`Project with ID "${projectId}" not found in projects_catalog. Searching user libraries is not implemented in this mock.`);
         return null;
     }
   } catch (error) {
