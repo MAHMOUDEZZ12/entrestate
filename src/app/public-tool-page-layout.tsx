@@ -4,11 +4,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard } from 'lucide-react';
+import { ArrowRight, CheckCircle, Plus, Sparkles, Wand2, CreditCard, Workflow } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Feature } from '@/lib/tools-client';
+import { Feature, tools } from '@/lib/tools-client';
+import Image from 'next/image';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { cn } from '@/lib/utils';
+import { motion } from 'framer-motion';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
@@ -20,6 +24,63 @@ import { AutoPilotPlan } from '@/components/ui/autopilot-plan';
 
 interface PublicToolPageLayoutProps {
   feature: Feature & { price: number };
+}
+
+const ToolShowcase = ({ feature }: { feature: Feature }) => {
+    // Simple examples. In a real app, these would be more detailed and specific.
+    const examples = [
+        {
+            title: "Generate a Luxury Ad",
+            description: "Create a high-end, professional ad for a luxury property.",
+            input: `{\n  "projectName": "Emaar Beachfront",\n  "focusArea": "Luxury amenities",\n  "toneOfVoice": "Luxury"\n}`,
+            output: `{\n  "adCopy": "Experience unparalleled luxury at Emaar Beachfront...",\n  "headline": "Your Private Beachfront Haven Awaits"\n}`,
+            outputType: 'code',
+        },
+        {
+            title: "Rebrand a Brochure",
+            description: "Apply your brand to an existing document instantly.",
+            input: `{\n  "brochure": "[PDF_DATA]",\n  "colors": {\n    "primary": "#0A2F5B",\n    "accent": "#C4B59E"\n  }\n}`,
+            output: 'https://www.lipsum.com/feed/html', // Placeholder URL for iframe
+            outputType: 'iframe',
+        },
+        {
+            title: "Build a Landing Page",
+            description: "Quickly generate a landing page for a new development.",
+            input: `{\n  "projectName": "DAMAC Hills 2",\n  "details": "3-bedroom villas with lagoon access"\n}`,
+            output: 'https://www.lipsum.com/feed/html', // Placeholder URL for iframe
+            outputType: 'iframe',
+        }
+    ];
+
+    const currentExample = examples.find(ex => ex.title.toLowerCase().includes(feature.title.toLowerCase())) || examples[0];
+
+
+    return (
+        <Card className="bg-muted/30 border-border/50">
+            <CardContent className="p-6 md:p-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h4 className="text-xl font-bold mb-2">{currentExample.title}</h4>
+                        <p className="text-muted-foreground mb-4">{currentExample.description}</p>
+                        <Label className="text-sm">Example Input</Label>
+                        <CodeBlock>{currentExample.input}</CodeBlock>
+                    </div>
+                    <div>
+                        <Label className="text-sm">Example Output</Label>
+                        <div className="mt-2 aspect-video relative rounded-lg overflow-hidden border shadow-lg bg-background">
+                             {currentExample.outputType === 'iframe' ? (
+                                <iframe src={currentExample.output} className="w-full h-full" title="Output preview" />
+                            ) : (
+                                <div className="p-4">
+                                  <CodeBlock>{currentExample.output}</CodeBlock>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            </CardContent>
+        </Card>
+    )
 }
 
 
@@ -71,12 +132,10 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
        <section className="py-24 md:py-32 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-2xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">The AI-Powered Plan</h2>
-             <p className="mt-4 text-lg text-muted-foreground">The Auto Pilot executes a complete, intelligent plan to build and launch your campaign.</p>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">A Radically Simple Workflow</h2>
+             <p className="mt-4 text-lg text-muted-foreground">Transform hours of manual work into a simple, elegant process powered by AI.</p>
           </div>
-
-          <AutoPilotPlan />
-
+           {isAutoPilot ? <AutoPilotPlan /> : <ToolShowcase feature={feature} />}
         </div>
       </section>
 
@@ -135,30 +194,49 @@ export function PublicToolPageLayout({ feature }: PublicToolPageLayoutProps) {
       </section>
 
 
-      {/* Synergy Section */}
-       <section className="py-24 md:py-32">
+      {/* Flows Section */}
+      <section className="py-24 md:py-32">
         <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Plays Well With Others</h2>
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tighter">Build Powerful Flows</h2>
             <p className="mt-4 max-w-2xl mx-auto text-lg text-muted-foreground">
-              {feature.title} is powerful alone, but transformative when combined with other tools in the Entrestate ecosystem.
+              Connect {feature.title} with other apps to create automated workflows that run your business on autopilot.
             </p>
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {feature.details.synergy.slice(0, 3).map((s, index) => (
-                  <Card key={index} className="text-left bg-card/80">
+            <div className="mt-12">
+                 <Card className="max-w-2xl mx-auto bg-card/80">
                     <CardContent className="p-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <div className="p-2 bg-primary/10 text-primary rounded-md">
-                           <h4 className="font-semibold text-sm">{feature.title}</h4>
+                        <div className="flex items-center justify-center flex-wrap gap-4">
+                        {(feature.details.synergy.slice(0, 2).map((s, index) => {
+                            const relatedTool = tools.find(t => t.title === s.tool);
+                            return (
+                                <React.Fragment key={index}>
+                                <div className="flex flex-col items-center gap-2">
+                                     <div className="p-3 rounded-lg text-white" style={{ backgroundColor: feature.color }}>
+                                       {React.cloneElement(feature.icon, { className: 'h-6 w-6' })}
+                                     </div>
+                                     <p className="text-xs font-semibold">{feature.title}</p>
+                                 </div>
+                                 <Plus className="h-6 w-6 text-muted-foreground" />
+                                <div className="flex flex-col items-center gap-2">
+                                     <div className="p-3 rounded-lg text-white" style={{ backgroundColor: relatedTool?.color || 'hsl(var(--secondary))' }}>
+                                       {relatedTool ? React.cloneElement(relatedTool.icon, { className: 'h-6 w-6' }) : <Sparkles className="h-6 w-6" />}
+                                     </div>
+                                     <p className="text-xs font-semibold">{s.tool}</p>
+                                 </div>
+                               </React.Fragment>
+                            )
+                        }))}
                         </div>
-                        <Plus className="h-5 w-5 text-muted-foreground shrink-0" />
-                        <div className="p-2 bg-secondary text-secondary-foreground rounded-md">
-                           <h4 className="font-semibold text-sm">{s.tool}</h4>
-                        </div>
-                      </div>
-                      <p className="text-sm text-foreground/80">{s.benefit}</p>
+                        <p className="text-sm text-muted-foreground mt-4">{feature.details.synergy[0]?.benefit || "Combine tools to create powerful automations."}</p>
                     </CardContent>
-                  </Card>
-                ))}
+                    <CardFooter>
+                         <Link href="/dashboard/flows" className="w-full">
+                            <Button variant="outline" className="w-full">
+                                <Workflow className="mr-2 h-4 w-4" />
+                                Go to Flow Builder
+                            </Button>
+                        </Link>
+                    </CardFooter>
+                 </Card>
             </div>
         </div>
       </section>
