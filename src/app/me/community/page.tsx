@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, 'useState', 'useEffect';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
 import { MessageSquarePlus, User, Users2 } from 'lucide-react';
@@ -249,7 +249,7 @@ export default function CommunityPage() {
     <div className="flex flex-col">
       <div className="w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-8">
         <PageHeader
-          title="Personalized Shopping"
+          title="Community Notes"
           description="Your dedicated space for tailored requests, managed by our AI Community Manager."
           icon={<Users2 className="h-8 w-8" />}
         >
