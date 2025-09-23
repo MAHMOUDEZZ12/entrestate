@@ -80,7 +80,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="pillars" className="py-20 md:py-32 bg-muted/30">
+        <section id="solutions" className="py-20 md:py-32 bg-muted/30">
             <div className="container mx-auto px-4 space-y-20">
                  <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl md:text-5xl font-bold tracking-tight drop-shadow-md">
@@ -103,7 +103,7 @@ export default function HomePage() {
 We added a decentralized market library to it. 
 Try our discovery search to see how it works!
                        </p>
-                       <Link href="/products/pro-search-eng-x3">
+                       <Link href="/solutions/pro-search-eng-x3">
                            <Button variant="outline" className="mt-6 shadow">Let's Go <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
@@ -124,7 +124,7 @@ Try our discovery search to see how it works!
 He knows everything and comes with a learning dashboard.
 Use it in social media, landing pages, company site, or QR code on business cards.
                        </p>
-                       <Link href={`/products/estchat-x3`}>
+                       <Link href={`/solutions/estchat-x3`}>
                            <Button variant="outline" className="mt-6 shadow">Name your SuperAgent <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
@@ -146,7 +146,7 @@ A listing is a little far beyond good images, it’s word sensitive
 and requires not less than stock market attention.
 Name a project, and click "list it" - this is literally how it works.
                        </p>
-                       <Link href={`/products/mega-listing-pro-2`}>
+                       <Link href={`/solutions/mega-listing-pro-2`}>
                            <Button variant="outline" className="mt-6 shadow">Use it to stop blaming Portals <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
