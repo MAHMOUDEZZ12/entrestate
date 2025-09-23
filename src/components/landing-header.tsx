@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 const navLinks = [
     { name: 'Apps', href: '/me/marketing' },
     { name: 'Pricing', href: '/pricing' },
+    { name: 'Solutions', href: '/me/solutions' },
     { name: 'Community', href: '/me/community' },
 ];
 
