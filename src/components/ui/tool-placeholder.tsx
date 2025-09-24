@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React from 'react';
@@ -23,10 +24,10 @@ export function ToolPlaceholder({ toolId }: ToolPlaceholderProps) {
         <p className="text-lg text-muted-foreground mb-8">
           The tool you are looking for does not exist or may have been moved.
         </p>
-        <Link href="/dashboard/marketing">
+        <Link href="/me/marketing">
           <Button>
             <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to Tools
+            Back to Marketplace
           </Button>
         </Link>
       </div>
@@ -53,3 +54,5 @@ export function ToolPlaceholder({ toolId }: ToolPlaceholderProps) {
     </div>
   );
 }
+
+    

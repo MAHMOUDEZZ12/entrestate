@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useEffect } from 'react';
@@ -75,7 +76,7 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
               <File className="mr-2 h-4 w-4" />
               <span>Pricing</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push('/community'))}>
+            <CommandItem onSelect={() => runCommand(() => router.push('/me/community'))}>
                 <File className="mr-2 h-4 w-4" />
                 <span>Community</span>
             </CommandItem>
@@ -84,3 +85,5 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
     </CommandDialog>
   );
 }
+
+    
