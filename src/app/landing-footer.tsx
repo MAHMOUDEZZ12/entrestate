@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { Facebook, Twitter, Linkedin } from 'lucide-react';
@@ -28,6 +29,7 @@ export function LandingFooter() {
             <nav className="flex flex-col space-y-2">
               <Link href="/marketplace" className="text-muted-foreground hover:text-primary transition-colors">Marketplace</Link>
               <Link href="/pricing" className="text-muted-foreground hover:text-primary transition-colors">Pricing</Link>
+              <Link href="/solutions" className="text-muted-foreground hover:text-primary transition-colors">Solutions</Link>
             </nav>
           </div>
           
@@ -37,6 +39,7 @@ export function LandingFooter() {
               <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link>
               <Link href="/documentation" className="text-muted-foreground hover:text-primary transition-colors">Documentation</Link>
               <Link href="/market" className="text-muted-foreground hover:text-primary transition-colors">Market Pulse</Link>
+              <Link href="/resources/flows" className="text-muted-foreground hover:text-primary transition-colors">Flow Library</Link>
             </nav>
           </div>
 

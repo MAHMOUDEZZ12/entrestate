@@ -1,3 +1,4 @@
+
 # Entrestate - Product & Technical Brief (AI Brain)
 
 This document outlines the core vision, data sources, and technical capabilities of the Entrestate platform. It serves as the primary training and reference material for all AI-driven development.
@@ -12,29 +13,29 @@ Our primary mission is to build a sophisticated system that can ingest, analyze,
 
 Our ecosystem is built on three interconnected product pillars that form the foundation of our AI-native platform. These pillars represent the "brain" of the system.
 
-#### 1. PRO SEARCH ENG. x3: The Triple Engine of Discovery
+#### 1. Market Search Engine: The Triple Engine of Discovery
 -   **Vision & DNA**: Redefines search by combining three engines into one: Fast Search (keyword), Smart Search (semantic AI), and Deep Search (historical & predictive). It extends beyond listings into trends, history, and opportunity discovery.
--   **Current State**: The platform simulates this with the `/discover/search` endpoint. It uses basic keyword filtering.
+-   **Current State**: The platform simulates this with the `/me/discover` page. It uses basic keyword filtering for "Fast Search" and provides mock results for "Smart" and "Deep" searches to illustrate the concept.
 -   **Future Plan**:
     -   **Fast Search**: Will be powered by a dedicated search service like Elasticsearch or Algolia, indexed from our `projects_catalog`.
     -   **Smart Search**: Will use Gemini to interpret natural language queries (e.g., "villas with a private pool under AED 5M near a good school") and translate them into structured database queries. This will be powered by our embeddings pipeline.
     -   **Deep Search**: Will use AI models trained on historical data from the `Developer Archive` and our Knowledge Graph to answer predictive questions (e.g., "which off-plan projects have the highest potential ROI?").
 
-#### 2. ESTCHAT X3: The Conversational Frontline
+#### 2. SalesAgentChat AI: The Conversational Frontline
 -   **Vision & DNA**: Unifies all communication into a single, intelligent, and commercially productive stream. It engages users proactively, captures intent, and translates conversations into structured data.
--   **Current State**: Implemented as the `AI Assistant` in `/dashboard/assistant`. It can hold a conversation and has access to the user's chat history.
+-   **Current State**: Implemented as the `AI Assistant` in `/me/assistant`. It can hold a conversation and has access to the user's chat history.
 -   **Future Plan**:
     -   **Deepen Integration**: The assistant will be given "tools" (Genkit tools) to directly interact with other platform services. For example, the command "rebrand my brochure" will trigger the `rebrandBrochure` flow directly.
-    -   **Proactive Engagement**: The assistant will monitor composite events from our rules engine and proactively offer suggestions or start workflows.
+    -   **Proactive Engagement**: The assistant will monitor composite events from our rules engine (`composite_event_rules.json`) and proactively offer suggestions or start workflows.
     -   **Multi-channel Deployment**: The same "brain" will power the embeddable website chatbot and integrations with WhatsApp and Instagram DMs.
 
-#### 3. MEGA LISTING PRO 2: The Unified Market Registry
+#### 3. AI Listing Portal: The Unified Market Registry
 -   **Vision & DNA**: Creates a single source of truth for real estate data by consolidating, verifying, and archiving all listings to eliminate noise and enforce accuracy.
--   **Current State**: The concept is represented by the `Market Library` (`/dashboard/tool/projects-finder`) and the `Developer Archive` (`/dev/archive`). The data is currently sourced from mock files and basic scrapers.
+-   **Current State**: The concept is represented by the `Market Library` (`/me/tool/projects-finder`) and the `Developer Archive` (`/gem/archive`). The data is currently sourced from mock files and basic scrapers.
 -   **Future Plan**:
     -   **Robust Ingestion**: Implement the full `DATA_INGESTION_POLICY.yml` using a dynamically scheduled Airflow DAG (`data-ingestion-dag.py`) controlled by our adaptive scheduler.
     -   **AI Verification & Knowledge Graph**: Use Gemini Vision and our Knowledge Graph (`knowledge_graph_schema.cypher`) to compare listings, flag duplicates, identify false pricing, and calculate a "quality score" for each property.
-    -   **Unified API**: Expose the clean, verified data from the Knowledge Graph through an internal API that all other tools (like `Market Reports` and `AI Price Estimator`) will use as their source of truth.
+    -   **Unified API**: Expose the clean, verified data from the Knowledge Graph through an internal API that all other tools (like `Market Reports` and `deal-analyzer`) will use as their source of truth.
 
 ## 2. Primary Data Sources & Ingestion
 

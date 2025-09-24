@@ -1,3 +1,4 @@
+
 import type { Metadata } from 'next';
 import { Toaster } from "@/components/ui/toaster";
 import './globals.css';
@@ -5,7 +6,7 @@ import { Poppins, PT_Sans } from 'next/font/google';
 import { cn } from '@/lib/utils';
 import { CookieConsent } from '@/components/cookie-consent';
 import { AuthProvider } from '@/hooks/useAuth';
-import { ThemeProvider } from 'next-themes';
+import { ThemeProvider } from '@/components/theme-switcher';
 import { TabProvider } from '@/context/TabManagerContext';
 import { CanvasProvider } from '@/context/CanvasContext';
 import { CreativeCanvas } from '@/components/creative-canvas';
@@ -13,7 +14,6 @@ import { SensitiveAreaProvider } from '@/context/SensitiveAreaContext';
 import AppContentClient from '@/components/AppContent';
 import React from 'react';
 import { SpotlightProvider } from '@/context/SpotlightContext';
-import { GlobalChat } from '@/components/global-chat';
 import { AppLayout } from '@/components/AppLayout';
 
 const fontSans = PT_Sans({ 
