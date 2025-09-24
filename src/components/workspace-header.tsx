@@ -44,7 +44,7 @@ export function WorkspaceHeader() {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
                 <NavigationMenuItem>
-                    <Link href="/me" legacyBehavior passHref>
+                    <Link href="/me" passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             <LayoutDashboard className="mr-2 h-4 w-4" />
                             Workspace
@@ -53,7 +53,7 @@ export function WorkspaceHeader() {
                 </NavigationMenuItem>
                 
                  <NavigationMenuItem>
-                    <Link href="/me/discover" legacyBehavior passHref>
+                    <Link href="/me/discover" passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             <Telescope className="mr-2 h-4 w-4" />
                             Discover
@@ -62,7 +62,7 @@ export function WorkspaceHeader() {
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                    <Link href="/me/marketing" legacyBehavior passHref>
+                    <Link href="/me/marketing" passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             <Palette className="mr-2 h-4 w-4" />
                             Marketplace
@@ -71,7 +71,7 @@ export function WorkspaceHeader() {
                 </NavigationMenuItem>
 
                  <NavigationMenuItem>
-                    <Link href="/me/flows" legacyBehavior passHref>
+                    <Link href="/me/flows" passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             <Workflow className="mr-2 h-4 w-4" />
                             Flows
