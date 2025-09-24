@@ -11,7 +11,7 @@ import { Textarea } from './ui/textarea';
 
 const messages = [
   { from: 'user', text: 'Hi, are you still interested in the villa?' },
-  { from: 'bot', text: 'Let me rewrite that for you...' },
+  { from: 'bot', text: 'That message has a low chance of getting a reply. Let me rewrite it for you...' },
   { from: 'user', isRewritten: true, text: 'Hey John, just saw a property with that private garden you mentioned and thought of you. No pressure, but wanted to check if you were still in the market. Let me know.' },
 ];
 
@@ -73,4 +73,3 @@ export const SalesPlannerSimulation = () => {
         </Card>
     );
 };
-

@@ -208,7 +208,7 @@ export default function HomePage() {
                    <div className="space-y-4 text-left">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Sparkles className="h-8 w-8" /></div>
                        <h3 className="text-3xl font-bold font-heading">
-                          Deals Smart Planner
+                          SuperSales AI
                        </h3>
                        <p className="text-lg text-muted-foreground">
                             Your interactive AI partner for creating and executing winning deals. It's like having a world-class sales manager in your pocket, guiding you on what to say and do next.
