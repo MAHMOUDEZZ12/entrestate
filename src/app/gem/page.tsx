@@ -5,7 +5,7 @@ import React from 'react';
 import { tools } from '@/lib/tools-client';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
-import { ArrowRight, BookOpen, BrainCircuit, Check, MessageCircle, Plus, Sparkles, Upload, Share2, Workflow, Database, BarChart3, GanttChartSquare } from 'lucide-react';
+import { ArrowRight, BookOpen, BrainCircuit, Check, MessageCircle, Plus, Sparkles, Upload, Share2, Workflow, Database, BarChart3, GanttChartSquare, GitMerge } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PageHeader } from '@/components/ui/page-header';
 
@@ -123,7 +123,7 @@ export default function GemMindMapPage() {
               isModule
             >
                 <MindMapNode title="Layer 1: Structured Core" href="/gem/archive" icon={<BarChart3 className="h-6 w-6"/>} description="Portals, Registries, Developer Sites" />
-                <MindMapNode title="Layer 2: Semi-Structured" icon={<BookOpen className="h-6 w-6"/>} description="News, Press Releases, YouTube" />
+                <MindMapNode title="Sitemap & Structure" href="/gem/sitemap" icon={<GitMerge className="h-6 w-6"/>} description="View all application routes and architecture." />
                 <MindMapNode title="Layer 3: Social Pulse" icon={<MessageCircle className="h-6 w-6"/>} description="Social Media, Ad Libraries, Forums" />
                 <MindMapNode title="Layer 4: Internal Signals" icon={<Sparkles className="h-6 w-6"/>} description="User Search Trends, Market Analysis" />
             </MindMapNode>
