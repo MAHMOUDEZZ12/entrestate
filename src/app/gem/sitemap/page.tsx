@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { GitMerge, Globe, LayoutDashboard, Users, BookOpen, GanttChartSquare, FileText } from 'lucide-react';
+import { GitMerge, Globe, LayoutDashboard, Users, BookOpen, GanttChartSquare, FileText, Cloud } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -53,10 +53,12 @@ const structure = {
     gem: [
         { name: 'Gem Dashboard', path: '/gem' },
         { name: 'System Health', path: '/gem/system-health' },
+        { name: 'Sitemap', path: '/gem/sitemap'},
+    ],
+    cloud: [
         { name: 'Developer Archive', path: '/gem/archive' },
         { name: 'Data Importer', path: '/gem/data-importer' },
-        { name: 'Keys & API Status', path: '/gem/keys' },
-        { name: 'Sitemap', path: '/gem/sitemap'},
+        { name: 'API Keys & Status', path: '/gem/keys' },
     ]
 };
 
@@ -100,8 +102,9 @@ export default function SitemapPage() {
         <SectionCard title="Dashboard (/me)" icon={<LayoutDashboard />} pages={structure.dashboard} />
         <SectionCard title="Community Hub" icon={<Users />} pages={structure.community} />
         <SectionCard title="Resources" icon={<BookOpen />} pages={structure.resources} />
-        <SectionCard title="Legal" icon={<FileText />} pages={structure.legal} />
         <SectionCard title="Gem (Admin)" icon={<GanttChartSquare />} pages={structure.gem} />
+        <SectionCard title="Cloud Data Pages" icon={<Cloud />} pages={structure.cloud} />
+        <SectionCard title="Legal" icon={<FileText />} pages={structure.legal} />
       </main>
     </div>
   );
