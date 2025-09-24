@@ -40,13 +40,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
+    // DEVELOPMENT OVERRIDE: Simulate a logged-in user to bypass authentication.
+    const mockUser = {
+        uid: 'dev-user-123',
+        displayName: 'dev', // Set to an admin username to access /gem
+        email: 'dev@entrestate.com',
+        photoURL: '',
+        // Add other necessary User properties as mocks
+    } as User;
+
+    setUser(mockUser);
+    setIsAdmin(ADMIN_USERNAMES.includes(mockUser.displayName || ''));
+    setLoading(false);
+
+    // --- ORIGINAL AUTH LOGIC (COMMENTED OUT FOR DEVELOPMENT) ---
+    /*
     if (!auth) {
         console.warn("Firebase Auth not initialized, user will be treated as logged out.");
         setLoading(false);
-        // --- ROUTE PROTECTION DISABLED FOR DEVELOPMENT ---
-        // if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-        //     router.push('/');
-        // }
+        if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
+            router.push('/');
+        }
         return;
     }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -55,21 +69,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAdmin(userIsAdmin);
       setLoading(false);
       
-      // --- ROUTE PROTECTION LOGIC (DISABLED FOR DEVELOPMENT) ---
-      // if (user) {
-      //   // User is logged in. Check if they are trying to access admin routes without permission.
-      //   if (isAdminRoute(pathname) && !userIsAdmin) {
-      //     router.push('/me'); // Redirect non-admins from /gem to /me
-      //   }
-      // } else {
-      //   // User is not logged in. Protect all relevant routes.
-      //   if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-      //     router.push('/');
-      //   }
-      // }
+      if (user) {
+        if (isAdminRoute(pathname) && !userIsAdmin) {
+          router.push('/me');
+        }
+      } else {
+        if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
+          router.push('/');
+        }
+      }
     });
 
     return () => unsubscribe();
+    */
   }, [pathname, router]);
   
 

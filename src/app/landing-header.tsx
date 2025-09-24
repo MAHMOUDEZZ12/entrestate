@@ -40,14 +40,9 @@ export function LandingHeader() {
               <Button variant="outline"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Button>
             </Link>
           ) : (
-            <>
-              <Link href="/login">
-                <Button variant="ghost">Log In</Button>
-              </Link>
-              <Link href="/login">
-                <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
-              </Link>
-            </>
+            <Link href="/me">
+              <Button>Workspace <ArrowRight className="ml-2 h-4 w-4" /></Button>
+            </Link>
           )}
         </div>
         
@@ -77,8 +72,8 @@ export function LandingHeader() {
                                         <Button variant="outline" className="w-full justify-start text-lg">Dashboard</Button>
                                     </Link>
                                 ) : (
-                                     <Link href="/login">
-                                        <Button className="w-full justify-start text-lg">Get Started</Button>
+                                     <Link href="/me">
+                                        <Button className="w-full justify-start text-lg">Workspace</Button>
                                     </Link>
                                 )}
                              </SheetClose>

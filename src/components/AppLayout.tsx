@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -41,9 +42,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   // Authenticated workspace layout
   return (
     <>
-        <WorkspaceHeader />
         <div className="flex-1">{children}</div>
-        <GlobalChat />
     </>
   );
 }

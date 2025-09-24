@@ -132,7 +132,7 @@ export default function DealsSmartPlannerPage() {
   return (
     <main className="p-4 md:p-10 space-y-8 container mx-auto">
        <PageHeader
-            title="Deals Smart Planner"
+            title="Sales AI Assistant"
             description="Your interactive AI partner for creating and executing winning deals, one step at a time."
             icon={<Sparkles />}
         />

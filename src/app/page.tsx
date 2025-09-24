@@ -74,7 +74,7 @@ export default function HomePage() {
                 The AI-Native Operating System for Real Estate
               </h1>
               <p className="mt-6 max-w-2xl text-lg md:text-xl text-foreground/70">
-                A complete ecosystem of Apps, Suites, and Services to give real estate professionals an unparalleled advantage.
+                An entire ecosystem of Apps, Suites, and Services to give real estate professionals an unparalleled advantage.
               </p>
                <div className="mt-10 w-full max-w-2xl">
                      <div className="relative group">
