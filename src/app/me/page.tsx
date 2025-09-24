@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import Link from 'next/link';
 import { ArrowRight, PlusCircle, GanttChartSquare, LayoutGrid, Building, Library, Search, Sparkles, BrainCircuit } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
@@ -35,33 +35,48 @@ function DiscoverySearchComponent() {
   const router = useRouter();
   const query = searchParams.get('q') || '';
   const [currentQuery, setCurrentQuery] = React.useState(query);
-  const [hasSearched, setHasSearched] = React.useState(!!query);
   const [isLoading, setIsLoading] = React.useState(false);
   const [searchResults, setSearchResults] = React.useState<Project[]>([]);
+  const hasSearched = !!query; // Determine if a search has been performed based on URL param
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!currentQuery.trim()) return;
+  const performSearch = useCallback(async (searchQuery: string) => {
+    if (!searchQuery) return;
     setIsLoading(true);
-    setHasSearched(true);
-    router.push(`/me?q=${encodeURIComponent(currentQuery.trim())}`);
+    setSearchResults([]);
     try {
-      const response = await fetch(`/api/projects/scan?q=${encodeURIComponent(currentQuery.trim())}`);
+      const response = await fetch(`/api/projects/scan?q=${encodeURIComponent(searchQuery)}`);
       const data = await response.json();
       if (data.ok) {
         setSearchResults(data.data);
+      } else {
+        console.error("Search failed:", data.error);
       }
-    } catch(e) {
+    } catch (e) {
       console.error(e);
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
+  }, []);
+  
+  useEffect(() => {
+    // If there's a query in the URL on initial load, perform the search
+    if (query) {
+      setCurrentQuery(query);
+      performSearch(query);
+    }
+  }, [query, performSearch]);
+
+  const handleSearchSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!currentQuery.trim()) return;
+    // Update the URL, which will trigger the useEffect to perform the search
+    router.push(`/me?q=${encodeURIComponent(currentQuery.trim())}`);
   };
   
   return (
       <div className="space-y-8">
         <div className="w-full max-w-3xl mx-auto">
-          <form onSubmit={handleSearch} className="relative">
+          <form onSubmit={handleSearchSubmit} className="relative">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input 
                 value={currentQuery}
@@ -85,7 +100,7 @@ function DiscoverySearchComponent() {
                 <TabsContent value="fast-search">
                     <Card className="bg-card/50">
                         <CardHeader>
-                            <CardTitle>Direct Results for "{currentQuery}"</CardTitle>
+                            <CardTitle>Direct Results for "{query}"</CardTitle>
                             <CardDescription>Real-time results from the Market Library.</CardDescription>
                         </CardHeader>
                         <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -103,7 +118,7 @@ function DiscoverySearchComponent() {
                 <TabsContent value="smart-search">
                      <Card className="bg-card/50">
                         <CardHeader>
-                            <CardTitle>AI-Interpreted Results for "{currentQuery}"</CardTitle>
+                            <CardTitle>AI-Interpreted Results for "{query}"</CardTitle>
                             <CardDescription>The AI understands your intent and finds the best options.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
@@ -120,7 +135,7 @@ function DiscoverySearchComponent() {
                 <TabsContent value="deep-search">
                      <Card className="bg-card/50">
                         <CardHeader>
-                            <CardTitle>Deep Market Insights for "{currentQuery}"</CardTitle>
+                            <CardTitle>Deep Market Insights for "{query}"</CardTitle>
                             <CardDescription>The AI analyzes historical data and market signals to provide predictive insights.</CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-4">
