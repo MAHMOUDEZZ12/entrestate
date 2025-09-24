@@ -16,7 +16,7 @@ export default function AppContentClient({ children }: { children: React.ReactNo
     <>
       {!isAppRoute && <LandingHeader />}
       {children}
-      {!isApprehensive && <LandingFooter />}
+      {!isAppRoute && <LandingFooter />}
     </>
   );
 }
