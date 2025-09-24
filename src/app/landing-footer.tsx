@@ -1,4 +1,3 @@
-
 'use client';
 import Link from 'next/link';
 import { Facebook, Twitter, Linkedin } from 'lucide-react';
@@ -27,7 +26,7 @@ export function LandingFooter() {
           <div className="col-span-1">
             <h4 className="text-lg font-semibold font-heading mb-4">Platform</h4>
             <nav className="flex flex-col space-y-2">
-              <Link href="/solutions" className="text-muted-foreground hover:text-primary transition-colors">Solutions</Link>
+              <Link href="/marketplace" className="text-muted-foreground hover:text-primary transition-colors">Marketplace</Link>
               <Link href="/pricing" className="text-muted-foreground hover:text-primary transition-colors">Pricing</Link>
             </nav>
           </div>
@@ -37,9 +36,7 @@ export function LandingFooter() {
             <nav className="flex flex-col space-y-2">
               <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link>
               <Link href="/documentation" className="text-muted-foreground hover:text-primary transition-colors">Documentation</Link>
-              <Link href="/resources/flows" className="text-muted-foreground hover:text-primary transition-colors">Flow Library</Link>
               <Link href="/market" className="text-muted-foreground hover:text-primary transition-colors">Market Pulse</Link>
-              <Link href="/gem" className="text-muted-foreground hover:text-primary transition-colors">Mindmap</Link>
             </nav>
           </div>
 
@@ -50,7 +47,6 @@ export function LandingFooter() {
               <Link href="/status" className="text-muted-foreground hover:text-primary transition-colors">System Status</Link>
               <Link href="/support" className="text-muted-foreground hover:text-primary transition-colors">Support</Link>
               <Link href="/technology" className="text-muted-foreground hover:text-primary transition-colors">Technology</Link>
-              <Link href="/superfreetime" className="text-muted-foreground hover:text-primary transition-colors">SuperFreeTime</Link>
             </nav>
           </div>
 

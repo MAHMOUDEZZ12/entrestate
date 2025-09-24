@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { ReactElement } from 'react';
@@ -56,7 +55,7 @@ const processToolsData = (data: ToolData[]): Feature[] => {
     return data.map(tool => ({
         ...tool,
         icon: icons[tool.iconName] || <Sparkles />,
-        href: `/me/tool/${tool.id}`,
+        href: `/tool/${tool.id}`,
         guideHref: `/blog/${tool.id}`,
     }));
 };

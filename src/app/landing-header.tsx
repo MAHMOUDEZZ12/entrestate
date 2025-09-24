@@ -1,19 +1,21 @@
-
 'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Menu } from 'lucide-react';
+import { ArrowRight, Menu, LayoutDashboard } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { useAuth } from '@/hooks/useAuth';
 
 const navLinks = [
-    { name: 'Solutions', href: '/solutions' },
+    { name: 'Marketplace', href: '/marketplace' },
     { name: 'Pricing', href: '/pricing' },
+    { name: 'Blog', href: '/blog' },
 ];
 
 export function LandingHeader() {
+  const { user } = useAuth();
   
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -32,12 +34,20 @@ export function LandingHeader() {
         </div>
 
         <div className="hidden md:flex items-center gap-2">
-           <Link href="/login">
-              <Button variant="ghost">Dashboard</Button>
-          </Link>
-          <Link href="/login">
-              <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
-          </Link>
+          {user ? (
+            <Link href="/me">
+              <Button variant="outline"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Button>
+            </Link>
+          ) : (
+            <>
+              <Link href="/login">
+                <Button variant="ghost">Log In</Button>
+              </Link>
+              <Link href="/login">
+                <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
+              </Link>
+            </>
+          )}
         </div>
         
         {/* Mobile Menu */}
@@ -60,6 +70,17 @@ export function LandingHeader() {
                                     </Link>
                                 </SheetClose>
                             ))}
+                             <SheetClose asChild>
+                                {user ? (
+                                    <Link href="/me">
+                                        <Button variant="outline" className="w-full justify-start text-lg">Dashboard</Button>
+                                    </Link>
+                                ) : (
+                                     <Link href="/login">
+                                        <Button className="w-full justify-start text-lg">Get Started</Button>
+                                    </Link>
+                                )}
+                             </SheetClose>
                         </nav>
                     </div>
                 </SheetContent>
