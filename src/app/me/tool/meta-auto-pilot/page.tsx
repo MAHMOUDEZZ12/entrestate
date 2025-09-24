@@ -11,7 +11,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { cn } from '@/lib/utils';
 import { track } from '@/lib/events';
 import { Label } from '@/components/ui/label';
-import { MetaAutoPilotInput } from '@/types';
+import { MetaAutoPilotInput, MetaAutoPilotOutput } from '@/ai/flows/types';
+import { runMetaAutoPilot } from '@/ai/flows/meta-pilot/meta-auto-pilot';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -38,12 +39,12 @@ export default function MetaAutoPilotPage() {
   const [selectedGoal, setSelectedGoal] = useState('');
   const [isExecuting, setIsExecuting] = useState(false);
   const [workflow, setWorkflow] = useState<Step[]>(INITIAL_STEPS);
-  const [finalResult, setFinalResult] = useState<any>(null);
+  const [finalResult, setFinalResult] = useState<MetaAutoPilotOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleExecute = async () => {
     if (!user) {
-      toast({ title: 'Not Authenticated', description: 'Please log in to run the Auto Pilot.', variant: 'destructive'});
+      toast({ title: 'Authentication Required', description: 'Please log in to run the Auto Pilot.', variant: 'destructive'});
       return;
     }
     if (!selectedProject || !selectedGoal) {
@@ -82,21 +83,8 @@ export default function MetaAutoPilotPage() {
 
     try {
         const payload: MetaAutoPilotInput = { projectId: selectedProject, campaignGoal: selectedGoal };
-        const idToken = await user.getIdToken();
-        const response = await fetch('/api/run', {
-            method: 'POST',
-            headers: { 
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${idToken}`
-            },
-            body: JSON.stringify({
-                toolId: 'meta-auto-pilot',
-                payload
-            }),
-        });
-
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Autopilot failed to execute.');
+        
+        const data = await runMetaAutoPilot(payload);
 
         setFinalResult(data);
         track('autopilot_execution_succeeded', { projectId: selectedProject });
@@ -125,7 +113,7 @@ export default function MetaAutoPilotPage() {
   return (
     <main className="p-4 md:p-10 space-y-8">
       <PageHeader
-        title="Meta Auto Pilot"
+        title="Property Marketer AI"
         description="The one-click command center to create and launch a complete Meta ad campaign."
         icon={<Sparkles className="h-8 w-8" />}
       />
