@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, LayoutGrid, Palette, Workflow, Store, Database, Target, Users2, School, BookOpen, Brain, GanttChartSquare, User as UserIcon, Sparkles } from 'lucide-react';
+import { LogOut, Settings, LayoutGrid, Palette, Workflow, Store, Database, Target, Users2, School, BookOpen, Brain, GanttChartSquare, User as UserIcon, Sparkles, Search } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import { Logo } from './logo';
@@ -76,6 +76,14 @@ export function WorkspaceHeader() {
                 <NavigationMenuItem>
                     <Link href="/me" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            Community Hub
+                        </NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
+                
+                 <NavigationMenuItem>
+                    <Link href="/me/discover" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Discovery
                         </NavigationMenuLink>
                     </Link>
@@ -104,40 +112,6 @@ export function WorkspaceHeader() {
                             Solutions
                         </NavigationMenuLink>
                     </Link>
-                </NavigationMenuItem>
-
-                <NavigationMenuItem>
-                    <NavigationMenuTrigger>Intelligence</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                            <ListItem href="/me/tool/projects-finder" title="Market Library">
-                                Search our intelligent library for verified projects.
-                            </ListItem>
-                            <ListItem href="/me/leads" title="Leads (CRM)">
-                                Manage your client relationships and track opportunities.
-                            </ListItem>
-                             <ListItem href="/me/directory" title="Contacts Directory">
-                                Your private phone book of key real estate developers and agents.
-                            </ListItem>
-                         </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-
-                 <NavigationMenuItem>
-                    <NavigationMenuTrigger>Community</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                            <ListItem href="/me/community/academy" title="Academy">
-                                Your central hub for mastering the new landscape of real estate.
-                            </ListItem>
-                            <ListItem href="/me/community" title="Community Notes">
-                                Your space for tailored requests, managed by our AI Community Manager.
-                            </ListItem>
-                             <ListItem href="/me/community/roadmap" title="Product Roadmap">
-                                See what we're building next and help shape the future.
-                            </ListItem>
-                         </ul>
-                    </NavigationMenuContent>
                 </NavigationMenuItem>
                
             </NavigationMenuList>
