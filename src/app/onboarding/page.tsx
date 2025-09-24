@@ -5,23 +5,19 @@ import React, { useState, useEffect, Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { ProjectCard } from '@/components/ui/project-card';
-import { ProviderTile } from '@/components/ui/provider-tile';
-import { Check, ChevronRight, X, ArrowLeft, Loader2, Sparkles, Upload, Users2, Building, Palette, Network } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
+import { Loader2, Sparkles, ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { track } from '@/lib/events';
-import type { Project, OnboardingDraft } from '@/types';
+import type { OnboardingDraft } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
 import { saveUserData } from '@/services/database';
-import Link from 'next/link';
+import { Progress } from '@/components/ui/progress';
 
-const MOCK_DEVELOPERS = ['Emaar', 'Damac', 'Sobha', 'Nakheel', 'Meraas', 'Aldar'];
+import { Step1_MarketFocus } from '@/components/onboarding/Step1_MarketFocus';
+import { Step2_ProjectShortlist } from '@/components/onboarding/Step2_ProjectShortlist';
+import { Step3_BrandKit } from '@/components/onboarding/Step3_BrandKit';
+import { Step4_Connections } from '@/components/onboarding/Step4_Connections';
+
 
 const INITIAL_DRAFT: OnboardingDraft = {
     city: 'Dubai',
@@ -32,77 +28,30 @@ const INITIAL_DRAFT: OnboardingDraft = {
     connections: { 'meta': true, 'google': false },
 };
 
+const STEPS = [
+    { id: 1, name: 'Market Focus' },
+    { id: 2, name: 'Project Library' },
+    { id: 3, name: 'Brand Kit' },
+    { id: 4, name: 'Connections' },
+];
+
 function OnboardingComponent() {
     const router = useRouter();
     const { toast } = useToast();
     const { user } = useAuth();
     
-    const [isLoading, setIsLoading] = useState(false);
+    const [currentStep, setCurrentStep] = useState(1);
     const [isFinishing, setIsFinishing] = useState(false);
-    const [suggestedProjects, setSuggestedProjects] = useState<Project[]>([]);
     const [draft, setDraft] = useState<OnboardingDraft>(INITIAL_DRAFT);
-    const [logoPreview, setLogoPreview] = React.useState<string | null>(null);
     const [logoFile, setLogoFile] = useState<File | null>(null);
-
-    useEffect(() => {
-        setIsLoading(true);
-        const devQuery = draft.devFocus && draft.devFocus.length > 0 ? `devs=${draft.devFocus.join(',')}` : 'devs=Emaar,Damac';
-        fetch(`/api/projects/suggest?${devQuery}&limit=6`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.ok) setSuggestedProjects(data.data || []);
-            })
-            .catch(err => console.error("Failed to fetch suggestions", err))
-            .finally(() => setIsLoading(false));
-    }, [draft.devFocus]);
 
     const updateDraft = (data: Partial<OnboardingDraft>) => {
         setDraft(prev => ({ ...prev, ...data }));
     };
+
+    const nextStep = () => setCurrentStep(prev => Math.min(prev + 1, STEPS.length));
+    const prevStep = () => setCurrentStep(prev => Math.max(prev - 1, 1));
     
-    const updateConnection = (key: 'meta' | 'google', value: boolean) => {
-        setDraft(prev => ({
-            ...prev,
-            connections: {
-                ...prev.connections,
-                [key]: value
-            }
-        }));
-         track('onboarding_connect_toggled', { provider: key, selected: value });
-    }
-
-    const handleFileChange = (files: FileList | null) => {
-        const file = files?.[0];
-        if (file) {
-          setLogoFile(file);
-          const reader = new FileReader();
-          reader.onloadend = () => {
-            const result = reader.result as string;
-            setLogoPreview(result);
-            // We don't save the Data URI to the draft anymore, just the preview
-          };
-          reader.readAsDataURL(file);
-        }
-    };
-
-    const toggleDeveloper = (dev: string) => {
-        const currentDevs = draft.devFocus || [];
-        const newDevs = currentDevs.includes(dev)
-            ? currentDevs.filter(d => d !== dev)
-            : [...currentDevs, dev];
-        updateDraft({ devFocus: newDevs });
-        track('onboarding_developer_toggled', { developer: dev, selected: !currentDevs.includes(dev) });
-    };
-
-    const toggleShortlist = (projectId: string) => {
-        const currentShortlist = draft.shortlist || [];
-        const newShortlist = currentShortlist.includes(projectId)
-            ? currentShortlist.filter(id => id !== projectId)
-            : [...currentShortlist, projectId];
-        updateDraft({ shortlist: newShortlist });
-         track('onboarding_project_shortlisted', { projectId, selected: !currentShortlist.includes(projectId) });
-    }
-
     const finishOnboarding = async () => {
         if (!user) {
             toast({ title: "Please log in to continue", variant: "destructive" });
@@ -121,7 +70,6 @@ function OnboardingComponent() {
             const idToken = await user.getIdToken();
             let finalLogoUrl = draft.brandKit?.logoUrl || null;
 
-            // 1. Upload logo if a new one was selected
             if (logoFile) {
                 toast({ title: 'Uploading logo...' });
                 const urlResponse = await fetch('/api/user/knowledge-upload-url', {
@@ -137,7 +85,6 @@ function OnboardingComponent() {
                 toast({ title: 'Logo uploaded!' });
             }
 
-            // 2. Save user profile data
             const userProfilePayload = {
                 companyName: draft.brandKit?.contact?.name,
                 brandKit: { ...draft.brandKit, logoUrl: finalLogoUrl },
@@ -153,8 +100,7 @@ function OnboardingComponent() {
             toast({ title: "Profile Saved!" });
 
 
-            // 3. Save shortlisted projects to user's library
-            const shortlistedProjectObjects = suggestedProjects.filter(p => draft.shortlist?.includes(p.id));
+            const shortlistedProjectObjects = draft.suggestedProjects || [];
             for (const project of shortlistedProjectObjects) {
                  const projectResponse = await fetch('/api/user/projects', {
                     method: 'POST',
@@ -165,7 +111,9 @@ function OnboardingComponent() {
                     console.warn(`Failed to save project ${project.id}.`);
                 }
             }
-            toast({ title: `${shortlistedProjectObjects.length} projects added to library.`});
+            if (shortlistedProjectObjects.length > 0) {
+              toast({ title: `${shortlistedProjectObjects.length} projects added to library.`});
+            }
             
             toast({ title: "Setup Complete!", description: "Welcome to your new workspace." });
             router.push('/me');
@@ -177,109 +125,47 @@ function OnboardingComponent() {
         }
     }
 
+    const progressValue = (currentStep / STEPS.length) * 100;
+
     return (
-        <div className="w-full max-w-7xl mx-auto space-y-8">
+        <div className="w-full max-w-4xl mx-auto space-y-8">
             <div className="text-center">
-                <h1 className="text-4xl font-bold font-heading tracking-tight">Welcome to Entrestate</h1>
-                <p className="text-lg text-muted-foreground mt-2">Let's set up your AI-powered workspace in one go.</p>
+                <h1 className="text-4xl font-bold font-heading tracking-tight">Workspace Setup</h1>
+                <p className="text-lg text-muted-foreground mt-2">Let's configure your AI-powered workspace in a few quick steps.</p>
+            </div>
+            
+            <div className="px-4">
+                <Progress value={progressValue} className="mb-2" />
+                <p className="text-sm text-muted-foreground text-center">Step {currentStep} of {STEPS.length}: {STEPS[currentStep - 1].name}</p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                {/* Left Column */}
-                <div className="lg:col-span-2 space-y-8">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><Building className="h-5 w-5 text-primary" /> Market Focus & Project Library</CardTitle>
-                            <CardDescription>Select developers to seed your project library. The AI will learn your preferences.</CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                             <div className="mb-6">
-                                <h3 className="font-semibold mb-2">Key Developers</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {MOCK_DEVELOPERS.map(dev => (
-                                        <button key={dev}
-                                            onClick={() => toggleDeveloper(dev)}
-                                            aria-pressed={draft.devFocus?.includes(dev)}
-                                            className={cn("rounded-full border px-3 py-1 text-sm transition-colors", draft.devFocus?.includes(dev) ? 'border-primary bg-primary/20 text-primary' : 'border-border hover:bg-muted/50')}>
-                                            {dev}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                             <div>
-                                <h3 className="font-semibold mb-2">Suggested Projects</h3>
-                                {isLoading ? (
-                                     <div className="flex items-center justify-center h-48 text-muted-foreground">
-                                        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                                        <span>Finding relevant projects...</span>
-                                     </div>
-                                ) : (
-                                    <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                                        {suggestedProjects.map((proj: Project) => (
-                                            <ProjectCard 
-                                                key={proj.id} 
-                                                project={{...proj, badge: 'Suggested'}}
-                                                selectable
-                                                selected={draft.shortlist?.includes(proj.id)}
-                                                onToggle={() => toggleShortlist(proj.id)}
-                                            />
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-
-                {/* Right Column */}
-                <div className="space-y-8 lg:sticky top-24">
-                     <Card>
-                        <CardHeader>
-                           <CardTitle className="flex items-center gap-2"><Palette className="h-5 w-5 text-primary" /> Your Brand Kit</CardTitle>
-                           <CardDescription>Add your brand to personalize all AI-generated content.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                             <div className="space-y-2">
-                                <Label>Company Logo</Label>
-                                <div className="relative flex flex-col items-center justify-center w-24 h-24 border-2 border-dashed rounded-lg cursor-pointer bg-muted/20 hover:border-primary transition-colors">
-                                   <Input id="logo" type="file" accept="image/*" className="sr-only" onChange={(e) => handleFileChange(e.target.files)} />
-                                   <label htmlFor="logo" className="w-full h-full flex flex-col items-center justify-center cursor-pointer">
-                                     {logoPreview ? (
-                                        <Image src={logoPreview} alt="Logo preview" fill={true} className="object-contain rounded-md p-2" />
-                                     ) : (
-                                       <div className="text-center text-muted-foreground">
-                                         <Upload className="mx-auto h-6 w-6 mb-1" />
-                                         <p className="text-xs">Upload</p>
-                                       </div>
-                                     )}
-                                   </label>
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <Label>Your Name / Company</Label>
-                                <Input value={draft.brandKit?.contact?.name} onChange={(e) => updateDraft({ brandKit: {...draft.brandKit!, contact: {...draft.brandKit!.contact, name: e.target.value}}})} placeholder="e.g., John Doe" />
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    <Card>
-                        <CardHeader>
-                             <CardTitle className="flex items-center gap-2"><Network className="h-5 w-5 text-primary" /> Connections</CardTitle>
-                             <CardDescription>Unlock automations by connecting external accounts.</CardDescription>
-                        </CardHeader>
-                         <CardContent className="space-y-2">
-                            <ProviderTile name="Meta (Facebook & Instagram)" status={draft.connections?.meta ? 'connected' : 'connect'} onClick={() => updateConnection('meta', !draft.connections?.meta)} />
-                            <ProviderTile name="Google (Gmail & YouTube)" status={draft.connections?.google ? 'connected' : 'connect'} onClick={() => updateConnection('google', !draft.connections?.google)} />
-                         </CardContent>
-                    </Card>
-                </div>
+            <div className="min-h-[450px]">
+                {currentStep === 1 && <Step1_MarketFocus draft={draft} updateDraft={updateDraft} />}
+                {currentStep === 2 && <Step2_ProjectShortlist draft={draft} updateDraft={updateDraft} />}
+                {currentStep === 3 && <Step3_BrandKit draft={draft} updateDraft={updateDraft} onFileSelect={setLogoFile} />}
+                {currentStep === 4 && <Step4_Connections draft={draft} updateDraft={updateDraft} />}
             </div>
 
-            <div className="text-center pt-8">
-                <Button size="lg" onClick={finishOnboarding} disabled={isFinishing}>
-                    {isFinishing ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Sparkles className="mr-2 h-4 w-4" />}
-                    Finish Setup & Go to Workspace
-                </Button>
+            <div className="flex justify-between items-center pt-8">
+                <div>
+                  {currentStep > 1 && (
+                      <Button variant="outline" onClick={prevStep} disabled={isFinishing}>
+                          <ArrowLeft className="mr-2 h-4 w-4" /> Back
+                      </Button>
+                  )}
+                </div>
+                <div>
+                   {currentStep < STEPS.length ? (
+                      <Button onClick={nextStep} disabled={isFinishing}>
+                          Next <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                  ) : (
+                      <Button size="lg" onClick={finishOnboarding} disabled={isFinishing}>
+                        {isFinishing ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Check className="mr-2 h-4 w-4" />}
+                        Finish Setup
+                      </Button>
+                  )}
+                </div>
             </div>
         </div>
     );
