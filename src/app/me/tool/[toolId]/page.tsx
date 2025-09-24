@@ -58,7 +58,7 @@ const ToolPage = () => {
   }, [toolId]);
 
   const getToolSchema = (tool: Feature | undefined) => {
-    if (!tool) return z.object({});
+    if (!tool || !tool.creationFields) return z.object({});
     const shape = getToolCreationFields(tool.id).reduce((acc, field) => {
       if (field.type === 'button' || field.type === 'group-header' || field.type === 'file') return acc;
        let fieldSchema: z.ZodTypeAny;
@@ -84,17 +84,19 @@ const ToolPage = () => {
   } = useForm({
     resolver: zodResolver(schema),
      defaultValues: React.useMemo(() => {
-        return tool?.creationFields.reduce((acc, field) => {
+        if (!tool || !tool.creationFields) return {};
+        return tool.creationFields.reduce((acc, field) => {
             if (field.type !== 'button' && field.type !== 'group-header' && !field.hidden) {
                 (acc as any)[field.id] = field.value || (field.type === 'select' ? (field.options?.[0] || '') : '');
             }
             return acc;
-        }, {})
+        }, {});
      }, [tool])
   });
 
   React.useEffect(() => {
-     reset(tool?.creationFields.reduce((acc, field) => {
+    if (!tool || !tool.creationFields) return;
+     reset(tool.creationFields.reduce((acc, field) => {
         if (field.type !== 'button' && field.type !== 'group-header' && !field.hidden) {
              (acc as any)[field.id] = field.value || (field.type === 'select' ? (field.options?.[0] || '') : '');
         }
