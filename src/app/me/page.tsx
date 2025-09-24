@@ -1,18 +1,23 @@
 
 'use client';
 
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useEffect, useCallback } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Users2, Rss, Building, Sparkles, Wand2, Search, ArrowRight } from 'lucide-react';
+import { Users2, Rss, Building, Sparkles, Wand2, Search, ArrowRight, Library, LayoutGrid, PlusCircle } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { smartInputRouter } from '@/ai/flows/utility/smart-input-router';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { solutions } from '@/lib/solutions-data';
+import { useAuth } from '@/hooks/useAuth';
+import type { Project } from '@/types';
+import { tools as allTools, ToolData } from '@/lib/tools-data';
+import { ProjectCard } from '@/components/ui/project-card';
+import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
+
 
 function SmartInput() {
     const [input, setInput] = useState('');
@@ -82,7 +87,6 @@ function SmartInput() {
     );
 }
 
-
 const mockFeedItems = [
     { type: 'DailyAction', title: 'Generate a Market Report for JVC', description: 'JVC is showing high search interest this week. Generate a report to share with potential investors.', toolId: 'market-reports' },
     { type: 'UserPost', user: 'Ali T.', content: 'Just closed a deal in Dubai Hills using the Deal Analyzer. The ROI projections were spot on and helped convince the client. Highly recommend this tool!' },
@@ -143,47 +147,114 @@ function CommunityFeed() {
     );
 }
 
-function CommunityHub() {
+function WorkspaceHome() {
+    const { user } = useAuth();
+    const [myProjects, setMyProjects] = useState<Project[]>([]);
+    const [isLoadingProjects, setIsLoadingProjects] = useState(true);
+    const [addedApps, setAddedApps] = useState<string[]>([]);
+
+    useEffect(() => {
+        if(user) {
+            const fetchProjects = async () => {
+                setIsLoadingProjects(true);
+                try {
+                    const idToken = await user.getIdToken();
+                    const response = await fetch('/api/user/projects', {
+                        headers: { 'Authorization': `Bearer ${idToken}` }
+                    });
+                    const data = await response.json();
+                    if (data.ok) {
+                        setMyProjects(data.data);
+                    }
+                } catch(e) {
+                    console.error("Failed to fetch user projects", e);
+                } finally {
+                    setIsLoadingProjects(false);
+                }
+            };
+            fetchProjects();
+        } else {
+            setIsLoadingProjects(false);
+        }
+        
+        try {
+            const savedState = localStorage.getItem('addedApps');
+            if (savedState) setAddedApps(JSON.parse(savedState));
+        } catch (e) {
+            console.error("Could not load app state from localStorage", e);
+        }
+    }, [user]);
+
+    const myApps = allTools.filter(tool => addedApps.includes(tool.id));
+
   return (
-    <div className="p-4 md:p-10 space-y-16 container mx-auto">
-       <PageHeader
-        title="Community Hub"
-        description="Your intelligent starting point. Ask the AI, see what's new, and act on today's opportunities."
-        icon={<Users2 className="h-8 w-8"/>}
-      >
-        <Link href="/me/discover">
-            <Button variant="outline">
-                <Search className="mr-2 h-4 w-4" />
-                Go to Discovery Search
-            </Button>
-        </Link>
-      </PageHeader>
+    <div className="p-4 md:p-10 space-y-12 container mx-auto">
+        <div className="text-center mt-8">
+            <h1 className="text-4xl font-bold font-heading tracking-tight">Your Workspace</h1>
+            <p className="text-lg text-muted-foreground mt-2">Your intelligent command center for the real estate market.</p>
+        </div>
       
-      {/* Block 1 */}
       <SmartInput />
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-        {/* Block 2 */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
         <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold tracking-tight mb-6">Today's Feed</h2>
             <CommunityFeed />
         </div>
 
-        {/* Block 3 */}
-        <div className="lg:col-span-1">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">Our Solutions</h2>
-            <div className="space-y-4">
-                {solutions.map(solution => (
-                    <Link href={`/me/solutions/${solution.slug}`} key={solution.slug}>
-                        <Card className="hover:border-primary/50 transition-colors">
-                            <CardHeader>
-                                <CardTitle>{solution.title}</CardTitle>
-                                <CardDescription>{solution.description}</CardDescription>
-                            </CardHeader>
-                        </Card>
-                    </Link>
-                ))}
-            </div>
+        <div className="lg:col-span-1 space-y-8 sticky top-24">
+             <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><Library className="h-5 w-5"/> My Projects</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {isLoadingProjects ? (
+                        <div className="flex justify-center items-center h-24"><Loader2 className="animate-spin" /></div>
+                    ) : myProjects.length > 0 ? (
+                        <div className="space-y-3">
+                            {myProjects.slice(0,3).map(p => (
+                                <ProjectCard key={p.id} project={p} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="text-center text-muted-foreground p-6">
+                            <p className="mb-4">Your project library is empty.</p>
+                             <Link href="/me/tool/projects-finder">
+                                <Button variant="outline"><PlusCircle className="mr-2 h-4 w-4" /> Add Projects</Button>
+                            </Link>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><LayoutGrid className="h-5 w-5"/> My Apps</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    {myApps.length > 0 ? (
+                         <div className="grid grid-cols-2 gap-3">
+                            {myApps.slice(0, 4).map(app => (
+                                <Link key={app.id} href={app.href} className="block group">
+                                     <div className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-muted transition-colors text-center">
+                                        <div className="p-3 rounded-lg text-white" style={{ backgroundColor: app.color }}>
+                                           {React.cloneElement(app.icon, { className: 'h-6 w-6' })}
+                                        </div>
+                                        <p className="text-xs font-semibold truncate w-20">{app.dashboardTitle || app.title}</p>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    ) : (
+                         <div className="text-center text-muted-foreground p-6">
+                            <p className="mb-4">No apps added to your workspace yet.</p>
+                             <Link href="/me/marketing">
+                                <Button variant="outline"><PlusCircle className="mr-2 h-4 w-4" /> Go to Marketplace</Button>
+                            </Link>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
         </div>
       </div>
     </div>
@@ -194,7 +265,7 @@ function CommunityHub() {
 export default function MePage() {
     return (
         <Suspense fallback={<div className="flex h-screen w-full items-center justify-center"><Loader2 className="animate-spin" /></div>}>
-            <CommunityHub />
+            <WorkspaceHome />
         </Suspense>
     )
 }
