@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -29,24 +29,25 @@ export default function ProjectsFinderPage() {
 
   const [myProjectIds, setMyProjectIds] = useState<string[]>([]);
   
-  useEffect(() => {
-    const fetchUserProjects = async () => {
-        if (!user) return;
-        try {
-            const idToken = await user.getIdToken();
-            const response = await fetch('/api/user/projects', {
-                headers: { 'Authorization': `Bearer ${idToken}` }
-            });
-            const data = await response.json();
-            if (data.ok) {
-                setMyProjectIds(data.data.map((p: Project) => p.id));
-            }
-        } catch (error) {
-            console.error("Failed to fetch user projects:", error);
+  const fetchUserProjects = useCallback(async () => {
+    if (!user) return;
+    try {
+        const idToken = await user.getIdToken();
+        const response = await fetch('/api/user/projects', {
+            headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        const data = await response.json();
+        if (data.ok) {
+            setMyProjectIds(data.data.map((p: Project) => p.id));
         }
-    };
-    fetchUserProjects();
+    } catch (error) {
+        console.error("Failed to fetch user projects:", error);
+    }
   }, [user]);
+
+  useEffect(() => {
+    fetchUserProjects();
+  }, [fetchUserProjects]);
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,7 +124,7 @@ export default function ProjectsFinderPage() {
     }
   }
   
-  const handleAddCustomProject = (e: React.FormEvent) => {
+  const handleAddCustomProject = async (e: React.FormEvent) => {
     e.preventDefault();
      if (!newProjectName || !newProjectDeveloper) {
         toast({ title: "Missing Information", description: "Please provide both a project name and a developer.", variant: "destructive" });
@@ -138,7 +139,7 @@ export default function ProjectsFinderPage() {
         area: 'Custom Project',
         status: 'Active'
     };
-    handleAddToLibrary(customProject);
+    await handleAddToLibrary(customProject);
     track('project_added_custom', { projectName: newProjectName });
     setNewProjectName('');
     setNewProjectDeveloper('');

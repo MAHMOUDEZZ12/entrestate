@@ -12,16 +12,11 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/com
 import { ProjectCard } from '@/components/ui/project-card';
 import type { Project } from '@/types';
 import { Loader2 } from 'lucide-react';
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 
-
-const mockFastResults = [
-    { id: 'emaar-beachfront', name: 'Emaar Beachfront', developer: 'Emaar', area: 'Dubai Harbour', status: 'Ready', priceFrom: 'AED 2.5M', thumbnailUrl: 'https://www.propertyfinder.ae/property/053b519598801584a2066d48888b1b86/856/550/MODE/ad801c/9184988-51841o.jpg?ctr=ae' },
-    { id: 'damac-lagoons', name: 'Damac Lagoons', developer: 'Damac', area: 'Dubailand', status: 'Off-plan', priceFrom: 'AED 1.8M', thumbnailUrl: 'https://www.propertyfinder.ae/property/77b878241b714a796e67616552a4204c/856/550/MODE/18c45f/9216776-658fbo.jpg?ctr=ae' }
-];
 
 const mockSmartResults = [
     { title: 'Highest ROI (Off-Plan)', project: 'Sobha Hartland II', details: 'Projected 8.5% ROI due to location and amenities.'},
@@ -37,16 +32,30 @@ const mockDeepResults = [
 
 function DiscoverySearchComponent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const query = searchParams.get('q') || '';
   const [currentQuery, setCurrentQuery] = React.useState(query);
   const [hasSearched, setHasSearched] = React.useState(!!query);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [searchResults, setSearchResults] = React.useState<Project[]>([]);
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentQuery.trim()) return;
-    // In a real app, this would trigger a navigation or state update to re-fetch data.
-    // For this simulation, we just reflect the query.
+    setIsLoading(true);
     setHasSearched(true);
+    router.push(`/me?q=${encodeURIComponent(currentQuery.trim())}`);
+    try {
+      const response = await fetch(`/api/projects/scan?q=${encodeURIComponent(currentQuery.trim())}`);
+      const data = await response.json();
+      if (data.ok) {
+        setSearchResults(data.data);
+      }
+    } catch(e) {
+      console.error(e);
+    } finally {
+        setIsLoading(false);
+    }
   };
   
   return (
@@ -57,14 +66,14 @@ function DiscoverySearchComponent() {
             <Input 
                 value={currentQuery}
                 onChange={(e) => setCurrentQuery(e.target.value)}
-                placeholder='Search the entire real estate universe...' 
+                placeholder='Search projects by name, developer, or area...' 
                 className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-lg"
             />
           </form>
         </div>
         
         {hasSearched && (
-            <Tabs defaultValue="smart-search" className="w-full">
+            <Tabs defaultValue="fast-search" className="w-full">
                 <div className="flex justify-center mb-8">
                     <TabsList className="grid grid-cols-3 w-full max-w-2xl">
                         <TabsTrigger value="fast-search"><Search className="mr-2 h-4 w-4"/>Fast Search</TabsTrigger>
@@ -76,11 +85,17 @@ function DiscoverySearchComponent() {
                 <TabsContent value="fast-search">
                     <Card className="bg-card/50">
                         <CardHeader>
-                            <CardTitle>Direct Results</CardTitle>
-                            <CardDescription>Keyword-based search for projects, developers, and locations.</CardDescription>
+                            <CardTitle>Direct Results for "{currentQuery}"</CardTitle>
+                            <CardDescription>Real-time results from the Market Library.</CardDescription>
                         </CardHeader>
                         <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {mockFastResults.map(p => <ProjectCard key={p.id} project={p} />)}
+                            {isLoading ? (
+                                <div className="col-span-full flex justify-center items-center h-40"><Loader2 className="animate-spin" /></div>
+                            ) : searchResults.length > 0 ? (
+                                searchResults.map(p => <ProjectCard key={p.id} project={p} />)
+                            ) : (
+                                <p className="col-span-full text-center text-muted-foreground">No projects found.</p>
+                            )}
                         </CardContent>
                     </Card>
                 </TabsContent>
