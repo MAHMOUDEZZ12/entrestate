@@ -1,3 +1,4 @@
+
 # Entrestate Platform Sitemap
 
 This document outlines the complete sitemap and page hierarchy for the Entrestate application. It is divided into three main sections: the public-facing domain, the authenticated user workspace, and the internal developer/admin section.
@@ -9,7 +10,6 @@ This document outlines the complete sitemap and page hierarchy for the Entrestat
 This is the public "storefront" for Entrestate, designed for discovery, education, and user acquisition. All pages here are publicly accessible and indexed by search engines.
 
 -   **Home (`/`)**
-    -   The main landing page introducing the Entrestate ecosystem.
 -   **Marketplace (`/marketplace`)**
     -   A public showcase of all available AI apps and solutions.
     -   Each app card links to its detailed blog page (e.g., `/blog/meta-auto-pilot`).
