@@ -2,6 +2,7 @@
 import { MetadataRoute } from 'next';
 import { tools } from '@/lib/tools-data';
 import { appDetails } from '@/lib/blog-content';
+import { solutions } from '@/lib/solutions-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = 'https://www.entrestate.com';
@@ -20,6 +21,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/blog',
     '/market',
     '/support',
+    '/solutions',
+    '/technology',
     // Authenticated routes are not typically in a public sitemap
     // but we can list the entry point.
     '/me', 
@@ -37,12 +40,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.7,
   }));
   
-  const toolRoutes = tools.map((tool) => ({
-      url: `${siteUrl}/tool/${tool.id}`,
+  const solutionRoutes = solutions.map((solution) => ({
+      url: `${siteUrl}/solutions/${solution.slug}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.9,
   }));
 
-  return [...staticRoutes, ...blogRoutes, ...toolRoutes];
+  return [...staticRoutes, ...blogRoutes, ...solutionRoutes];
 }
