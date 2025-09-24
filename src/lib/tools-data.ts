@@ -116,6 +116,18 @@ export const tools: ToolData[] = [
         suite: 'Marketing Management', 
         cta: 'Calculate' 
     },
+    {
+        id: 'sales-message-rewriter',
+        title: 'Sales Message Rewriter',
+        description: 'A "Grammarly for Sales" to rewrite and improve your WhatsApp/SMS messages.',
+        longDescription: 'This tool takes your draft sales message and generates several improved versions, each tailored to a specific tone or strategy like creating urgency, being more professional, or building rapport.',
+        iconName: 'Wand2',
+        color: '#25D366',
+        categories: ['Sales Tools', 'Social & Comms'],
+        suite: 'Marketing Management',
+        badge: 'NEW',
+        cta: 'Rewrite Message'
+    },
     
     // AI Creative Studio
     { 

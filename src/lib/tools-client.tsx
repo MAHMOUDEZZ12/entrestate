@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { ReactElement } from 'react';
@@ -300,6 +301,26 @@ const toolUiConfig: { [key: string]: { creationFields: Field[]; renderResult?: (
             </div>
         )
     },
+    'sales-message-rewriter': {
+        creationFields: [
+            { id: 'originalMessage', name: 'Original Message', type: 'textarea', placeholder: 'e.g., Hi, are you still interested in the villa? Let me know.' },
+            { id: 'tone', name: 'Desired Tone / Strategy', type: 'select', options: ['More Professional', 'More Friendly & Casual', 'Create Urgency', 'More Persuasive', 'Shorten & Simplify'] },
+        ],
+        renderResult: (result, toast) => (
+             <div className="space-y-4">
+                {result.rewrittenMessages.map((item: any, index: number) => (
+                    <Card key={index}>
+                        <CardHeader>
+                           <CardTitle className="text-base">Variation {index + 1}: <span className="text-primary">{item.strategy}</span></CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-sm p-4 bg-muted rounded-md">{item.message}</p>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+        )
+    }
 };
 
 // Getter functions to be used in the UI
