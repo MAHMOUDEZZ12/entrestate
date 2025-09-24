@@ -1,4 +1,3 @@
-
 import type { FilterCategory, BadgeType, Suite } from '@/types';
 
 // This file is build-safe and can be imported in server-side files like sitemap.ts.

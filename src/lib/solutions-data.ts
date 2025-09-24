@@ -1,5 +1,3 @@
-
-
 export interface Solution {
     slug: string;
     title: string;
