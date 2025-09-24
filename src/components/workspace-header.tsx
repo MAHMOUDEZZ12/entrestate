@@ -4,17 +4,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, GanttChartSquare, User as UserIcon } from 'lucide-react';
+import { LogOut, Settings, GanttChartSquare, User as UserIcon, LayoutDashboard, Telescope, Workflow, Palette } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import { Logo } from '@/components/logo';
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import {
@@ -26,34 +24,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { cn } from '@/lib/utils';
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
-
 
 export function WorkspaceHeader() {
   const { user } = useAuth();
@@ -76,6 +46,7 @@ export function WorkspaceHeader() {
                 <NavigationMenuItem>
                     <Link href="/me" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            <LayoutDashboard className="mr-2 h-4 w-4" />
                             Workspace
                         </NavigationMenuLink>
                     </Link>
@@ -84,32 +55,26 @@ export function WorkspaceHeader() {
                  <NavigationMenuItem>
                     <Link href="/me/discover" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Discovery
+                            <Telescope className="mr-2 h-4 w-4" />
+                            Discover
+                        </NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
+                
+                <NavigationMenuItem>
+                    <Link href="/me/marketing" legacyBehavior passHref>
+                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+                            <Palette className="mr-2 h-4 w-4" />
+                            Marketplace
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
 
                  <NavigationMenuItem>
-                    <NavigationMenuTrigger>Studio</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                         <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                            <ListItem href="/me/marketing" title="Marketplace">
-                                Discover and add powerful AI apps to your workspace.
-                            </ListItem>
-                            <ListItem href="/me/flows" title="Flow Builder">
-                                Create powerful, automated workflows by connecting your apps.
-                            </ListItem>
-                             <ListItem href="/me/brand" title="Brand & Assets">
-                                Manage your brand identity and the Knowledge Base for your AI assistant.
-                            </ListItem>
-                         </ul>
-                    </NavigationMenuContent>
-                </NavigationMenuItem>
-                
-                 <NavigationMenuItem>
-                    <Link href="/solutions" legacyBehavior passHref>
+                    <Link href="/me/flows" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Solutions
+                            <Workflow className="mr-2 h-4 w-4" />
+                            Flows
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>

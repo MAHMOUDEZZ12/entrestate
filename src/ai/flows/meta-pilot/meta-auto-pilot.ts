@@ -22,55 +22,14 @@ import {
     MetaAutoPilotOutputSchema, 
     MetaAutoPilotInput, 
     MetaAutoPilotOutput,
-    SuggestTargetingOptionsInputSchema,
-    SuggestTargetingOptionsOutputSchema,
-    GenerateAdFromBrochureOutputSchema,
-    CreateMetaCampaignInputSchema,
-    CreateMetaCampaignOutputSchema,
 } from '@/ai/flows/types';
 
-
-// Define tools that the main flow can call
-const suggestTargetingTool = ai.defineTool(
-  {
-    name: 'suggestTargetingOptions',
-    description: 'Suggests targeting options for an ad campaign based on project details.',
-    inputSchema: SuggestTargetingOptionsInputSchema,
-    outputSchema: SuggestTargetingOptionsOutputSchema,
-  },
-  async (input) => suggestTargetingOptions(input)
-);
-
-const generateCreativeTool = ai.defineTool(
-  {
-    name: 'generateAdCreative',
-    description: 'Generates ad creatives (copy and visuals) from project information.',
-    inputSchema: z.object({
-        projectName: z.string(),
-        focusArea: z.string(),
-        toneOfVoice: z.string(),
-    }),
-    outputSchema: GenerateAdFromBrochureOutputSchema,
-  },
-  async (input: z.infer<typeof GenerateAdFromBrochureOutputSchema>) => generateAdFromBrochure(input)
-);
-
-const assembleCampaignTool = ai.defineTool(
-  {
-    name: 'assembleMetaCampaign',
-    description: 'Assembles the final Meta campaign structure with ad sets and creatives.',
-    inputSchema: CreateMetaCampaignInputSchema,
-    outputSchema: CreateMetaCampaignOutputSchema,
-  },
-  async (input) => createMetaCampaign(input)
-);
 
 const metaAutoPilotFlow = ai.defineFlow(
     {
         name: 'metaAutoPilotFlow',
         inputSchema: MetaAutoPilotInputSchema,
         outputSchema: MetaAutoPilotOutputSchema,
-        tools: [suggestTargetingTool, generateCreativeTool, assembleCampaignTool],
     },
     async (input) => {
         
@@ -81,17 +40,17 @@ const metaAutoPilotFlow = ai.defineFlow(
         }
 
         // 2. Suggest Targeting Options
-        const audienceSuggestions = await suggestTargetingTool({ projectId: input.projectId });
+        const audienceSuggestions = await suggestTargetingOptions({ projectId: input.projectId });
 
         // 3. Generate Ad Creative
-        const adCreative = await generateCreativeTool({
+        const adCreative = await generateAdFromBrochure({
             projectName: projectData.name,
             focusArea: 'The luxury lifestyle and investment potential.',
             toneOfVoice: 'Professional and aspirational',
         });
 
         // 4. Create the final Campaign Structure
-        const finalCampaignPlan = await assembleCampaignTool({
+        const finalCampaignPlan = await createMetaCampaign({
             campaignGoal: input.campaignGoal,
             projectBrochureDataUri: adCreative.adDesign, // Use the generated ad design as the 'brochure'
             budget: 500, // Example budget
