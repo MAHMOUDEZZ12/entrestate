@@ -76,7 +76,7 @@ export function WorkspaceHeader() {
                 <NavigationMenuItem>
                     <Link href="/me" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            Community Hub
+                            Workspace
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
