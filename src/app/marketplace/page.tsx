@@ -75,10 +75,10 @@ export default function MarketplacePage() {
             <h2 className="text-3xl font-bold tracking-tight text-center mb-8">Core Solutions</h2>
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
                 {solutions.map(solution => (
-                    <Link href={`/tool/${solution.slug}`} key={solution.slug}>
-                        <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg">
+                    <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
+                        <Card className="h-full hover:border-accent hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg border-2 border-transparent hover:shadow-accent/20">
                             <CardHeader>
-                                <div className="p-4 bg-primary/10 text-primary rounded-2xl w-fit mb-4">
+                                <div className="p-4 bg-accent/10 text-accent rounded-2xl w-fit mb-4">
                                     {solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
                                 </div>
                                 <CardTitle>{solution.title}</CardTitle>
