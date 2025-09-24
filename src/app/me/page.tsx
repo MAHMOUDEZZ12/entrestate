@@ -17,6 +17,7 @@ import type { Project } from '@/types';
 import { tools as allTools, ToolData } from '@/lib/tools-data';
 import { ProjectCard } from '@/components/ui/project-card';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
+import { dealsSmartPlanner } from '@/ai/flows/sales/deals-smart-planner';
 
 
 function SmartInput() {
@@ -88,7 +89,7 @@ function SmartInput() {
 }
 
 const mockFeedItems = [
-    { type: 'DailyAction', title: 'Generate a Market Report for JVC', description: 'JVC is showing high search interest this week. Generate a report to share with potential investors.', toolId: 'market-reports' },
+    { type: 'DailyAction', title: 'Plan a new deal', description: 'Let the AI guide you step-by-step in creating your next winning deal strategy.', toolId: 'deals-smart-planner' },
     { type: 'UserPost', user: 'Ali T.', content: 'Just closed a deal in Dubai Hills using the Deal Analyzer. The ROI projections were spot on and helped convince the client. Highly recommend this tool!' },
     { type: 'NewProject', projectName: 'Volta by DAMAC', area: 'Downtown Dubai', description: 'A new luxury high-rise focused on wellness and active living has just been added to the Market Library.' },
     { type: 'AppUpdate', appName: 'AI Video Presenter', update: 'Now supports custom virtual backgrounds. Try it now!' },

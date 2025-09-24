@@ -74,7 +74,7 @@ export function WorkspaceHeader() {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
                 <NavigationMenuItem>
-                    <Link href="/me" passHref>
+                    <Link href="/me" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Workspace
                         </NavigationMenuLink>
@@ -82,7 +82,7 @@ export function WorkspaceHeader() {
                 </NavigationMenuItem>
                 
                  <NavigationMenuItem>
-                    <Link href="/me/discover" passHref>
+                    <Link href="/me/discover" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Discovery
                         </NavigationMenuLink>
@@ -107,7 +107,7 @@ export function WorkspaceHeader() {
                 </NavigationMenuItem>
                 
                  <NavigationMenuItem>
-                    <Link href="/solutions" passHref>
+                    <Link href="/solutions" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Solutions
                         </NavigationMenuLink>
@@ -139,12 +139,12 @@ export function WorkspaceHeader() {
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link href="/me/settings" passHref>
-                        <DropdownMenuItem className="cursor-pointer">
+                    <DropdownMenuItem asChild>
+                        <Link href="/me/settings" className="cursor-pointer">
                             <Settings className="mr-2 h-4 w-4" />
                             Settings
-                        </DropdownMenuItem>
-                    </Link>
+                        </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout} className="text-destructive cursor-pointer">
                         <LogOut className="mr-2 h-4 w-4" />

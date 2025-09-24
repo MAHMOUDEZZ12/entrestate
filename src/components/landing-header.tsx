@@ -9,10 +9,9 @@ import { Logo } from './logo';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 
 const navLinks = [
-    { name: 'Apps', href: '/pricing' },
-    { name: 'Pricing', href: '/pricing' },
     { name: 'Solutions', href: '/solutions' },
-    { name: 'Community', href: '/about' },
+    { name: 'Pricing', href: '/pricing' },
+    { name: 'Community', href: '/me/community' },
 ];
 
 export function LandingHeader() {

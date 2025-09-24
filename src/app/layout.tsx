@@ -14,6 +14,7 @@ import { SensitiveAreaProvider } from '@/context/SensitiveAreaContext';
 import AppContentClient from '@/components/AppContent';
 import React from 'react';
 import { SpotlightProvider } from '@/context/SpotlightContext';
+import { GlobalChat } from '@/components/global-chat';
 
 const fontSans = PT_Sans({ 
   subsets: ['latin'],
@@ -66,6 +67,7 @@ export default function RootLayout({
                            <Toaster />
                            <CookieConsent />
                            <CreativeCanvas />
+                           <GlobalChat />
                       </CanvasProvider>
                   </TabProvider>
                 </SpotlightProvider>
