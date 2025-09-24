@@ -1,4 +1,3 @@
-
 # adaptive_scheduler.py
 import time, json, math
 import redis
@@ -26,7 +25,10 @@ def compute_score(stats):
     # a simple weighted formula that can be expanded to ML
     last_change_ts_str = stats.get('last_change_ts')
     if last_change_ts_str:
-        last_change_dt = datetime.strptime(last_change_ts_str, '%Y-%m-%dT%H:%M:%SZ')
+        try:
+            last_change_dt = datetime.fromisoformat(last_change_ts_str.replace("Z", "+00:00"))
+        except:
+             last_change_dt = datetime.utcnow() - timedelta(days=1)
     else:
         last_change_dt = datetime.utcnow() - timedelta(days=1)
         

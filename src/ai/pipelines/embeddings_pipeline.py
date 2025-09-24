@@ -1,4 +1,3 @@
-
 # embeddings_pipeline.py
 
 # This script contains the logic for creating text embeddings and indexing them
@@ -110,3 +109,5 @@ if __name__ == '__main__':
     ]
 
     index_text_batch(collection, model, document_batch)
+
+    

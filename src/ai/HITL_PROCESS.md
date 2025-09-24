@@ -1,4 +1,3 @@
-
 # Human-in-the-Loop (HITL) & Active Learning Process
 
 This document outlines the architecture for our Human-in-the-Loop (HITL) and active learning system. This system is crucial for continuously improving our AI models by incorporating human feedback, especially for low-confidence predictions or novel data patterns.
@@ -74,3 +73,5 @@ def active_learning_cycle():
 ```
 
 This cycle ensures that human effort is focused on the examples that the model is most confused about, leading to the fastest possible improvement in model performance.
+
+    

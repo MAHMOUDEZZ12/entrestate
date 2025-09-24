@@ -1,4 +1,3 @@
-
 # Full Airflow DAG — Ingest Grade A + B Sources End-to-End
 # This DAG skeleton covers all Grade A and B sources from the expanded CSV. Each source has fetch → store_raw_snapshot → index_to_search_and_vector steps, with retries, provenance, and parallel execution.
 # It now includes the CadenceSensor to dynamically adjust task scheduling.
@@ -172,3 +171,5 @@ with DAG(
 
     for t in all_source_tasks:
         t >> t_index_all
+
+    

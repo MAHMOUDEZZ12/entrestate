@@ -1,80 +1,77 @@
+// Entrestate Knowledge Graph - Schema & Bootstrap
+// Language: Cypher (for Neo4j)
 
-// Entrestate Knowledge Graph Schema (Neo4j)
-
-// This file defines the canonical schema and bootstrap constraints for the Neo4j Knowledge Graph.
-// It is the source of truth for all graph data modeling.
-
-// =================================================================
-// 1. CONSTRAINTS - Enforce unique IDs for primary entity nodes
-// =================================================================
-
+// 1. Constraints for Unique Identifiers
+// Ensures that each core entity has a unique ID, preventing duplicates.
 CREATE CONSTRAINT dev_id IF NOT EXISTS FOR (d:Developer) REQUIRE d.dev_id IS UNIQUE;
 CREATE CONSTRAINT proj_id IF NOT EXISTS FOR (p:Project) REQUIRE p.project_id IS UNIQUE;
-CREATE CONSTRAINT broker_id IF NOT EXISTS FOR (b:Broker) REQUIRE b.broker_id IS UNIQUE;
-CREATE CONSTRAINT listing_id IF NOT EXISTS FOR (l:Listing) REQUIRE l.listing_id IS UNIQUE;
-CREATE CONSTRAINT campaign_id IF NOT EXISTS FOR (c:Campaign) REQUIRE c.campaign_id IS UNIQUE;
-CREATE CONSTRAINT creative_id IF NOT EXISTS FOR (a:AdCreative) REQUIRE a.creative_id IS UNIQUE;
-CREATE CONSTRAINT permit_id IF NOT EXISTS FOR (t:Permit) REQUIRE t.permit_id IS UNIQUE;
 CREATE CONSTRAINT domain_name IF NOT EXISTS FOR (x:Domain) REQUIRE x.name IS UNIQUE;
-CREATE CONSTRAINT event_id IF NOT EXISTS FOR (e:Event) REQUIRE e.event_id IS UNIQUE;
+CREATE CONSTRAINT broker_id IF NOT EXISTS FOR (b:Broker) REQUIRE b.broker_id IS UNIQUE;
+CREATE CONSTRAINT permit_id IF NOT EXISTS FOR (p:Permit) REQUIRE p.permit_id IS UNIQUE;
 
+// 2. Example Node Structure (for documentation)
+/*
+Nodes will have the following general structure:
 
-// =================================================================
-// 2. BOOTSTRAP CYPHER - Example ingestion and relationship linking
-// =================================================================
+(:Developer {
+    dev_id: "emaar-properties",
+    name: "Emaar Properties",
+    aliases: ["Emaar"],
+    first_seen: timestamp(),
+    last_seen: timestamp(),
+    confidence: 0.95
+})
 
-// --- Upsert Helpers ---
+(:Project {
+    project_id: "emaar-beachfront",
+    name: "Emaar Beachfront",
+    first_seen: timestamp(),
+    last_seen: timestamp(),
+    confidence: 0.9
+})
+*/
 
-// Upsert a Developer node with confidence tracking
-// Params: $dev_id, $name, $confidence
-MERGE (d:Developer {dev_id: $dev_id})
-ON CREATE SET d.name = $name, d.first_seen = timestamp(), d.confidence = $confidence, d.last_seen = timestamp()
-ON MATCH SET d.last_seen = timestamp(), d.confidence = coalesce(d.confidence, 0) + $confidence;
+// 3. Upsert Helper & Relationship Creation (Example Cypher Ingestion Query)
+// This pattern is used by the enrichment worker to add data to the graph.
+// It uses MERGE to either create a new node or update an existing one.
 
-// Upsert a Project node
-// Params: $project_id, $name
-MERGE (p:Project {project_id: $project_id})
-ON CREATE SET p.name = $name, p.first_seen = timestamp(), p.last_seen = timestamp();
+// Example Payload (passed as a parameter `$payload`):
+/*
+{
+  "project_id": "emaar-beachfront",
+  "project_name": "Emaar Beachfront",
+  "developer_id": "emaar-properties",
+  "developer_name": "Emaar Properties",
+  "confidence": 0.8,
+  "provenance": {
+    "source": "bayut_listings",
+    "source_doc_id": "bayut-12345",
+    "raw_data_url": "s3://ingest-bucket/raw/bayut/12345.json",
+    "observed_at": timestamp()
+  }
+}
+*/
 
-
-// --- Example Ingestion Flow (from a single listing payload) ---
-// This demonstrates how a raw payload would be used to create/update the graph.
-
-WITH {
-    project_id: 'proj-emaar-beachfront-123',
-    project_name: 'Emaar Beachfront',
-    developer_id: 'dev-emaar',
-    developer_name: 'Emaar Properties',
-    listing_id: 'list-pf-98765',
-    listing_url: 'https://www.propertyfinder.ae/en/buy/...',
-    source: 'propertyfinder.ae',
-    confidence: 1.0
-} AS payload
-
-// 1. Upsert the Project and Developer nodes
+WITH $payload AS payload
+// Upsert the Project node
 MERGE (proj:Project {project_id: payload.project_id})
 ON CREATE SET proj.name = payload.project_name, proj.first_seen = timestamp(), proj.last_seen = timestamp()
 ON MATCH SET proj.last_seen = timestamp()
 
+// Upsert the Developer node
 MERGE (dev:Developer {dev_id: payload.developer_id})
 ON CREATE SET dev.name = payload.developer_name, dev.first_seen = timestamp(), dev.last_seen = timestamp()
 ON MATCH SET dev.last_seen = timestamp()
 
-// 2. Create the relationship between them
+// Create the relationship between them
 MERGE (dev)-[r:DEVELOPS]->(proj)
-ON CREATE SET r.first_seen = timestamp()
-SET r.last_seen = timestamp(),
+
+// Add provenance information to the relationship, creating a rich audit trail
+// This is the key to an explainable AI system.
+SET r.last_seen = payload.provenance.observed_at,
     r.confidence = coalesce(r.confidence, 0) + payload.confidence
+MERGE (r)-[:SEEN_IN]->(evidence:Evidence {source: payload.provenance.source, source_doc_id: payload.provenance.source_doc_id})
+ON CREATE SET evidence.raw_data_url = payload.provenance.raw_data_url, evidence.observed_at = payload.provenance.observed_at
 
-// 3. Create the Listing node and link it to the Project
-MERGE (listing:Listing {listing_id: payload.listing_id})
-ON CREATE SET listing.url = payload.listing_url, listing.first_seen = timestamp(), listing.last_seen = timestamp()
-ON MATCH SET listing.last_seen = timestamp()
 
-MERGE (listing)-[:PART_OF]->(proj)
-
-// 4. Create an Evidence node to record the source of this information
-CREATE (evidence:Evidence { source: payload.source, timestamp: timestamp(), raw_data_link: 's3://path/to/raw/blob.json' })
-CREATE (listing)-[:HAS_EVIDENCE]->(evidence)
-CREATE (dev)-[:HAS_EVIDENCE]->(evidence)
-CREATE (proj)-[:HAS_EVIDENCE]->(evidence);
+    

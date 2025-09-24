@@ -1,8 +1,7 @@
-
 [
   {
     "rule_id": "new_project_high_confidence_launch",
-    "description": "Ad push + landing domain + permit file + foot-traffic spike within 72h",
+    "description": "Ad push + new landing domain + permit filed + foot-traffic spike within 72h",
     "window_hours": 72,
     "signals": [
       {"type":"ad_push","min_count":1,"weight":2.0},
@@ -132,3 +131,5 @@
       "action": "alert_insider_transfer_risk"
   }
 ]
+
+    
