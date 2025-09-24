@@ -304,6 +304,18 @@ export const tools: ToolData[] = [
     },
     
     // Lead Intelligence AI
+    {
+        id: 'deals-smart-planner',
+        title: 'Deals Smart Planner',
+        description: 'Your AI partner for step-by-step deal creation and execution.',
+        longDescription: "An interactive, conversational planner that analyzes your goals and assets to generate a clear, actionable path to closing your next deal. It's like having a world-class sales manager in your pocket.",
+        iconName: 'Sparkle',
+        color: '#FFD700',
+        categories: ['Sales Tools', 'Lead Gen'],
+        suite: 'Lead Intelligence AI',
+        badge: 'NEW',
+        cta: 'Plan a Deal'
+    },
     { 
         id: 'deal-analyzer', 
         title: 'Deal Analyzer', 

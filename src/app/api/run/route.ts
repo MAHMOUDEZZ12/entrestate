@@ -43,6 +43,7 @@ import { getPaypalTransaction } from '@/ai/flows/developer-backend/get-paypal-tr
 import { commissionCalculator } from '@/ai/flows/sales/commission-calculator';
 import { scanForAlloyDB } from '@/ai/flows/developer-backend/scan-for-alloydb';
 import { smartInputRouter } from '@/ai/flows/utility/smart-input-router';
+import { dealsSmartPlanner } from '@/ai/flows/sales/deals-smart-planner';
 
 const runToolSchema = z.object({
   toolId: z.string(),
@@ -89,6 +90,7 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'prompt-library': (payload) => Promise.resolve({ message: "Executed from library", payload }), // Added for library execution
     'meta-auto-pilot': runMetaAutoPilot,
     'smart-input-router': smartInputRouter,
+    'deals-smart-planner': dealsSmartPlanner,
 };
 
 // Map of tool IDs to their suggested next action
