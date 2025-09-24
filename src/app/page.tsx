@@ -166,7 +166,7 @@ export default function HomePage() {
             <div className="container mx-auto px-4">
                  <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
-                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Your AI-Powered Marketplace</span>
+                        <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">Your AI-Powered Workplace</span>
                     </h2>
                     <p className="mt-4 text-lg text-muted-foreground">
                         An entire ecosystem of specialized apps designed to automate every facet of your business. Add them to your workspace to build your personalized command center.

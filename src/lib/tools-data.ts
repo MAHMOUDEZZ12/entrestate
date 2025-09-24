@@ -22,8 +22,8 @@ export const tools: ToolData[] = [
     // Meta Marketing Suite
     { 
         id: 'meta-auto-pilot', 
-        title: 'Marketing Agency Agent', 
-        dashboardTitle: 'Marketing Agency Agent', 
+        title: 'Property Marketer AI', 
+        dashboardTitle: 'Property Marketer AI', 
         description: 'The master agent that orchestrates the entire marketing campaign from start to finish.', 
         longDescription: "Meta Auto Pilot is an AI-driven command center that launches, optimizes, and reports on Facebook & Instagram campaigns with a single action. It collapses Ads Manager complexity into a guided, automated workflow that manages audience splitting, budget allocation, ad rotation, and reporting in real time.",
         iconName: 'Sparkles', 
@@ -35,7 +35,7 @@ export const tools: ToolData[] = [
     },
     { 
         id: 'campaign-builder', 
-        title: 'Campaign Connector', 
+        title: 'Campaign Creator', 
         description: 'Your dedicated agent for Facebook & Instagram advertising. Acts as the connector between strategy and execution.', 
         longDescription: "Campaign Builder is a guided, modular campaign creation tool that gives you full control over strategy while removing repetitive setup tasks. It provides templates for common objectives (leads, traffic, conversions), automates A/B structures, and generates field-accurate campaign specs for direct launch or handoff to Meta Auto Pilot.",
         iconName: 'LayoutTemplate', 
@@ -57,7 +57,7 @@ export const tools: ToolData[] = [
     },
     { 
         id: 'insta-ads-designer', 
-        title: 'Insta Ads Designer', 
+        title: 'Instagram Lead Generation', 
         dashboardTitle: 'Insta Ads', 
         description: 'The media agent. Creates perfect image ads for Instagram Stories & Feed.', 
         longDescription: "Insta Ads Designer produces platform-optimized visuals and copy for Instagram Feed and Stories. The tool applies best-practice aspect ratios, text-to-image balance, animation presets, and split-tested copy variants to deliver creatives that convert.",
@@ -82,7 +82,7 @@ export const tools: ToolData[] = [
     // Marketing Management
     { 
         id: 'instagram-admin-ai', 
-        title: 'Instagram Admin AI', 
+        title: 'Instagram Admin', 
         dashboardTitle: 'Instagram Admin', 
         description: 'Schedules posts and handles replies on Instagram.', 
         longDescription: "Instagram Admin centralizes content scheduling, comment management, DMs, and analytics. It provides queue management, approval flows, reply templates, sentiment tagging, and SLA automation for response times.",
@@ -95,7 +95,7 @@ export const tools: ToolData[] = [
     },
     { 
         id: 'whatsapp-manager', 
-        title: 'WhatsApp Manager', 
+        title: 'WhatsApp Campaigns', 
         dashboardTitle: 'WhatsApp Campaigns', 
         description: 'Send personalized broadcasts and drip campaigns.', 
         longDescription: "WhatsApp Manager enables compliant, personalized messaging, automated drip sequences, and CRM-triggered follow-ups with templates, scheduling, and delivery tracking.",
@@ -143,7 +143,7 @@ export const tools: ToolData[] = [
     },
     { 
         id: 'ai-video-presenter', 
-        title: 'AI Video Presenter', 
+        title: 'AI Videos With Your Face', 
         description: 'Create a lifelike AI presenter to deliver your project pitch.', 
         longDescription: "AI Video Presenter generates a realistic AI presenter that reads your script and presents your pitch with natural voice, gestures, and teleprompter-style delivery. Output is ready for landing pages, pitch decks, or social ads.",
         iconName: 'User', 
@@ -155,7 +155,7 @@ export const tools: ToolData[] = [
     },
     { 
         id: 'ugc-script-writer', 
-        title: 'UGC Script Writer', 
+        title: 'Social Media Content Writer', 
         description: 'Generate authentic, user-generated content style video ad scripts.', 
         longDescription: "UGC Script Writer generates short, conversational scripts that mimic authentic user testimonials and casual storytelling — the style proven to improve trust and ad performance on social platforms.",
         iconName: 'PenTool', 
@@ -246,7 +246,7 @@ export const tools: ToolData[] = [
     // AI Listing Portal
     { 
         id: 'listing-manager', 
-        title: 'Listing Manager', 
+        title: 'Listing Portal AI', 
         description: 'Your central hub to prepare and syndicate listings to major portals.', 
         longDescription: "Listing Manager standardizes listing data, enriches descriptions, batch-uploads images and videos, and syndicates listings to major portals (Property Finder, Bayut, etc.) with validation checks to ensure compliance.",
         iconName: 'ClipboardList', 
@@ -318,7 +318,7 @@ export const tools: ToolData[] = [
     // Lead Intelligence AI
     {
         id: 'deals-smart-planner',
-        title: 'Deals Smart Planner',
+        title: 'Sales AI Assistant',
         description: 'Your AI partner for step-by-step deal creation and execution.',
         longDescription: "An interactive, conversational planner that analyzes your goals and assets to generate a clear, actionable path to closing your next deal. It's like having a world-class sales manager in your pocket.",
         iconName: 'Sparkle',
@@ -375,7 +375,7 @@ export const tools: ToolData[] = [
     },
     { 
         id: 'projects-finder', 
-        title: 'Market Library', 
+        title: 'Market Projects Library', 
         description: 'Search our intelligent library for verified projects.', 
         longDescription: "Market Library is a verified repository of projects, historical pricing, and developer data. Searchable by coordinates, developer, project stage, or price band with trust signals.",
         iconName: 'Database', 
@@ -423,7 +423,7 @@ export const tools: ToolData[] = [
     // Web Development Lab
     { 
         id: 'landing-pages', 
-        title: 'Landing Page Builder', 
+        title: 'Landing Page Designer', 
         dashboardTitle: 'Landing Pages', 
         description: 'Launch high-converting landing pages in minutes.', 
         longDescription: "Landing Page Builder creates conversion-optimized landing pages with tested templates, dynamic components (lead forms, price calculators), A/B variants, and one-click publishing. Pages are SEO-ready and integrate with CRM Memory for lead capture.",

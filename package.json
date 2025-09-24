@@ -3,6 +3,7 @@
   "name": "nextn",
   "version": "0.1.0",
   "private": true,
+  "description": "An AI-native operating system for real estate professionals, featuring intelligent tools for marketing, sales, and market analysis.",
   "scripts": {
     "dev": "next dev",
     "genkit:dev": "genkit start -- tsx src/ai/dev.ts",
