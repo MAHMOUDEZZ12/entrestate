@@ -1,3 +1,4 @@
+
 # Entrestate - To-Do & Next Steps
 
 This document outlines the remaining tasks and areas that require senior-level attention to bring the platform to a fully-realized, production-ready state.

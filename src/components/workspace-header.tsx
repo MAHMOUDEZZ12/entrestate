@@ -44,37 +44,55 @@ export function WorkspaceHeader() {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
                 <NavigationMenuItem>
-                    <Link href="/me" passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            <LayoutDashboard className="mr-2 h-4 w-4" />
-                            Workspace
+                    <Link href="/me" passHref legacyBehavior>
+                        <NavigationMenuLink asChild>
+                             <a className={navigationMenuTriggerStyle()}>
+                                <LayoutDashboard className="mr-2 h-4 w-4" />
+                                Workspace
+                            </a>
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
                 
                  <NavigationMenuItem>
-                    <Link href="/me/discover" passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            <Telescope className="mr-2 h-4 w-4" />
-                            Discover
+                    <Link href="/me/discover" passHref legacyBehavior>
+                        <NavigationMenuLink asChild>
+                            <a className={navigationMenuTriggerStyle()}>
+                                <Telescope className="mr-2 h-4 w-4" />
+                                Discover
+                            </a>
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
                 
                 <NavigationMenuItem>
-                    <Link href="/me/marketing" passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            <Palette className="mr-2 h-4 w-4" />
-                            Marketplace
+                    <Link href="/me/marketing" passHref legacyBehavior>
+                        <NavigationMenuLink asChild>
+                            <a className={navigationMenuTriggerStyle()}>
+                                <Palette className="mr-2 h-4 w-4" />
+                                Marketplace
+                            </a>
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
 
                  <NavigationMenuItem>
-                    <Link href="/me/flows" passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            <Workflow className="mr-2 h-4 w-4" />
-                            Flows
+                    <Link href="/me/flows" passHref legacyBehavior>
+                        <NavigationMenuLink asChild>
+                            <a className={navigationMenuTriggerStyle()}>
+                                <Workflow className="mr-2 h-4 w-4" />
+                                Flows
+                            </a>
+                        </NavigationMenuLink>
+                    </Link>
+                </NavigationMenuItem>
+                 <NavigationMenuItem>
+                    <Link href="/me/brand" passHref legacyBehavior>
+                        <NavigationMenuLink asChild>
+                            <a className={navigationMenuTriggerStyle()}>
+                                <Palette className="mr-2 h-4 w-4" />
+                                Brand & Assets
+                            </a>
                         </NavigationMenuLink>
                     </Link>
                 </NavigationMenuItem>
