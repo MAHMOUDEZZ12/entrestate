@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -14,9 +15,9 @@ export default function MeLayout({
   return (
     <div className="flex min-h-screen w-full flex-col">
        <WorkspaceHeader />
-        <div className="flex-1">
+        <main className="flex-1">
             {children}
-        </div>
+        </main>
         <GlobalChat />
     </div>
   );
