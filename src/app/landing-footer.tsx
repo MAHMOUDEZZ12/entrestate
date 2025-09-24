@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { Facebook, Twitter, Linkedin } from 'lucide-react';
 import Image from 'next/image';
-import { Logo } from './logo';
+import { Logo } from '@/components/logo';
 
 export function LandingFooter() {
   const currentYear = new Date().getFullYear();

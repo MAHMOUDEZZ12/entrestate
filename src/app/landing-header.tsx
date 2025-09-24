@@ -5,13 +5,12 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Menu } from 'lucide-react';
-import { Logo } from '../logo';
+import { Logo } from '@/components/logo';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 
 const navLinks = [
-    { name: 'Apps', href: '/me/marketing' },
-    { name: 'Pricing', href: '/pricing' },
     { name: 'Solutions', href: '/solutions' },
+    { name: 'Pricing', href: '/pricing' },
     { name: 'Community', href: '/me/community' },
 ];
 
