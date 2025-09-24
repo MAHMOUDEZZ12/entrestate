@@ -212,7 +212,7 @@ export default function HomePage() {
                        <p className="text-lg text-muted-foreground">
                             Your interactive AI partner for creating and executing winning deals. It's like having a world-class sales manager in your pocket, guiding you on what to say and do next.
                        </p>
-                       <Link href="/tool/deals-smart-planner">
+                       <Link href="/me/tool/deals-smart-planner">
                            <Button variant="outline" className="mt-6 shadow">Try The Planner <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
