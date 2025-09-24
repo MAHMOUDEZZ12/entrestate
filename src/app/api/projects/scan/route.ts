@@ -12,31 +12,30 @@ export async function GET(req: Request) {
   }
   try {
     const { searchParams } = new URL(req.url);
-    const limit = Number(searchParams.get("limit") || 20);
+    const limit = Number(searchParams.get("limit") || 50);
     const query = (searchParams.get("q") || "").toLowerCase().trim();
 
-    const cookieStore = cookies();
-    const country = cookieStore.get("country")?.value || "AE";
-    const city = cookieStore.get("city")?.value || "Dubai";
-    
-    let q = adminDb.collection("projects_catalog")
-      .where("country", "==", country);
+    // Query the entire catalog for more robust searching.
+    // In a production app with millions of records, we'd use a dedicated search service
+    // like Algolia or Elasticsearch, but for this scale, a collection scan is acceptable.
+    let q = adminDb.collection("projects_catalog");
 
     const snap = await q.get();
-    let all = snap.docs.map(d => ({ id: d.id, ...d.data() as any }))
-      .filter((p: Project) => p.city === city);
+    let allProjects = snap.docs.map(d => ({ id: d.id, ...d.data() } as Project));
 
     if (query) {
-      all = all.filter((p: Project) => 
+      allProjects = allProjects.filter((p: Project) => 
         (p.name || '').toLowerCase().includes(query) ||
         (p.developer || '').toLowerCase().includes(query) ||
         (p.area || '').toLowerCase().includes(query) ||
+        (p.city || '').toLowerCase().includes(query) || // Added city to search fields
         (p.status || '').toLowerCase().includes(query) ||
+        (p.tags && p.tags.some(t => t.toLowerCase().includes(query))) || // Search tags as well
         (p.unitTypes && p.unitTypes.some(u => u.toLowerCase().includes(query)))
       );
     }
 
-    return ok(all.slice(0, limit));
+    return ok(allProjects.slice(0, limit));
   } catch (e) {
     return fail(e);
   }
