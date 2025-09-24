@@ -62,7 +62,7 @@ function SearchResultsComponent() {
                             key={project.id}
                             project={project}
                             actions={
-                                <Link href="/login">
+                                <Link href="/me">
                                     <Button size="sm">
                                         <Library className="mr-2 h-4 w-4" />
                                         Add to Library
@@ -84,11 +84,11 @@ function SearchResultsComponent() {
                 <CardContent className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
                     <div>
                         <h3 className="text-xl font-bold text-primary">Ready to build your workspace?</h3>
-                        <p className="text-primary/80">Sign up to create a private library, access our full suite of AI tools, and automate your workflow.</p>
+                        <p className="text-primary/80">Go to your workspace to create a private library, access our full suite of AI tools, and automate your workflow.</p>
                     </div>
-                    <Link href="/login">
+                    <Link href="/me">
                         <Button size="lg">
-                            Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                            Go to Workspace <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                     </Link>
                 </CardContent>

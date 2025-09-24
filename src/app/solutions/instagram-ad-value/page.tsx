@@ -85,7 +85,7 @@ export default function InstagramAdValuePage() {
 
             // Redirect to a confirmation or login page
             setTimeout(() => {
-                window.location.href = '/login'; 
+                window.location.href = '/me'; 
             }, 2000);
 
         } catch (error) {

@@ -37,7 +37,7 @@ export default function AboutPage() {
                   </p>
 
                   <div className="text-center mt-12">
-                      <Link href="/login">
+                      <Link href="/me">
                           <Button size="lg">Join Us in Building the Future</Button>
                       </Link>
                   </div>

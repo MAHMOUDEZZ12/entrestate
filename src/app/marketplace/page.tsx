@@ -144,11 +144,11 @@ export default function MarketplacePage() {
             <div className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
                     <h3 className="text-xl font-bold text-primary">Ready to build your workspace?</h3>
-                    <p className="text-primary/80">Sign up to get started and add these powerful apps to your dashboard.</p>
+                    <p className="text-primary/80">Go to your workspace to get started and add these powerful apps to your dashboard.</p>
                 </div>
-                <Link href="/login">
+                <Link href="/me">
                     <Button size="lg">
-                        Get Started <ArrowRight className="ml-2 h-4 w-4" />
+                        Go to Workspace <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                 </Link>
             </div>

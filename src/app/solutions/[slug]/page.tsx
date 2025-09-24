@@ -48,7 +48,7 @@ const solutionsData: {[key: string]: any} = {
         { tier: 'Enterprise', description: 'Full regulatory dashboard integration, cross-market intelligence, white-label licensing.' },
     ],
     simulation: <EstChatSimulation />,
-    cta: { text: "Name your SuperAgent", href: "/login" },
+    cta: { text: "Name your SuperAgent", href: "/me" },
     price: 149,
   },
   'mega-listing-pro-2': {
@@ -81,7 +81,7 @@ const solutionsData: {[key: string]: any} = {
         { tier: 'Enterprise', description: 'White-label registry for governments and real estate authorities.' },
     ],
     simulation: <MegaListingSimulation />,
-    cta: { text: "Use it to stop blaming Portals", href: "/login" },
+    cta: { text: "Use it to stop blaming Portals", href: "/me" },
     price: 68,
   },
   'pro-search-eng-x3': {
@@ -115,7 +115,7 @@ const solutionsData: {[key: string]: any} = {
         { tier: 'Phase 3', description: 'Unlock Deep Search with premium investor dashboards.' },
     ],
     simulation: <ProSearchSimulation />,
-    cta: { text: "let's Go", href: "/login" },
+    cta: { text: "let's Go", href: "/me" },
     price: 190,
   }
 };
@@ -186,7 +186,7 @@ export default function SolutionPage() {
                         <p className="text-muted-foreground">per month</p>
                     </CardContent>
                     <CardFooter>
-                         <Link href="/login" className="w-full">
+                         <Link href="/me" className="w-full">
                             <Button size="lg" className="w-full">
                                 Get Started
                                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -255,7 +255,7 @@ export default function SolutionPage() {
                 Our core solutions form the backbone of the Entrestate ecosystem. Get started and experience the future of real estate technology.
             </p>
             <div className="mt-8">
-                <Link href="/login">
+                <Link href="/me">
                     <ShinyButton>
                         Get Started <ArrowRight />
                     </ShinyButton>

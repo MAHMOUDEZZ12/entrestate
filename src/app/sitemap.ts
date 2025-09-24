@@ -11,7 +11,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/',
     '/marketplace',
     '/pricing',
-    '/login',
     '/privacy',
     '/terms',
     '/status',
