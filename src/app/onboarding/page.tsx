@@ -278,7 +278,7 @@ function OnboardingComponent() {
             <div className="text-center pt-8">
                 <Button size="lg" onClick={finishOnboarding} disabled={isFinishing}>
                     {isFinishing ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Sparkles className="mr-2 h-4 w-4" />}
-                    Finish Setup & Go to Dashboard
+                    Finish Setup & Go to Workspace
                 </Button>
             </div>
         </div>
