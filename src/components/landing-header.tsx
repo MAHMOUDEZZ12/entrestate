@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import React, { useState } from 'react';
@@ -11,7 +12,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 const navLinks = [
     { name: 'Apps', href: '/me/marketing' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Solutions', href: '/me/solutions' },
+    { name: 'Solutions', href: '/solutions' },
     { name: 'Community', href: '/me/community' },
 ];
 
