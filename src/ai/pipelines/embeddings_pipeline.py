@@ -109,5 +109,3 @@ if __name__ == '__main__':
     ]
 
     index_text_batch(collection, model, document_batch)
-
-    

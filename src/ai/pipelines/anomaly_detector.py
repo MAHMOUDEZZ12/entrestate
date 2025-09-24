@@ -98,5 +98,3 @@ if __name__ == '__main__':
     
     is_anomaly_stream, z_score_stream, new_ewma = anomaly_detect_streaming(new_point, historical_average, historical_std)[:3]
     print(f"Streaming Detection: Anomaly detected: {is_anomaly_stream}, Z-Score: {z_score_stream:.2f}, New EWMA: {new_ewma:.2f}")
-
-    

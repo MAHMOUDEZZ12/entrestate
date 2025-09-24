@@ -1,76 +1,140 @@
-# adaptive_scheduler.py
-import time, json, math
-import redis
+#!/usr/bin/env python3
+"""
+adaptive_scheduler.py
+- Reads per-source ingest stats (from a JSON file, DB, or HTTP endpoint)
+- Computes source scores and desired cadences
+- Writes `source_cadence` and `source_score` to Redis (hashes)
+- Exposes a minimal HTTP health / metrics endpoint
+"""
+
+import os
+import time
+import json
+import logging
 from datetime import datetime, timedelta
+from typing import Dict, Any, List
 
-# In a real setup, connect to your Redis instance.
-# r = redis.Redis(host='REDIS_HOST', port=6379, db=0)
+import redis
+import requests  # optional if you fetch stats via HTTP
 
-# Mock Redis for demonstration in this environment
-class MockRedis:
-    def __init__(self):
-        self._data = {}
-    def hset(self, name, key, value):
-        if name not in self._data:
-            self._data[name] = {}
-        self._data[name][key] = value
-    def hget(self, name, key):
-        return self._data.get(name, {}).get(key)
-r = MockRedis()
+LOG = logging.getLogger("adaptive_scheduler")
+LOG.setLevel(logging.INFO)
+ch = logging.StreamHandler()
+ch.setFormatter(logging.Formatter("%(asctime)s %(levelname)s %(message)s"))
+LOG.addHandler(ch)
+
+REDIS_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
+STATS_SOURCE = os.environ.get("STATS_SOURCE", "")  # file path or HTTP URL
+POLL_SECONDS = int(os.environ.get("POLL_SECONDS", "300"))  # default 5 minutes
+MIN_SCORE = float(os.environ.get("MIN_SCORE", "0.0"))
+
+r = redis.Redis.from_url(REDIS_URL, decode_responses=True)
 
 
-# Example metric inputs collected elsewhere (ingest_stats table/per-source)
-# Each item: {source_id, last_change_ts, change_freq_per_day, last_error_rate, avg_value_score}
-def compute_score(stats):
-    # a simple weighted formula that can be expanded to ML
-    last_change_ts_str = stats.get('last_change_ts')
-    if last_change_ts_str:
-        try:
-            last_change_dt = datetime.fromisoformat(last_change_ts_str.replace("Z", "+00:00"))
-        except:
-             last_change_dt = datetime.utcnow() - timedelta(days=1)
-    else:
-        last_change_dt = datetime.utcnow() - timedelta(days=1)
-        
-    age_hours = max((datetime.utcnow() - last_change_dt).total_seconds()/3600.0, 1.0)
-    freshness = 1.0 / age_hours
-    freq = stats.get('change_freq_per_day', 0)    # higher => more important
-    error = stats.get('last_error_rate', 0.0)
-    value = stats.get('avg_value_score', 1.0)     # human-assigned or ML estimate
-    score = (0.6 * value) + (0.3 * freq) + (0.6 * freshness) - (0.4 * error)
-    return max(score, 0.0)
+def load_stats_from_file(path: str) -> List[Dict[str, Any]]:
+    try:
+        with open(path, "r") as f:
+            data = json.load(f)
+        return data
+    except Exception as e:
+        LOG.exception("Error loading stats file: %s", e)
+        return []
 
-def cadence_from_score(score):
-    # map score to cadence in seconds (lower = more frequent)
-    if score > 5: return 60    # every minute
-    if score > 3: return 300   # 5 minutes
-    if score > 1.5: return 900 # 15 minutes
-    if score > 0.5: return 3600 # hourly
-    return 14400               # 4 hours
 
-def update_cadences(all_stats):
-    print("Updating cadences...")
+def fetch_stats_from_http(url: str) -> List[Dict[str, Any]]:
+    try:
+        resp = requests.get(url, timeout=10)
+        resp.raise_for_status()
+        return resp.json()
+    except Exception as e:
+        LOG.exception("Error fetching stats from HTTP: %s", e)
+        return []
+
+
+def compute_score(stats: Dict[str, Any]) -> float:
+    # Robust version of earlier formula. Stats expected keys:
+    # last_change_ts (ISO8601 string), change_freq_per_day (float),
+    # last_error_rate (0..1), avg_value_score (0..10)
+    try:
+        now = datetime.utcnow()
+        last_change = stats.get("last_change_ts")
+        if last_change:
+            try:
+                last_change_dt = datetime.fromisoformat(last_change.replace("Z", "+00:00"))
+            except Exception:
+                last_change_dt = now - timedelta(days=365)
+        else:
+            last_change_dt = now - timedelta(days=365)
+
+        age_hours = max((now - last_change_dt).total_seconds() / 3600.0, 1.0)
+        freshness = 1.0 / age_hours  # higher if recently changed
+
+        freq = float(stats.get("change_freq_per_day", 0.0))
+        error = float(stats.get("last_error_rate", 0.0))
+        # avg_value_score expected 0..10 scale
+        value = float(stats.get("avg_value_score", 1.0))
+
+        # weights can be tuned or loaded from config
+        score = (0.5 * (value / 2.0)) + (0.35 * freq) + (0.7 * freshness) - (0.6 * error)
+        # normalize lower bound
+        score = max(score, MIN_SCORE)
+        return float(score)
+    except Exception as e:
+        LOG.exception("compute_score error: %s", e)
+        return float(MIN_SCORE)
+
+
+def cadence_from_score(score: float) -> int:
+    # Map score to cadence (seconds)
+    # Aggressive mapping for production; tune as needed
+    if score >= 6.0:
+        return 60         # 1 minute
+    if score >= 4.0:
+        return 300        # 5 minutes
+    if score >= 2.0:
+        return 900        # 15 minutes
+    if score >= 1.0:
+        return 3600       # hourly
+    return 14400          # 4 hours
+
+
+def update_cadences(all_stats: List[Dict[str, Any]]):
     for s in all_stats:
-        score = compute_score(s)
-        cadence = cadence_from_score(score)
-        r.hset('source_cadence', s['source_id'], cadence)
-        r.hset('source_score', s['source_id'], score)
-        print(f"  Source: {s['source_id']}, Score: {score:.2f}, Cadence: {cadence}s")
+        try:
+            source_id = s.get("source_id") or s.get("id")
+            if not source_id:
+                continue
+            score = compute_score(s)
+            cadence = cadence_from_score(score)
+            # In a real setup, pipeline this for performance
+            r.hset('source_cadence', source_id, cadence)
+            r.hset('source_score', source_id, score)
+            LOG.info(f"Updated source: {source_id}, Score: {score:.2f}, Cadence: {cadence}s")
+        except Exception as e:
+            LOG.exception("Error processing stat item: %s", s)
 
-# Example: scheduled run every 5 minutes from cron / Kubernetes CronJob
-if __name__ == '__main__':
-    # This is a mock stats file. In production, this would be a database query.
-    mock_stats_data = [
-        {"source_id": "google_ads", "last_change_ts": "2025-09-24T18:00:00Z", "change_freq_per_day": 50, "last_error_rate": 0.01, "avg_value_score": 5.0},
-        {"source_id": "meta_business", "last_change_ts": "2025-09-24T17:30:00Z", "change_freq_per_day": 100, "last_error_rate": 0.05, "avg_value_score": 4.5},
-        {"source_id": "government_land_registry", "last_change_ts": "2025-09-23T12:00:00Z", "change_freq_per_day": 1, "last_error_rate": 0.0, "avg_value_score": 8.0}
-    ]
-    
-    # Simulate running this as a service
-    # while True:
-    print("Running adaptive scheduler cycle...")
-    # In a real cron job, you would query your stats database here.
-    # For this example, we're just using the mock data.
-    update_cadences(mock_stats_data)
-    print("Scheduler cycle complete.")
-    # time.sleep(300)
+
+def main():
+    LOG.info("Starting adaptive scheduler...")
+    while True:
+        try:
+            if STATS_SOURCE.startswith("http"):
+                stats_data = fetch_stats_from_http(STATS_SOURCE)
+            elif STATS_SOURCE:
+                stats_data = load_stats_from_file(STATS_SOURCE)
+            else:
+                LOG.warning("No STATS_SOURCE defined. Nothing to process.")
+                stats_data = []
+            
+            if stats_data:
+                update_cadences(stats_data)
+
+        except Exception as e:
+            LOG.exception("Scheduler main loop error: %s", e)
+        
+        LOG.info("Cycle complete. Sleeping for %d seconds.", POLL_SECONDS)
+        time.sleep(POLL_SECONDS)
+
+
+if __name__ == "__main__":
+    main()

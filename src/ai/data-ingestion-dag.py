@@ -6,51 +6,32 @@ from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.sensors.base import BaseSensorOperator
 from datetime import datetime, timedelta
+import redis
 import time
+import json
 
-# --- Mock Redis for Cadence Sensor ---
-class MockRedis:
-    def __init__(self):
-        self._data = {
-            'source_cadence': {
-                'google_ads': 60,
-                'meta_business': 300,
-                'government_land_registry': 3600,
-            }
-        }
-    def hget(self, name, key):
-        return self._data.get(name, {}).get(key)
-# --- End Mock Redis ---
+REDIS_URL = 'redis://redis:6379/0' # In production, use Airflow Variables/Connections
 
-# --- Cadence Sensor Operator ---
 class CadenceSensor(BaseSensorOperator):
-    def __init__(self, source_id, redis_conn_obj, *args, **kwargs):
+    def __init__(self, source_id, redis_conn=REDIS_URL, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.source_id = source_id
         # In a real environment, you'd use redis.Redis.from_url(redis_conn)
-        self.r = redis_conn_obj
+        self.r = redis.Redis.from_url(redis_conn)
 
     def poke(self, context):
         # Default to 1 hour if not set
         cadence = int(self.r.hget('source_cadence', self.source_id) or 3600)
         
-        # In a real scenario, XComs would be used to get the last run time.
-        # Here we simulate it.
-        # last_run = context['ti'].xcom_pull(task_ids=f"store_{self.source_id}_raw", key='last_run_ts')
-        last_run = None # Force a run for demonstration
+        last_run = context['ti'].xcom_pull(task_ids=f"store_{self.source_id}_raw", key='last_run_ts')
+        now_ts = int(time.time())
         
-        now = int(time.time())
-        
-        print(f"CadenceSensor for '{self.source_id}': Cadence is {cadence}s. Checking if it should run.")
-        
-        if not last_run or (now - int(last_run) >= cadence):
-            print(f"'{self.source_id}' is cleared to run.")
+        if not last_run or (now_ts - int(last_run) >= cadence):
+            print(f"CadenceSensor for '{self.source_id}': Cadence is {cadence}s. Last run was {last_run}. Cleared to run.")
             return True
             
-        print(f"'{self.source_id}' is not yet ready to run. Skipping.")
+        print(f"CadenceSensor for '{self.source_id}': Cadence is {cadence}s. Last run was {last_run}. Skipping.")
         return False
-
-# --- End Cadence Sensor ---
 
 # Mock fetch functions
 def fetch_google_ads(**kwargs): pass
@@ -80,11 +61,13 @@ def fetch_local_review_sites(**kwargs): pass
 def fetch_airbnb_listings(**kwargs): pass
 def fetch_booking_com(**kwargs): pass
 
-def store_raw_snapshot(source_id, payload, **kwargs):
+def store_raw_snapshot(source_id, **kwargs):
     # Save raw payload to object store + provenance envelope
-    # In a real DAG, this task would push the execution timestamp to XComs.
-    # ti = kwargs['ti']
-    # ti.xcom_push(key='last_run_ts', value=int(time.time()))
+    # Push execution timestamp to XComs for the sensor.
+    ti = kwargs['ti']
+    payload = ti.xcom_pull(task_ids=f"fetch_{source_id}")
+    # ... storing logic here ...
+    ti.xcom_push(key='last_run_ts', value=int(time.time()))
     pass
 
 def index_raw_to_search_and_vector(**kwargs):
@@ -93,9 +76,9 @@ def index_raw_to_search_and_vector(**kwargs):
     pass
 
 with DAG(
-    dag_id='realestate_ingestion_full',
+    dag_id='realestate_ingestion_adaptive',
     start_date=datetime(2025, 9, 23),
-    schedule_interval='@hourly', # Main DAG runs, but sensors control individual tasks
+    schedule_interval='@minute', # Sensor controls the actual run frequency
     catchup=False,
     default_args={
         'owner': 'data_team',
@@ -105,8 +88,6 @@ with DAG(
         'timeout': 600,      # Sensor timeout
     }
 ) as dag:
-
-    mock_redis_client = MockRedis()
 
     all_source_tasks = []
 
@@ -144,7 +125,6 @@ with DAG(
         t_sensor = CadenceSensor(
             task_id=f'sense_cadence_{source}',
             source_id=source,
-            redis_conn_obj=mock_redis_client,
             mode='poke',
         )
 
@@ -156,7 +136,7 @@ with DAG(
         t_store = PythonOperator(
             task_id=f'store_{source}_raw',
             python_callable=store_raw_snapshot,
-            op_kwargs={'source_id': source, 'payload': '{{ ti.xcom_pull(task_ids="fetch_' + source + '") }}' }
+            op_kwargs={'source_id': source}
         )
 
         t_sensor >> t_fetch >> t_store
@@ -171,5 +151,3 @@ with DAG(
 
     for t in all_source_tasks:
         t >> t_index_all
-
-    

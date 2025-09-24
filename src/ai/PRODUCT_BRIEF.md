@@ -49,7 +49,13 @@ To ensure data pipeline reliability, our system implements a self-healing patter
 3.  Trigger an alert for human operations if both fallbacks fail.
 This ensures maximum uptime and data freshness.
 
-## 4. Enabled APIs & Technical Capabilities
+## 4. User Experience & Visualization Patterns
+
+- **Entity Timeline**: A unified, chronological view for any entity (Project, Developer) showing all associated events: ad campaigns launched, permits filed, news articles published, social media mentions, and mobility data spikes.
+- **Composite Alerts Dashboard**: A prioritized queue of AI-detected events (e.g., "New Project Launch Detected," "Reputation Risk Alert"). Each alert is explainable, showing the contributing signals and allowing for user feedback (confirm/dismiss) to retrain the models.
+- **Investigation Workspace**: An interactive canvas that combines a Knowledge Graph neighborhood view (showing entities and their relationships up to 2-hops away), a semantic search view (showing similar ad creatives or articles from the vector DB), and a timeline view for deep-dive analysis.
+
+## 5. Enabled APIs & Technical Capabilities
 
 The following Google Cloud APIs are enabled and form the technical backbone of our AI and data processing capabilities.
 

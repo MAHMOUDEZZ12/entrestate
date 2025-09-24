@@ -73,5 +73,3 @@ def active_learning_cycle():
 ```
 
 This cycle ensures that human effort is focused on the examples that the model is most confused about, leading to the fastest possible improvement in model performance.
-
-    
