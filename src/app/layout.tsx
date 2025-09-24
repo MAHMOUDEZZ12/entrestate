@@ -13,6 +13,7 @@ import { CreativeCanvas } from '@/components/creative-canvas';
 import { SensitiveAreaProvider } from '@/context/SensitiveAreaContext';
 import AppContentClient from '@/components/AppContent';
 import React from 'react';
+import { SpotlightProvider } from '@/context/SpotlightContext';
 
 const fontSans = PT_Sans({ 
   subsets: ['latin'],
@@ -56,6 +57,7 @@ export default function RootLayout({
             disableTransitionOnChange
             >
               <SensitiveAreaProvider>
+                <SpotlightProvider>
                   <TabProvider>
                       <CanvasProvider>
                           <AppContentClient>
@@ -63,6 +65,7 @@ export default function RootLayout({
                           </AppContentClient>
                       </CanvasProvider>
                   </TabProvider>
+                </SpotlightProvider>
               </SensitiveAreaProvider>
             </ThemeProvider>
         </AuthProvider>
