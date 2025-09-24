@@ -7,8 +7,6 @@ import { PageHeader } from '@/components/ui/page-header';
 import { ArrowRight, Plus, Workflow } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { tools } from '@/lib/tools-client';
-import { ResourcesHeader } from '@/components/resources-header';
-import { LandingFooter } from '@/components/landing-footer';
 
 const flowLibrary = [
     {
@@ -26,13 +24,13 @@ const flowLibrary = [
     {
         title: "Ad Campaign from a Brochure",
         description: "Upload a project brochure, and the AI will generate ad copy, create an audience, and launch a campaign on Meta.",
-        apps: ["Insta Ads Designer", "Audience Creator", "Meta Auto Pilot"],
+        apps: ["Insta Ads Designer", "Brand Search Optimization", "Property Marketer AI"],
         cta: "Use This Flow"
     },
     {
         title: "Client Offer Package",
         description: "Select multiple properties, generate data-driven price estimates for each, and build a beautiful side-by-side comparison PDF for your client.",
-        apps: ["Market Library", "AI Price Estimator", "Multi-Offer Builder"],
+        apps: ["Market Projects Library", "Deal Analyzer", "Multi-Offer Builder"],
         cta: "Use This Flow"
     }
 ];
@@ -40,7 +38,6 @@ const flowLibrary = [
 export default function FlowLibraryPage() {
   return (
      <div className="flex flex-col min-h-screen">
-      <ResourcesHeader />
       <main className="flex-1">
         <PageHeader
             title="Flow Library"
@@ -89,5 +86,3 @@ export default function FlowLibraryPage() {
     </div>
   );
 }
-
-    
