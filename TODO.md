@@ -6,10 +6,10 @@ This document outlines the remaining tasks and areas that require senior-level a
 
 ## High-Priority / Core Functionality
 
-### 1. Connect UI to Database Services
-- **Issue:** Many parts of the dashboard UI use mock data instead of fetching from the database via the established services in `src/services/database.ts`.
+### 1. Connect Workspace UI to Database Services
+- **Issue:** Many parts of the authenticated workspace (`/me` pages) use mock data instead of fetching from the database via the established services in `src/services/database.ts`.
 - **To-Do:**
-    - **`My Projects` on Dashboard:** Replace mock data with a real-time fetch from the user's project library in Firestore (`/api/user/projects`).
+    - **`My Projects` on Workspace Home:** Replace mock data with a real-time fetch from the user's project library in Firestore (`/api/user/projects`).
     - **`Brand & Assets` Page:** Ensure the page correctly loads and saves all brand kit information (including logo upload to Firebase Storage) and the knowledge base file list.
     - **`Leads (CRM)` Page:** This is currently a full mock. It needs to be connected to a `leads` collection in Firestore.
 
@@ -32,7 +32,7 @@ This document outlines the remaining tasks and areas that require senior-level a
     - **Examples:** `vm-creator`, `creative-execution-terminal`.
 
 ### 2. Implement the "Flow Builder"
-- **Issue:** The Flow Builder page (`/dashboard/flows`) is a great UI simulation but is not functional. It does not save or execute the created flows.
+- **Issue:** The Flow Builder page (`/me/flows`) is a great UI simulation but is not functional. It does not save or execute the created flows.
 - **To-Do:**
     - Design a JSON structure to represent a user-created flow.
     - Implement a "Save Flow" feature that stores this JSON in Firestore.
