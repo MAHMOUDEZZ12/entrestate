@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { smartInputRouter } from '@/ai/flows/utility/smart-input-router';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { solutions } from '@/lib/solutions-data';
 
 function SmartInput() {
     const [input, setInput] = useState('');
@@ -39,7 +40,7 @@ function SmartInput() {
                     if (result.toolId) {
                         router.push(`/me/tool/${result.toolId}`);
                     } else {
-                         router.push(`/me/marketing`);
+                         router.push('/me/marketing');
                     }
                     break;
                 case 'Post':
@@ -91,7 +92,7 @@ const mockFeedItems = [
 
 function CommunityFeed() {
     return (
-        <div className="w-full max-w-3xl mx-auto space-y-6 mt-12">
+        <div className="w-full space-y-6">
             {mockFeedItems.map((item, index) => {
                  if (item.type === 'UserPost') {
                     return (
@@ -144,7 +145,7 @@ function CommunityFeed() {
 
 function CommunityHub() {
   return (
-    <div className="p-4 md:p-10 space-y-8 container mx-auto">
+    <div className="p-4 md:p-10 space-y-16 container mx-auto">
        <PageHeader
         title="Community Hub"
         description="Your intelligent starting point. Ask the AI, see what's new, and act on today's opportunities."
@@ -158,9 +159,33 @@ function CommunityHub() {
         </Link>
       </PageHeader>
       
+      {/* Block 1 */}
       <SmartInput />
       
-      <CommunityFeed />
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+        {/* Block 2 */}
+        <div className="lg:col-span-2">
+            <h2 className="text-2xl font-bold tracking-tight mb-6">Today's Feed</h2>
+            <CommunityFeed />
+        </div>
+
+        {/* Block 3 */}
+        <div className="lg:col-span-1">
+            <h2 className="text-2xl font-bold tracking-tight mb-6">Our Solutions</h2>
+            <div className="space-y-4">
+                {solutions.map(solution => (
+                    <Link href={`/me/solutions/${solution.slug}`} key={solution.slug}>
+                        <Card className="hover:border-primary/50 transition-colors">
+                            <CardHeader>
+                                <CardTitle>{solution.title}</CardTitle>
+                                <CardDescription>{solution.description}</CardDescription>
+                            </CardHeader>
+                        </Card>
+                    </Link>
+                ))}
+            </div>
+        </div>
+      </div>
     </div>
   );
 }

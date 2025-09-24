@@ -53,7 +53,6 @@ export function GlobalChat() {
   const [showFlowsButton, setShowFlowsButton] = useState(false);
   
   const [isBarOnTop, setIsBarOnTop] = useState(false);
-  const [isClient, setIsClient] = useState(false);
 
 
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -62,7 +61,6 @@ export function GlobalChat() {
   const { spotlightedApp } = useSpotlight();
   
   useEffect(() => {
-    setIsClient(true);
     try {
         const savedValue = localStorage.getItem('isAnalogBarOnTop');
         setIsBarOnTop(savedValue === 'true');

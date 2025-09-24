@@ -63,6 +63,9 @@ export default function RootLayout({
                           <AppContentClient>
                             {children}
                           </AppContentClient>
+                           <Toaster />
+                           <CookieConsent />
+                           <CreativeCanvas />
                       </CanvasProvider>
                   </TabProvider>
                 </SpotlightProvider>

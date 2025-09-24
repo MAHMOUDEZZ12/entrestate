@@ -13,6 +13,8 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
 
 const mockSmartResults = [
     { title: 'Highest ROI (Off-Plan)', project: 'Sobha Hartland II', details: 'Projected 8.5% ROI due to location and amenities.'},
@@ -29,11 +31,58 @@ const mockDeepResults = [
 function DiscoverySearchComponent() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { toast } = useToast();
+  const { user } = useAuth();
+  
   const query = searchParams.get('q') || '';
   const [currentQuery, setCurrentQuery] = React.useState(query);
   const [isLoading, setIsLoading] = React.useState(false);
   const [searchResults, setSearchResults] = React.useState<Project[]>([]);
-  const hasSearched = !!query; // Determine if a search has been performed based on URL param
+  const hasSearched = !!query;
+  const [myProjectIds, setMyProjectIds] = useState<string[]>([]);
+
+  const fetchUserProjects = useCallback(async () => {
+    if (!user) return;
+    try {
+        const idToken = await user.getIdToken();
+        const response = await fetch('/api/user/projects', {
+            headers: { 'Authorization': `Bearer ${idToken}` }
+        });
+        const data = await response.json();
+        if (data.ok) {
+            setMyProjectIds(data.data.map((p: Project) => p.id));
+        }
+    } catch (error) {
+        console.error("Failed to fetch user projects:", error);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    fetchUserProjects();
+  }, [fetchUserProjects]);
+
+  const handleAddToLibrary = async (project: Project) => {
+    if (!user) {
+        toast({ title: "Not Authenticated", description: "You must be logged in to add projects.", variant: "destructive" });
+        return;
+    }
+    
+    try {
+        const idToken = await user.getIdToken();
+        const response = await fetch('/api/user/projects', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${idToken}` },
+            body: JSON.stringify(project)
+        });
+        const data = await response.json();
+        if (!data.ok) throw new Error(data.error);
+        setMyProjectIds(prev => [...prev, project.id]);
+        toast({ title: `${project.name} Added!`, description: "The project has been added to your personal library." });
+    } catch (error: any) {
+        toast({ title: "Error", description: `Could not add project: ${error.message}`, variant: "destructive" });
+    }
+  }
+
 
   const performSearch = useCallback(async (searchQuery: string) => {
     if (!searchQuery) return;
@@ -55,7 +104,6 @@ function DiscoverySearchComponent() {
   }, []);
   
   useEffect(() => {
-    // If there's a query in the URL on initial load, perform the search
     if (query) {
       setCurrentQuery(query);
       performSearch(query);
@@ -65,7 +113,6 @@ function DiscoverySearchComponent() {
   const handleSearchSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!currentQuery.trim()) return;
-    // Update the URL, which will trigger the useEffect to perform the search
     router.push(`/me/discover?q=${encodeURIComponent(currentQuery.trim())}`);
   };
   
@@ -106,13 +153,26 @@ function DiscoverySearchComponent() {
                             <CardTitle>Direct Results for "{query}"</CardTitle>
                             <CardDescription>Real-time results from the Market Library.</CardDescription>
                         </CardHeader>
-                        <CardContent className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                            {isLoading ? (
+                        <CardContent>
+                             {isLoading ? (
                                 <div className="col-span-full flex justify-center items-center h-40"><Loader2 className="animate-spin" /></div>
                             ) : searchResults.length > 0 ? (
-                                searchResults.map(p => <ProjectCard key={p.id} project={p} />)
+                               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                                {searchResults.map(p => (
+                                     <ProjectCard
+                                        key={p.id}
+                                        project={p}
+                                        actions={
+                                            <Button size="sm" onClick={() => handleAddToLibrary(p)} disabled={myProjectIds.includes(p.id)}>
+                                                <PlusCircle className="mr-2 h-4 w-4" />
+                                                {myProjectIds.includes(p.id) ? 'Added' : 'Add to Library'}
+                                            </Button>
+                                        }
+                                    />
+                                ))}
+                               </div>
                             ) : (
-                                <p className="col-span-full text-center text-muted-foreground">No projects found.</p>
+                                <p className="col-span-full text-center text-muted-foreground py-10">No projects found.</p>
                             )}
                         </CardContent>
                     </Card>

@@ -6,27 +6,7 @@ import { PageHeader } from '@/components/ui/page-header';
 import { Sparkles, Telescope, MessageCircle, FileJson } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
-
-const solutions = [
-  {
-    slug: 'pro-search-eng-x3',
-    title: 'PRO SEARCH ENG. x3',
-    icon: <Telescope className="h-8 w-8" />,
-    description: "The triple-engine of discovery: Fast, Smart, and Deep Search.",
-  },
-  {
-    slug: 'estchat-x3',
-    title: 'ESTCHAT X3',
-    icon: <MessageCircle className="h-8 w-8" />,
-    description: "The conversational frontline for your website, social media, and CRM.",
-  },
-  {
-    slug: 'mega-listing-pro-2',
-    title: 'MEGA LISTING PRO 2',
-    icon: <FileJson className="h-8 w-8" />,
-    description: "The unified market registry to consolidate and verify all listings.",
-  },
-];
+import { solutions } from '@/lib/solutions-data';
 
 export default function SolutionsPage() {
   return (
@@ -43,7 +23,7 @@ export default function SolutionsPage() {
                     <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg">
                         <CardHeader>
                             <div className="p-4 bg-primary/10 text-primary rounded-2xl w-fit mb-4">
-                                {solution.icon}
+                                {solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
                             </div>
                             <CardTitle>{solution.title}</CardTitle>
                             <CardDescription>{solution.description}</CardDescription>
