@@ -11,7 +11,6 @@ import { TabProvider } from '@/context/TabManagerContext';
 import { CanvasProvider } from '@/context/CanvasContext';
 import { CreativeCanvas } from '@/components/creative-canvas';
 import { SensitiveAreaProvider } from '@/context/SensitiveAreaContext';
-import { SpotlightProvider } from '@/context/SpotlightContext';
 import AppContentClient from '@/components/AppContent';
 import React from 'react';
 
@@ -57,7 +56,6 @@ export default function RootLayout({
             disableTransitionOnChange
             >
               <SensitiveAreaProvider>
-                <SpotlightProvider>
                   <TabProvider>
                       <CanvasProvider>
                           <AppContentClient>
@@ -65,7 +63,6 @@ export default function RootLayout({
                           </AppContentClient>
                       </CanvasProvider>
                   </TabProvider>
-                </SpotlightProvider>
               </SensitiveAreaProvider>
             </ThemeProvider>
         </AuthProvider>

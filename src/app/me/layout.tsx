@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -5,7 +6,6 @@ import { DashboardHeader } from '@/components/dashboard-header';
 import { DashboardSidebar } from '@/components/dashboard-sidebar';
 import { GlobalChat } from '@/components/global-chat';
 import { cn } from '@/lib/utils';
-import { SpotlightProvider } from '@/context/SpotlightContext';
 
 export default function MeLayout({
   children,
