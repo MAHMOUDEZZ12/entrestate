@@ -45,8 +45,8 @@ function SearchResultsComponent() {
     return (
         <main className="p-4 md:p-10 space-y-8 container mx-auto">
             <PageHeader
-                title={`Search Results for "${query}"`}
-                description="Live results from our AI-powered Market Library."
+                title={query ? `Search Results for "${query}"` : 'Discover Projects'}
+                description={query ? "Live results from our AI-powered Market Library." : "Search our Market Library to discover new projects."}
                 icon={<Search className="h-8 w-8" />}
             />
 
@@ -72,7 +72,7 @@ function SearchResultsComponent() {
                         />
                     ))}
                 </div>
-            ) : (
+            ) : query && (
                 <Card className="text-center py-16">
                     <CardContent>
                         <h3 className="text-xl font-bold">No Projects Found</h3>
