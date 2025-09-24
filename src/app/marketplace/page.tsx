@@ -95,7 +95,7 @@ export default function MarketplacePage() {
             </TabsList>
 
             <TabsContent value="all" className="mt-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {solutions.map(solution => (
                         <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
                             <Card 
@@ -129,7 +129,7 @@ export default function MarketplacePage() {
 
             {marketingSuites.map(suite => (
                 <TabsContent key={suite.id} value={suite.id} className="mt-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {allTools.filter(t => t.suite === suite.name).map(tool => (
                             <DashboardServiceCard 
                                 key={tool.id} 
