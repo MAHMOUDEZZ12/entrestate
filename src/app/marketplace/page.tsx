@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { LayoutGrid, Search, Telescope, MessageCircle, FileJson, ArrowRight } from 'lucide-react';
-import { tools as allTools, ToolData } from '@/lib/tools-data';
+import { tools as allTools, Feature } from '@/lib/tools-client';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
@@ -23,7 +23,7 @@ export default function MarketplacePage() {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [addedApps, setAddedApps] = useState<string[]>([]);
-  const [filteredTools, setFilteredTools] = useState<ToolData[]>(allTools);
+  const [filteredTools, setFilteredTools] = useState<Feature[]>(allTools);
   
   const allCategories = ['All', ...new Set(allTools.flatMap(t => t.categories))] as FilterCategory[];
   const [activeFilter, setActiveFilter] = React.useState<FilterCategory>('All');

@@ -14,7 +14,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
 import type { Project } from '@/types';
-import { tools as allTools, ToolData } from '@/lib/tools-data';
+import { tools } from '@/lib/tools-client';
 import { ProjectCard } from '@/components/ui/project-card';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
 import { dealsSmartPlanner } from '@/ai/flows/sales/deals-smart-planner';
@@ -186,7 +186,7 @@ function WorkspaceHome() {
         }
     }, [user]);
 
-    const myApps = allTools.filter(tool => addedApps.includes(tool.id));
+    const myApps = tools.filter(tool => addedApps.includes(tool.id));
 
   return (
     <div className="p-4 md:p-10 space-y-12 container mx-auto">

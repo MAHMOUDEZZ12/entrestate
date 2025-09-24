@@ -56,7 +56,7 @@ const processToolsData = (data: ToolData[]): Feature[] => {
     return data.map(tool => ({
         ...tool,
         icon: icons[tool.iconName] || <Sparkles />,
-        href: `/tool/${tool.id}`,
+        href: `/me/tool/${tool.id}`,
         guideHref: `/blog/${tool.id}`,
     }));
 };
