@@ -1,6 +1,6 @@
 
 import { genkit } from 'genkit';
-import * as firebase from '@genkit-ai/firebase';
+import { firebase } from '@genkit-ai/firebase';
 import { googleAI } from '@genkit-ai/googleai';
 import * as z from 'zod';
 
@@ -9,7 +9,7 @@ import * as z from 'zod';
 
 export default genkit({
   plugins: [
-    (firebase as any).default(),
+    firebase(),
     googleAI({
       apiVersion: 'v1',
     }),
