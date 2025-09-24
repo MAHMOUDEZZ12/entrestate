@@ -74,7 +74,7 @@ export function WorkspaceHeader() {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
                 <NavigationMenuItem>
-                    <Link href="/me" legacyBehavior passHref>
+                    <Link href="/me" passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Workspace
                         </NavigationMenuLink>
@@ -82,7 +82,7 @@ export function WorkspaceHeader() {
                 </NavigationMenuItem>
                 
                  <NavigationMenuItem>
-                    <Link href="/me/discover" legacyBehavior passHref>
+                    <Link href="/me/discover" passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Discovery
                         </NavigationMenuLink>
@@ -107,7 +107,7 @@ export function WorkspaceHeader() {
                 </NavigationMenuItem>
                 
                  <NavigationMenuItem>
-                    <Link href="/solutions" legacyBehavior passHref>
+                    <Link href="/solutions" passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Solutions
                         </NavigationMenuLink>
@@ -139,7 +139,7 @@ export function WorkspaceHeader() {
                 <DropdownMenuContent align="end">
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <Link href="/me/settings">
+                    <Link href="/me/settings" passHref>
                         <DropdownMenuItem className="cursor-pointer">
                             <Settings className="mr-2 h-4 w-4" />
                             Settings
