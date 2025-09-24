@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, LayoutGrid, Palette, Workflow, Store, Database, Target, Users2, School, BookOpen, Brain, GanttChartSquare, User as UserIcon, Sparkles, Search } from 'lucide-react';
+import { LogOut, Settings, GanttChartSquare, User as UserIcon } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import { Logo } from '@/components/logo';

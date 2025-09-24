@@ -43,8 +43,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!auth) {
         console.warn("Firebase Auth not initialized, user will be treated as logged out.");
         setLoading(false);
+        // --- ROUTE PROTECTION DISABLED FOR DEVELOPMENT ---
         // if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-        //     router.push('/login');
+        //     router.push('/');
         // }
         return;
     }
@@ -54,7 +55,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAdmin(userIsAdmin);
       setLoading(false);
       
-      // --- Route Protection Logic (DISABLED FOR DEVELOPMENT) ---
+      // --- ROUTE PROTECTION LOGIC (DISABLED FOR DEVELOPMENT) ---
       // if (user) {
       //   // User is logged in. Check if they are trying to access admin routes without permission.
       //   if (isAdminRoute(pathname) && !userIsAdmin) {
@@ -63,7 +64,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // } else {
       //   // User is not logged in. Protect all relevant routes.
       //   if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-      //     router.push('/login');
+      //     router.push('/');
       //   }
       // }
     });
@@ -80,25 +81,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
   }
 
-  // --- Final check after loading (DISABLED FOR DEVELOPMENT) ---
-  // if (!user && (isProtectedRoute(pathname) || isAdminRoute(pathname))) {
-  //     // Don't render children, let the redirect happen.
-  //     return (
-  //        <div className="flex h-screen w-full items-center justify-center">
-  //           <Loader2 className="h-8 w-8 animate-spin" />
-  //       </div>
-  //     );
-  // }
-
-  //  if (user && isAdminRoute(pathname) && !isAdmin) {
-  //     // Don't render children, let the redirect happen.
-  //     return (
-  //        <div className="flex h-screen w-full items-center justify-center">
-  //           <Loader2 className="h-8 w-8 animate-spin" />
-  //       </div>
-  //     );
-  // }
-  
   const value = { user, loading, isAdmin };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

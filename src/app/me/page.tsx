@@ -239,7 +239,7 @@ function WorkspaceHome() {
                                 <Link key={app.id} href={app.href} className="block group">
                                      <div className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-muted transition-colors text-center">
                                         <div className="p-3 rounded-lg text-white" style={{ backgroundColor: app.color }}>
-                                           {React.cloneElement(app.icon, { className: 'h-6 w-6' })}
+                                           {app.icon && React.cloneElement(app.icon, { className: 'h-6 w-6' })}
                                         </div>
                                         <p className="text-xs font-semibold truncate w-20">{app.dashboardTitle || app.title}</p>
                                     </div>
