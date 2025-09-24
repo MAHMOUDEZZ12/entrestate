@@ -76,10 +76,6 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
               <File className="mr-2 h-4 w-4" />
               <span>Pricing</span>
             </CommandItem>
-            <CommandItem onSelect={() => runCommand(() => router.push('/me/community'))}>
-                <File className="mr-2 h-4 w-4" />
-                <span>Community</span>
-            </CommandItem>
          </CommandGroup>
       </CommandList>
     </CommandDialog>

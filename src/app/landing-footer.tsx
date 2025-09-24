@@ -47,7 +47,6 @@ export function LandingFooter() {
             <h4 className="text-lg font-semibold font-heading mb-4">Company</h4>
             <nav className="flex flex-col space-y-2">
               <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About Us</Link>
-              <Link href="/me/community" className="text-muted-foreground hover:text-primary transition-colors">Community</Link>
               <Link href="/status" className="text-muted-foreground hover:text-primary transition-colors">System Status</Link>
               <Link href="/support" className="text-muted-foreground hover:text-primary transition-colors">Support</Link>
               <Link href="/technology" className="text-muted-foreground hover:text-primary transition-colors">Technology</Link>

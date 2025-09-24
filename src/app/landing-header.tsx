@@ -11,7 +11,6 @@ import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/s
 const navLinks = [
     { name: 'Solutions', href: '/solutions' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Community', href: '/me/community' },
 ];
 
 export function LandingHeader() {

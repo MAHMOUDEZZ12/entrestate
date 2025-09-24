@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { LogOut, Settings, LayoutGrid, Palette, Workflow, Store, Database, Target, Users2, School, BookOpen, Brain, GanttChartSquare, User as UserIcon, Sparkles, Search } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
-import { Logo } from './logo';
+import { Logo } from '@/components/logo';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -74,7 +74,7 @@ export function WorkspaceHeader() {
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
                 <NavigationMenuItem>
-                    <Link href="/me" legacyBehavior passHref>
+                    <Link href="/me" passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Workspace
                         </NavigationMenuLink>
@@ -82,7 +82,7 @@ export function WorkspaceHeader() {
                 </NavigationMenuItem>
                 
                  <NavigationMenuItem>
-                    <Link href="/me/discover" legacyBehavior passHref>
+                    <Link href="/me/discover" passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Discovery
                         </NavigationMenuLink>
@@ -107,7 +107,7 @@ export function WorkspaceHeader() {
                 </NavigationMenuItem>
                 
                  <NavigationMenuItem>
-                    <Link href="/solutions" legacyBehavior passHref>
+                    <Link href="/solutions" passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Solutions
                         </NavigationMenuLink>

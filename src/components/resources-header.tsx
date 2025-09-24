@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -8,10 +9,7 @@ import { Logo } from './logo';
 
 const navLinks = [
     { name: 'Solutions', href: '/solutions' },
-    { name: 'Apps', href: '/apps' },
     { name: 'Pricing', href: '/pricing' },
-    { name: 'Academy', href: '/me/community/academy' },
-    { name: 'Community', href: '/me/community' },
     { name: 'Blog', href: '/blog' },
 ];
 

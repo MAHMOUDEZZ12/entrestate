@@ -39,7 +39,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/gem/keys',
     // Main User Dashboard
     '/me',
-    '/me/solutions',
     '/me/marketing',
   ].map((route) => ({
     url: `${siteUrl}${route}`,
