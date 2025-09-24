@@ -4,13 +4,14 @@
 import React, { useState, Suspense } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Users2, Rss, Building, Sparkles, Wand2, Search, ArrowRight } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { smartInputRouter } from '@/ai/flows/utility/smart-input-router';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 function SmartInput() {
     const [input, setInput] = useState('');
@@ -18,15 +19,16 @@ function SmartInput() {
     const { toast } = useToast();
     const router = useRouter();
 
-    const handleAction = async () => {
+    const handleAction = async (e: React.FormEvent) => {
+        e.preventDefault();
         if (!input) return;
         setIsLoading(true);
         try {
             const result = await smartInputRouter({ query: input });
             
             toast({
-                title: `AI Intent Analysis: ${result.intent}`,
-                description: `Routing you to the best tool for your request...`
+                title: `AI Intent: ${result.intent}`,
+                description: `Routing to the best tool for your request...`
             });
 
             switch (result.intent) {
@@ -34,20 +36,15 @@ function SmartInput() {
                     router.push(`/me/discover?q=${encodeURIComponent(input)}`);
                     break;
                 case 'Command':
-                    // Assuming the AI returns the most relevant tool ID
                     if (result.toolId) {
                         router.push(`/me/tool/${result.toolId}`);
                     } else {
-                         router.push(`/me/marketing`); // Fallback to marketplace
+                         router.push(`/me/marketing`);
                     }
                     break;
                 case 'Post':
                 default:
-                    // For now, we'll just show a toast. This would integrate with the community post modal.
-                     toast({
-                        title: "Ready to Post",
-                        description: `Your thought is ready to be shared with the community.`,
-                    });
+                     router.push('/me/community');
                     break;
             }
 
@@ -55,30 +52,30 @@ function SmartInput() {
             toast({ title: "Error", description: e.message, variant: 'destructive' });
         } finally {
             setIsLoading(false);
+            setInput('');
         }
     };
 
     return (
         <Card className="w-full max-w-3xl mx-auto shadow-2xl border-primary/20 ring-1 ring-primary/10">
             <CardContent className="p-6">
-                <div className="relative">
+                <form onSubmit={handleAction} className="relative">
                     <Wand2 className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                     <Input
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         placeholder="What do you want to create, find, or do today?"
                         className="w-full h-14 pl-12 pr-28 text-lg rounded-full"
-                        onKeyDown={(e) => e.key === 'Enter' && handleAction()}
                     />
                     <Button 
+                        type="submit"
                         size="lg" 
                         className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full"
-                        onClick={handleAction}
                         disabled={isLoading}
                     >
                          {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ArrowRight className="h-5 w-5" />}
                     </Button>
-                </div>
+                </form>
             </CardContent>
         </Card>
     );
@@ -86,9 +83,9 @@ function SmartInput() {
 
 
 const mockFeedItems = [
+    { type: 'DailyAction', title: 'Generate a Market Report for JVC', description: 'JVC is showing high search interest this week. Generate a report to share with potential investors.', toolId: 'market-reports' },
     { type: 'UserPost', user: 'Ali T.', content: 'Just closed a deal in Dubai Hills using the Deal Analyzer. The ROI projections were spot on and helped convince the client. Highly recommend this tool!' },
     { type: 'NewProject', projectName: 'Volta by DAMAC', area: 'Downtown Dubai', description: 'A new luxury high-rise focused on wellness and active living has just been added to the Market Library.' },
-    { type: 'DailyAction', title: 'Generate a Market Report for JVC', toolId: 'market-reports' },
     { type: 'AppUpdate', appName: 'AI Video Presenter', update: 'Now supports custom virtual backgrounds. Try it now!' },
 ];
 
@@ -127,12 +124,15 @@ function CommunityFeed() {
                             <CardHeader>
                                  <CardTitle className="text-lg flex items-center gap-2"><Sparkles className="h-5 w-5 text-accent"/> Daily Action Idea</CardTitle>
                             </CardHeader>
-                            <CardContent className="flex items-center justify-between">
+                            <CardContent className="space-y-3">
                                 <p className="font-semibold">{item.title}</p>
+                                <p className="text-sm text-muted-foreground">{item.description}</p>
+                            </CardContent>
+                             <CardFooter>
                                 <Link href={`/me/tool/${item.toolId}`}>
                                     <Button>Click to Run <ArrowRight className="ml-2 h-4 w-4"/></Button>
                                 </Link>
-                            </CardContent>
+                            </CardFooter>
                         </Card>
                     )
                  }
