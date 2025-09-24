@@ -67,7 +67,6 @@ export default function RootLayout({
                            <Toaster />
                            <CookieConsent />
                            <CreativeCanvas />
-                           <GlobalChat />
                       </CanvasProvider>
                   </TabProvider>
                 </SpotlightProvider>
