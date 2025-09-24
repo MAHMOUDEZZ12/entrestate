@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
@@ -42,9 +43,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!auth) {
         console.warn("Firebase Auth not initialized, user will be treated as logged out.");
         setLoading(false);
-        if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-            router.push('/login');
-        }
+        // if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
+        //     router.push('/login');
+        // }
         return;
     }
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -53,18 +54,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAdmin(userIsAdmin);
       setLoading(false);
       
-      // --- Route Protection Logic ---
-      if (user) {
-        // User is logged in. Check if they are trying to access admin routes without permission.
-        if (isAdminRoute(pathname) && !userIsAdmin) {
-          router.push('/me'); // Redirect non-admins from /gem to /me
-        }
-      } else {
-        // User is not logged in. Protect all relevant routes.
-        if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-          router.push('/login');
-        }
-      }
+      // --- Route Protection Logic (DISABLED) ---
+      // if (user) {
+      //   // User is logged in. Check if they are trying to access admin routes without permission.
+      //   if (isAdminRoute(pathname) && !userIsAdmin) {
+      //     router.push('/me'); // Redirect non-admins from /gem to /me
+      //   }
+      // } else {
+      //   // User is not logged in. Protect all relevant routes.
+      //   if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
+      //     router.push('/login');
+      //   }
+      // }
     });
 
     return () => unsubscribe();
@@ -79,24 +80,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
   }
 
-  // Final check after loading, in case of race conditions with navigation
-  if (!user && (isProtectedRoute(pathname) || isAdminRoute(pathname))) {
-      // Don't render children, let the redirect happen.
-      return (
-         <div className="flex h-screen w-full items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin" />
-        </div>
-      );
-  }
+  // Final check after loading (DISABLED)
+  // if (!user && (isProtectedRoute(pathname) || isAdminRoute(pathname))) {
+  //     // Don't render children, let the redirect happen.
+  //     return (
+  //        <div className="flex h-screen w-full items-center justify-center">
+  //           <Loader2 className="h-8 w-8 animate-spin" />
+  //       </div>
+  //     );
+  // }
 
-   if (user && isAdminRoute(pathname) && !isAdmin) {
-      // Don't render children, let the redirect happen.
-      return (
-         <div className="flex h-screen w-full items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin" />
-        </div>
-      );
-  }
+  //  if (user && isAdminRoute(pathname) && !isAdmin) {
+  //     // Don't render children, let the redirect happen.
+  //     return (
+  //        <div className="flex h-screen w-full items-center justify-center">
+  //           <Loader2 className="h-8 w-8 animate-spin" />
+  //       </div>
+  //     );
+  // }
   
   const value = { user, loading, isAdmin };
 

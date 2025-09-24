@@ -9,20 +9,24 @@ import { CreativeCanvas } from '@/components/creative-canvas';
 import { LandingHeader } from '@/components/landing-header';
 import { LandingFooter } from '@/components/landing-footer';
 import { useAuth } from '@/hooks/useAuth';
+import { DashboardHeader } from './dashboard-header';
 
 export default function AppContentClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { user, loading } = useAuth();
+  const { loading } = useAuth();
 
-  const isDashboard = !!user && (pathname?.startsWith('/me') || pathname?.startsWith('/gem'));
+  const isAppRoute = pathname?.startsWith('/me') || pathname?.startsWith('/gem');
 
-  if (loading) return null; // or return a small client-side spinner
+  if (loading) {
+    // You can return a global loader here if you prefer
+    return null;
+  }
 
   return (
     <>
-      {!isDashboard && <LandingHeader />}
+      {isAppRoute ? <DashboardHeader /> : <LandingHeader />}
       {children}
-      {!isDashboard && <LandingFooter />}
+      {!isAppRoute && <LandingFooter />}
       <Toaster />
       <CookieConsent />
       <CreativeCanvas />
