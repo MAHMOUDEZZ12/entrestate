@@ -2,9 +2,8 @@
 'use client';
 
 import React, { useState, Suspense, useEffect, useCallback } from 'react';
-import { PageHeader } from '@/components/ui/page-header';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Users2, Rss, Building, Sparkles, Wand2, Search, ArrowRight, Library, LayoutGrid, PlusCircle } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
@@ -16,7 +15,6 @@ import { useAuth } from '@/hooks/useAuth';
 import type { Project } from '@/types';
 import { tools } from '@/lib/tools-client';
 import { ProjectCard } from '@/components/ui/project-card';
-import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
 import { dealsSmartPlanner } from '@/ai/flows/sales/deals-smart-planner';
 
 
@@ -190,11 +188,6 @@ function WorkspaceHome() {
 
   return (
     <div className="p-4 md:p-10 space-y-12 container mx-auto">
-        <div className="text-center mt-8">
-            <h1 className="text-4xl font-bold font-heading tracking-tight">Your Workspace</h1>
-            <p className="text-lg text-muted-foreground mt-2">Your intelligent command center for the real estate market.</p>
-        </div>
-      
       <SmartInput />
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
@@ -239,7 +232,7 @@ function WorkspaceHome() {
                                 <Link key={app.id} href={app.href} className="block group">
                                      <div className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-muted transition-colors text-center">
                                         <div className="p-3 rounded-lg text-white" style={{ backgroundColor: app.color }}>
-                                           {app.icon && React.cloneElement(app.icon, { className: 'h-6 w-6' })}
+                                           {React.cloneElement(app.icon, { className: 'h-6 w-6' })}
                                         </div>
                                         <p className="text-xs font-semibold truncate w-20">{app.dashboardTitle || app.title}</p>
                                     </div>

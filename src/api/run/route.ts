@@ -9,7 +9,7 @@ import { ai } from '@/ai/genkit';
 import { generateAdFromBrochure } from '@/ai/flows/meta-pilot/generate-ad-from-brochure';
 import { generateLandingPage } from '@/ai/flows/content/generate-landing-page';
 import { rebrandBrochure } from '@/ai/flows/content/rebrand-brochure';
-import { generateSocialPost } from '@/ai/flows/meta-pilot/generate-social-post';
+import { generateSocialPost } from '@/ai/flows/content/generate-social-post';
 import { suggestTargetingOptions } from '@/ai/flows/meta-pilot/suggest-targeting-options';
 import { editPdf } from '@/ai/flows/content/edit-pdf';
 import { matchInvestors } from '@/ai/flows/market-intelligence/match-investors';
@@ -53,43 +53,49 @@ const runToolSchema = z.object({
 
 
 const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
-    'insta-ads-designer': generateAdFromBrochure,
+    'meta-auto-pilot': runMetaAutoPilot,
+    'campaign-builder': createMetaCampaign, // Renamed
     'audience-creator': suggestTargetingOptions,
-    'rebranding': rebrandBrochure,
-    'pdf-editor-ai': editPdf,
-    'landing-pages': generateLandingPage,
-    'instagram-content-creator': generateSocialPost,
-    'investor-matching': matchInvestors,
-    'ai-brand-creator': aiBrandCreator,
-    'market-reports': generateMarketReport,
-    'market-trends': getMarketTrends,
-    'listing-generator': generateListing,
-    'story-planner': generateStory,
+    'insta-ads-designer': generateAdFromBrochure,
     'reel-ads': generateReel,
-    'tiktok-editor': generateTikTokVideo,
-    'crm-assistant': getCrmMemory,
     'instagram-admin-ai': manageSocialPage,
-    'multi-offer-builder': generateMultiOffer,
-    'email-creator': createEmailCampaign,
-    'whatsapp-manager': manageWhatsAppCampaign,
-    'meta-ads-copilot': createMetaCampaign,
+    'story-planner': generateStory,
+    'ai-video-presenter': generateVideoPresenter,
+    'ugc-script-writer': ugcScriptWriter,
+    'youtube-video-editor': editYoutubeVideo,
+    'landing-pages': generateLandingPage,
+    'rebranding': rebrandBrochure,
+    'brochure-translator': translateBrochure,
+    'pdf-editor-ai': editPdf,
+    'images-hq-ai': (payload) => Promise.resolve({ error: "This tool is a placeholder for direct image generation." }),
+    'logo-creator-ai': (payload) => Promise.resolve({ error: "This tool is a placeholder for direct logo generation." }),
+    'aerial-view-generator': generateReel, // Uses a similar video generation flow
+    'listing-manager': (payload) => Promise.resolve({ error: "Listing Manager is a UI-driven tool, not a direct flow." }),
+    'listing-performance': (payload) => Promise.resolve({ error: "Listing Performance is a UI-driven tool." }),
+    'listing-generator': generateListing,
     'propertyfinder-sync': syncPropertyFinderListing,
     'bayut-sync': syncBayutListing,
-    'payment-planner': generatePaymentPlan,
-    'brochure-translator': translateBrochure,
-    'youtube-video-editor': editYoutubeVideo,
-    'commission-calculator': commissionCalculator,
-    'lead-investigator': investigateLead,
-    'keyword-planner': generateKeywordPlan,
-    'ai-video-presenter': generateVideoPresenter,
     'deal-analyzer': dealAnalyzer,
-    'ugc-script-writer': ugcScriptWriter,
-    'lease-reviewer': leaseReviewerFlow,
+    'commission-calculator': commissionCalculator,
+    'payment-planner': generatePaymentPlan,
+    'investor-matching': matchInvestors,
+    'multi-offer-builder': generateMultiOffer,
+    'whatsapp-manager': manageWhatsAppCampaign,
+    'lead-investigator': investigateLead,
+    'projects-finder': (payload) => Promise.resolve({ error: "Projects Finder is a UI-driven search tool." }),
+    'market-reports': generateMarketReport,
+    'market-trends': getMarketTrends,
+    'ai-brand-creator': aiBrandCreator,
+    'crm-assistant': getCrmMemory,
+    'ai-assistant': (payload) => Promise.resolve({ error: "The AI Assistant is handled via the /api/chat endpoint." }),
     'chatbot-creator': chatbotCreatorFlow,
+    'vm-creator': (payload) => Promise.resolve({ error: "This is a placeholder dev tool." }),
+    'creative-execution-terminal': (payload) => Promise.resolve({ error: "This is a placeholder dev tool." }),
     'paypal-transaction': getPaypalTransaction,
+    'keyword-planner': generateKeywordPlan,
     'alloydb-scanner': scanForAlloyDB,
-    'prompt-library': (payload) => Promise.resolve({ message: "Executed from library", payload }), // Added for library execution
-    'meta-auto-pilot': runMetaAutoPilot,
+    'lease-reviewer': leaseReviewerFlow,
+    'prompt-library': (payload) => Promise.resolve({ message: "Executed from library", payload }),
     'smart-input-router': smartInputRouter,
     'deals-smart-planner': dealsSmartPlanner,
     'sales-message-rewriter': rewriteSalesMessage,
@@ -98,16 +104,20 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
 // Map of tool IDs to their suggested next action
 const nextActionMap: Record<string, { toolId: string; title: string; description: string; }> = {
     'listing-generator': {
-        toolId: 'meta-ads-copilot',
-        title: 'Create Ad Campaign',
-        description: 'Your listing is ready. Would you like to create a Meta Ad Campaign to promote it?',
+        toolId: 'listing-manager',
+        title: 'Prepare for Publishing',
+        description: 'Your listing is ready. Would you like to manage its assets and syndicate it to portals?',
     },
     'landing-pages': {
-        toolId: 'meta-ads-copilot',
+        toolId: 'campaign-builder',
         title: 'Drive Traffic',
         description: 'Your landing page is live. Let\'s create an ad campaign to drive traffic to it.',
     },
-    // Add more cross-suite connections here
+    'rebranding': {
+        toolId: 'insta-ads-designer',
+        title: 'Create an Ad',
+        description: 'Your brochure is rebranded. Now, let\'s create a stunning ad with your new brand identity.',
+    }
 };
 
 

@@ -29,7 +29,10 @@ export type SmartInputRouterOutput = z.infer<typeof SmartInputRouterOutputSchema
 
 const smartInputRouterPrompt = ai.definePrompt({
   name: 'smartInputRouterPrompt',
-  input: { schema: SmartInputRouterInputSchema },
+  input: { schema: z.object({
+    query: z.string(),
+    tools: z.array(z.object({ id: z.string(), title: z.string() }))
+  })},
   output: { schema: SmartInputRouterOutputSchema },
   prompt: `
     You are an expert intent router for a real estate AI platform. Your job is to analyze a user's query and decide the most appropriate action.
