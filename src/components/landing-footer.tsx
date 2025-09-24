@@ -28,7 +28,7 @@ export function LandingFooter() {
           <div className="col-span-1">
             <h4 className="text-lg font-semibold font-heading mb-4">Platform</h4>
             <nav className="flex flex-col space-y-2">
-              <Link href="/apps" className="text-muted-foreground hover:text-primary transition-colors">Apps</Link>
+              <Link href="/me/marketing" className="text-muted-foreground hover:text-primary transition-colors">Apps</Link>
               <Link href="/pricing" className="text-muted-foreground hover:text-primary transition-colors">Pricing</Link>
             </nav>
           </div>
@@ -41,7 +41,7 @@ export function LandingFooter() {
               <Link href="/resources/flows" className="text-muted-foreground hover:text-primary transition-colors">Flow Library</Link>
               <Link href="/market" className="text-muted-foreground hover:text-primary transition-colors">Market Pulse</Link>
               <Link href="/documentation" className="text-muted-foreground hover:text-primary transition-colors">Documentation</Link>
-              <Link href="/sx3-mindmap" className="text-muted-foreground hover:text-primary transition-colors">Mindmap</Link>
+              <Link href="/gem" className="text-muted-foreground hover:text-primary transition-colors">Mindmap</Link>
             </nav>
           </div>
 

@@ -2,134 +2,73 @@
 'use client';
 
 import React from 'react';
-import { tools } from '@/lib/tools-client';
-import { cn } from '@/lib/utils';
-import Link from 'next/link';
-import { ArrowRight, BookOpen, BrainCircuit, Check, MessageCircle, Plus, Sparkles, Upload, Share2, Workflow, Database, BarChart3, GanttChartSquare, GitMerge } from 'lucide-react';
-import { motion } from 'framer-motion';
 import { PageHeader } from '@/components/ui/page-header';
+import { GanttChartSquare, Database, Upload, Key, GitMerge, HeartPulse } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 
-const MindMapNode = ({
-  title,
-  description,
-  icon,
-  children,
-  className,
-  isRoot = false,
-  isModule = false,
-  href,
-}: {
-  title: string;
-  description?: string;
-  icon?: React.ReactNode;
-  children?: React.ReactNode;
-  className?: string;
-  isRoot?: boolean;
-  isModule?: boolean;
-  href?: string;
-}) => {
-  const NodeContent = () => (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.5, ease: 'easeOut' }}
-      viewport={{ once: true, amount: 0.5 }}
-      className={cn(
-        "relative z-10 flex flex-col items-center justify-center p-6 text-center border rounded-2xl shadow-lg transition-all duration-300",
-        isRoot ? "bg-primary text-primary-foreground w-64 h-64" : 
-        isModule ? "bg-card/80 backdrop-blur-lg w-56 h-56" :
-        "bg-muted/50 hover:bg-card hover:shadow-primary/20 hover:-translate-y-1 w-48 h-48"
-      )}
-    >
-      {icon && <div className={cn(isRoot ? "mb-4" : "mb-3", "p-3 rounded-full", isRoot ? "bg-white/20" : "bg-primary/10 text-primary")}>{icon}</div>}
-      <h3 className={cn("font-bold font-heading", isRoot ? "text-3xl" : isModule ? "text-2xl" : "text-lg")}>{title}</h3>
-      {description && <p className={cn("text-sm", isRoot ? "text-primary-foreground/80" : "text-muted-foreground")}>{description}</p>}
-      {href && <ArrowRight className="absolute bottom-4 right-4 h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />}
-    </motion.div>
-  );
+const devTools = [
+    {
+        title: "System Health & Status",
+        description: "Monitor the operational status of all services, AI models, and external APIs.",
+        href: "/gem/system-health",
+        icon: <HeartPulse className="h-8 w-8" />
+    },
+    {
+        title: "Developer Archive (Source of Truth)",
+        description: "View the historical database of developer performance and project data that trains our AI.",
+        href: "/gem/archive",
+        icon: <Database className="h-8 w-8" />
+    },
+     {
+        title: "Sitemap & Structure",
+        description: "A complete overview of all pages and routes within the application for planning.",
+        href: "/gem/sitemap",
+        icon: <GitMerge className="h-8 w-8" />
+    },
+    {
+        title: "Data Importer",
+        description: "Manage search context by importing and exporting structured XML data.",
+        href: "/gem/data-importer",
+        icon: <Upload className="h-8 w-8" />
+    },
+    {
+        title: "API Keys & Connections",
+        description: "View the status and configuration of all external API keys and connections.",
+        href: "/gem/keys",
+        icon: <Key className="h-8 w-8" />
+    },
+];
 
-  const NodeWrapper = ({ children }: { children: React.ReactNode }) => 
-    href ? <Link href={href} className="group">{children}</Link> : <div>{children}</div>;
+export default function GemDashboardPage() {
+    return (
+        <main className="p-4 md:p-10 space-y-8">
+            <PageHeader
+                title="Gem Dashboard"
+                description="The central command center for developers and administrators to monitor, manage, and build upon the Entrestate ecosystem."
+                icon={<GanttChartSquare className="h-8 w-8" />}
+            />
 
-
-  return (
-    <div className={cn("relative flex flex-col items-center", className)}>
-      <NodeWrapper><NodeContent /></NodeWrapper>
-      {children && (
-        <div className="flex justify-center gap-8 mt-8 flex-wrap">
-          {React.Children.map(children, child => 
-            <div className="relative flex flex-col items-center">
-              {/* Connecting Line */}
-              <div className="absolute top-[-2rem] h-8 w-px bg-border z-0"></div>
-              {child}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {devTools.map(tool => (
+                    <Link href={tool.href} key={tool.title}>
+                        <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg">
+                            <CardHeader className="flex flex-row items-center gap-4">
+                                <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                                    {tool.icon}
+                                </div>
+                                <div>
+                                    <CardTitle>{tool.title}</CardTitle>
+                                </div>
+                            </CardHeader>
+                            <CardContent>
+                                <p className="text-sm text-muted-foreground">{tool.description}</p>
+                            </CardContent>
+                        </Card>
+                    </Link>
+                ))}
             </div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-};
-
-export default function GemMindMapPage() {
-    const modules = {
-        'ENTRESTATE CREATIVE SUITE': tools.filter(t => ['Creative', 'Web', 'Editing'].some(c => t.categories.includes(c))),
-        'META ADS PILOT': tools.filter(t => t.categories.includes('Ads')),
-        'LISTING INTELLIGENCE': tools.filter(t => t.categories.includes('Market Intelligence') || t.categories.includes('CRM') || t.categories.includes('Sales Tools')),
-    };
-
-  return (
-    <div className="flex min-h-screen flex-col bg-background">
-      <main className="flex-1 w-full">
-        <PageHeader
-          title="Gem Ecosystem Map"
-          description="A visual atlas of our AI-native operating system. Use this map to navigate, plan, and build."
-          icon={<GanttChartSquare className="h-8 w-8" />}
-        />
-        <div className="container mx-auto px-4 py-24 text-center">
-          <MindMapNode
-            title="Entrestate Core Vision"
-            description="An AI-Native Ecosystem for Real Estate Professionals"
-            icon={<BrainCircuit className="h-10 w-10" />}
-            isRoot
-          >
-            <MindMapNode
-              title="B2B Super Seller Suite"
-              description="An integrated OS for agents, developers, and marketers."
-              icon={<Sparkles className="h-8 w-8" />}
-              isModule
-            >
-              {Object.entries(modules).map(([moduleName, moduleTools]) => (
-                <MindMapNode
-                  key={moduleName}
-                  title={moduleName}
-                  icon={<Workflow className="h-6 w-6" />}
-                  isModule
-                >
-                  {moduleTools.map(tool => (
-                    <MindMapNode
-                      key={tool.id}
-                      title={tool.title}
-                      href={`/me/tool/${tool.id}`}
-                      icon={React.cloneElement(tool.icon, {className: 'h-5 w-5'})}
-                    />
-                  ))}
-                </MindMapNode>
-              ))}
-            </MindMapNode>
-            <MindMapNode
-              title="Data Ingestion Layers"
-              description="The intelligent fuel for the entire ecosystem."
-              icon={<Database className="h-8 w-8" />}
-              isModule
-            >
-                <MindMapNode title="Layer 1: Structured Core" href="/gem/archive" icon={<BarChart3 className="h-6 w-6"/>} description="Portals, Registries, Developer Sites" />
-                <MindMapNode title="Sitemap & Structure" href="/gem/sitemap" icon={<GitMerge className="h-6 w-6"/>} description="View all application routes and architecture." />
-                <MindMapNode title="Layer 3: Social Pulse" icon={<MessageCircle className="h-6 w-6"/>} description="Social Media, Ad Libraries, Forums" />
-                <MindMapNode title="Layer 4: Internal Signals" icon={<Sparkles className="h-6 w-6"/>} description="User Search Trends, Market Analysis" />
-            </MindMapNode>
-          </MindMapNode>
-        </div>
-      </main>
-    </div>
-  );
+        </main>
+    );
 }

@@ -40,7 +40,7 @@ export function LandingFooter() {
               <Link href="/resources/flows" className="text-muted-foreground hover:text-primary transition-colors">Flow Library</Link>
               <Link href="/market" className="text-muted-foreground hover:text-primary transition-colors">Market Pulse</Link>
               <Link href="/documentation" className="text-muted-foreground hover:text-primary transition-colors">Documentation</Link>
-              <Link href="/sx3-mindmap" className="text-muted-foreground hover:text-primary transition-colors">Mindmap</Link>
+              <Link href="/gem" className="text-muted-foreground hover:text-primary transition-colors">Mindmap</Link>
             </nav>
           </div>
 

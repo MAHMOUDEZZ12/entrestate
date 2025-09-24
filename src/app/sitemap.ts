@@ -21,7 +21,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/blog',
     '/market',
     '/support',
-    '/sx3-mindmap',
+    '/superfreetime',
     // Community pages are now under /me
     '/me/community',
     '/me/community/academy',
