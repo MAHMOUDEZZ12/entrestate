@@ -1,0 +1,5 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow: /me/
+Disallow: /gem/
+Sitemap: https://www.entrestate.com/sitemap.xml

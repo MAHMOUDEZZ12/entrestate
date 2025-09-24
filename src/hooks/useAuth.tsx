@@ -53,36 +53,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAdmin(ADMIN_USERNAMES.includes(mockUser.displayName || ''));
     setLoading(false);
 
-    // --- ORIGINAL AUTH LOGIC (COMMENTED OUT FOR DEVELOPMENT) ---
-    /*
-    if (!auth) {
-        console.warn("Firebase Auth not initialized, user will be treated as logged out.");
-        setLoading(false);
-        if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-            router.push('/');
-        }
-        return;
-    }
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      const userIsAdmin = user ? ADMIN_USERNAMES.includes(user.displayName || '') : false;
-      setIsAdmin(userIsAdmin);
-      setLoading(false);
-      
-      if (user) {
-        if (isAdminRoute(pathname) && !userIsAdmin) {
-          router.push('/me');
-        }
-      } else {
-        if (isProtectedRoute(pathname) || isAdminRoute(pathname)) {
-          router.push('/');
-        }
-      }
-    });
-
-    return () => unsubscribe();
-    */
-  }, [pathname, router]);
+  }, []);
   
 
   if (loading) {
