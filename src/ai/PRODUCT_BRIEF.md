@@ -1,3 +1,4 @@
+
 # Entrestate - Product & Technical Brief (AI Brain)
 
 This document outlines the core vision, data sources, and technical capabilities of the Entrestate platform. It serves as the primary training and reference material for all AI-driven development.
@@ -17,31 +18,38 @@ Our ecosystem is built on three interconnected product pillars that form the fou
 -   **Current State**: The platform simulates this with the `/discover/search` endpoint. It uses basic keyword filtering.
 -   **Future Plan**:
     -   **Fast Search**: Will be powered by a dedicated search service like Elasticsearch or Algolia, indexed from our `projects_catalog`.
-    -   **Smart Search**: Will use Gemini to interpret natural language queries (e.g., "villas with a private pool under AED 5M near a good school") and translate them into structured database queries.
-    -   **Deep Search**: Will use AI models trained on historical data from the `Developer Archive` to answer predictive questions (e.g., "which off-plan projects have the highest potential ROI?").
+    -   **Smart Search**: Will use Gemini to interpret natural language queries (e.g., "villas with a private pool under AED 5M near a good school") and translate them into structured database queries. This will be powered by our embeddings pipeline.
+    -   **Deep Search**: Will use AI models trained on historical data from the `Developer Archive` and our Knowledge Graph to answer predictive questions (e.g., "which off-plan projects have the highest potential ROI?").
 
 #### 2. ESTCHAT X3: The Conversational Frontline
 -   **Vision & DNA**: Unifies all communication into a single, intelligent, and commercially productive stream. It engages users proactively, captures intent, and translates conversations into structured data.
 -   **Current State**: Implemented as the `AI Assistant` in `/dashboard/assistant`. It can hold a conversation and has access to the user's chat history.
 -   **Future Plan**:
     -   **Deepen Integration**: The assistant will be given "tools" (Genkit tools) to directly interact with other platform services. For example, the command "rebrand my brochure" will trigger the `rebrandBrochure` flow directly.
-    -   **Proactive Engagement**: The assistant will monitor user actions (via the `events` collection) and proactively offer suggestions or start workflows.
+    -   **Proactive Engagement**: The assistant will monitor composite events from our rules engine and proactively offer suggestions or start workflows.
     -   **Multi-channel Deployment**: The same "brain" will power the embeddable website chatbot and integrations with WhatsApp and Instagram DMs.
 
 #### 3. MEGA LISTING PRO 2: The Unified Market Registry
 -   **Vision & DNA**: Creates a single source of truth for real estate data by consolidating, verifying, and archiving all listings to eliminate noise and enforce accuracy.
 -   **Current State**: The concept is represented by the `Market Library` (`/dashboard/tool/projects-finder`) and the `Developer Archive` (`/dev/archive`). The data is currently sourced from mock files and basic scrapers.
 -   **Future Plan**:
-    -   **Robust Ingestion**: Implement the full `DATA_INGESTION_POLICY.yml` using Cloud Functions and Dataflow jobs to continuously pull data from all specified sources.
-    -   **AI Verification**: Use Gemini Vision and Natural Language models to compare listings from different sources, flag duplicates, identify false pricing, and calculate a "quality score" for each property.
-    -   **Unified API**: Expose the clean, verified data through an internal API that all other tools (like `Market Reports` and `AI Price Estimator`) will use as their source of truth.
+    -   **Robust Ingestion**: Implement the full `DATA_INGESTION_POLICY.yml` using a dynamically scheduled Airflow DAG (`data-ingestion-dag.py`) controlled by our adaptive scheduler.
+    -   **AI Verification & Knowledge Graph**: Use Gemini Vision and our Knowledge Graph (`knowledge_graph_schema.cypher`) to compare listings, flag duplicates, identify false pricing, and calculate a "quality score" for each property.
+    -   **Unified API**: Expose the clean, verified data from the Knowledge Graph through an internal API that all other tools (like `Market Reports` and `AI Price Estimator`) will use as their source of truth.
 
+## 2. Primary Data Sources & Ingestion
 
-## 2. Primary Data Sources
+The Entrestate intelligence engine will be trained and continuously updated using the prioritized sources defined in the official `DATA_INGESTION_POLICY.yml`. The ingestion process is managed by an Airflow DAG (`data-ingestion-dag.py`) and dynamically optimized by an **adaptive cadence scheduler** (`adaptive_scheduler.py`), which prioritizes high-value, rapidly changing sources.
 
-The Entrestate intelligence engine will be trained and continuously updated using the prioritized sources defined in the official `DATA_INGESTION_POLICY.yml` document. This policy governs the ingestion methods, cadence, and priority for all external data, from official Ads APIs and government registries to social media signals. This is the single source of truth for our data strategy.
+## 3. Self-Healing Connectors
 
-## 3. Enabled APIs & Technical Capabilities
+To ensure data pipeline reliability, our system implements a self-healing pattern for connectors. Each connector's health is monitored, and if consecutive failures exceed a threshold, the system will:
+1.  Attempt to refresh credentials automatically.
+2.  Switch to a secondary data source or a cached snapshot.
+3.  Trigger an alert for human operations if both fallbacks fail.
+This ensures maximum uptime and data freshness.
+
+## 4. Enabled APIs & Technical Capabilities
 
 The following Google Cloud APIs are enabled and form the technical backbone of our AI and data processing capabilities.
 
@@ -56,15 +64,17 @@ The following Google Cloud APIs are enabled and form the technical backbone of o
 ### Search & Data Infrastructure:
 - **Discovery Engine API (Vertex AI Search)**: The core of our Entrestate search product. This will power the "Discover" feature and the standalone search engine.
 - **Google Custom Search API**: To be used by scraping and data ingestion tools to find new data sources.
+- **Neo4j (AuraDB)**: For housing the canonical Knowledge Graph.
 
 ### Orchestration & Infrastructure:
 - **Cloud Run API**: For deploying and scaling our services.
 - **Cloud Build API**: For automating the build and deployment pipeline.
 - **Cloud Functions API**: For running serverless, event-driven tasks (e.g., processing a newly uploaded brochure).
 - **Cloud Pub/Sub API**: The event bus connecting all parts of our system, allowing services to communicate asynchronously.
-- **Cloud Scheduler API**: For running periodic tasks, such as nightly data scrapes or weekly market analysis jobs.
+- **Cloud Scheduler API**: For running periodic tasks, such as our adaptive cadence controller.
 - **Cloud Workflows API**: For orchestrating complex, multi-step AI processes.
 
 ### External Service Integrations:
 - **Dialogflow API**: The foundation for our future conversational chatbot gate and advanced AI assistant capabilities.
 - **Aerial View API**: To be used by our "Drone Shot Generator" tool to create realistic, cinematic videos of properties.
+- **Airflow (Composer)**: For managing the data ingestion DAGs.

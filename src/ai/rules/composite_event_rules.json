@@ -1,0 +1,134 @@
+
+[
+  {
+    "rule_id": "new_project_high_confidence_launch",
+    "description": "Ad push + landing domain + permit file + foot-traffic spike within 72h",
+    "window_hours": 72,
+    "signals": [
+      {"type":"ad_push","min_count":1,"weight":2.0},
+      {"type":"new_domain","min_count":1,"weight":1.5},
+      {"type":"permit_filed","min_count":1,"weight":2.0},
+      {"type":"mobility_spike","min_count":1,"weight":1.0}
+    ],
+    "threshold": 4.0,
+    "action":"alert_high_launch"
+  },
+  {
+    "rule_id": "rapid_ad_spend_spike",
+    "description": "A significant, anomalous increase in ad spend for a specific project or developer.",
+    "window_hours": 24,
+    "signals": [
+      {"type":"ad_spend_anomaly","min_count":1,"weight":5.0, "z_score_threshold": 3.5}
+    ],
+    "threshold": 4.5,
+    "action":"alert_ad_spend_spike"
+  },
+  {
+    "rule_id": "negative_review_outbreak",
+    "description": "A sudden surge in negative reviews on major platforms.",
+    "window_hours": 48,
+    "signals": [
+      {"type":"new_review","min_count":5,"weight":1.0, "sentiment": "negative"},
+      {"type":"review_volume_anomaly","min_count":1,"weight":2.0}
+    ],
+    "threshold": 3.0,
+    "action":"alert_reputation_risk"
+  },
+  {
+    "rule_id": "phishing_microsite_detected",
+    "description": "A new domain is registered that is very similar to a major developer's domain, combined with an ad campaign pointing to it.",
+    "window_hours": 168,
+    "signals": [
+      {"type":"new_domain_similar","min_count":1,"weight":3.0},
+      {"type":"ad_push","min_count":1,"weight":2.0}
+    ],
+    "threshold": 4.5,
+    "action":"alert_phishing_risk"
+  },
+  {
+    "rule_id": "permit_denial_risk",
+    "description": "A permit has been filed but there is negative news or community sentiment.",
+    "window_hours": 336,
+    "signals": [
+      {"type":"permit_filed","min_count":1,"weight":1.0},
+      {"type":"negative_news","min_count":2,"weight":2.0},
+      {"type":"negative_social_mention","min_count":10,"weight":1.5}
+    ],
+    "threshold": 4.0,
+    "action":"alert_permit_risk"
+  },
+  {
+    "rule_id": "legal_docket_alert",
+    "description": "A developer or project is mentioned in a new court filing.",
+    "window_hours": 24,
+    "signals": [
+      {"type":"legal_filing_new","min_count":1,"weight":5.0}
+    ],
+    "threshold": 4.5,
+    "action":"alert_legal_risk"
+  },
+  {
+    "rule_id": "copycat_ad_detected",
+    "description": "An ad creative is detected that is semantically and visually very similar to a competitor's recent successful ad.",
+    "window_hours": 72,
+    "signals": [
+      {"type":"new_ad_creative","min_count":1,"weight":1.0},
+      {"type":"semantic_similarity_high","min_count":1,"weight":3.0}
+    ],
+    "threshold": 3.5,
+    "action":"alert_copycat_ad"
+  },
+  {
+    "rule_id": "domain_impersonation",
+    "description": "A new domain is registered with a name confusingly similar to a major brand.",
+    "window_hours": 24,
+    "signals": [
+        {"type":"new_domain_similar","min_count":1,"weight":4.0}
+    ],
+    "threshold": 3.9,
+    "action": "alert_domain_impersonation"
+  },
+  {
+    "rule_id": "sudden_listing_withdrawal",
+    "description": "Multiple high-value listings for a single project are withdrawn from portals simultaneously.",
+    "window_hours": 48,
+    "signals": [
+        {"type":"listing_status_changed", "status": "withdrawn", "min_count": 3, "weight": 4.0}
+    ],
+    "threshold": 3.5,
+    "action": "alert_listing_withdrawal"
+  },
+  {
+      "rule_id": "price_drop_campaign",
+      "description": "A developer initiates an ad campaign immediately following a noticeable price drop on their listings.",
+      "window_hours": 48,
+      "signals": [
+        {"type":"price_change", "direction": "decrease", "min_count": 5, "weight": 2.5},
+        {"type":"ad_push","min_count":1,"weight":1.5}
+      ],
+      "threshold": 3.5,
+      "action":"alert_price_drop_campaign"
+  },
+  {
+      "rule_id": "unusual_mobility_with_no_ads",
+      "description": "A significant spike in foot traffic is detected around a new, unannounced construction site without any corresponding ad campaigns.",
+      "window_hours": 168,
+      "signals": [
+        {"type":"mobility_spike", "min_count": 1, "weight": 3.0},
+        {"type":"ad_push", "max_count": 0, "weight": 1.5}
+      ],
+      "threshold": 4.0,
+      "action": "alert_stealth_project_candidate"
+  },
+  {
+      "rule_id": "insider_property_transfer",
+      "description": "A property is transferred at a price significantly below market value, and the buyer or seller is linked to the developer.",
+      "window_hours": 72,
+      "signals": [
+        {"type":"property_transfer", "price_anomaly_z": -2.5, "min_count": 1, "weight": 3.0},
+        {"type":"person_linked_to_developer", "min_count": 1, "weight": 2.0}
+      ],
+      "threshold": 4.5,
+      "action": "alert_insider_transfer_risk"
+  }
+]
