@@ -320,6 +320,10 @@ const toolUiConfig: { [key: string]: { creationFields: Field[]; renderResult?: (
                 ))}
             </div>
         )
+    },
+    'deals-smart-planner': {
+        creationFields: [], // No form needed, it's an interactive page
+        renderResult: (result, toast) => null, // The page itself is the UI
     }
 };
 
