@@ -24,7 +24,7 @@ export default function AppContentClient({ children }: { children: React.ReactNo
 
   return (
     <>
-      {isAppRoute ? <DashboardHeader /> : <LandingHeader />}
+      {!isAppRoute && <LandingHeader />}
       {children}
       {!isAppRoute && <LandingFooter />}
       <Toaster />

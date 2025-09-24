@@ -22,7 +22,7 @@ export function DashboardHeader() {
 
   return (
     <>
-    <header className="sticky top-0 z-30 flex h-14 flex-row items-center gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:px-6">
+    <header className="sticky top-0 z-30 flex h-14 flex-row items-center gap-4 border-b bg-background/95 px-4 backdrop-blur supports-[backdrop-filter]:bg-background/60 sm:hidden">
         <div className="flex items-center gap-4 sm:hidden">
           <Logo href="/me" />
         </div>
