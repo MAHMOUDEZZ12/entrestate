@@ -1,6 +1,8 @@
 # Entrestate — AI-Native Real Estate Ecosystem
 
-Welcome to Entrestate, an AI-native operating system designed to give real estate professionals an unparalleled advantage. This platform integrates market intelligence, creative tooling, and campaign automation into a single, seamless cockpit.
+**Entrestate is an AI-native operating system designed to give real estate professionals an unparalleled advantage.** It's not just a collection of tools; it's an intelligent ecosystem that unifies market intelligence, creative tooling, and campaign automation into a single, seamless cockpit.
+
+The core mission is to solve the industry's fragmentation problem. Professionals waste countless hours on manual tasks, wrestling with disconnected tools and incomplete data. Entrestate automates the tedious work—like ad creation, brochure rebranding, and market analysis—and transforms chaotic data into clear, actionable insights. This frees up agents, marketers, and developers to focus on what they do best: building relationships and closing deals.
 
 ![Executive Brain Map](https://firebasestorage.googleapis.com/v0/b/mtcmartechgooodstage-456-326b5.appspot.com/o/executive_brain_map.png?alt=media&token=167a5704-ca13-43e6-997c-9b73715d31f0)
 
