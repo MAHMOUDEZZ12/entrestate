@@ -3,16 +3,15 @@
 
 import React from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { GitMerge, Globe, LayoutDashboard, Users, BookOpen, GanttChartSquare } from 'lucide-react';
+import { GitMerge, Globe, LayoutDashboard, Users, BookOpen, GanttChartSquare, FileText } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 const structure = {
     public: [
         { name: 'Home', path: '/' },
-        { name: 'Apps', path: '/apps' },
+        { name: 'Apps (Legacy)', path: '/apps' },
         { name: 'Pricing', path: '/pricing' },
         { name: 'Solutions', path: '/solutions' },
         { name: 'Market', path: '/market' },
@@ -20,16 +19,22 @@ const structure = {
         { name: 'Technology', path: '/technology' },
         { name: 'About', path: '/about' },
         { name: 'Login', path: '/login' },
+        { name: 'Support', path: '/support' },
+        { name: 'Status', path: '/status' },
+        { name: 'SuperFreeTime', path: '/superfreetime' },
     ],
     dashboard: [
         { name: 'Home', path: '/me' },
-        { name: 'Apps', path: '/me/marketing' },
+        { name: 'Marketplace', path: '/me/marketing' },
         { name: 'Flow Builder', path: '/me/flows' },
         { name: 'Brand & Assets', path: '/me/brand' },
         { name: 'AI Assistant', path: '/me/assistant' },
         { name: 'Market Library', path: '/me/tool/projects-finder' },
         { name: 'Leads (CRM)', path: '/me/leads' },
         { name: 'Settings', path: '/me/settings' },
+        { name: 'Client Pages', path: '/me/clients'},
+        { name: 'Contacts Directory', path: '/me/directory'},
+        { name: 'Solutions Hub', path: '/me/solutions'},
     ],
     community: [
         { name: 'Community Notes', path: '/me/community' },
@@ -40,11 +45,18 @@ const structure = {
     resources: [
         { name: 'Flow Library', path: '/resources/flows' },
     ],
+    legal: [
+        { name: 'Privacy Policy', path: '/privacy' },
+        { name: 'Terms of Service', path: '/terms' },
+        { name: 'Cookie Policy', path: '/cookies' },
+    ],
     gem: [
         { name: 'Gem Dashboard', path: '/gem' },
         { name: 'System Health', path: '/gem/system-health' },
         { name: 'Developer Archive', path: '/gem/archive' },
         { name: 'Data Importer', path: '/gem/data-importer' },
+        { name: 'Keys & API Status', path: '/gem/keys' },
+        { name: 'Sitemap', path: '/gem/sitemap'},
     ]
 };
 
@@ -76,7 +88,7 @@ export default function SitemapPage() {
     <div className="flex flex-col">
       <PageHeader
         title="Sitemap & Structure"
-        description="A visual overview of the application's pages and architecture."
+        description="A complete overview of all pages and routes within the application for planning."
         icon={<GitMerge className="h-8 w-8" />}
       >
         <Link href="/gem">
@@ -85,9 +97,10 @@ export default function SitemapPage() {
       </PageHeader>
       <main className="flex-1 w-full max-w-6xl mx-auto px-4 md:px-6 py-12 md:py-20 space-y-8">
         <SectionCard title="Public Site" icon={<Globe />} pages={structure.public} />
-        <SectionCard title="Dashboard" icon={<LayoutDashboard />} pages={structure.dashboard} />
+        <SectionCard title="Dashboard (/me)" icon={<LayoutDashboard />} pages={structure.dashboard} />
         <SectionCard title="Community Hub" icon={<Users />} pages={structure.community} />
         <SectionCard title="Resources" icon={<BookOpen />} pages={structure.resources} />
+        <SectionCard title="Legal" icon={<FileText />} pages={structure.legal} />
         <SectionCard title="Gem (Admin)" icon={<GanttChartSquare />} pages={structure.gem} />
       </main>
     </div>
