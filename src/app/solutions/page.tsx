@@ -2,21 +2,36 @@
 'use client';
 
 import React from 'react';
-import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+import { PageHeader } from '@/components/ui/page-header';
+import { Sparkles, Telescope, MessageCircle, FileJson } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import Link from 'next/link';
+import { solutions } from '@/lib/solutions-data';
 
-// This page has been moved. This component now just handles the redirect to the new, authenticated path.
-export default function SolutionsRedirectPage() {
-    const router = useRouter();
-
-    React.useEffect(() => {
-        router.replace('/me/solutions');
-    }, [router]);
+export default function SolutionsPage() {
+  return (
+    <div className="container mx-auto px-4 py-8 md:py-12">
+        <PageHeader
+        title="Our Solutions"
+        description="High-level, outcome-oriented products that solve major business problems for the real estate industry."
+        icon={<Sparkles className="h-8 w-8" />}
+        />
     
-    return (
-        <div className="flex h-screen w-full items-center justify-center">
-            <Loader2 className="h-8 w-8 animate-spin" />
-            <p className="ml-4">Redirecting to our Solutions Hub...</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+            {solutions.map(solution => (
+                <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
+                    <Card className="h-full hover:border-primary/50 hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg">
+                        <CardHeader>
+                            <div className="p-4 bg-primary/10 text-primary rounded-2xl w-fit mb-4">
+                                {solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
+                            </div>
+                            <CardTitle>{solution.title}</CardTitle>
+                            <CardDescription>{solution.description}</CardDescription>
+                        </CardHeader>
+                    </Card>
+                </Link>
+            ))}
         </div>
-    );
+    </div>
+  );
 }

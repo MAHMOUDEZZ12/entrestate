@@ -2,7 +2,7 @@
 import { MetadataRoute } from 'next';
 import { tools } from '@/lib/tools-data';
 import { appDetails } from '@/lib/blog-content';
-import { marketingSuites } from '@/lib/suites-data';
+import { solutions } from '@/lib/solutions-data';
 
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -22,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/market',
     '/support',
     '/superfreetime',
+    '/solutions',
     // Community pages are now under /me
     '/me/community',
     '/me/community/academy',
@@ -47,8 +48,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: route === '/' ? 1.0 : 0.8,
   }));
   
-  const suiteRoutes = marketingSuites.map((suite) => ({
-      url: `${siteUrl}/me/solutions/${suite.id}`,
+  const solutionRoutes = solutions.map((solution) => ({
+      url: `${siteUrl}/solutions/${solution.slug}`,
       lastModified: new Date(),
       changeFrequency: 'weekly' as const,
       priority: 0.9,
@@ -68,5 +69,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.6,
   }));
 
-  return [...staticRoutes, ...suiteRoutes, ...blogRoutes, ...meToolRoutes];
+  return [...staticRoutes, ...solutionRoutes, ...blogRoutes, ...meToolRoutes];
 }

@@ -107,7 +107,7 @@ export function WorkspaceHeader() {
                 </NavigationMenuItem>
                 
                  <NavigationMenuItem>
-                    <Link href="/me/solutions" legacyBehavior passHref>
+                    <Link href="/solutions" legacyBehavior passHref>
                         <NavigationMenuLink className={navigationMenuTriggerStyle()}>
                             Solutions
                         </NavigationMenuLink>
