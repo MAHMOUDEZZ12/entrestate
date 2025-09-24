@@ -211,7 +211,7 @@ export default function SuperFreeTimePage() {
                     </DialogHeader>
                     <DialogFooter className="justify-center sm:justify-center gap-2">
                         {showReward ? (
-                            <Link href="/dashboard/assistant">
+                            <Link href="/me/assistant">
                             <Button size="lg">Go to Assistant</Button>
                             </Link>
                         ) : (
@@ -220,7 +220,7 @@ export default function SuperFreeTimePage() {
                             {foundKey ? (
                                 <Button size="lg" onClick={() => setShowReward(true)}>Claim Your Prize</Button>
                             ) : (
-                                <Link href="/dashboard">
+                                <Link href="/me">
                                     <Button size="lg"><Briefcase className="mr-2 h-4 w-4"/> Let's Get To Business</Button>
                                 </Link>
                             )}

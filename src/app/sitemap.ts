@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/solutions',
     '/technology',
     '/superfreetime',
+    '/resources/flows',
     // Authenticated routes are not typically in a public sitemap
     // but we can list the entry point.
     '/me', 
