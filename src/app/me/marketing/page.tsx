@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -11,7 +10,9 @@ import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 import { track } from '@/lib/events';
 import { marketingSuites } from '@/lib/suites-data';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Separator } from '@/components/ui/separator';
 
 
 export default function MarketingPage() {
@@ -57,19 +58,22 @@ export default function MarketingPage() {
     'email-creator': 'Gmail / Outlook',
     'whatsapp-manager': 'WhatsApp Business',
   };
-
+  
+  const suitesToDisplay = marketingSuites.filter(suite => 
+      filteredTools.some(tool => tool.suite === suite.name)
+  );
 
   return (
-    <div className="p-4 md:p-10 space-y-8">
+    <div className="p-4 md:p-10 space-y-12">
        <PageHeader
         title="Marketplace"
         description="Discover and add powerful AI apps to your workspace. Each app is a specialized tool designed to automate a specific part of your workflow."
         icon={<LayoutGrid className="h-8 w-8" />}
       >
-        <div className="relative">
+        <div className="relative max-w-lg w-full">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input 
-                placeholder="Search apps..."
+                placeholder="Search all apps..."
                 className="pl-10"
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
@@ -77,44 +81,57 @@ export default function MarketingPage() {
         </div>
       </PageHeader>
         
-        <Tabs defaultValue="all">
-            <TabsList>
-                <TabsTrigger value="all">All Apps</TabsTrigger>
-                {marketingSuites.map(suite => (
-                    <TabsTrigger key={suite.id} value={suite.id}>{suite.name}</TabsTrigger>
-                ))}
-            </TabsList>
-            <TabsContent value="all">
-                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                    {filteredTools.map(tool => (
-                        <DashboardServiceCard 
-                            key={tool.id} 
+      {suitesToDisplay.map(suite => {
+          const suiteTools = filteredTools.filter(t => t.suite === suite.name);
+          if (suiteTools.length === 0) return null;
+          
+          return (
+            <section key={suite.id}>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                    <suite.icon className="h-6 w-6" />
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold font-heading">{suite.name}</h2>
+                  <p className="text-muted-foreground">{suite.description}</p>
+                </div>
+              </div>
+              
+              <Carousel
+                opts={{
+                  align: "start",
+                  dragFree: true,
+                }}
+                className="w-full"
+              >
+                <CarouselContent>
+                  {suiteTools.map(tool => (
+                    <CarouselItem key={tool.id} className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5">
+                       <div className="p-1 h-full">
+                         <DashboardServiceCard 
                             tool={tool}
                             isAdded={addedApps.includes(tool.id)}
                             setIsAdded={(isAdded) => handleSetIsAdded(tool.id, isAdded)}
                             connectionRequired={appsThatNeedConnection[tool.id]}
                         />
-                    ))}
-                </div>
-            </TabsContent>
-            {marketingSuites.map(suite => (
-                <TabsContent key={suite.id} value={suite.id}>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
-                        {allTools.filter(t => t.suite === suite.name).map(tool => (
-                             <DashboardServiceCard 
-                                key={tool.id} 
-                                tool={tool}
-                                isAdded={addedApps.includes(tool.id)}
-                                setIsAdded={(isAdded) => handleSetIsAdded(tool.id, isAdded)}
-                                connectionRequired={appsThatNeedConnection[tool.id]}
-                            />
-                        ))}
-                    </div>
-                </TabsContent>
-            ))}
-        </Tabs>
+                       </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="hidden lg:flex" />
+                <CarouselNext className="hidden lg:flex" />
+              </Carousel>
+
+              <Separator className="mt-12" />
+            </section>
+          )
+      })}
+
+      {searchTerm && suitesToDisplay.length === 0 && (
+          <div className="text-center py-16 text-muted-foreground col-span-full">
+              <p>No apps or suites found for your search criteria.</p>
+          </div>
+      )}
     </div>
   );
 }
-
-    
