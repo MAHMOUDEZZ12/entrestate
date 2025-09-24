@@ -84,7 +84,10 @@ export const DashboardServiceCard = ({ tool, isAdded, setIsAdded, connectionRequ
 
   return (
     <Link href={`/me/tool/${tool.id}`} className="block group">
-        <Card className="h-full flex flex-col hover:border-primary/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+        <Card 
+            className="h-full flex flex-col hover:border-primary/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-b-4"
+            style={{'--card-border-color': tool.color, borderBottomColor: 'var(--card-border-color)'} as React.CSSProperties}
+        >
             <CardHeader>
                 <div className="flex justify-between items-start">
                      <div className="p-3 rounded-lg text-white mb-4" style={{ backgroundColor: tool.color }}>

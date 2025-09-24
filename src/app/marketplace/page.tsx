@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { LayoutGrid, Search } from 'lucide-react';
+import { LayoutGrid, Search, Telescope, MessageCircle, FileJson } from 'lucide-react';
 import { tools as allTools, ToolData } from '@/lib/tools-data';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
 import { useToast } from '@/hooks/use-toast';
@@ -12,10 +12,9 @@ import { Input } from '@/components/ui/input';
 import { track } from '@/lib/events';
 import { marketingSuites } from '@/lib/suites-data';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
 import { solutions } from '@/lib/solutions-data';
-import { Telescope, MessageCircle, FileJson } from 'lucide-react';
 
 
 export default function MarketplacePage() {
@@ -61,6 +60,12 @@ export default function MarketplacePage() {
     'email-creator': 'Gmail / Outlook',
     'whatsapp-manager': 'WhatsApp Business',
   };
+  
+  const solutionColors: { [key: string]: string } = {
+    'market-search-engine': '#4285F4', // Google Blue
+    'salesagentchat-ai': '#075E54', // WhatsApp Green
+    'ai-listing-portal': '#FF4500' // OrangeRed
+  };
 
 
   return (
@@ -93,10 +98,16 @@ export default function MarketplacePage() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
                     {solutions.map(solution => (
                         <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
-                            <Card className="h-full hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg border-2 border-accent hover:shadow-accent/20">
+                            <Card 
+                                className="h-full hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg border-b-4"
+                                style={{'--card-border-color': solutionColors[solution.slug] || 'hsl(var(--accent))', borderBottomColor: 'var(--card-border-color)'} as React.CSSProperties}
+                            >
                                 <CardHeader>
-                                    <div className="p-4 bg-accent/10 text-accent rounded-2xl w-fit mb-4">
-                                        {solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
+                                    <div 
+                                        className="p-4 rounded-2xl w-fit mb-4 text-white"
+                                        style={{backgroundColor: solutionColors[solution.slug] || 'hsl(var(--accent))'}}
+                                    >
+                                        {solution.slug === 'market-search-engine' ? <Telescope className="h-8 w-8" /> : solution.slug === 'salesagentchat-ai' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
                                     </div>
                                     <CardTitle>{solution.title}</CardTitle>
                                     <CardDescription>{solution.description}</CardDescription>
