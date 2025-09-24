@@ -54,7 +54,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setIsAdmin(userIsAdmin);
       setLoading(false);
       
-      // --- Route Protection Logic (DISABLED) ---
+      // --- Route Protection Logic (DISABLED FOR DEVELOPMENT) ---
       // if (user) {
       //   // User is logged in. Check if they are trying to access admin routes without permission.
       //   if (isAdminRoute(pathname) && !userIsAdmin) {
@@ -80,7 +80,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
   }
 
-  // Final check after loading (DISABLED)
+  // --- Final check after loading (DISABLED FOR DEVELOPMENT) ---
   // if (!user && (isProtectedRoute(pathname) || isAdminRoute(pathname))) {
   //     // Don't render children, let the redirect happen.
   //     return (
