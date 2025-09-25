@@ -27,10 +27,10 @@ import {
 const sidebarLinks = [
   { href: '/me/workspace', label: 'Dashboard', icon: <LayoutDashboard /> },
   { href: '/me/marketing', label: 'Marketplace', icon: <Compass /> },
-  { href: '/me/flows', label: 'Flows', icon: <Workflow /> },
+  { href: '/me/flows', label: 'Flow Builder', icon: <Workflow /> },
   { href: '/me/brand', label: 'Brand & Assets', icon: <FolderCog /> },
-  { href: '/me/tool/projects-finder', label: 'Projects', icon: <Building /> },
-  { href: '/me/leads', label: 'Leads', icon: <UserPlus /> },
+  { href: '/me/tool/projects-finder', label: 'Market Library', icon: <Building /> },
+  { href: '/me/leads', label: 'Leads (CRM)', icon: <UserPlus /> },
 ];
 
 const bottomLinks = [

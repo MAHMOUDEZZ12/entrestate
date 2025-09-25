@@ -58,7 +58,7 @@ export default function WorkspaceHomePage() {
   return (
     <div className="p-4 md:p-10 space-y-12">
         <PageHeader 
-            title="Operational Hub"
+            title="Operations Hub"
             description="Access your projects, apps, and core tools to execute your daily tasks."
             icon={<Sparkles />}
         />
@@ -120,7 +120,9 @@ export default function WorkspaceHomePage() {
                 </CardContent>
                  {myProjects.length > 3 && (
                     <CardFooter>
-                        <Button variant="secondary" className="w-full">View All Projects</Button>
+                         <Link href="/me/tool/projects-finder" className="w-full">
+                            <Button variant="secondary" className="w-full">View All Projects</Button>
+                        </Link>
                     </CardFooter>
                  )}
             </Card>

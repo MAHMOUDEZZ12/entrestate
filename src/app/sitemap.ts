@@ -23,6 +23,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/technology',
     '/superfreetime',
     '/resources/flows',
+    '/academy', // Added Academy to public routes
   ].map((route) => ({
     url: `${siteUrl}${route}`,
     lastModified: new Date(),

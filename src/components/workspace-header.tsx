@@ -22,33 +22,41 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbLink, BreadcrumbS
 
 function generateBreadcrumbs(pathname: string) {
     const pathSegments = pathname.split('/').filter(Boolean);
-    const breadcrumbs = pathSegments.map((segment, index) => {
-        const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
-        const isLast = index === pathSegments.length - 1;
-        const label = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        
-        return (
-            <React.Fragment key={href}>
-                 <BreadcrumbSeparator />
-                <BreadcrumbItem>
+    // We expect paths like /me/workspace, /me/tool/listing-generator etc.
+    // The "me" segment can be considered the root of the authenticated app.
+    
+    // Start with a root breadcrumb for the intelligence hub
+    const breadcrumbs = [
+        <BreadcrumbItem key="me">
+             <BreadcrumbLink asChild>
+                <Link href="/me">Intelligence Hub</Link>
+            </BreadcrumbLink>
+        </BreadcrumbItem>
+    ];
+
+    if (pathSegments.length > 1) {
+        // This means we are inside /me/something
+        pathSegments.slice(1).forEach((segment, index) => {
+            const currentPath = `/${pathSegments.slice(0, index + 2).join('/')}`;
+            const isLast = index === pathSegments.length - 2;
+            const label = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+            breadcrumbs.push(<BreadcrumbSeparator key={`sep-${index}`} />);
+            breadcrumbs.push(
+                <BreadcrumbItem key={currentPath}>
                     {isLast ? (
                         <BreadcrumbPage>{label}</BreadcrumbPage>
                     ) : (
-                        <BreadcrumbLink asChild>
-                            <Link href={href}>{label}</Link>
+                         <BreadcrumbLink asChild>
+                            <Link href={currentPath}>{label}</Link>
                         </BreadcrumbLink>
                     )}
                 </BreadcrumbItem>
-            </React.Fragment>
-        );
-    });
+            );
+        });
+    }
 
-    return [
-        <BreadcrumbItem key="home">
-            <BreadcrumbLink asChild><Link href="/me">Home</Link></BreadcrumbLink>
-        </BreadcrumbItem>,
-        ...breadcrumbs
-    ];
+    return breadcrumbs;
 }
 
 

@@ -12,10 +12,12 @@ import { track } from '@/lib/events';
 import { marketingSuites } from '@/lib/suites-data';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { Separator } from '@/components/ui/separator';
+import { useAuth } from '@/hooks/useAuth';
 
 
 export default function MarketingPage() {
   const { toast } = useToast();
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState('');
   const [addedApps, setAddedApps] = useState<string[]>([]);
   const [filteredTools, setFilteredTools] = useState<ToolData[]>(allTools);
@@ -41,6 +43,10 @@ export default function MarketingPage() {
   }, [searchTerm]);
 
   const handleSetIsAdded = (toolId: string, isAdded: boolean) => {
+    if (!user) {
+        toast({ title: 'Please log in', description: 'You need to be logged in to manage apps.', variant: 'destructive'});
+        return;
+    }
     const newAddedApps = isAdded 
         ? [...addedApps, toolId]
         : addedApps.filter(id => id !== toolId);
