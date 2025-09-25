@@ -36,7 +36,7 @@ export function WorkspaceHeader() {
     { href: "/me/discover", label: "Discover", icon: <Telescope className="mr-2 h-4 w-4" /> },
     { href: "/me/marketing", label: "Marketplace", icon: <Palette className="mr-2 h-4 w-4" /> },
     { href: "/me/flows", label: "Flows", icon: <Workflow className="mr-2 h-4 w-4" /> },
-    { href: "/me/brand", label: "Brand", icon: <Palette className="mr-2 h-4 w-4" /> },
+    { href: "/me/brand", label: "Brand & Assets", icon: <Palette className="mr-2 h-4 w-4" /> },
   ];
   
   const handleLogout = async () => {
@@ -56,7 +56,7 @@ export function WorkspaceHeader() {
             <NavigationMenuList>
               {navLinks.map((link) => (
                 <NavigationMenuItem key={link.href}>
-                  <Link href={link.href} legacyBehavior passHref>
+                  <Link href={link.href} legacyBehavior={false} passHref>
                     <NavigationMenuLink active={pathname === link.href} className={navigationMenuTriggerStyle()}>
                       {link.icon}
                       {link.label}
