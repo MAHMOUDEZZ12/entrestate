@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, GanttChartSquare, User as UserIcon } from 'lucide-react';
+import { LogOut, Settings, GanttChartSquare, User as UserIcon, LayoutDashboard, Compass, Workflow, FolderCog, Library } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import { Logo } from '@/components/logo';
@@ -25,20 +25,40 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname } from 'next/navigation';
-import { tools } from '@/lib/tools-client';
+
+// Define a static, correct list for navigation
+const navLinks = [
+    {
+        href: '/me',
+        label: 'Workspace',
+        icon: <LayoutDashboard className="mr-2 h-4 w-4" />,
+    },
+    {
+        href: '/me/marketing',
+        label: 'Marketplace',
+        icon: <Compass className="mr-2 h-4 w-4" />,
+    },
+    {
+        href: '/me/flows',
+        label: 'Flows',
+        icon: <Workflow className="mr-2 h-4 w-4" />,
+    },
+    {
+        href: '/me/brand',
+        label: 'Brand & Assets',
+        icon: <FolderCog className="mr-2 h-4 w-4" />,
+    },
+    {
+        href: '/me/tool/prompt-library',
+        label: 'Prompt Library',
+        icon: <Library className="mr-2 h-4 w-4" />,
+    }
+];
 
 export function WorkspaceHeader() {
   const { user } = useAuth();
   const pathname = usePathname();
 
-  const navLinks = tools
-    .filter(tool => ['Workspace', 'Marketplace', 'Flows', 'Brand & Assets', 'Prompt Library'].includes(tool.title))
-    .map(tool => ({
-        href: tool.href,
-        label: tool.dashboardTitle || tool.title,
-        icon: React.cloneElement(tool.icon, { className: "mr-2 h-4 w-4" }),
-    }));
-  
   const handleLogout = async () => {
     if (auth) {
         await auth.signOut();
