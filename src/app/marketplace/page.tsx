@@ -11,22 +11,36 @@ import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 import { track } from '@/lib/events';
 import { marketingSuites } from '@/lib/suites-data';
-import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import Link from 'next/link';
 import { solutions } from '@/lib/solutions-data';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import type { FilterCategory } from '@/types';
+import { Separator } from '@/components/ui/separator';
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 
 
 export default function MarketplacePage() {
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
   const [addedApps, setAddedApps] = useState<string[]>([]);
-  const [filteredTools, setFilteredTools] = useState<Feature[]>(allTools);
   
   const allCategories = ['All', ...new Set(allTools.flatMap(t => t.categories))] as FilterCategory[];
   const [activeFilter, setActiveFilter] = React.useState<FilterCategory>('All');
+  
+  const filteredTools = React.useMemo(() => {
+    const searchFiltered = allTools.filter(tool =>
+        tool.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tool.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        tool.categories.some(cat => cat.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+
+    return activeFilter === 'All' 
+        ? searchFiltered
+        : searchFiltered.filter(p => p.categories.includes(activeFilter));
+  }, [searchTerm, activeFilter]);
+
   
   useEffect(() => {
     try {
@@ -39,19 +53,6 @@ export default function MarketplacePage() {
     }
   }, []);
   
-  useEffect(() => {
-    const searchFiltered = allTools.filter(tool =>
-        tool.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tool.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tool.categories.some(cat => cat.toLowerCase().includes(searchTerm.toLowerCase()))
-    );
-
-    const categoryFiltered = activeFilter === 'All' 
-        ? searchFiltered
-        : searchFiltered.filter(p => p.categories.includes(activeFilter));
-
-    setFilteredTools(categoryFiltered);
-  }, [searchTerm, activeFilter]);
 
   const handleSetIsAdded = (toolId: string, isAdded: boolean) => {
     const newAddedApps = isAdded 
@@ -77,18 +78,21 @@ export default function MarketplacePage() {
     'mega-listing-pro-2': '#FF4500' // OrangeRed
   };
 
+  const suitesToDisplay = marketingSuites.filter(suite => 
+      filteredTools.some(tool => tool.suite === suite.name)
+  );
 
   return (
-    <div className="p-4 md:p-10 space-y-8 container mx-auto">
+    <div className="p-4 md:p-10 space-y-12 container mx-auto">
        <PageHeader
-        title="Marketplace"
-        description="Discover powerful AI apps and solutions to automate your workflow."
+        title="The Entrestate Marketplace"
+        description="Discover our powerful Solutions, App Suites, and individual AI tools to build your perfect workspace."
         icon={<LayoutGrid className="h-8 w-8" />}
       >
         <div className="relative w-full max-w-lg">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input 
-                placeholder="Search apps & solutions..."
+                placeholder="Search for solutions, suites, or apps..."
                 className="pl-10"
                 value={searchTerm}
                 onChange={e => setSearchTerm(e.target.value)}
@@ -96,7 +100,46 @@ export default function MarketplacePage() {
         </div>
       </PageHeader>
       
-        <div className="flex justify-center flex-wrap gap-2 mb-12">
+      <section>
+            <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold font-heading">Core Solutions</h2>
+                <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+                    High-level, outcome-oriented products designed to solve major business problems for the real estate industry.
+                </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {solutions.map(solution => (
+                    <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
+                        <Card 
+                            className="h-full hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg border-b-4"
+                            style={{'--card-border-color': solutionColors[solution.slug] || 'hsl(var(--accent))', borderBottomColor: 'var(--card-border-color)'} as React.CSSProperties}
+                        >
+                            <CardHeader>
+                                <div 
+                                    className="p-4 rounded-2xl w-fit mb-4 text-white"
+                                    style={{backgroundColor: solutionColors[solution.slug] || 'hsl(var(--accent))'}}
+                                >
+                                    {solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
+                                </div>
+                                <CardTitle>{solution.title}</CardTitle>
+                                <CardDescription>{solution.description}</CardDescription>
+                            </CardHeader>
+                        </Card>
+                    </Link>
+                ))}
+            </div>
+      </section>
+
+      <Separator />
+
+      <section>
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold font-heading">App Suites & Individual Tools</h2>
+            <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+                Explore our collections of specialized apps or browse individual tools to customize your workspace.
+            </p>
+          </div>
+          <div className="flex justify-center flex-wrap gap-2 mb-12">
             {allCategories.map(category => (
                  <Button 
                     key={category}
@@ -108,37 +151,44 @@ export default function MarketplacePage() {
                 </Button>
             ))}
         </div>
-        
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {solutions.map(solution => (
-                <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
-                    <Card 
-                        className="h-full hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg border-b-4"
-                        style={{'--card-border-color': solutionColors[solution.slug] || 'hsl(var(--accent))', borderBottomColor: 'var(--card-border-color)'} as React.CSSProperties}
-                    >
-                        <CardHeader>
-                            <div 
-                                className="p-4 rounded-2xl w-fit mb-4 text-white"
-                                style={{backgroundColor: solutionColors[solution.slug] || 'hsl(var(--accent))'}}
-                            >
-                                {solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
-                            </div>
-                            <CardTitle>{solution.title}</CardTitle>
-                            <CardDescription>{solution.description}</CardDescription>
-                        </CardHeader>
-                    </Card>
-                </Link>
-            ))}
-            {filteredTools.map(tool => (
-                <DashboardServiceCard 
-                    key={tool.id} 
-                    tool={tool}
-                    isAdded={addedApps.includes(tool.id)}
-                    setIsAdded={(isAdded) => handleSetIsAdded(tool.id, isAdded)}
-                    connectionRequired={appsThatNeedConnection[tool.id]}
-                />
-            ))}
-        </div>
+          
+        {suitesToDisplay.map(suite => {
+          const suiteTools = filteredTools.filter(t => t.suite === suite.name);
+          if (suiteTools.length === 0) return null;
+          
+          return (
+            <div key={suite.id} className="mb-16">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                    <suite.icon className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold font-heading">{suite.name}</h3>
+                  <p className="text-muted-foreground">{suite.description}</p>
+                </div>
+              </div>
+              
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {suiteTools.map(tool => (
+                       <DashboardServiceCard 
+                            key={tool.id} 
+                            tool={tool}
+                            isAdded={addedApps.includes(tool.id)}
+                            setIsAdded={(isAdded) => handleSetIsAdded(tool.id, isAdded)}
+                            connectionRequired={appsThatNeedConnection[tool.id]}
+                        />
+                  ))}
+                </div>
+            </div>
+          )
+      })}
+
+      {searchTerm && suitesToDisplay.length === 0 && (
+          <div className="text-center py-16 text-muted-foreground col-span-full">
+              <p>No apps or suites found for your search criteria.</p>
+          </div>
+      )}
+      </section>
 
         <Card className="mt-12 bg-primary/10 border-primary/20">
             <div className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
