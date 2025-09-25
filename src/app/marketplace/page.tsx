@@ -72,9 +72,9 @@ export default function MarketplacePage() {
   };
   
   const solutionColors: { [key: string]: string } = {
-    'market-search-engine': '#4285F4', // Google Blue
-    'salesagentchat-ai': '#075E54', // WhatsApp Green
-    'ai-listing-portal': '#FF4500' // OrangeRed
+    'pro-search-eng-x3': '#4285F4', // Google Blue
+    'estchat-x3': '#075E54', // WhatsApp Green
+    'mega-listing-pro-2': '#FF4500' // OrangeRed
   };
 
 

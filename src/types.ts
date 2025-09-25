@@ -20,6 +20,7 @@ export interface Project {
   status?: "New Launch" | "Off-plan" | "Ready" | string;
   thumbnailUrl?: string;
   badge?: string;
+  tags?: string[];
 }
 
 // Per-user shortlist library
@@ -69,7 +70,7 @@ export interface KnowledgeFile {
     type: string;
     size: number;
     status: 'uploaded' | 'training' | 'trained' | 'error';
-    createdAt: Date;
+    createdAt: any;
 }
 
 export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
