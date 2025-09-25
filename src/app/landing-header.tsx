@@ -12,7 +12,6 @@ import { useAuth } from '@/hooks/useAuth';
 const navLinks = [
     { name: 'Marketplace', href: '/marketplace' },
     { name: 'Solutions', href: '/solutions' },
-    { name: 'Pricing', href: '/pricing' },
     { name: 'Blog', href: '/blog' },
     { name: 'Academy', href: '/academy' },
 ];
