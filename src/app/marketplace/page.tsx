@@ -1,11 +1,10 @@
 
-
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
 import { LayoutGrid, Search, Telescope, MessageCircle, FileJson, ArrowRight, Sparkles, Building, Workflow, Plus, Instagram } from 'lucide-react';
-import { tools as allToolsClient, Feature } from '@/lib/tools-client';
+import { tools as allToolsClient, Feature } from '@/components/../lib/tools-client';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
 import { Input } from '@/components/ui/input';
 import { marketingSuites } from '@/lib/suites-data';
@@ -19,7 +18,6 @@ import { motion } from 'framer-motion';
 import Autoplay from "embla-carousel-autoplay";
 import { cn } from '@/lib/utils';
 
-
 const SuiteCard = ({ tool }: { tool: Feature }) => (
     <div className="flex items-center gap-3 p-3 bg-background rounded-lg border">
         <div className="p-2 rounded-md text-white" style={{ backgroundColor: tool.color }}>
@@ -30,6 +28,7 @@ const SuiteCard = ({ tool }: { tool: Feature }) => (
         </div>
     </div>
 );
+
 
 export default function MarketplacePage() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -44,13 +43,14 @@ export default function MarketplacePage() {
   }, [searchTerm]);
 
   const getSuiteTools = (suiteName: string) => filteredTools.filter(t => t.suite === suiteName);
-
+  
   const creativeSuiteTools = getSuiteTools('AI Creative Studio');
+  const flowApps = getSuiteTools('Marketing Management');
 
   const autoplayPlugin = React.useRef(
     Autoplay({ delay: 2500, stopOnInteraction: false })
   );
-  
+
   return (
     <div className="p-4 md:p-10 space-y-20 container mx-auto">
        <PageHeader
@@ -86,6 +86,36 @@ export default function MarketplacePage() {
                         buttonVariant="secondary"
                     />
               ))}
+            </div>
+      </section>
+
+       <section>
+            <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold font-heading">Core Solutions</h2>
+                <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+                    High-level, outcome-oriented products designed to solve major business problems for the real estate industry.
+                </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {solutions.map(solution => (
+                        <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
+                            <Card 
+                                className="h-full hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg border-b-4"
+                                style={{'--card-border-color': solution.slug === 'pro-search-eng-x3' ? '#4285F4' : solution.slug === 'estchat-x3' ? '#075E54' : '#FF4500' , borderBottomColor: 'var(--card-border-color)'} as React.CSSProperties}
+                            >
+                                <CardHeader>
+                                    <div 
+                                        className="p-4 rounded-2xl w-fit mb-4 text-white"
+                                        style={{backgroundColor: solution.slug === 'pro-search-eng-x3' ? '#4285F4' : solution.slug === 'estchat-x3' ? '#075E54' : '#FF4500'}}
+                                    >
+                                        {solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
+                                    </div>
+                                    <CardTitle>{solution.title}</CardTitle>
+                                    <CardDescription>{solution.description}</CardDescription>
+                                </CardHeader>
+                            </Card>
+                        </Link>
+                    ))}
             </div>
       </section>
 
@@ -176,35 +206,36 @@ export default function MarketplacePage() {
             </div>
       </section>
 
-       <section>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading">Core Solutions</h2>
+      <section>
+          <div className="text-center mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold font-heading">All App Suites</h2>
              <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-                High-level, outcome-oriented products designed to solve major business problems for the real estate industry.
+                Explore our collections of specialized apps to customize your workspace.
             </p>
           </div>
-           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {solutions.map(solution => (
-                    <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
-                        <Card 
-                            className="h-full hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg border-b-4"
-                            style={{'--card-border-color': solution.slug === 'pro-search-eng-x3' ? '#4285F4' : solution.slug === 'estchat-x3' ? '#075E54' : '#FF4500' , borderBottomColor: 'var(--card-border-color)'} as React.CSSProperties}
-                        >
-                            <CardHeader>
-                                <div 
-                                    className="p-4 rounded-2xl w-fit mb-4 text-white"
-                                    style={{backgroundColor: solution.slug === 'pro-search-eng-x3' ? '#4285F4' : solution.slug === 'estchat-x3' ? '#075E54' : '#FF4500'}}
-                                >
-                                    {solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
-                                </div>
-                                <CardTitle>{solution.title}</CardTitle>
-                                <CardDescription>{solution.description}</CardDescription>
-                            </CardHeader>
-                        </Card>
-                    </Link>
-                ))}
-            </div>
+            {marketingSuites.map(suite => {
+              const suiteTools = getSuiteTools(suite.name);
+              if (suiteTools.length === 0 || suite.name === 'Meta Marketing Suite') return null;
+              return (
+                  <div key={suite.id} className="mb-12">
+                      <h3 className="text-2xl font-bold font-heading mb-4">{suite.name}</h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                          {suiteTools.map(tool => (
+                              <DashboardServiceCard
+                                  key={tool.id}
+                                  tool={tool}
+                                  isAdded={false}
+                                  setIsAdded={(isAdded) => { }}
+                              />
+                          ))}
+                      </div>
+                       <Separator className="mt-8" />
+                  </div>
+              )
+            })}
       </section>
     </div>
   );
 }
+
+    

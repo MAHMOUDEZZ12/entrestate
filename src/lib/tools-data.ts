@@ -45,17 +45,6 @@ export const tools: ToolData[] = [
         cta: 'Build Campaign' 
     },
     { 
-        id: 'audience-creator', 
-        title: 'Brand Search Optimization', 
-        description: 'The watcher agent that finds, analyzes, and optimizes your target audience for brand search.', 
-        longDescription: "Audience Creator uses first-party signals, lookalike modeling, and contextual intent markers to build high-probability buyer segments. It surfaces audiences that are likely to convert and provides clear explanations for why each segment matters.",
-        iconName: 'Users2', 
-        color: '#00CED1', 
-        categories: ['Market Intelligence', 'Lead Gen'], 
-        suite: 'Lead Intelligence AI', 
-        cta: 'Create Audience' 
-    },
-    { 
         id: 'insta-ads-designer', 
         title: 'Instagram Lead Generation', 
         dashboardTitle: 'Insta Ads', 
@@ -121,7 +110,7 @@ export const tools: ToolData[] = [
         title: 'Sales Message Rewriter',
         description: 'A "Grammarly for Sales" to rewrite and improve your WhatsApp/SMS messages.',
         longDescription: 'This tool takes your draft sales message and generates several improved versions, each tailored to a specific tone or strategy like creating urgency, being more professional, or building rapport.',
-        iconName: 'Wand2',
+        iconName: 'Sparkle',
         color: '#25D366',
         categories: ['Sales Tools', 'Social & Comms'],
         suite: 'Marketing Management',
@@ -136,7 +125,7 @@ export const tools: ToolData[] = [
         description: 'Plan and design animated Instagram stories.', 
         longDescription: "Story Planner is a storyboard-first tool for designing multi-frame, animated Instagram Stories with template-driven transitions, CTA frames, and auto-export-ready segments for Ads Manager or Instagram Admin.",
         iconName: 'Album', 
-        color: '#E1306C', 
+        color: '#D83C6C', 
         categories: ['Creative', 'Social & Comms'], 
         suite: 'AI Creative Studio', 
         cta: 'Plan Story' 
@@ -159,7 +148,7 @@ export const tools: ToolData[] = [
         description: 'Generate authentic, user-generated content style video ad scripts.', 
         longDescription: "UGC Script Writer generates short, conversational scripts that mimic authentic user testimonials and casual storytelling — the style proven to improve trust and ad performance on social platforms.",
         iconName: 'PenTool', 
-        color: '#8A2BE2', 
+        color: '#7B42F6', 
         categories: ['Creative', 'Marketing'], 
         suite: 'AI Creative Studio', 
         cta: 'Write Scripts' 
@@ -203,7 +192,7 @@ export const tools: ToolData[] = [
         title: 'PDF EDITOR AI', 
         description: 'Edit PDF documents with AI-powered tools.', 
         longDescription: "PDF EDITOR AI allows you to edit PDF documents using natural language commands. Change text, swap images, and adjust layouts without needing complex software like Adobe Acrobat.",
-        iconName: 'Wand2', 
+        iconName: 'Edit', 
         color: '#1E90FF', 
         categories: ['Editing', 'Creative'], 
         suite: 'AI Creative Studio', 
@@ -215,7 +204,7 @@ export const tools: ToolData[] = [
         description: 'Generate high-quality, royalty-free images for listings and ads.', 
         longDescription: "Images HQ AI is a powerful text-to-image generator that creates stunning, photorealistic visuals for all your marketing needs. Describe what you want, and the AI brings it to life.",
         iconName: 'ImageIcon', 
-        color: '#1E90FF', 
+        color: '#4682B4', 
         categories: ['Creative'], 
         suite: 'AI Creative Studio', 
         cta: 'Generate Image' 
@@ -225,8 +214,8 @@ export const tools: ToolData[] = [
         title: 'Logo Creator AI', 
         description: 'Create a professional logo for your brand in seconds.', 
         longDescription: "Logo Creator AI is a rapid logo generation tool. Simply describe your company and your desired style, and the AI will produce a variety of unique, professional logos for you to choose from.",
-        iconName: 'Sparkles', 
-        color: '#1E90FF', 
+        iconName: 'Sparkle', 
+        color: '#4682B4', 
         categories: ['Creative'], 
         suite: 'AI Creative Studio', 
         cta: 'Create Logo' 
@@ -284,7 +273,7 @@ export const tools: ToolData[] = [
         description: 'Execution terminal for pushing listings to Property Finder.', 
         longDescription: "Property Finder Pilot automates validated uploads, handles API mapping, and manages listing lifecycle events (publish, update, expire) directly with Property Finder while providing error-handling and logging.",
         iconName: 'Building', 
-        color: '#FF4500', 
+        color: '#3282B8', 
         categories: ['Developer', 'Sales Tools'], 
         suite: 'AI Listing Portal', 
         badge: 'AUTO', 
@@ -297,7 +286,7 @@ export const tools: ToolData[] = [
         description: 'Execution terminal for pushing listings to Bayut.', 
         longDescription: "Bayut Pilot provides the same automated publishing, validation, and lifecycle management for Bayut portal as Property Finder Pilot does for Property Finder.",
         iconName: 'Building', 
-        color: '#FF4500', 
+        color: '#25B864', 
         categories: ['Developer', 'Sales Tools'], 
         suite: 'AI Listing Portal', 
         badge: 'AUTO', 
@@ -405,6 +394,17 @@ export const tools: ToolData[] = [
         categories: ['Market Intelligence'], 
         suite: 'Lead Intelligence AI', 
         cta: 'View Trends' 
+    },
+     { 
+        id: 'audience-creator', 
+        title: 'Brand Search Optimization', 
+        description: 'The watcher agent that finds, analyzes, and optimizes your target audience for brand search.', 
+        longDescription: "Audience Creator uses first-party signals, lookalike modeling, and contextual intent markers to build high-probability buyer segments. It surfaces audiences that are likely to convert and provides clear explanations for why each segment matters.",
+        iconName: 'Users2', 
+        color: '#00CED1', 
+        categories: ['Market Intelligence', 'Lead Gen'], 
+        suite: 'Lead Intelligence AI', 
+        cta: 'Create Audience' 
     },
     
     // Google Ads Suite
@@ -586,3 +586,5 @@ export const tools: ToolData[] = [
         cta: 'Open Editor' 
     },
 ];
+
+    
