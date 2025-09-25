@@ -24,9 +24,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
 
 export function WorkspaceHeader() {
   const { user } = useAuth();
+  const pathname = usePathname();
+
+  const navLinks = [
+    { href: "/me", label: "Workspace", icon: <LayoutDashboard className="mr-2 h-4 w-4" /> },
+    { href: "/me/discover", label: "Discover", icon: <Telescope className="mr-2 h-4 w-4" /> },
+    { href: "/me/marketing", label: "Marketplace", icon: <Palette className="mr-2 h-4 w-4" /> },
+    { href: "/me/flows", label: "Flows", icon: <Workflow className="mr-2 h-4 w-4" /> },
+    { href: "/me/brand", label: "Brand", icon: <Palette className="mr-2 h-4 w-4" /> },
+  ];
   
   const handleLogout = async () => {
     if (auth) {
@@ -43,50 +54,16 @@ export function WorkspaceHeader() {
           </div>
           <NavigationMenu className="hidden md:flex">
             <NavigationMenuList>
-                <NavigationMenuItem>
-                    <Link href="/me" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                             <LayoutDashboard className="mr-2 h-4 w-4" />
-                                Workspace
-                        </NavigationMenuLink>
-                    </Link>
+              {navLinks.map((link) => (
+                <NavigationMenuItem key={link.href}>
+                  <Link href={link.href} legacyBehavior passHref>
+                    <NavigationMenuLink active={pathname === link.href} className={navigationMenuTriggerStyle()}>
+                      {link.icon}
+                      {link.label}
+                    </NavigationMenuLink>
+                  </Link>
                 </NavigationMenuItem>
-                
-                 <NavigationMenuItem>
-                    <Link href="/me/discover" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            <Telescope className="mr-2 h-4 w-4" />
-                                Discover
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                
-                <NavigationMenuItem>
-                    <Link href="/me/marketing" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            <Palette className="mr-2 h-4 w-4" />
-                                Marketplace
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-
-                 <NavigationMenuItem>
-                    <Link href="/me/flows" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            <Workflow className="mr-2 h-4 w-4" />
-                                Flows
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-                 <NavigationMenuItem>
-                    <Link href="/me/brand" legacyBehavior passHref>
-                        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-                            <Palette className="mr-2 h-4 w-4" />
-                                Brand & Assets
-                        </NavigationMenuLink>
-                    </Link>
-                </NavigationMenuItem>
-               
+              ))}
             </NavigationMenuList>
           </NavigationMenu>
         </div>

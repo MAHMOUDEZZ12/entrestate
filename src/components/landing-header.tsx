@@ -12,6 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 const navLinks = [
     { name: 'Marketplace', href: '/marketplace' },
     { name: 'Pricing', href: '/pricing' },
+    { name: 'Solutions', href: '/solutions' },
     { name: 'Blog', href: '/blog' },
 ];
 
@@ -35,15 +36,9 @@ export function LandingHeader() {
         </div>
 
         <div className="hidden md:flex items-center gap-2">
-          {user ? (
-            <Link href="/me">
-              <Button variant="outline"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Button>
-            </Link>
-          ) : (
-            <Link href="/me">
-              <Button>Workspace <ArrowRight className="ml-2 h-4 w-4" /></Button>
-            </Link>
-          )}
+          <Link href="/me">
+            <Button>{user ? 'Go to Workspace' : 'Get Started'} <ArrowRight className="ml-2 h-4 w-4" /></Button>
+          </Link>
         </div>
         
         {/* Mobile Menu */}
@@ -67,15 +62,9 @@ export function LandingHeader() {
                                 </SheetClose>
                             ))}
                              <SheetClose asChild>
-                                {user ? (
-                                    <Link href="/me">
-                                        <Button variant="outline" className="w-full justify-start text-lg">Dashboard</Button>
-                                    </Link>
-                                ) : (
-                                     <Link href="/me">
-                                        <Button className="w-full justify-start text-lg">Workspace</Button>
-                                    </Link>
-                                )}
+                                <Link href="/me">
+                                    <Button className="w-full justify-start text-lg">{user ? 'Go to Workspace' : 'Get Started'}</Button>
+                                </Link>
                              </SheetClose>
                         </nav>
                     </div>
