@@ -19,23 +19,23 @@ function initializeAdminApp(): App | undefined {
   if (getApps().length > 0) {
     const existingApp = getApps().find(app => app.name === 'firebase-admin-app');
     if (existingApp) {
-        console.log("Found existing Firebase Admin app.");
+        // console.log("Found existing Firebase Admin app.");
         return existingApp;
     }
-    // If other apps exist but not our named one, we might be in a weird state, but let's try to initialize.
   }
 
   try {
     const serviceAccountString = process.env.FIREBASE_SERVICE_ACCOUNT;
-    // Vercel or local dev environment
+    
+    // Vercel or local dev environment with .env.local
     if (serviceAccountString) {
-      console.log("Initializing Firebase Admin with FIREBASE_SERVICE_ACCOUNT...");
+      // console.log("Initializing Firebase Admin with FIREBASE_SERVICE_ACCOUNT...");
       const serviceAccount = JSON.parse(serviceAccountString);
       return initializeApp({ credential: cert(serviceAccount) }, 'firebase-admin-app');
     } 
     // Google Cloud environment (App Hosting, Cloud Run)
     else if (process.env.GOOGLE_CLOUD_PROJECT) {
-      console.log("Initializing Firebase Admin with Application Default Credentials...");
+      // console.log("Initializing Firebase Admin with Application Default Credentials...");
       return initializeApp({ credential: applicationDefault() }, 'firebase-admin-app');
     }
     else {
@@ -44,7 +44,7 @@ function initializeAdminApp(): App | undefined {
     }
     
   } catch (e: any) {
-    console.error("Firebase Admin SDK initialization failed critically.", e);
+    console.error("Firebase Admin SDK initialization failed critically. Error:", e.message);
     return undefined;
   }
 }
@@ -55,9 +55,10 @@ adminApp = initializeAdminApp();
 if (adminApp) {
   adminDb = getFirestore(adminApp);
   adminAuth = getAuth(adminApp);
-  console.log("Firebase Admin SDK initialized successfully.");
+  // console.log("Firebase Admin SDK initialized successfully.");
 } else {
-  console.error("Firebase Admin App is not initialized. All admin features will be unavailable.");
+  // This message is important for debugging deployment issues.
+  console.error("Firebase Admin App is not initialized. All admin-dependent features will be unavailable. Check environment variable configuration.");
 }
 
 export { adminDb, adminAuth };
