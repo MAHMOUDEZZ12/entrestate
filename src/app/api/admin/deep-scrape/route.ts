@@ -1,12 +1,13 @@
 
-import { adminDb } from "@/lib/firebaseAdmin";
-import { ok, fail } from "@/lib/api-helpers";
+'use server';
+
+import { ok, fail, getUidFromRequest } from "@/lib/api-helpers";
+import { adminAuth } from "@/lib/firebaseAdmin";
 import * as cheerio from 'cheerio';
 
 async function deepScrapeSite(url: string) {
     console.log(`Starting deep scrape for: ${url}`);
-    // In a real scenario, we would use a more robust scraping library like Puppeteer
-    // to handle dynamic JavaScript-heavy sites. Cheerio is used here for demonstration.
+    // This is a simulation. A real implementation would use Puppeteer in a Cloud Function/Run.
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -15,8 +16,6 @@ async function deepScrapeSite(url: string) {
         const html = await response.text();
         const $ = cheerio.load(html);
 
-        // This is a placeholder for the complex logic required to parse each site.
-        // Each site would need its own parsing strategy.
         const title = $('title').first().text();
         const description = $('meta[name="description"]').attr('content');
         
@@ -25,12 +24,9 @@ async function deepScrapeSite(url: string) {
             scrapedAt: new Date().toISOString(),
             title: title,
             metaDescription: description,
-            // In a real implementation, we would extract listings, amenities, prices, etc.
             contentLength: html.length,
         };
 
-        // Here we would save the full scraped HTML to Cloud Storage
-        // and the structured JSON data to Firestore or BigQuery.
         console.log("Extracted Data:", extractedData);
         
         return extractedData;
@@ -43,10 +39,13 @@ async function deepScrapeSite(url: string) {
 
 
 export async function GET(req: Request) {
-  if (!adminDb) {
-    return fail("Firebase Admin is not initialized. Check server environment.", 503);
-  }
   try {
+    const uid = await getUidFromRequest(req);
+    const decodedToken = uid ? await adminAuth.getUser(uid) : null;
+    if (!decodedToken || decodedToken.email !== 'dev@entrestate.com') {
+      return fail("Unauthorized: Admin access required.", 403);
+    }
+    
     const { searchParams } = new URL(req.url);
     const target = searchParams.get('target');
     
@@ -62,8 +61,8 @@ export async function GET(req: Request) {
     
     const result = await deepScrapeSite(targets[target]);
 
-    return ok({ status: 'Deep scrape process initiated.', result });
-  } catch (e) {
+    return ok({ status: 'Deep scrape simulation complete.', result });
+  } catch (e: any) {
     return fail(e);
   }
 }

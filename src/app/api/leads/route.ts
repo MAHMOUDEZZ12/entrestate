@@ -10,9 +10,6 @@ const leadSchema = z.object({
     email: z.string().email('Invalid email address.'),
     phone: z.string().optional(),
     status: z.string().default('New'),
-    interest_level: z.string().default('Medium'),
-    source: z.string().default('Manual Entry'),
-    property: z.string().optional(),
 });
 
 
@@ -54,6 +51,8 @@ export async function POST(req: Request) {
 
     const leadData = {
         ...validation.data,
+        interest_level: 'Medium', // Default value
+        source: 'Manual Entry', // Default value
         assigned_to,
         lastContacted: new Date().toISOString(),
         createdAt: new Date(),

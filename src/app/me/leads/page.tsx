@@ -12,7 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal, UserPlus, FileText, Mail, Phone, Loader2, User, Building, DollarSign } from 'lucide-react';
+import { MoreHorizontal, UserPlus, Mail, Phone, Loader2, User } from 'lucide-react';
 import { PageHeader } from '@/components/ui/page-header';
 import {
   DropdownMenu,
@@ -89,7 +89,7 @@ const CreateLeadForm = ({ setOpen, onLeadCreated }: { setOpen: (open: boolean) =
             });
 
             const result = await response.json();
-            if (!result.ok) throw new Error(result.error);
+            if (!result.ok) throw new Error(result.error || "An unknown error occurred.");
 
             toast({
                 title: "Lead Created",

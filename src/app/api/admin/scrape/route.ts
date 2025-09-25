@@ -1,124 +1,67 @@
 
 'use server';
 
-import { adminDb } from "@/lib/firebaseAdmin";
-import { ok, fail } from "@/lib/api-helpers";
+import { getFunctions, httpsCallable } from "firebase/functions";
+import { app } from "@/lib/firebase"; // Use client-side app for functions
+import { ok, fail, getUidFromRequest } from "@/lib/api-helpers";
+import { adminAuth } from "@/lib/firebaseAdmin";
 import * as cheerio from 'cheerio';
-
-async function scrapeDxbOffplan() {
-  const baseUrl = "https://dxboffplan.com";
-  const response = await fetch(`${baseUrl}/developers/`);
-  const html = await response.text();
-  const $ = cheerio.load(html);
-
-  const projects: any[] = [];
-  const projectPromises = $('.project-item').map(async (i, el) => {
-    try {
-        const name = $(el).find('h2').text().trim();
-        const developer = $(el).find('.developer-name span').text().trim();
-        const location = $(el).find('.location-name span').text().trim();
-        const priceText = $(el).find('.price-details .starting-price').text().trim();
-        let thumbnailUrl = $(el).find('img').attr('src');
-        if (thumbnailUrl && !thumbnailUrl.startsWith('http')) {
-            thumbnailUrl = baseUrl + thumbnailUrl;
-        }
-        
-        if (name && developer) {
-            const project = {
-                id: `dxboffplan-${name.toLowerCase().replace(/\s+/g, '-')}`,
-                name,
-                developer,
-                area: location,
-                priceFrom: priceText || 'N/A',
-                country: 'AE',
-                city: 'Dubai',
-                status: 'Off-plan', // Assuming most are off-plan from this site
-                tags: ['dxboffplan.com', 'scrape'],
-                thumbnailUrl: thumbnailUrl || null,
-            };
-            projects.push(project);
-        }
-    } catch(e) {
-        console.error("Error parsing a dxboffplan project item:", e);
-    }
-  }).get();
-  
-  await Promise.all(projectPromises);
-  return projects;
-}
-
-async function scrapePropertyFinder() {
-    const baseUrl = "https://www.propertyfinder.ae";
-    const response = await fetch(`${baseUrl}/en/new-projects`);
-    const html = await response.text();
-    const $ = cheerio.load(html);
-
-    const projects: any[] = [];
-    $('.card-list__item').each((i, el) => {
-        try {
-            const name = $(el).find('.card__title').text().trim();
-            const developer = $(el).find('.card__property-logo-name').text().trim();
-            const location = $(el).find('.card__location').text().trim();
-            const priceText = $(el).find('.card__price-value').text().trim();
-            const thumbnailUrl = $(el).find('.card__image').attr('src');
-
-
-            if (name && developer) {
-                 const project = {
-                    id: `pf-${name.toLowerCase().replace(/\s+/g, '-')}`,
-                    name,
-                    developer,
-                    area: location,
-                    priceFrom: priceText || 'N/A',
-                    country: 'AE',
-                    city: 'Dubai',
-                    status: 'New Launch', // Assuming these are new from this page
-                    tags: ['propertyfinder.ae', 'scrape'],
-                    thumbnailUrl: thumbnailUrl || null,
-                };
-                projects.push(project);
-            }
-        } catch (e) {
-            console.error("Error parsing a propertyfinder project item:", e);
-        }
-    });
-
-    return projects;
-}
 
 
 export async function POST(req: Request) {
-  if (!adminDb) {
-    return fail("Firebase Admin is not initialized. Check server environment.", 503);
-  }
-  try {
-    const { searchParams } = new URL(req.url);
-    const source = searchParams.get('source') || 'dxboffplan';
-    
-    let projects: any[] = [];
-    
-    if (source === 'dxboffplan') {
-        projects = await scrapeDxbOffplan();
-    } else if (source === 'propertyfinder') {
-        projects = await scrapePropertyFinder();
-    } else {
-        return fail("Invalid source parameter provided.", 400);
+    try {
+        const uid = await getUidFromRequest(req);
+        const decodedToken = uid ? await adminAuth.getUser(uid) : null;
+        if (!decodedToken || decodedToken.email !== 'dev@entrestate.com') {
+            return fail("Unauthorized: Admin access required.", 403);
+        }
+
+        if (!app) {
+            return fail("Firebase client is not initialized.", 503);
+        }
+        const functions = getFunctions(app);
+        
+        const { searchParams } = new URL(req.url);
+        const source = searchParams.get('source') || 'dxboffplan';
+        
+        const triggerScrape = httpsCallable(functions, 'triggerScrape');
+        const response = await triggerScrape({ source });
+
+        return ok(response.data);
+
+    } catch (e: any) {
+        console.error("Scrape trigger error:", e);
+        return fail(e.message || 'Failed to trigger scrape job.', e.code === 'unauthenticated' ? 401 : 500);
     }
-    
-    if (projects.length === 0) {
-      return ok({ projectsAdded: 0, source, message: "No projects found or failed to parse." });
+}
+
+
+export async function GET(req: Request) {
+    // The GET method is kept for simple, direct scraping simulation if needed,
+    // but the primary interaction should be via the POST to the Cloud Function.
+    try {
+        const { searchParams } = new URL(req.url);
+        const target = searchParams.get('target');
+        
+        const targets: { [key: string]: string } = {
+            'dxboffplan': 'https://dxboffplan.com/developers/',
+            'bayut': 'https://www.bayut.com/for-sale/property/dubai/',
+            'propertyfinder': 'https://www.propertyfinder.ae/en/buy/properties-for-sale.html'
+        };
+
+        if (!target || !targets[target]) {
+            return fail("A valid 'target' parameter is required (dxboffplan, bayut, or propertyfinder).", 400);
+        }
+        
+        const response = await fetch(targets[target]);
+        if (!response.ok) throw new Error(`Failed to fetch ${target}`);
+        const html = await response.text();
+        const $ = cheerio.load(html);
+        const title = $('title').first().text();
+
+        return ok({ status: 'Simple scrape successful.', title, source: targets[target] });
+
+    } catch (e: any) {
+        return fail(e);
     }
-
-    const batch = adminDb.batch();
-    projects.forEach(project => {
-      const docRef = adminDb.collection('projects_catalog').doc(project.id);
-      batch.set(docRef, project, { merge: true });
-    });
-
-    await batch.commit();
-
-    return ok({ projectsAdded: projects.length, source });
-  } catch (e) {
-    return fail(e);
-  }
 }
