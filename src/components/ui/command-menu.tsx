@@ -2,7 +2,7 @@
 
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   CommandDialog,
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/command';
 import { tools, Feature } from '@/lib/tools-client';
 import { File, LayoutDashboard, Settings, User, Sparkles } from 'lucide-react';
+import { useSpotlight } from '@/context/SpotlightContext';
 
 interface CommandMenuProps {
   open: boolean;
@@ -23,6 +24,15 @@ interface CommandMenuProps {
 
 export function CommandMenu({ open, setOpen }: CommandMenuProps) {
   const router = useRouter();
+  const [isDraggable, setIsDraggable] = useState(false);
+  const { clearSpotlight } = useSpotlight();
+
+  useEffect(() => {
+    try {
+        const saved = localStorage.getItem('isSearchDraggable');
+        setIsDraggable(saved === 'true');
+    } catch(e) {}
+  }, [open]);
 
   useEffect(() => {
     const down = (e: KeyboardEvent) => {
@@ -37,6 +47,7 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
 
   const runCommand = (command: () => void) => {
     setOpen(false);
+    clearSpotlight();
     command();
   };
 
@@ -45,7 +56,7 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
   };
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandDialog open={open} onOpenChange={setOpen} isDraggable={isDraggable}>
       <CommandInput 
         placeholder="Search for an app or page..."
       />
@@ -81,5 +92,3 @@ export function CommandMenu({ open, setOpen }: CommandMenuProps) {
     </CommandDialog>
   );
 }
-
-    

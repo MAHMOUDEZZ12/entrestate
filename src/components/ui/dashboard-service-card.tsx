@@ -19,6 +19,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { useSpotlight } from '@/context/SpotlightContext';
 
 
 interface DashboardServiceCardProps {
@@ -31,6 +32,7 @@ interface DashboardServiceCardProps {
 
 export const DashboardServiceCard = ({ tool, isAdded, setIsAdded, connectionRequired, paymentRequired }: DashboardServiceCardProps) => {
   const { toast } = useToast();
+  const { setSpotlight, clearSpotlight } = useSpotlight();
   const icon = tool.icon;
 
   const handleAdd = (e: React.MouseEvent) => {
@@ -67,7 +69,11 @@ export const DashboardServiceCard = ({ tool, isAdded, setIsAdded, connectionRequ
   return (
     <Dialog>
         <DialogTrigger asChild>
-            <div className="block group cursor-pointer">
+            <div 
+                className="block group cursor-pointer h-full"
+                onMouseEnter={() => setSpotlight(tool)}
+                onMouseLeave={clearSpotlight}
+            >
                 <Card 
                     className="h-full flex flex-col hover:border-primary/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-b-4"
                     style={{'--card-border-color': tool.color, borderBottomColor: 'var(--card-border-color)'} as React.CSSProperties}
@@ -90,9 +96,8 @@ export const DashboardServiceCard = ({ tool, isAdded, setIsAdded, connectionRequ
                                     Requires {connectionRequired} connection
                                 </div>
                             )}
-                            {/* The button text is now just 'Details' since clicking opens the dialog */}
-                            <Button variant="outline" className="w-full" size="sm" asChild>
-                                <div>Details</div>
+                            <Button variant="outline" className="w-full" size="sm">
+                                Details
                             </Button>
                         </div>
                     </CardFooter>

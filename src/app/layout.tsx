@@ -11,8 +11,6 @@ import { TabProvider } from '@/context/TabManagerContext';
 import { CanvasProvider } from '@/context/CanvasContext';
 import { CreativeCanvas } from '@/components/creative-canvas';
 import { SensitiveAreaProvider } from '@/context/SensitiveAreaContext';
-import AppContentClient from '@/components/AppContent';
-import React from 'react';
 import { SpotlightProvider } from '@/context/SpotlightContext';
 import { AppLayout } from '@/components/AppLayout';
 

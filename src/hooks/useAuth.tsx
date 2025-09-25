@@ -30,11 +30,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!auth) {
-        // Firebase isn't initialized, likely due to missing config.
-        // We'll treat this as a logged-out state.
         setLoading(false);
-        if(isProtectedRoute(pathname)) {
-            router.push('/me'); // Redirect to login/auth form page
+        if(isProtectedRoute(pathname) && pathname !== '/login') {
+            router.push(`/login?redirect=${pathname}`); 
         }
         return;
     }
@@ -42,32 +40,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {
-        // In a real app, you'd get the custom claim from the id token
-        // For this simulation, we check a hardcoded list.
         const isAdminUser = ADMIN_USERNAMES.includes(user.displayName || '');
         setIsAdmin(isAdminUser);
         
-        // Fetch user doc to check if onboarding is complete
-        // This is a client-side fetch, should be an API call
-        // For now, we'll assume new users need onboarding
-        const userDocRef = `/users/${user.uid}`; // Path for a hypothetical API
-        // const response = await fetch(userDocRef); 
-        // const userData = await response.json();
-        // const onboardingComplete = userData?.onboarding?.progress?.step === 4;
-        
-        // MOCK: Forcing onboarding for new users if they land on /me
         const onboardingComplete = localStorage.getItem('onboardingComplete') === 'true';
 
-        if (!onboardingComplete && pathname !== '/onboarding' && pathname !== '/me') {
+        if (!onboardingComplete && pathname !== '/onboarding') {
           router.push('/onboarding');
         } else if (isAdminRoute(pathname) && !isAdminUser) {
-          router.push('/me'); // Not an admin, redirect to workspace
+          router.push('/me/workspace'); // Redirect non-admins from admin routes
         }
 
       } else {
         setIsAdmin(false);
-        if (isProtectedRoute(pathname)) {
-          router.push('/me'); // Redirect to the /me page which now serves as the login form
+        // If user logs out or session expires, redirect them from protected routes to login
+        if (isProtectedRoute(pathname) && pathname !== '/login') {
+          router.push(`/login?redirect=${pathname}`);
         }
       }
       setLoading(false);
@@ -79,7 +67,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   if (loading) {
     return (
-        <div className="flex h-screen w-full items-center justify-center">
+        <div className="flex h-screen w-full items-center justify-center bg-background">
             <Loader2 className="h-8 w-8 animate-spin" />
         </div>
     );

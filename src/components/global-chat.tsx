@@ -174,15 +174,20 @@ export function GlobalChat() {
         let leftKeys: ActionKey[] = [];
 
         if (spotlightedApp) {
-            const isAdded = localStorage.getItem('addedApps')?.includes(spotlightedApp.id);
+            const isAdded = typeof window !== 'undefined' ? (localStorage.getItem('addedApps') || '[]').includes(spotlightedApp.id) : false;
             const mainAction = isAdded 
                 ? { label: "Open", href: `/me/tool/${spotlightedApp.id}`, icon: <ArrowRight /> }
-                : { label: "Add", action: () => alert(`Adding ${spotlightedApp.title}`), icon: <PlusCircle /> };
+                : { label: "Add", action: () => {
+                    let apps = JSON.parse(localStorage.getItem('addedApps') || '[]');
+                    apps.push(spotlightedApp.id);
+                    localStorage.setItem('addedApps', JSON.stringify(apps));
+                    toast({title: `${spotlightedApp.title} Added!`, description: 'It is now available in your workspace.'});
+                }, icon: <PlusCircle /> };
 
             return {
                 placeholder: `Spotlight on: ${spotlightedApp.title}`,
                 leftKeys: [mainAction],
-                rightKey: { label: "Options", href: `/apps/${spotlightedApp.id}`, icon: <Settings2 /> }
+                rightKey: { label: "Options", href: `/blog/${spotlightedApp.id}`, icon: <Settings2 /> }
             };
         }
 
