@@ -4,7 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { LayoutGrid, Search, Telescope, MessageCircle, FileJson, ArrowRight, Sparkles, Building, Workflow } from 'lucide-react';
+import { LayoutGrid, Search, Telescope, MessageCircle, FileJson, ArrowRight, Sparkles, Building, Workflow, Plus } from 'lucide-react';
 import { tools as allTools, Feature } from '@/lib/tools-client';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
 import { useToast } from '@/hooks/use-toast';
@@ -51,7 +51,7 @@ export default function MarketplacePage() {
   return (
     <div className="p-4 md:p-10 space-y-20 container mx-auto">
        <PageHeader
-        title="Lead quality isn’t luck—it requires fluency in algorithms: AI speaking to AI."
+        title="Lead quality isn’t luck — it requires fluency in algorithms: AI speaking to AI."
         description=""
       >
         <div className="relative w-full max-w-lg mt-4">
@@ -88,7 +88,7 @@ export default function MarketplacePage() {
 
       <section>
           <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading">Listing is an all-time task. Get AI to work.</h2>
+            <h2 className="text-3xl md:text-4xl font-bold font-heading">Listing is an all-time task. Get AI at work.</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <Card className="bg-card/50 backdrop-blur-lg flex flex-col items-center justify-center p-8 text-center border-2 border-dashed">
@@ -135,7 +135,7 @@ export default function MarketplacePage() {
 
       <section>
           <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading">Lead Intelligence, done by algorithm-native speakers.</h2>
+            <h2 className="text-3xl md:text-4xl font-bold font-heading">Lead Intelligence, done by algorithm language native speakers.</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="md:col-span-1 space-y-4">
