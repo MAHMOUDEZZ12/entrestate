@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
-import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Mail, KeyRound } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -61,24 +61,29 @@ export default function LoginPage() {
     const handleDeveloperSignIn = async () => {
         if (!auth) return;
         setIsDevLoading(true);
+        const email = 'dev@entrestate.com';
+        const password = 'gemini';
         try {
-            await signInWithEmailAndPassword(auth, 'dev@entrestate.com', 'gemini');
+            // First, try to create the user. If they already exist, this will fail gracefully.
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                toast({ title: "Developer Account Created", description: "Proceeding to login." });
+            } catch (error: any) {
+                if (error.code !== 'auth/email-already-in-use') {
+                    throw error; // Re-throw unexpected errors
+                }
+                // If user exists, that's fine, we just proceed to log in.
+            }
+
+            // Now, sign in.
+            await signInWithEmailAndPassword(auth, email, password);
             toast({ title: "Developer Access Granted", description: "Welcome, partner." });
             localStorage.setItem('onboardingComplete', 'true');
             router.push('/gem'); // Go directly to the admin dashboard
+
         } catch (error: any) {
-            toast({ title: "Developer Login Failed", description: "This may be the first sign-in. Please try again in a moment as the user is created.", variant: "destructive" });
-            // Attempt to create the user if they don't exist
-            try {
-                const { createUserWithEmailAndPassword } = await import("firebase/auth");
-                await createUserWithEmailAndPassword(auth, 'dev@entrestate.com', 'gemini');
-                await signInWithEmailAndPassword(auth, 'dev@entrestate.com', 'gemini');
-                toast({ title: "Developer Account Created & Signed In" });
-                localStorage.setItem('onboardingComplete', 'true');
-                router.push('/gem');
-            } catch (creationError: any) {
-                 toast({ title: "Fatal Auth Error", description: creationError.message, variant: "destructive" });
-            }
+            console.error("Developer Login Failed:", error);
+            toast({ title: "Developer Login Failed", description: "An unexpected error occurred. Check the console for details.", variant: "destructive" });
         } finally {
             setIsDevLoading(false);
         }
