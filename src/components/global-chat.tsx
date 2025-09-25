@@ -165,7 +165,10 @@ export function GlobalChat() {
         
         let rightKey: ActionKey | null = { label: 'Analyze Page', icon: <Sparkles className="h-5 w-5" />, action: handleMagicClick };
         if (lastResultToCopy) {
-            rightKey = { label: 'Copy Result', icon: <Copy className="h-5 w-5" />, action: () => copyToClipboard(lastResultToCopy || '', () => {}) };
+            rightKey = { label: 'Copy Result', icon: <Copy className="h-5 w-5" />, action: () => {
+                 navigator.clipboard.writeText(lastResultToCopy || '');
+                 toast({title: "Result copied to clipboard!"});
+            }};
         }
         
         let leftKeys: ActionKey[] = [];
@@ -248,7 +251,7 @@ export function GlobalChat() {
 
   return (
     <>
-    <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+      <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
         <div className={cn(
             "fixed left-0 right-0 z-50 bg-background/80 backdrop-blur-lg",
             isBarOnTop ? "top-14 border-b" : "bottom-0 border-t"
@@ -297,35 +300,35 @@ export function GlobalChat() {
                  <button onClick={() => router.forward()} className="hidden md:block text-muted-foreground font-mono text-lg hover:text-primary transition-colors" aria-label="Go forward">&gt;</button>
             </div>
         </div>
-      <SheetContent side={isBarOnTop ? "top" : "bottom"} className="h-4/5 flex flex-col p-0 border-t-2 z-40" hideCloseButton={true}>
-          <ScrollArea className="flex-1 p-4" ref={scrollAreaRef as any}>
-              <div className="space-y-4 max-w-4xl mx-auto w-full">
-                  {messages.map((msg, index) => (
-                      <div key={index} className={cn("flex items-start gap-3", msg.from === 'user' ? 'justify-end' : 'justify-start')}>
-                          {msg.from === 'ai' && (
-                              <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0"><Bot className="h-5 w-5" /></div>
-                          )}
-                          <div className={cn("max-w-xl rounded-2xl p-3 text-sm whitespace-pre-wrap", msg.from === 'user' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-muted rounded-bl-none')}>
-                              {msg.text}
-                          </div>
-                          {msg.from === 'user' && (
-                              <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center shrink-0"><User className="h-5 w-5"/></div>
-                          )}
-                      </div>
-                  ))}
-                  {isLoading && (
-                      <div className="flex items-start gap-3 justify-start">
-                          <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0"><Bot className="h-5 w-5" /></div>
-                          <div className="rounded-2xl p-3 text-sm bg-muted rounded-bl-none">
-                              <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                          </div>
-                      </div>
-                  )}
-              </div>
-          </ScrollArea>
-      </SheetContent>
-    </Sheet>
-    <CommandMenu open={isCommandMenuOpen} setOpen={setIsCommandMenuOpen} />
+        <SheetContent side={isBarOnTop ? "top" : "bottom"} className="h-4/5 flex flex-col p-0 border-t-2 z-40" hideCloseButton={true}>
+            <ScrollArea className="flex-1 p-4" ref={scrollAreaRef as any}>
+                <div className="space-y-4 max-w-4xl mx-auto w-full">
+                    {messages.map((msg, index) => (
+                        <div key={index} className={cn("flex items-start gap-3", msg.from === 'user' ? 'justify-end' : 'justify-start')}>
+                            {msg.from === 'ai' && (
+                                <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0"><Bot className="h-5 w-5" /></div>
+                            )}
+                            <div className={cn("max-w-xl rounded-2xl p-3 text-sm whitespace-pre-wrap", msg.from === 'user' ? 'bg-primary text-primary-foreground rounded-br-none' : 'bg-muted rounded-bl-none')}>
+                                {msg.text}
+                            </div>
+                            {msg.from === 'user' && (
+                                <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center shrink-0"><User className="h-5 w-5"/></div>
+                            )}
+                        </div>
+                    ))}
+                    {isLoading && (
+                        <div className="flex items-start gap-3 justify-start">
+                            <div className="h-8 w-8 rounded-full bg-primary/10 text-primary flex items-center justify-center shrink-0"><Bot className="h-5 w-5" /></div>
+                            <div className="rounded-2xl p-3 text-sm bg-muted rounded-bl-none">
+                                <Loader2 className="h-5 w-5 animate-spin text-primary" />
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </ScrollArea>
+        </SheetContent>
+      </Sheet>
+      <CommandMenu open={isCommandMenuOpen} setOpen={setIsCommandMenuOpen} />
     </>
   );
 }
