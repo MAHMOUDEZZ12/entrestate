@@ -67,8 +67,8 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'rebranding': rebrandBrochure,
     'brochure-translator': translateBrochure,
     'pdf-editor-ai': editPdf,
-    'images-hq-ai': (payload) => Promise.resolve({ error: "This tool is a placeholder for direct image generation." }),
-    'logo-creator-ai': (payload) => Promise.resolve({ error: "This tool is a placeholder for direct logo generation." }),
+    'images-hq-ai': generateAdFromBrochure,
+    'logo-creator-ai': generateAdFromBrochure,
     'aerial-view-generator': generateReel, // Uses a similar video generation flow
     'listing-manager': (payload) => Promise.resolve({ error: "Listing Manager is a UI-driven tool, not a direct flow." }),
     'listing-performance': (payload) => Promise.resolve({ error: "Listing Performance is a UI-driven tool." }),
