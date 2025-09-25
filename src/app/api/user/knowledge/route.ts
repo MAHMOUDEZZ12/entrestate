@@ -1,3 +1,4 @@
+
 'use server';
 
 import { adminDb } from "@/lib/firebaseAdmin";
@@ -43,3 +44,4 @@ export async function DELETE(req: Request) {
         return fail(e);
     }
 }
+
