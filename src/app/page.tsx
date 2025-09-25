@@ -95,6 +95,28 @@ export default function HomePage() {
           </div>
         </section>
 
+        <section id="deal-planner" className="py-20 md:py-32">
+            <div className="container mx-auto px-4">
+                 <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center border-border/30 shadow-xl">
+                   <div className="space-y-4 text-left">
+                       <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Sparkles className="h-8 w-8" /></div>
+                       <h3 className="text-3xl font-bold font-heading">
+                          SuperSales AI
+                       </h3>
+                       <p className="text-lg text-muted-foreground">
+                            Your interactive AI partner for creating and executing winning deals. It's like having a world-class sales manager in your pocket, guiding you on what to say and do next.
+                       </p>
+                       <Link href="/me">
+                           <Button variant="outline" className="mt-6 shadow">Start a Workspace<ArrowRight className="ml-2 h-4 w-4"/></Button>
+                       </Link>
+                   </div>
+                   <div>
+                        <SalesPlannerSimulation />
+                   </div>
+                </Card>
+            </div>
+        </section>
+
         <section id="solutions" className="py-20 md:py-32 bg-muted/30">
             <div className="container mx-auto px-4 space-y-20">
                  <div className="max-w-3xl mx-auto text-center">
@@ -162,29 +184,7 @@ export default function HomePage() {
             </div>
         </section>
 
-        <section id="deal-planner" className="py-20 md:py-32">
-            <div className="container mx-auto px-4">
-                 <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center border-border/30 shadow-xl">
-                   <div className="space-y-4 text-left">
-                       <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Sparkles className="h-8 w-8" /></div>
-                       <h3 className="text-3xl font-bold font-heading">
-                          SuperSales AI
-                       </h3>
-                       <p className="text-lg text-muted-foreground">
-                            Your interactive AI partner for creating and executing winning deals. It's like having a world-class sales manager in your pocket, guiding you on what to say and do next.
-                       </p>
-                       <Link href="/me">
-                           <Button variant="outline" className="mt-6 shadow">Start a Workspace<ArrowRight className="ml-2 h-4 w-4"/></Button>
-                       </Link>
-                   </div>
-                   <div>
-                        <SalesPlannerSimulation />
-                   </div>
-                </Card>
-            </div>
-        </section>
-
-         <section id="marketplace-showcase" className="py-20 md:py-32 bg-muted/30">
+         <section id="marketplace-showcase" className="py-20 md:py-32">
             <div className="container mx-auto px-4">
                  <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
@@ -209,7 +209,7 @@ export default function HomePage() {
                                     {React.cloneElement(tool.icon, { className: 'h-8 w-8' })}
                                 </div>
                                 <p className="text-xs font-semibold">{tool.dashboardTitle || tool.title}</p>
-                                <div className="absolute bottom-full mb-2 w-48 p-2 text-xs text-center text-white bg-foreground rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                <div className="absolute bottom-full mb-2 w-48 p-2 text-xs text-center text-background bg-foreground rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
                                     {tool.description}
                                     <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-foreground"></div>
                                 </div>
@@ -232,5 +232,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-    
