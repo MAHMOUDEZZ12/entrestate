@@ -3,7 +3,7 @@
 
 import React, { useState, Suspense, useEffect, useCallback } from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Users2, Rss, Building, Sparkles, Wand2, Search, ArrowRight, Library, LayoutGrid, PlusCircle } from 'lucide-react';
 import { Loader2 } from 'lucide-react';
@@ -263,3 +263,5 @@ export default function MePage() {
         </Suspense>
     )
 }
+
+    
