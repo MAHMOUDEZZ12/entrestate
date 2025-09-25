@@ -28,7 +28,7 @@ const MegaListingSimulation = dynamic(() => import('@/components/mega-listing-si
 });
 const SalesPlannerSimulation = dynamic(() => import('@/components/sales-planner-simulation').then(mod => mod.SalesPlannerSimulation), {
   ssr: false,
-  loading: () => <div className="h-[400px] flex items-center justify-center bg-muted rounded-lg"><Loader2 className="animate-spin" /></div>,
+  loading: () => <div className="h-[420px] flex items-center justify-center bg-muted rounded-lg"><Loader2 className="animate-spin" /></div>,
 });
 
 
@@ -143,7 +143,7 @@ export default function HomePage() {
                 </Card>
 
                 <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center border-border/30 shadow-xl">
-                   <div className="space-y-4 text-left">
+                   <div className="space-y-4 text-left md:order-2">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Telescope className="h-8 w-8" /></div>
                        <h3 className="text-3xl font-bold font-heading">
                           Market Search Engine
@@ -155,15 +155,36 @@ export default function HomePage() {
                            <Button variant="outline" className="mt-6 shadow">Ready when you are <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
-                   <div>
+                   <div className="md:order-1">
                         <ProSearchSimulation />
                    </div>
                 </Card>
-
             </div>
         </section>
 
-         <section id="marketplace-showcase" className="py-20 md:py-32">
+        <section id="deal-planner" className="py-20 md:py-32">
+            <div className="container mx-auto px-4">
+                 <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center border-border/30 shadow-xl">
+                   <div className="space-y-4 text-left">
+                       <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Sparkles className="h-8 w-8" /></div>
+                       <h3 className="text-3xl font-bold font-heading">
+                          SuperSales AI
+                       </h3>
+                       <p className="text-lg text-muted-foreground">
+                            Your interactive AI partner for creating and executing winning deals. It's like having a world-class sales manager in your pocket, guiding you on what to say and do next.
+                       </p>
+                       <Link href="/me">
+                           <Button variant="outline" className="mt-6 shadow">Start a Workspace<ArrowRight className="ml-2 h-4 w-4"/></Button>
+                       </Link>
+                   </div>
+                   <div>
+                        <SalesPlannerSimulation />
+                   </div>
+                </Card>
+            </div>
+        </section>
+
+         <section id="marketplace-showcase" className="py-20 md:py-32 bg-muted/30">
             <div className="container mx-auto px-4">
                  <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl md:text-5xl font-bold tracking-tight">
@@ -206,30 +227,10 @@ export default function HomePage() {
                 </div>
             </div>
         </section>
-        
-        <section id="deal-planner" className="py-20 md:py-32 bg-muted/30">
-            <div className="container mx-auto px-4">
-                 <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center border-border/30 shadow-xl">
-                   <div className="space-y-4 text-left">
-                       <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Sparkles className="h-8 w-8" /></div>
-                       <h3 className="text-3xl font-bold font-heading">
-                          SuperSales AI
-                       </h3>
-                       <p className="text-lg text-muted-foreground">
-                            Your interactive AI partner for creating and executing winning deals. It's like having a world-class sales manager in your pocket, guiding you on what to say and do next.
-                       </p>
-                       <Link href="/me">
-                           <Button variant="outline" className="mt-6 shadow">Start a Workspace<ArrowRight className="ml-2 h-4 w-4"/></Button>
-                       </Link>
-                   </div>
-                   <div>
-                        <SalesPlannerSimulation />
-                   </div>
-                </Card>
-            </div>
-        </section>
 
       </main>
     </div>
   );
 }
+
+    

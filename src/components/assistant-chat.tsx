@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
@@ -18,13 +19,13 @@ const InitialAssistantMessage = () => (
     <div>
         <p className="font-semibold mb-2">Hello! I'm your AI co-pilot.</p>
         <p className="mb-3">Train me by uploading your brochures, price lists, and market reports to the <Link href="/me/brand" className="underline font-semibold hover:text-primary">Brand & Assets</Link> page. This gives me a knowledge base to help you better.</p>
-        <p className="text-sm">Ask a question, or tell me what you'd like to do.</p>
+        <p className="text-sm">Ask a question, or tell me what you'd like to do. But please, no complicated dreams. There's no one million 2 bedrooms in downtown!</p>
     </div>
 );
 
 export function AssistantChat() {
   const [messages, setMessages] = useState<Message[]>([
-    { from: 'ai', text: 'Welcome! Ask me anything about your properties or the market.' },
+    { from: 'ai', text: 'Welcome! Ask me anything about your properties or the market. But please, no complicated dreams. There\'s no one million 2 bedrooms in downtown!' },
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -115,3 +116,5 @@ export function AssistantChat() {
     </div>
   );
 }
+
+    

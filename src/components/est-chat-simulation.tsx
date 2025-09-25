@@ -51,12 +51,13 @@ const ChatBubble = ({ children, from, delay }: { children: React.ReactNode, from
 
 export const EstChatSimulation = () => {
     return (
-        <div className="w-full max-w-md mx-auto h-[480px] flex flex-col gap-4 p-4">
+        <div className="w-full max-w-md mx-auto h-[400px] flex flex-col gap-4 p-4">
             <ChatBubble from="user" delay={0.2}>Hi! I'm looking for a 2BR villa in Dubai Hills with a budget of AED 3M.</ChatBubble>
             <ChatBubble from="bot" delay={0.8}>Of course. I see two premium off-plan options: one by Emaar and one by Sobha. The Sobha option has a slightly better projected ROI based on recent trends.</ChatBubble>
             <ChatBubble from="user" delay={1.4}>Interesting. Can you generate a comparison PDF for me and my client?</ChatBubble>
             <ChatBubble from="bot" delay={2.0}>Certainly. I've just generated the comparison document and placed it in your Creative Canvas. I can also send it via WhatsApp. What would you prefer?</ChatBubble>
-            <ChatBubble from="bot" delay={2.6}>Any client requests? please no complicated dreams. there's no one million 2 bedrooms in downtown!</ChatBubble>
         </div>
     );
 };
+
+    
