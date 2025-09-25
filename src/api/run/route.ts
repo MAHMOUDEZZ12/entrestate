@@ -54,7 +54,7 @@ const runToolSchema = z.object({
 
 const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'meta-auto-pilot': runMetaAutoPilot,
-    'campaign-builder': createMetaCampaign, // Renamed
+    'campaign-builder': createMetaCampaign,
     'audience-creator': suggestTargetingOptions,
     'insta-ads-designer': generateAdFromBrochure,
     'reel-ads': generateReel,

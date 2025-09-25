@@ -8,7 +8,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Wrench, Briefcase, Languages, LinkIcon, Sparkle, ArrowRight
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Wrench, Briefcase, Languages, LinkIcon, Sparkle, ArrowRight, Copy
 } from 'lucide-react';
 import { tools as toolsData, ToolData } from './tools-data';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';

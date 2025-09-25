@@ -6,7 +6,6 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useRouter, usePathname } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
-import { adminDb } from '@/lib/firebaseAdmin'; // This import is server-side only, will be problematic.
 
 interface AuthContextType {
     user: User | null;

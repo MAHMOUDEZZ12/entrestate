@@ -1,6 +1,7 @@
+
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -20,7 +21,7 @@ function SmartSearchHero() {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (!query.trim()) return;
-        router.push(`/discover/search?q=${encodeURIComponent(query.trim())}`);
+        router.push(`/me/discover?q=${encodeURIComponent(query.trim())}`);
     };
 
     return (
@@ -176,6 +177,8 @@ const AuthForm = () => {
         try {
             await signInWithEmailAndPassword(auth, email, password);
             toast({ title: "Signed In Successfully" });
+             // On successful sign-in, flag that onboarding is complete
+            localStorage.setItem('onboardingComplete', 'true');
             router.push('/me/workspace');
         } catch (error: any) {
             toast({ title: "Authentication Failed", description: error.message, variant: "destructive" });
