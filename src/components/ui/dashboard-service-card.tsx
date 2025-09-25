@@ -28,9 +28,25 @@ interface DashboardServiceCardProps {
     setIsAdded: (isAdded: boolean) => void;
     connectionRequired?: string;
     paymentRequired?: boolean;
+    className?: string;
+    iconContainerClassName?: string;
+    titleClassName?: string;
+    descriptionClassName?: string;
+    buttonVariant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link" | null | undefined;
 }
 
-export const DashboardServiceCard = ({ tool, isAdded, setIsAdded, connectionRequired, paymentRequired }: DashboardServiceCardProps) => {
+export const DashboardServiceCard = ({ 
+    tool, 
+    isAdded, 
+    setIsAdded, 
+    connectionRequired, 
+    paymentRequired, 
+    className, 
+    iconContainerClassName, 
+    titleClassName, 
+    descriptionClassName,
+    buttonVariant = "outline"
+}: DashboardServiceCardProps) => {
   const { toast } = useToast();
   const { setSpotlight, clearSpotlight } = useSpotlight();
   const icon = tool.icon;
@@ -61,7 +77,7 @@ export const DashboardServiceCard = ({ tool, isAdded, setIsAdded, connectionRequ
       <Check className="mr-2 h-4 w-4" /> Added
     </Button>
   ) : (
-    <Button size="sm" onClick={handleAdd} className="w-full">
+    <Button size="sm" onClick={handleAdd} className="w-full" variant={buttonVariant || "default"}>
       <Plus className="mr-2 h-4 w-4" /> Add to Workspace
     </Button>
   );
@@ -75,18 +91,21 @@ export const DashboardServiceCard = ({ tool, isAdded, setIsAdded, connectionRequ
                 onMouseLeave={clearSpotlight}
             >
                 <Card 
-                    className="h-full flex flex-col hover:border-primary/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-b-4"
+                    className={cn(
+                        "h-full flex flex-col hover:border-primary/50 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-b-4",
+                        className
+                    )}
                     style={{'--card-border-color': tool.color, borderBottomColor: 'var(--card-border-color)'} as React.CSSProperties}
                 >
                     <CardHeader>
                         <div className="flex justify-between items-start">
-                             <div className="p-3 rounded-lg text-white mb-4" style={{ backgroundColor: tool.color }}>
+                             <div className={cn("p-3 rounded-lg text-white mb-4", iconContainerClassName)} style={{ backgroundColor: iconContainerClassName ? undefined : tool.color }}>
                                 {React.cloneElement(icon, { className: 'h-6 w-6' })}
                             </div>
                             {tool.badge && <Badge variant={tool.badge === 'DEPRECATED' ? 'destructive' : 'default'}>{tool.badge}</Badge>}
                         </div>
-                        <CardTitle className="text-lg">{tool.title}</CardTitle>
-                        <CardDescription className="text-xs line-clamp-2">{tool.description}</CardDescription>
+                        <CardTitle className={cn("text-lg", titleClassName)}>{tool.title}</CardTitle>
+                        <CardDescription className={cn("text-xs line-clamp-2", descriptionClassName)}>{tool.description}</CardDescription>
                     </CardHeader>
                     <CardFooter className="mt-auto">
                          <div className="w-full space-y-2">
@@ -96,7 +115,7 @@ export const DashboardServiceCard = ({ tool, isAdded, setIsAdded, connectionRequ
                                     Requires {connectionRequired} connection
                                 </div>
                             )}
-                            <Button variant="outline" className="w-full" size="sm">
+                            <Button variant={buttonVariant || "outline"} className="w-full" size="sm">
                                 Details
                             </Button>
                         </div>

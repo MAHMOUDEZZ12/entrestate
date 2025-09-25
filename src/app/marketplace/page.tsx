@@ -4,21 +4,20 @@
 
 import React, { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/ui/page-header';
-import { LayoutGrid, Search, Telescope, MessageCircle, FileJson, ArrowRight, Sparkles, Building, Workflow, Plus } from 'lucide-react';
-import { tools as allTools, Feature } from '@/lib/tools-client';
+import { LayoutGrid, Search, Telescope, MessageCircle, FileJson, ArrowRight, Sparkles, Building, Workflow, Plus, Instagram } from 'lucide-react';
+import { tools as allToolsClient, Feature } from '@/lib/tools-client';
 import { DashboardServiceCard } from '@/components/ui/dashboard-service-card';
-import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
-import { track } from '@/lib/events';
 import { marketingSuites } from '@/lib/suites-data';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import Link from 'next/link';
 import { solutions } from '@/lib/solutions-data';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import { motion } from 'framer-motion';
+import Autoplay from "embla-carousel-autoplay";
+import { cn } from '@/lib/utils';
 
 
 const SuiteCard = ({ tool }: { tool: Feature }) => (
@@ -33,13 +32,11 @@ const SuiteCard = ({ tool }: { tool: Feature }) => (
 );
 
 export default function MarketplacePage() {
-  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState('');
-  const [addedApps, setAddedApps] = useState<string[]>([]);
   
   const filteredTools = React.useMemo(() => {
-    if (!searchTerm) return allTools;
-    return allTools.filter(tool =>
+    if (!searchTerm) return allToolsClient;
+    return allToolsClient.filter(tool =>
         tool.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         tool.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
         tool.categories.some(cat => cat.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -47,12 +44,18 @@ export default function MarketplacePage() {
   }, [searchTerm]);
 
   const getSuiteTools = (suiteName: string) => filteredTools.filter(t => t.suite === suiteName);
+
+  const creativeSuiteTools = getSuiteTools('AI Creative Studio');
+
+  const autoplayPlugin = React.useRef(
+    Autoplay({ delay: 2500, stopOnInteraction: false })
+  );
   
   return (
     <div className="p-4 md:p-10 space-y-20 container mx-auto">
        <PageHeader
-        title="Lead quality isn’t luck — it requires fluency in algorithms: AI speaking to AI."
-        description=""
+            title="Lead quality isn’t luck — it requires fluency in algorithms: AI speaking to AI."
+            description="Unless you can speak algorithmic, you need a platform that does it for you."
       >
         <div className="relative w-full max-w-lg mt-4">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -74,34 +77,34 @@ export default function MarketplacePage() {
                    <DashboardServiceCard 
                         key={tool.id} 
                         tool={tool}
-                        isAdded={addedApps.includes(tool.id)}
+                        isAdded={false}
                         setIsAdded={(isAdded) => {}}
+                        className="bg-gradient-to-br from-[#405DE6] via-[#C13584] to-[#F77737] text-white border-none"
+                        titleClassName="text-white"
+                        descriptionClassName="text-white/80"
+                        iconContainerClassName="bg-white/20 text-white"
+                        buttonVariant="secondary"
                     />
               ))}
-            </div>
-            <div className="text-center mt-8">
-                <Link href="/me">
-                    <Button>Explore Meta Marketing Suite</Button>
-                </Link>
             </div>
       </section>
 
       <section>
-          <div className="text-center mb-6">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading">Listing is an all-time task. Get AI at work.</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <Card className="bg-card/50 backdrop-blur-lg flex flex-col items-center justify-center p-8 text-center border-2 border-dashed">
-                  <Building className="h-12 w-12 text-blue-500 mb-4" />
-                  <h3 className="text-2xl font-bold">Property Finder Pilot</h3>
-                  <p className="text-muted-foreground">Automate your listings on Property Finder with our intelligent pilot.</p>
-              </Card>
-              <Card className="bg-card/50 backdrop-blur-lg flex flex-col items-center justify-center p-8 text-center border-2 border-dashed">
-                  <Building className="h-12 w-12 text-green-500 mb-4" />
-                  <h3 className="text-2xl font-bold">Bayut Pilot</h3>
-                  <p className="text-muted-foreground">Sync your inventory seamlessly with Bayut, validated and optimized.</p>
-              </Card>
-          </div>
+        <h2 className="text-3xl md:text-4xl font-bold font-heading text-center mb-6">
+            Listing is an all-time task. Get AI at work.
+        </h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <Card className="bg-card/50 backdrop-blur-lg flex flex-col items-center justify-center p-8 text-center border-4 border-[#3282B8] shadow-lg shadow-[#3282B8]/20">
+                <Building className="h-12 w-12 text-[#3282B8] mb-4" />
+                <h3 className="text-2xl font-bold">Property Finder Pilot</h3>
+                <p className="text-muted-foreground">Automate your listings on Property Finder with our intelligent pilot.</p>
+            </Card>
+            <Card className="bg-card/50 backdrop-blur-lg flex flex-col items-center justify-center p-8 text-center border-4 border-[#25B864] shadow-lg shadow-[#25B864]/20">
+                <Building className="h-12 w-12 text-[#25B864] mb-4" />
+                <h3 className="text-2xl font-bold">Bayut Pilot</h3>
+                <p className="text-muted-foreground">Sync your inventory seamlessly with Bayut, validated and optimized.</p>
+            </Card>
+        </div>
       </section>
       
       <section>
@@ -110,9 +113,15 @@ export default function MarketplacePage() {
                 <h2 className="text-3xl md:text-4xl font-bold font-heading">Creative Studio is now with flows.</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 items-center gap-8 text-center">
-                <div className="space-y-3">
-                    {getSuiteTools('AI Creative Studio').slice(0,3).map(tool => <SuiteCard key={tool.id} tool={tool} />)}
-                </div>
+                <Carousel plugins={[autoplayPlugin.current]} opts={{ loop: true, align: "start" }} orientation="vertical" className="w-full h-40">
+                     <CarouselContent className="-mt-3 h-full">
+                        {creativeSuiteTools.slice(0,3).map(tool => (
+                            <CarouselItem key={tool.id} className="pt-3 basis-1/3">
+                                <SuiteCard tool={tool} />
+                            </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                </Carousel>
                 <div className="flex flex-col items-center">
                    <Plus className="h-12 w-12 text-muted-foreground" />
                    <Workflow className="h-20 w-20 text-muted-foreground my-4" />
@@ -138,13 +147,13 @@ export default function MarketplacePage() {
             <h2 className="text-3xl md:text-4xl font-bold font-heading">Lead Intelligence, done by algorithm language native speakers.</h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="md:col-span-1 space-y-4">
+              <div className="md:col-span-1 space-y-4 pt-8">
                  {getSuiteTools('Lead Intelligence AI').slice(0,2).map(tool => <SuiteCard key={tool.id} tool={tool} />)}
               </div>
                <div className="md:col-span-1 self-center space-y-4">
                  {getSuiteTools('Lead Intelligence AI').slice(2,3).map(tool => <SuiteCard key={tool.id} tool={tool} />)}
               </div>
-               <div className="md:col-span-1 space-y-4">
+               <div className="md:col-span-1 space-y-4 pt-8">
                  {getSuiteTools('Lead Intelligence AI').slice(3,5).map(tool => <SuiteCard key={tool.id} tool={tool} />)}
               </div>
           </div>
@@ -153,14 +162,14 @@ export default function MarketplacePage() {
        <section>
           <div className="text-center mb-6">
             <h2 className="text-3xl md:text-4xl font-bold font-heading">Marketing Management</h2>
-             <p className="text-lg text-muted-foreground mt-2">It's a team, not just an app. Really!</p>
+             <p className="text-lg text-muted-foreground mt-2">It's a team, not an app. Really!</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {getSuiteTools('Marketing Management').map(tool => (
                    <DashboardServiceCard 
                         key={tool.id} 
                         tool={tool}
-                        isAdded={addedApps.includes(tool.id)}
+                        isAdded={false}
                         setIsAdded={(isAdded) => {}}
                     />
               ))}
