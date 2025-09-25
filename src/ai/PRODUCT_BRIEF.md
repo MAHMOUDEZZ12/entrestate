@@ -1,4 +1,3 @@
-
 # Entrestate - Product & Technical Brief (AI Brain)
 
 This document outlines the core vision, data sources, and technical capabilities of the Entrestate platform. It serves as the primary training and reference material for all AI-driven development.
