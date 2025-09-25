@@ -69,6 +69,7 @@ const generateStoryFlow = ai.defineFlow(
     outputSchema: GenerateStoryOutputSchema,
   },
   async input => {
+    // In a real app, you would fetch project images based on input.projectId
     let { operation } = await ai.generate({
       model: googleAI.model('veo-2.0-generate-001'),
       prompt: `Create a short, animated social media story for a real estate project. The video should be vertical (9:16) and about 15 seconds long.
@@ -77,7 +78,7 @@ const generateStoryFlow = ai.defineFlow(
       Vibe: ${input.vibe}
       Final Call to Action: "${input.callToAction}"
 
-      Animate a sequence of 3-5 images with modern transitions and text overlays. The final frame should feature the call to action prominently.
+      Animate a sequence of 3-5 high-quality, realistic images of a luxury apartment with modern transitions and elegant text overlays. The final frame should feature the call to action prominently.
       `,
       config: {
         aspectRatio: '9:16',

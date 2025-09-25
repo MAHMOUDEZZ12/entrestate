@@ -71,7 +71,7 @@ const generateReelFlow = ai.defineFlow(
     outputSchema: GenerateReelOutputSchema,
   },
   async (input) => {
-    
+    // In a real app, you would fetch real project assets here.
     let { operation } = await ai.generate({
       model: googleAI.model('veo-2.0-generate-001'),
       prompt: `Create a modern, fast-paced Instagram Reel for a real estate project. The video should be vertical (9:16) and around 15-30 seconds long.
@@ -79,7 +79,7 @@ const generateReelFlow = ai.defineFlow(
       Vibe: ${input.vibe}
       Key Selling Points (as text overlays): ${input.sellingPoints}
 
-      Use quick cuts, dynamic transitions, and engaging text animations.
+      Use quick cuts of high-quality, photorealistic shots of a modern luxury apartment interior and exterior. Include dynamic transitions and engaging text animations for the selling points.
       `,
       config: {
         aspectRatio: '9:16',

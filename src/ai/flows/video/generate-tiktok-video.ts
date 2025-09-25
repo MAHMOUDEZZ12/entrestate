@@ -70,6 +70,7 @@ const generateTikTokVideoFlow = ai.defineFlow(
     outputSchema: GenerateTikTokVideoOutputSchema,
   },
   async (input) => {
+    // In a real app, you would fetch real project assets here.
      let { operation } = await ai.generate({
       model: googleAI.model('veo-2.0-generate-001'),
       prompt: `Create a TikTok-style video for a real estate project. The video must be vertical (9:16) and no longer than 20 seconds.
@@ -79,7 +80,7 @@ const generateTikTokVideoFlow = ai.defineFlow(
       Text Overlays (one per scene):
       ${input.textOverlays}
 
-      The video should use fast cuts, punchy text animations that appear on screen with the beat, and have a modern, authentic feel.
+      The video should use fast cuts of photorealistic shots of a luxury villa, punchy text animations that appear on screen with the beat, and have a modern, authentic feel.
       `,
       config: {
         aspectRatio: '9:16',
