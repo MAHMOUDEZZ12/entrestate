@@ -4,17 +4,10 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, GanttChartSquare, User as UserIcon, LayoutDashboard, Compass, Workflow, FolderCog, Library } from 'lucide-react';
+import { LogOut, Settings, GanttChartSquare, User as UserIcon } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import { Logo } from '@/components/logo';
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,39 +18,44 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname } from 'next/navigation';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb';
 
-// Define a static, correct list for navigation
-const navLinks = [
-    {
-        href: '/me',
-        label: 'Workspace',
-        icon: <LayoutDashboard className="mr-2 h-4 w-4" />,
-    },
-    {
-        href: '/me/marketing',
-        label: 'Marketplace',
-        icon: <Compass className="mr-2 h-4 w-4" />,
-    },
-    {
-        href: '/me/flows',
-        label: 'Flows',
-        icon: <Workflow className="mr-2 h-4 w-4" />,
-    },
-    {
-        href: '/me/brand',
-        label: 'Brand & Assets',
-        icon: <FolderCog className="mr-2 h-4 w-4" />,
-    },
-    {
-        href: '/me/tool/prompt-library',
-        label: 'Prompt Library',
-        icon: <Library className="mr-2 h-4 w-4" />,
-    }
-];
+function generateBreadcrumbs(pathname: string) {
+    const pathSegments = pathname.split('/').filter(Boolean);
+    const breadcrumbs = pathSegments.map((segment, index) => {
+        const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
+        const isLast = index === pathSegments.length - 1;
+        const label = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        
+        return (
+            <React.Fragment key={href}>
+                 <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                    {isLast ? (
+                        <BreadcrumbPage>{label}</BreadcrumbPage>
+                    ) : (
+                        <BreadcrumbLink asChild>
+                            <Link href={href}>{label}</Link>
+                        </BreadcrumbLink>
+                    )}
+                </BreadcrumbItem>
+            </React.Fragment>
+        );
+    });
+
+    return [
+        <BreadcrumbItem key="home">
+            <BreadcrumbLink asChild><Link href="/me">Home</Link></BreadcrumbLink>
+        </BreadcrumbItem>,
+        ...breadcrumbs
+    ];
+}
+
 
 export function WorkspaceHeader() {
   const { user } = useAuth();
   const pathname = usePathname();
+  const breadcrumbs = generateBreadcrumbs(pathname);
 
   const handleLogout = async () => {
     if (auth) {
@@ -67,26 +65,17 @@ export function WorkspaceHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 max-w-screen-2xl items-center">
-        <div className="mr-auto flex">
-          <div className="mr-6 flex items-center space-x-2">
+    <header className="sticky top-0 z-30 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-14 max-w-screen-2xl items-center">
+        <div className="mr-auto flex items-center gap-4">
+          <div className="hidden sm:block">
             <Logo href="/me" />
           </div>
-          <NavigationMenu className="hidden md:flex">
-            <NavigationMenuList>
-              {navLinks.map((link) => (
-                <NavigationMenuItem key={link.href}>
-                   <Link href={link.href} passHref legacyBehavior={false}>
-                    <NavigationMenuLink active={pathname === link.href} className={navigationMenuTriggerStyle()}>
-                        {link.icon}
-                        {link.label}
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
+          <Breadcrumb className="hidden md:flex">
+            <BreadcrumbList>
+                {breadcrumbs}
+            </BreadcrumbList>
+          </Breadcrumb>
         </div>
         
         <div className="flex items-center gap-4">

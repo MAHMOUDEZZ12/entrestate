@@ -1,5 +1,7 @@
 
 import React from 'react';
+import { WorkspaceHeader } from '@/components/workspace-header';
+import { GlobalChat } from '@/components/global-chat';
 
 export default function MeLayout({
   children,
@@ -7,12 +9,14 @@ export default function MeLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex h-screen w-full overflow-hidden">
-        {/* The sidebar is now part of the AppLayout component */}
-        {/* The main content area will be rendered here, managed by AppLayout */}
-        <div className="flex-1 overflow-y-auto">
-            {children}
-        </div>
+    <div className="flex h-screen flex-col">
+        {/* The main header for the entire /me section */}
+        <WorkspaceHeader />
+        <main className="flex-1 overflow-y-auto pt-0">
+             {children}
+        </main>
+        {/* The Analog Bar is persistent across the /me section */}
+        <GlobalChat />
     </div>
   );
 }

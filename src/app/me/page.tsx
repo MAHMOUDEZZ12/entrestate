@@ -1,265 +1,113 @@
 
 'use client';
 
-import React, { useState, Suspense, useEffect, useCallback } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Users2, Rss, Building, Sparkles, Wand2, Search, ArrowRight, Library, LayoutGrid, PlusCircle } from 'lucide-react';
-import { Loader2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { smartInputRouter } from '@/ai/flows/utility/smart-input-router';
+import { Sparkles, Search, ArrowRight, Rss, Users2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { useAuth } from '@/hooks/useAuth';
-import type { Project } from '@/types';
-import { tools } from '@/lib/tools-client';
-import { ProjectCard } from '@/components/ui/project-card';
-import { dealsSmartPlanner } from '@/ai/flows/sales/deals-smart-planner';
 
-
-function SmartInput() {
-    const [input, setInput] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
-    const { toast } = useToast();
+function SmartSearchHero() {
+    const [query, setQuery] = React.useState('');
     const router = useRouter();
 
-    const handleAction = async (e: React.FormEvent) => {
+    const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
-        if (!input) return;
-        setIsLoading(true);
-        try {
-            const result = await smartInputRouter({ query: input });
-            
-            toast({
-                title: `AI Intent: ${result.intent}`,
-                description: `Routing to the best tool for your request...`
-            });
-
-            switch (result.intent) {
-                case 'Search':
-                    router.push(`/me/discover?q=${encodeURIComponent(input)}`);
-                    break;
-                case 'Command':
-                    if (result.toolId) {
-                        router.push(`/me/tool/${result.toolId}`);
-                    } else {
-                         router.push('/me/marketing');
-                    }
-                    break;
-                case 'Post':
-                default:
-                     router.push('/me/community');
-                    break;
-            }
-
-        } catch (e: any) {
-            toast({ title: "Error", description: e.message, variant: "destructive" });
-        } finally {
-            setIsLoading(false);
-            setInput('');
-        }
+        if (!query.trim()) return;
+        router.push(`/me/discover?q=${encodeURIComponent(query.trim())}`);
     };
 
     return (
-        <Card className="w-full max-w-3xl mx-auto shadow-2xl border-primary/20 ring-1 ring-primary/10">
-            <CardContent className="p-6">
-                <form onSubmit={handleAction} className="relative">
-                    <Wand2 className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                    <Input
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        placeholder="What do you want to create, find, or do today?"
-                        className="w-full h-14 pl-12 pr-28 text-lg rounded-full"
-                    />
-                    <Button 
-                        type="submit"
-                        size="lg" 
-                        className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full"
-                        disabled={isLoading}
-                    >
-                         {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <ArrowRight className="h-5 w-5" />}
-                    </Button>
-                </form>
-            </CardContent>
-        </Card>
+        <section className="relative flex h-[60vh] min-h-[400px] w-full items-center justify-center overflow-hidden rounded-xl border bg-card shadow-lg">
+            <div className="absolute inset-0 z-0 bg-grid-pattern opacity-10"></div>
+            <div 
+                className="absolute inset-0 z-0"
+                style={{
+                    background: `radial-gradient(ellipse at 50% 50%, hsl(var(--primary) / 0.1), transparent 70%)`
+                }}
+            />
+            <div className="relative z-10 container mx-auto px-4 text-center">
+                <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold font-heading tracking-tighter leading-tight max-w-4xl mx-auto bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
+                    Your Command Center
+                </h1>
+                <p className="mt-4 max-w-2xl mx-auto text-lg md:text-xl text-foreground/70">
+                    Search the market, ask a question, or issue a command. Your AI assistant is ready.
+                </p>
+                <div className="mt-8 w-full max-w-2xl mx-auto">
+                    <form onSubmit={handleSearch} className="relative group">
+                        <div className="absolute -inset-0.5 bg-gradient-to-r from-primary to-accent rounded-full blur opacity-75 group-hover:opacity-100 transition-all duration-1000 group-hover:duration-200 animate-gradient-pulse"></div>
+                        <div className="relative">
+                            <Sparkles className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input
+                                value={query}
+                                onChange={(e) => setQuery(e.target.value)}
+                                placeholder='e.g., "Find developers with off-plan projects in Dubai Hills"'
+                                className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-lg"
+                            />
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
     );
 }
 
 const mockFeedItems = [
-    { type: 'DailyAction', title: 'Plan a new deal', description: 'Let the AI guide you step-by-step in creating your next winning deal strategy.', toolId: 'deals-smart-planner' },
-    { type: 'UserPost', user: 'Ali T.', content: 'Just closed a deal in Dubai Hills using the Deal Analyzer. The ROI projections were spot on and helped convince the client. Highly recommend this tool!' },
-    { type: 'NewProject', projectName: 'Volta by DAMAC', area: 'Downtown Dubai', description: 'A new luxury high-rise focused on wellness and active living has just been added to the Market Library.' },
-    { type: 'AppUpdate', appName: 'AI Video Presenter', update: 'Now supports custom virtual backgrounds. Try it now!' },
+    { type: 'Update', title: 'Market Pulse Update', description: 'Dubai Marina sees a 3% increase in rental yields for 1-bedroom apartments in Q2 2024.', icon: <Rss /> },
+    { type: 'Community', title: 'New Connection Request', description: 'Jane Doe is looking for a contact at Nakheel Properties. Can you help?', icon: <Users2 /> },
+    { type: 'New Project', title: 'Project "Verde" by Sobha Added', description: 'A new luxury residential tower in JLT has been added to the Market Library.', icon: <Rss /> },
 ];
-
-function CommunityFeed() {
-    return (
-        <div className="w-full space-y-6">
-            {mockFeedItems.map((item, index) => {
-                 if (item.type === 'UserPost') {
-                    return (
-                        <Card key={index}>
-                            <CardHeader>
-                                <CardTitle className="text-lg">{item.user} shared a note</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-muted-foreground">"{item.content}"</p>
-                            </CardContent>
-                        </Card>
-                    )
-                }
-                 if (item.type === 'NewProject') {
-                    return (
-                        <Card key={index} className="bg-primary/10 border-primary/20">
-                            <CardHeader>
-                                <CardTitle className="text-lg flex items-center gap-2"><Building className="h-5 w-5"/> New Project Alert</CardTitle>
-                                <CardDescription>{item.projectName} in {item.area}</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <p>{item.description}</p>
-                            </CardContent>
-                        </Card>
-                    )
-                }
-                if (item.type === 'DailyAction') {
-                    return (
-                        <Card key={index} className="bg-accent/10 border-accent/20">
-                            <CardHeader>
-                                 <CardTitle className="text-lg flex items-center gap-2"><Sparkles className="h-5 w-5 text-accent"/> Daily Action Idea</CardTitle>
-                            </CardHeader>
-                            <CardContent className="space-y-3">
-                                <p className="font-semibold">{item.title}</p>
-                                <p className="text-sm text-muted-foreground">{item.description}</p>
-                            </CardContent>
-                             <CardFooter>
-                                <Link href={`/me/tool/${item.toolId}`}>
-                                    <Button>Click to Run <ArrowRight className="ml-2 h-4 w-4"/></Button>
-                                </Link>
-                            </CardFooter>
-                        </Card>
-                    )
-                 }
-                 return null;
-            })}
-        </div>
-    );
-}
-
-function WorkspaceHome() {
-    const { user } = useAuth();
-    const [myProjects, setMyProjects] = useState<Project[]>([]);
-    const [isLoadingProjects, setIsLoadingProjects] = useState(true);
-    const [addedApps, setAddedApps] = useState<string[]>([]);
-
-    useEffect(() => {
-        if(user) {
-            const fetchProjects = async () => {
-                setIsLoadingProjects(true);
-                try {
-                    const idToken = await user.getIdToken();
-                    const response = await fetch('/api/user/projects', {
-                        headers: { 'Authorization': `Bearer ${idToken}` }
-                    });
-                    const data = await response.json();
-                    if (data.ok) {
-                        setMyProjects(data.data);
-                    }
-                } catch(e) {
-                    console.error("Failed to fetch user projects", e);
-                } finally {
-                    setIsLoadingProjects(false);
-                }
-            };
-            fetchProjects();
-        } else {
-            setIsLoadingProjects(false);
-        }
-        
-        try {
-            const savedState = localStorage.getItem('addedApps');
-            if (savedState) setAddedApps(JSON.parse(savedState));
-        } catch (e) {
-            console.error("Could not load app state from localStorage", e);
-        }
-    }, [user]);
-
-    const myApps = tools.filter(tool => addedApps.includes(tool.id));
-
-  return (
-    <div className="p-4 md:p-10 space-y-12 container mx-auto">
-      <SmartInput />
-      
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
-        <div className="lg:col-span-2">
-            <h2 className="text-2xl font-bold tracking-tight mb-6">Today's Feed</h2>
-            <CommunityFeed />
-        </div>
-
-        <div className="lg:col-span-1 space-y-8 sticky top-24">
-             <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><Library className="h-5 w-5"/> My Projects</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {isLoadingProjects ? (
-                        <div className="flex justify-center items-center h-24"><Loader2 className="animate-spin" /></div>
-                    ) : myProjects.length > 0 ? (
-                        <div className="space-y-3">
-                            {myProjects.slice(0,3).map(p => (
-                                <ProjectCard key={p.id} project={p} />
-                            ))}
-                        </div>
-                    ) : (
-                        <div className="text-center text-muted-foreground p-6">
-                            <p className="mb-4">Your project library is empty.</p>
-                             <Link href="/me/tool/projects-finder">
-                                <Button variant="outline"><PlusCircle className="mr-2 h-4 w-4" /> Add Projects</Button>
-                            </Link>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><LayoutGrid className="h-5 w-5"/> My Apps</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    {myApps.length > 0 ? (
-                         <div className="grid grid-cols-2 gap-3">
-                            {myApps.slice(0, 4).map(app => (
-                                <Link key={app.id} href={app.href} className="block group">
-                                     <div className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-muted transition-colors text-center">
-                                        <div className="p-3 rounded-lg text-white" style={{ backgroundColor: app.color }}>
-                                           {React.cloneElement(app.icon, { className: 'h-6 w-6' })}
-                                        </div>
-                                        <p className="text-xs font-semibold truncate w-20">{app.dashboardTitle || app.title}</p>
-                                    </div>
-                                </Link>
-                            ))}
-                        </div>
-                    ) : (
-                         <div className="text-center text-muted-foreground p-6">
-                            <p className="mb-4">No apps added to your workspace yet.</p>
-                             <Link href="/me/marketing">
-                                <Button variant="outline"><PlusCircle className="mr-2 h-4 w-4" /> Go to Marketplace</Button>
-                            </Link>
-                        </div>
-                    )}
-                </CardContent>
-            </Card>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 
 export default function MePage() {
     return (
-        <Suspense fallback={<div className="flex h-screen w-full items-center justify-center"><Loader2 className="animate-spin" /></div>}>
-            <WorkspaceHome />
-        </Suspense>
-    )
+        <div className="p-4 md:p-8 space-y-12">
+            <SmartSearchHero />
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="lg:col-span-2">
+                    <h2 className="text-2xl font-bold tracking-tight mb-6">Today's Feed</h2>
+                    <div className="space-y-4">
+                        {mockFeedItems.map((item, index) => (
+                            <Card key={index}>
+                                <CardHeader className="flex flex-row items-center gap-4">
+                                    <div className="p-3 bg-muted rounded-lg text-muted-foreground">{item.icon}</div>
+                                    <div>
+                                        <CardTitle className="text-lg">{item.title}</CardTitle>
+                                        <CardDescription>{item.description}</CardDescription>
+                                    </div>
+                                </CardHeader>
+                            </Card>
+                        ))}
+                    </div>
+                </div>
+                <div className="space-y-8">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>Quick Actions</CardTitle>
+                        </CardHeader>
+                        <CardContent className="flex flex-col gap-2">
+                            <Link href="/me/workspace/tool/listing-generator"><Button variant="outline" className="w-full justify-start">Generate a New Listing</Button></Link>
+                            <Link href="/me/workspace/flows"><Button variant="outline" className="w-full justify-start">Create a New Flow</Button></Link>
+                            <Link href="/me/workspace/brand"><Button variant="outline" className="w-full justify-start">Update Brand Assets</Button></Link>
+                        </CardContent>
+                    </Card>
+                     <Card className="bg-primary/10 border-primary/20">
+                        <CardHeader>
+                            <CardTitle className="text-primary">Go to Workspace</CardTitle>
+                            <CardDescription>Access your tools, projects, and operational dashboards.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <Link href="/me/workspace">
+                                <Button className="w-full">
+                                    Open Operational Hub <ArrowRight className="ml-2 h-4 w-4" />
+                                </Button>
+                            </Link>
+                        </CardContent>
+                    </Card>
+                </div>
+            </div>
+        </div>
+    );
 }
