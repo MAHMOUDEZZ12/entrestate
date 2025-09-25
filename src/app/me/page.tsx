@@ -54,7 +54,7 @@ function SmartInput() {
             }
 
         } catch (e: any) {
-            toast({ title: "Error", description: e.message, variant: 'destructive' });
+            toast({ title: "Error", description: e.message, variant: "destructive" });
         } finally {
             setIsLoading(false);
             setInput('');
@@ -263,5 +263,3 @@ export default function MePage() {
         </Suspense>
     )
 }
-
-    

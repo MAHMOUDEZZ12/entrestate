@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, GanttChartSquare, User as UserIcon } from 'lucide-react';
+import { LogOut, Settings, GanttChartSquare, User as UserIcon, Library } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import { Logo } from '@/components/logo';
@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname } from 'next/navigation';
-import { cn } from '@/lib/utils';
 import { tools } from '@/lib/tools-client';
 
 export function WorkspaceHeader() {
@@ -33,7 +32,7 @@ export function WorkspaceHeader() {
   const pathname = usePathname();
 
   const navLinks = tools
-    .filter(tool => ['Workspace', 'Discover', 'Marketplace', 'Flows', 'Brand & Assets'].includes(tool.title))
+    .filter(tool => ['Workspace', 'Discover', 'Marketplace', 'Flows', 'Brand & Assets', 'Prompt Library'].includes(tool.title))
     .map(tool => ({
         href: tool.href,
         label: tool.title,
@@ -58,7 +57,7 @@ export function WorkspaceHeader() {
             <NavigationMenuList>
               {navLinks.map((link) => (
                 <NavigationMenuItem key={link.href}>
-                  <Link href={link.href} legacyBehavior passHref>
+                   <Link href={link.href} passHref legacyBehavior>
                     <NavigationMenuLink active={pathname === link.href} className={navigationMenuTriggerStyle()}>
                         {link.icon}
                         {link.label}
