@@ -56,10 +56,12 @@ export function WorkspaceHeader() {
             <NavigationMenuList>
               {navLinks.map((link) => (
                 <NavigationMenuItem key={link.href}>
-                  <Link href={link.href} legacyBehavior={false} passHref>
-                    <NavigationMenuLink active={pathname === link.href} className={navigationMenuTriggerStyle()}>
-                      {link.icon}
-                      {link.label}
+                  <Link href={link.href} passHref>
+                    <NavigationMenuLink asChild active={pathname === link.href}>
+                         <a className={navigationMenuTriggerStyle()}>
+                            {link.icon}
+                            {link.label}
+                        </a>
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>
