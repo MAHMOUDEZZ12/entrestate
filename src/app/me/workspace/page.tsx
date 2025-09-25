@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -39,6 +40,27 @@ const GettingStarted = () => (
         </CardContent>
     </Card>
 );
+
+const WorkspaceHero = () => {
+    const [currentDate, setCurrentDate] = useState('');
+
+    useEffect(() => {
+        const date = new Date();
+        const formattedDate = date.toLocaleDateString('en-US', {
+            weekday: 'short',
+            day: '2-digit',
+            month: 'short',
+        });
+        setCurrentDate(formattedDate);
+    }, []);
+
+    return (
+        <div className="text-left py-8">
+            <h1 className="text-3xl md:text-4xl font-bold font-heading tracking-tight">Pro Workspace — Today is {currentDate}</h1>
+            <p className="mt-2 text-lg text-muted-foreground">Hobbyists promise, professionals perform.</p>
+        </div>
+    );
+};
 
 
 export default function WorkspaceHomePage() {
@@ -86,11 +108,7 @@ export default function WorkspaceHomePage() {
 
   return (
     <div className="p-4 md:p-10 space-y-12">
-        <PageHeader 
-            title="Operations Hub"
-            description="Access your projects, apps, and core tools to execute your daily tasks."
-            icon={<Sparkles />}
-        />
+        <WorkspaceHero />
       
       {!isOnboardingComplete && !isLoadingProjects ? (
           <GettingStarted />
