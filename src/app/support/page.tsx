@@ -1,10 +1,11 @@
+
 'use client';
 
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { PageHeader } from '@/components/ui/page-header';
 import { LifeBuoy, ArrowRight, BookOpen, MessageSquare, Search, FileText, Bot, Bug, FileWarning, Loader2 } from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
@@ -155,7 +156,7 @@ export default function SupportPage() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {supportTopics.map(topic => (
                         <Link href={topic.href} key={topic.title}>
-                            <Card className="h-full hover:border-primary/50 transition-colors hover:shadow-lg hover:-translate-y-1">
+                            <Card className="h-full hover:border-primary/50 transition-colors hover:shadow-lg hover:-translate-y-1 bg-card/80">
                                 <CardHeader>
                                     <div className="flex items-center gap-4">
                                         <div className="p-3 bg-primary/10 rounded-lg">

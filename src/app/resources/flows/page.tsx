@@ -11,27 +11,39 @@ import { tools } from '@/lib/tools-client';
 
 const flowLibrary = [
     {
-        title: "Full Listing Syndication",
-        description: "Generate a perfect listing description and automatically publish it to both Property Finder and Bayut in one click.",
+        title: "One-Click Listing Syndication",
+        description: "Generate a perfect, SEO-friendly listing description and automatically publish it to both Property Finder and Bayut in a single, unified workflow.",
         apps: ["Listing Generator", "Property Finder Pilot", "Bayut Pilot"],
         cta: "Use This Flow"
     },
     {
-        title: "Automated Lead Nurturing",
-        description: "When a new lead is captured, automatically investigate their profile and send a personalized welcome message via WhatsApp.",
-        apps: ["CRM Memory Assistant", "Lead Investigator AI", "WhatsApp Manager"],
+        title: "Automated Lead Enrichment & Nurturing",
+        description: "When a new lead is captured in your CRM, automatically investigate their public profile and send a personalized welcome message via WhatsApp.",
+        apps: ["CRM Memory Assistant", "Lead Investigator AI", "Sales Message Rewriter", "WhatsApp Manager"],
         cta: "Use This Flow"
     },
     {
-        title: "Ad Campaign from a Brochure",
-        description: "Upload a project brochure, and the AI will generate ad copy, create an audience, and launch a campaign on Meta.",
-        apps: ["Insta Ads Designer", "Brand Search Optimization", "Property Marketer AI"],
+        title: "Brochure-to-Campaign Automation",
+        description: "Upload a project brochure, and the AI will generate ad copy, define a target audience, and launch a complete lead generation campaign on Meta.",
+        apps: ["AI Brand Creator", "Insta Ads Designer", "Property Marketer AI"],
         cta: "Use This Flow"
     },
     {
-        title: "Client Offer Package",
-        description: "Select multiple properties, generate data-driven price estimates for each, and build a beautiful side-by-side comparison PDF for your client.",
+        title: "Client-Ready Investment Proposal",
+        description: "Select multiple properties, generate a data-driven ROI analysis for each, and build a beautiful side-by-side comparison PDF to send to your client.",
         apps: ["Market Projects Library", "Deal Analyzer", "Multi-Offer Builder"],
+        cta: "Use This Flow"
+    },
+    {
+        title: "Content Repurposing Engine",
+        description: "Take a single piece of content, like a market report, and automatically generate a week's worth of social media posts, a landing page, and an email campaign.",
+        apps: ["Market Reports", "Social Media Content Writer", "Landing Page Designer", "Instagram Admin"],
+        cta: "Use This Flow"
+    },
+    {
+        title: "Video Marketing Automation",
+        description: "Create a video presenter script, generate the video with an AI avatar, edit it for YouTube, and then automatically create short-form clips for Reels and TikTok.",
+        apps: ["UGC Script Writer", "AI Videos With Your Face", "AI YouTube Video Editor", "Reel Ads"],
         cta: "Use This Flow"
     }
 ];

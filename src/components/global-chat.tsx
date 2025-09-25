@@ -76,7 +76,7 @@ export function GlobalChat() {
   }, [messages, isSheetOpen]);
   
   useEffect(() => {
-    if (input.startsWith('/')) {
+    if (input.startsWith('/') || input.startsWith('=')) {
         setIsCommandMenuOpen(true);
     } else {
         setIsCommandMenuOpen(false);
@@ -88,7 +88,7 @@ export function GlobalChat() {
       setShowFlowsButton(false);
   }, [pathname]);
 
-  const sendMessage = async (text: string, history: any[], isPrompt: boolean = false) => {
+  const sendMessage = async (text: string, isPrompt: boolean = false) => {
       const userMessageText = isPrompt ? `= ${text}` : text;
       const userMessage: Message = { from: 'user', text: userMessageText };
       
@@ -99,12 +99,12 @@ export function GlobalChat() {
       if (!isSheetOpen) setIsSheetOpen(true);
 
       try {
-        const response = await fetch('/api/run', { // Assuming prompts run through the same endpoint for now
+        const response = await fetch('/api/run', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
-                toolId: 'prompt-library', // A generic toolId for prompts
-                payload: { prompt: text, isPrompt }
+                toolId: 'smart-input-router',
+                payload: { query: text }
             }),
         });
 
@@ -133,7 +133,7 @@ export function GlobalChat() {
     setInput('');
     
     if (currentInput.startsWith('=')) {
-        await sendMessage(currentInput.substring(1), chatHistory, true);
+        await sendMessage(currentInput.substring(1), true);
         return;
     }
     
@@ -149,7 +149,7 @@ export function GlobalChat() {
         return;
     }
 
-    await sendMessage(currentInput, chatHistory);
+    await sendMessage(currentInput);
   };
   
     const handleMagicClick = async () => {
@@ -158,7 +158,7 @@ export function GlobalChat() {
         const pageContent = `Current page is ${pathname}. The visible content includes a header titled "${document.title}".`;
         const prompt = `Analyze the following page content and generate a concise action plan with 2-3 bullet points of what I can do here.\n\nPage Content: ${pageContent}`;
         
-        await sendMessage(prompt, []);
+        await sendMessage(prompt);
     }
     
     const getContextualInfo = (): { placeholder: string; leftKeys: ActionKey[]; rightKey: ActionKey | null } => {
@@ -240,7 +240,7 @@ export function GlobalChat() {
         }
 
         return { 
-            placeholder: "Send a message or type '/' for commands...",
+            placeholder: "Send a message, type '/' for commands, or '=' for prompts...",
             leftKeys,
             rightKey
         };
