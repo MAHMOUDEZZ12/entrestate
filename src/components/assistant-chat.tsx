@@ -24,15 +24,20 @@ const InitialAssistantMessage = () => (
 );
 
 export function AssistantChat() {
-  const [messages, setMessages] = useState<Message[]>([
-    { from: 'ai', text: 'Welcome! Ask me anything about your properties or the market. But please, no complicated dreams. There\'s no one million 2 bedrooms in downtown!' },
-  ]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [chatHistory, setChatHistory] = useState<any[]>([]);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   
+   useEffect(() => {
+    // We moved the initial message to be set here to avoid server/client mismatch
+    setMessages([
+        { from: 'ai', text: "Hello! I'm your AI co-pilot. Train me by uploading your brochures, price lists, and market reports. Ask a question, or tell me what you'd like to do. But please, no complicated dreams. There's no one million 2 bedrooms in downtown!" },
+    ]);
+  }, []);
+
   useEffect(() => {
     if (scrollAreaRef.current) {
       scrollAreaRef.current.scrollTo({ top: scrollAreaRef.current.scrollHeight, behavior: 'smooth' });
@@ -116,5 +121,3 @@ export function AssistantChat() {
     </div>
   );
 }
-
-    
