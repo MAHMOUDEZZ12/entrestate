@@ -3,7 +3,7 @@
 
 import { useState, useEffect, createContext, useContext, ReactNode } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { getFirebase } from '@/lib/firebase';
 import { useRouter, usePathname } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 
@@ -29,7 +29,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (!auth) {
+    const services = getFirebase();
+    if (!services) {
         setLoading(false);
         if(isProtectedRoute(pathname) && pathname !== '/login') {
             router.push(`/login?redirect=${pathname}`); 
@@ -37,6 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
     }
 
+    const { auth } = services;
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {

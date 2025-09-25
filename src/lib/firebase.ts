@@ -3,7 +3,6 @@ import { initializeApp, getApps, getApp, FirebaseApp } from "firebase/app";
 import { getAuth, Auth } from "firebase/auth";
 import { getFirestore, Firestore } from "firebase/firestore";
 import { getAnalytics, isSupported, Analytics } from "firebase/analytics";
-import { initializeAppCheck, ReCaptchaV3Provider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -15,39 +14,44 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-let app: FirebaseApp | null = null;
-let auth: Auth | null = null;
-let db: Firestore | null = null;
-let analytics: Analytics | null = null;
-
-if (typeof window !== 'undefined') {
-  const isFirebaseConfigValid = firebaseConfig.apiKey &&
-                                firebaseConfig.projectId;
-
-  if (isFirebaseConfigValid) {
-    app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
-    auth = getAuth(app);
-    db = getFirestore(app);
-
-    // Initialize App Check
-    if (process.env.NODE_ENV !== 'production') {
-      // Allow self to be garbage collected
-      (self as any).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
-    }
-    
-    initializeAppCheck(app, {
-      provider: new ReCaptchaV3Provider('6Ld-pA8qAAAAAK2Y-hS47w_s_doymXz_Y4E0_z-N'), // Replace with your reCAPTCHA v3 site key
-      isTokenAutoRefreshEnabled: true
-    });
-
-    isSupported().then(supported => {
-        if (supported) {
-            analytics = getAnalytics(app as FirebaseApp);
-        }
-    });
-  } else {
-    console.warn("Firebase client configuration is missing or incomplete. Firebase services will be unavailable.");
-  }
+interface FirebaseServices {
+    app: FirebaseApp;
+    auth: Auth;
+    db: Firestore;
+    analytics: Analytics | null;
 }
 
-export { app, auth, db, analytics };
+// Centralized function to get Firebase services
+export function getFirebase(): FirebaseServices | null {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+  
+  const isFirebaseConfigValid = firebaseConfig.apiKey && firebaseConfig.projectId;
+
+  if (!isFirebaseConfigValid) {
+    console.warn("Firebase client configuration is missing or incomplete. Firebase services will be unavailable.");
+    return null;
+  }
+
+  const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+  let analytics: Analytics | null = null;
+  
+  isSupported().then(supported => {
+      if (supported) {
+          analytics = getAnalytics(app);
+      }
+  });
+
+  return { app, auth, db, analytics };
+}
+
+// We still export the individual services for any legacy imports,
+// but the new preferred way is via getFirebase().
+const services = getFirebase();
+export const app = services?.app;
+export const auth = services?.auth;
+export const db = services?.db;
+export const analytics = services?.analytics;

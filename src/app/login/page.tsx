@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
-import { auth } from '@/lib/firebase';
+import { getFirebase } from '@/lib/firebase';
 import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Mail, KeyRound } from 'lucide-react';
@@ -24,11 +24,12 @@ export default function LoginPage() {
     const [isDevLoading, setIsDevLoading] = React.useState(false);
 
     const handleGoogleSignIn = async () => {
-        if (!auth) return;
+        const services = getFirebase();
+        if (!services) return;
         setIsGoogleLoading(true);
         const provider = new GoogleAuthProvider();
         try {
-            await signInWithPopup(auth, provider);
+            await signInWithPopup(services.auth, provider);
             toast({ title: "Signed In Successfully", description: "Welcome to Entrestate!" });
             router.push(searchParams.get('redirect') || '/me/workspace');
         } catch (error: any) {
@@ -40,14 +41,15 @@ export default function LoginPage() {
     
      const handleEmailSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!auth) return;
+        const services = getFirebase();
+        if (!services) return;
         setIsLoading(true);
         const formData = new FormData(e.currentTarget);
         const email = formData.get('email') as string;
         const password = formData.get('password') as string;
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            await signInWithEmailAndPassword(services.auth, email, password);
             toast({ title: "Signed In Successfully" });
             localStorage.setItem('onboardingComplete', 'true');
             router.push(searchParams.get('redirect') || '/me/workspace');
@@ -59,14 +61,18 @@ export default function LoginPage() {
     };
 
     const handleDeveloperSignIn = async () => {
-        if (!auth) return;
+        const services = getFirebase();
+        if (!services) {
+            toast({title: "Firebase not initialized", variant: "destructive"});
+            return;
+        }
         setIsDevLoading(true);
         const email = 'dev@entrestate.com';
         const password = 'gemini';
         try {
-            // First, try to create the user. If they already exist, this will fail gracefully.
+             // First, try to create the user. If they already exist, this will fail gracefully.
             try {
-                await createUserWithEmailAndPassword(auth, email, password);
+                await createUserWithEmailAndPassword(services.auth, email, password);
                 toast({ title: "Developer Account Created", description: "Proceeding to login." });
             } catch (error: any) {
                 if (error.code !== 'auth/email-already-in-use') {
@@ -74,9 +80,9 @@ export default function LoginPage() {
                 }
                 // If user exists, that's fine, we just proceed to log in.
             }
-
+            
             // Now, sign in.
-            await signInWithEmailAndPassword(auth, email, password);
+            await signInWithEmailAndPassword(services.auth, email, password);
             toast({ title: "Developer Access Granted", description: "Welcome, partner." });
             localStorage.setItem('onboardingComplete', 'true');
             router.push('/gem'); // Go directly to the admin dashboard
