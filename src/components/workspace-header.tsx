@@ -18,41 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname } from 'next/navigation';
-import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb';
 import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
-
-function generateBreadcrumbs(pathname: string) {
-    const pathSegments = pathname.split('/').filter(Boolean);
-    const breadcrumbs = [
-        <BreadcrumbItem key="me">
-             <BreadcrumbLink asChild>
-                <Link href="/me">Intelligence Hub</Link>
-            </BreadcrumbLink>
-        </BreadcrumbItem>
-    ];
-
-    if (pathSegments.length > 1) {
-        pathSegments.slice(1).forEach((segment, index) => {
-            const currentPath = `/${pathSegments.slice(0, index + 2).join('/')}`;
-            const isLast = index === pathSegments.length - 2;
-            const label = segment.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-
-            breadcrumbs.push(<BreadcrumbSeparator key={`sep-${index}`} />);
-            breadcrumbs.push(
-                <BreadcrumbItem key={currentPath}>
-                    {isLast ? (
-                        <BreadcrumbPage>{label}</BreadcrumbPage>
-                    ) : (
-                         <BreadcrumbLink asChild>
-                            <Link href={currentPath}>{label}</Link>
-                        </BreadcrumbLink>
-                    )}
-                </BreadcrumbItem>
-            );
-        });
-    }
-    return breadcrumbs;
-}
 
 const mainNavLinks = [
   { href: '/me/workspace', label: 'Workspace', icon: <LayoutDashboard /> },
@@ -65,7 +31,6 @@ const mainNavLinks = [
 export function WorkspaceHeader() {
   const { user } = useAuth();
   const pathname = usePathname();
-  const breadcrumbs = generateBreadcrumbs(pathname);
 
   const handleLogout = async () => {
     if (auth) {

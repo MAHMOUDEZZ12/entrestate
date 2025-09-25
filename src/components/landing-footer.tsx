@@ -27,8 +27,9 @@ export function LandingFooter() {
           <div className="col-span-1">
             <h4 className="text-lg font-semibold font-heading mb-4">Platform</h4>
             <nav className="flex flex-col space-y-2">
-              <Link href="/pricing" className="text-muted-foreground hover:text-primary transition-colors">Apps</Link>
+              <Link href="/marketplace" className="text-muted-foreground hover:text-primary transition-colors">Marketplace</Link>
               <Link href="/pricing" className="text-muted-foreground hover:text-primary transition-colors">Pricing</Link>
+              <Link href="/solutions" className="text-muted-foreground hover:text-primary transition-colors">Solutions</Link>
             </nav>
           </div>
           
@@ -36,11 +37,10 @@ export function LandingFooter() {
             <h4 className="text-lg font-semibold font-heading mb-4">Resources</h4>
             <nav className="flex flex-col space-y-2">
               <Link href="/blog" className="text-muted-foreground hover:text-primary transition-colors">Blog</Link>
-              <Link href="/documentation" className="text-muted-foreground hover:text-primary transition-colors">Academy</Link>
+              <Link href="/academy" className="text-muted-foreground hover:text-primary transition-colors">Academy</Link>
               <Link href="/resources/flows" className="text-muted-foreground hover:text-primary transition-colors">Flow Library</Link>
               <Link href="/market" className="text-muted-foreground hover:text-primary transition-colors">Market Pulse</Link>
               <Link href="/documentation" className="text-muted-foreground hover:text-primary transition-colors">Documentation</Link>
-              <Link href="/gem" className="text-muted-foreground hover:text-primary transition-colors">Mindmap</Link>
             </nav>
           </div>
 
@@ -48,7 +48,6 @@ export function LandingFooter() {
             <h4 className="text-lg font-semibold font-heading mb-4">Company</h4>
             <nav className="flex flex-col space-y-2">
               <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">About Us</Link>
-              <Link href="/about" className="text-muted-foreground hover:text-primary transition-colors">Community</Link>
               <Link href="/status" className="text-muted-foreground hover:text-primary transition-colors">System Status</Link>
               <Link href="/support" className="text-muted-foreground hover:text-primary transition-colors">Support</Link>
               <Link href="/technology" className="text-muted-foreground hover:text-primary transition-colors">Technology</Link>
