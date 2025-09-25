@@ -1,4 +1,3 @@
-
 /**
  * @fileoverview This service acts as the database abstraction layer.
  *
@@ -52,6 +51,7 @@ interface UserProfileData {
 
 /**
  * Saves or updates a user's profile data in the 'users' collection.
+ * This function also marks onboarding as complete.
  * @param userId The UID of the user.
  * @param data The data to save. This will be merged with existing data.
  * @returns A promise that resolves when the data is saved.
@@ -63,7 +63,17 @@ export async function saveUserData(userId: string, data: UserProfileData): Promi
     }
     try {
         const userDocRef = adminDb.collection('users').doc(userId);
-        await userDocRef.set(data, { merge: true });
+        
+        // Add onboarding completion flag to the data being saved.
+        const finalData = {
+            ...data,
+            onboarding: {
+                ...data.onboarding,
+                isComplete: true,
+            }
+        };
+
+        await userDocRef.set(finalData, { merge: true });
     } catch (error) {
         console.error(`Error saving data for user ${userId}:`, error);
         throw fail(error);

@@ -4,15 +4,15 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Menu } from 'lucide-react';
+import { ArrowRight, Menu, LayoutDashboard } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { useAuth } from '@/hooks/useAuth';
 
 const navLinks = [
     { name: 'Marketplace', href: '/marketplace' },
-    { name: 'Pricing', href: '/pricing' },
     { name: 'Solutions', href: '/solutions' },
+    { name: 'Pricing', href: '/pricing' },
     { name: 'Blog', href: '/blog' },
     { name: 'Academy', href: '/academy' },
 ];
@@ -37,9 +37,15 @@ export function LandingHeader() {
         </div>
 
         <div className="hidden md:flex items-center gap-2">
-          <Link href="/me">
-            <Button>Workspace <ArrowRight className="ml-2 h-4 w-4" /></Button>
-          </Link>
+          {user ? (
+            <Link href="/me">
+              <Button variant="outline"><LayoutDashboard className="mr-2 h-4 w-4" /> Go to Hub</Button>
+            </Link>
+          ) : (
+            <Link href="/me">
+              <Button>Get Started <ArrowRight className="ml-2 h-4 w-4" /></Button>
+            </Link>
+          )}
         </div>
         
         {/* Mobile Menu */}
@@ -63,9 +69,15 @@ export function LandingHeader() {
                                 </SheetClose>
                             ))}
                              <SheetClose asChild>
-                                <Link href="/me">
-                                    <Button className="w-full justify-start text-lg">Workspace</Button>
-                                </Link>
+                                {user ? (
+                                    <Link href="/me">
+                                        <Button variant="outline" className="w-full justify-start text-lg">Go to Hub</Button>
+                                    </Link>
+                                ) : (
+                                     <Link href="/me">
+                                        <Button className="w-full justify-start text-lg">Get Started</Button>
+                                    </Link>
+                                )}
                              </SheetClose>
                         </nav>
                     </div>

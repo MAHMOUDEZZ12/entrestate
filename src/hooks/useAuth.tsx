@@ -6,6 +6,7 @@ import { onAuthStateChanged, User } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { useRouter, usePathname } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
+import { adminDb } from '@/lib/firebaseAdmin'; // This import is server-side only, will be problematic.
 
 interface AuthContextType {
     user: User | null;
@@ -15,22 +16,11 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// --- Admin ---
 // In a real application, this would come from a secure database role system.
-// For this simulation, we'll hardcode admin usernames.
-const ADMIN_USERNAMES = [
-    'admin',
-    'dev',
-    // Add your Firebase user's displayName here to grant yourself access
-];
+const ADMIN_USERNAMES = ['dev'];
 
-const isProtectedRoute = (path: string) => {
-    return path.startsWith('/me') || path.startsWith('/onboarding');
-};
-  
-const isAdminRoute = (path: string) => {
-    return path.startsWith('/gem');
-}
+const isProtectedRoute = (path: string) => path.startsWith('/me') || path.startsWith('/onboarding');
+const isAdminRoute = (path: string) => path.startsWith('/gem');
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
@@ -40,20 +30,52 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    // DEVELOPMENT OVERRIDE: Simulate a logged-in user to bypass authentication.
-    const mockUser = {
-        uid: 'dev-user-123',
-        displayName: 'dev', // Set to an admin username to access /gem
-        email: 'dev@entrestate.com',
-        photoURL: '',
-        // Add other necessary User properties as mocks
-    } as User;
+    if (!auth) {
+        // Firebase isn't initialized, likely due to missing config.
+        // We'll treat this as a logged-out state.
+        setLoading(false);
+        if(isProtectedRoute(pathname)) {
+            router.push('/me'); // Redirect to login/auth form page
+        }
+        return;
+    }
 
-    setUser(mockUser);
-    setIsAdmin(ADMIN_USERNAMES.includes(mockUser.displayName || ''));
-    setLoading(false);
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      setUser(user);
+      if (user) {
+        // In a real app, you'd get the custom claim from the id token
+        // For this simulation, we check a hardcoded list.
+        const isAdminUser = ADMIN_USERNAMES.includes(user.displayName || '');
+        setIsAdmin(isAdminUser);
+        
+        // Fetch user doc to check if onboarding is complete
+        // This is a client-side fetch, should be an API call
+        // For now, we'll assume new users need onboarding
+        const userDocRef = `/users/${user.uid}`; // Path for a hypothetical API
+        // const response = await fetch(userDocRef); 
+        // const userData = await response.json();
+        // const onboardingComplete = userData?.onboarding?.progress?.step === 4;
+        
+        // MOCK: Forcing onboarding for new users if they land on /me
+        const onboardingComplete = localStorage.getItem('onboardingComplete') === 'true';
 
-  }, []);
+        if (!onboardingComplete && pathname !== '/onboarding' && pathname !== '/me') {
+          router.push('/onboarding');
+        } else if (isAdminRoute(pathname) && !isAdminUser) {
+          router.push('/me'); // Not an admin, redirect to workspace
+        }
+
+      } else {
+        setIsAdmin(false);
+        if (isProtectedRoute(pathname)) {
+          router.push('/me'); // Redirect to the /me page which now serves as the login form
+        }
+      }
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, [pathname, router]);
   
 
   if (loading) {

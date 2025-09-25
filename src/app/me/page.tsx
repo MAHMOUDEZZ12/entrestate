@@ -1,14 +1,17 @@
-
 'use client';
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Sparkles, Search, ArrowRight, Rss, Users2, Building } from 'lucide-react';
+import { Sparkles, Search, ArrowRight, Rss, Users2, Building, Mail } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/useAuth';
+import { auth } from '@/lib/firebase';
+import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
+import { useToast } from '@/hooks/use-toast';
+import { Loader2 } from 'lucide-react';
 
 function SmartSearchHero() {
     const [query, setQuery] = React.useState('');
@@ -17,7 +20,7 @@ function SmartSearchHero() {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (!query.trim()) return;
-        router.push(`/me/discover?q=${encodeURIComponent(query.trim())}`);
+        router.push(`/discover/search?q=${encodeURIComponent(query.trim())}`);
     };
 
     return (
@@ -55,36 +58,55 @@ function SmartSearchHero() {
     );
 }
 
-const mockFeedItems = [
-    { type: 'Update', title: 'Market Pulse Update', description: 'Dubai Marina sees a 3% increase in rental yields for 1-bedroom apartments in Q2 2024.', icon: <Rss /> },
-    { type: 'Community', title: 'New Connection Request', description: 'Jane Doe is looking for a contact at Nakheel Properties. Can you help?', icon: <Users2 /> },
-    { type: 'New Project', projectName: 'Verde', area: 'JLT', description: 'A new luxury residential tower has been added to the Market Library.', icon: <Building /> },
-];
-
 
 function CommunityFeed() {
+    const [notes, setNotes] = React.useState<any[]>([]);
+    const [isLoading, setIsLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const fetchNotes = async () => {
+            try {
+                const response = await fetch('/api/community/notes');
+                const data = await response.json();
+                if(data.ok) {
+                    setNotes(data.data.slice(0, 3));
+                }
+            } catch (error) {
+                console.error("Failed to fetch community notes", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchNotes();
+    }, []);
+
+    if (isLoading) {
+        return (
+            <div className="lg:col-span-2 flex items-center justify-center">
+                <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+        )
+    }
+
     return (
         <div className="lg:col-span-2">
             <h2 className="text-2xl font-bold tracking-tight mb-6">Today's Feed</h2>
             <div className="space-y-4">
-                {mockFeedItems.map((item, index) => (
-                    <Card key={index}>
+                {notes.map((item, index) => (
+                    <Card key={item.id}>
                         <CardHeader className="flex flex-row items-center gap-4">
-                            <div className="p-3 bg-muted rounded-lg text-muted-foreground">{item.icon}</div>
+                            <div className="p-3 bg-muted rounded-lg text-muted-foreground"><Users2 /></div>
                             <div>
-                                 <CardTitle className="text-lg flex items-center gap-2">{item.icon} {item.title}</CardTitle>
-                                 {item.projectName ? (
-                                    <CardDescription>{item.projectName} in {item.area}</CardDescription>
-                                 ) : (
-                                    <CardDescription>{item.description}</CardDescription>
-                                 )}
+                                 <CardTitle className="text-lg">{item.title}</CardTitle>
+                                 <CardDescription>Posted by {item.author}</CardDescription>
                             </div>
                         </CardHeader>
-                        {item.projectName &&
-                            <CardContent>
-                                <p>{item.description}</p>
-                            </CardContent>
-                        }
+                        <CardContent>
+                            <p className="text-sm text-muted-foreground line-clamp-2">{item.content}</p>
+                        </CardContent>
+                        <CardFooter>
+                            <Button variant="ghost" size="sm">View Note</Button>
+                        </CardFooter>
                     </Card>
                 ))}
             </div>
@@ -122,18 +144,93 @@ function QuickActions() {
     );
 }
 
+const AuthForm = () => {
+    const { toast } = useToast();
+    const router = useRouter();
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [isGoogleLoading, setIsGoogleLoading] = React.useState(false);
+
+    const handleGoogleSignIn = async () => {
+        if (!auth) return;
+        setIsGoogleLoading(true);
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+            toast({ title: "Signed In Successfully", description: "Welcome to Entrestate!" });
+            router.push('/onboarding');
+        } catch (error: any) {
+            toast({ title: "Authentication Failed", description: error.message, variant: "destructive" });
+        } finally {
+            setIsGoogleLoading(false);
+        }
+    };
+    
+     const handleEmailSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!auth) return;
+        setIsLoading(true);
+        const formData = new FormData(e.currentTarget);
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            toast({ title: "Signed In Successfully" });
+            router.push('/me/workspace');
+        } catch (error: any) {
+            toast({ title: "Authentication Failed", description: error.message, variant: "destructive" });
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return (
+        <div className="flex items-center justify-center p-4 md:p-8 min-h-[70vh]">
+            <Card className="w-full max-w-md">
+                <CardHeader className="text-center">
+                    <CardTitle>Welcome to Entrestate</CardTitle>
+                    <CardDescription>Sign in to access your AI-powered workspace.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <Button onClick={handleGoogleSignIn} variant="outline" className="w-full" disabled={isGoogleLoading}>
+                        {isGoogleLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Mail className="mr-2 h-4 w-4" />}
+                        Continue with Google
+                    </Button>
+                    <div className="relative">
+                        <div className="absolute inset-0 flex items-center">
+                            <span className="w-full border-t" />
+                        </div>
+                        <div className="relative flex justify-center text-xs uppercase">
+                            <span className="bg-background px-2 text-muted-foreground">Or continue with</span>
+                        </div>
+                    </div>
+                     <form onSubmit={handleEmailSignIn} className="space-y-4">
+                        <Input name="email" type="email" placeholder="Email" required />
+                        <Input name="password" type="password" placeholder="Password" required />
+                        <Button type="submit" className="w-full" disabled={isLoading}>
+                             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            Sign In with Email
+                        </Button>
+                    </form>
+                </CardContent>
+            </Card>
+        </div>
+    )
+}
+
 export default function MePage() {
-    const { user } = useAuth();
-    // This is the Intelligence Hub
+    const { user, loading } = useAuth();
+    
+    if (loading) {
+        return (
+             <div className="p-4 md:p-8 space-y-12 flex items-center justify-center h-screen">
+                <Loader2 className="h-16 w-16 animate-spin text-primary" />
+             </div>
+        );
+    }
     
     if (!user) {
-        return (
-            <div className="p-4 md:p-8 space-y-12 text-center">
-                 <SmartSearchHero />
-                 <p className="text-lg text-muted-foreground">Please log in to access your full workspace.</p>
-                 <Link href="/me"><Button>Login</Button></Link>
-            </div>
-        )
+        return <AuthForm />;
     }
     
     return (

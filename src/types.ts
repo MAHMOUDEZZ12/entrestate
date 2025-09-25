@@ -50,6 +50,7 @@ export interface OnboardingDraft {
   connections?: Record<string, boolean>;
   payment?: { status?: "added" | "skipped" };
   progress?: { step: number; ts: number };
+  isComplete?: boolean;
 }
 
 // Simple event envelope
