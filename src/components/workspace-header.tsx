@@ -42,6 +42,8 @@ export function WorkspaceHeader() {
   const handleLogout = async () => {
     if (auth) {
         await auth.signOut();
+        // After signing out, redirect to the homepage.
+        window.location.href = '/';
     }
   }
 
@@ -58,7 +60,7 @@ export function WorkspaceHeader() {
                 <NavigationMenuItem key={link.href}>
                   <Link href={link.href} passHref>
                     <NavigationMenuLink asChild active={pathname === link.href}>
-                         <a className={navigationMenuTriggerStyle()}>
+                         <a className={cn(navigationMenuTriggerStyle(), "gap-2")}>
                             {link.icon}
                             {link.label}
                         </a>
