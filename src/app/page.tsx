@@ -71,10 +71,10 @@ export default function HomePage() {
           <div className="relative z-10 container mx-auto px-4 text-center">
             <div className="flex flex-col items-center">
               <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold font-heading tracking-tighter leading-tight max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-foreground to-foreground/70">
-                The AI-Native Operating System for Real Estate
+                Real Estate, Reinvented by AI.
               </h1>
               <p className="mt-6 max-w-2xl text-lg md:text-xl text-foreground/70">
-                An entire ecosystem of Apps, Suites, and Services to give real estate professionals an unparalleled advantage.
+                A unified ecosystem of apps and complete market data that empowers professionals to close faster and smarter.
               </p>
                <div className="mt-10 w-full max-w-2xl">
                      <div className="relative group">
@@ -84,7 +84,7 @@ export default function HomePage() {
                             <Input 
                                 value={query}
                                 onChange={(e) => setQuery(e.target.value)}
-                                placeholder='e.g., "Emaar Beachfront price trends"' 
+                                placeholder='search anything about the real estate market...' 
                                 className="w-full h-14 pl-12 pr-4 text-lg rounded-full shadow-lg"
                             />
                              <button type="submit" className="hidden" aria-hidden="true">Submit</button>
