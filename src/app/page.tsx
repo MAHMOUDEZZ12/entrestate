@@ -100,13 +100,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <section id="deal-planner" className="py-20 md:py-32">
-            <div className="container mx-auto px-4">
-                 <SalesPlannerSimulation />
-            </div>
-        </section>
-
-        <section id="solutions" className="py-20 md:py-32 bg-muted/30">
+         <section id="solutions" className="py-20 md:py-32 bg-muted/30">
             <div className="container mx-auto px-4 space-y-20">
                  <div className="max-w-3xl mx-auto text-center">
                     <h2 className="text-3xl md:text-5xl font-bold tracking-tight drop-shadow-md">
@@ -154,6 +148,13 @@ export default function HomePage() {
                 </Card>
             </div>
         </section>
+
+        <section id="deal-planner" className="py-20 md:py-32">
+            <div className="container mx-auto px-4">
+                 <SalesPlannerSimulation />
+            </div>
+        </section>
+
 
          <section id="marketplace-showcase" className="py-20 md:py-32">
             <div className="container mx-auto px-4">
