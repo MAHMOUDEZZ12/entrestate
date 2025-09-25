@@ -117,3 +117,9 @@ export const solutionsData: Record<string, SolutionDetails> = {
     price: 190,
   }
 };
+
+export const solutions = Object.entries(solutionsData).map(([slug, data]) => ({
+    slug,
+    title: data.title,
+    description: data.tagline,
+}));
