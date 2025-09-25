@@ -8,7 +8,7 @@ import {
     ClipboardList, Target, LineChart, Users2, Network, LayoutTemplate, Video,
     Instagram, FileText, Globe, FileSearch, KeyRound, BarChart3, Newspaper,
     Handshake, Filter, ListChecks, Container, BotMessageSquare, Terminal,
-    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Wrench, Briefcase, Languages, LinkIcon, Sparkle
+    FileCheck, Palette, Map, LandPlot, Building, Camera, Calculator, Album, Wand2, Database, BarChart, FileJson, Image as ImageIcon, Youtube, Edit, CreditCard, Library, Facebook, Wrench, Briefcase, Languages, LinkIcon, Sparkle, ArrowRight
 } from 'lucide-react';
 import { tools as toolsData, ToolData } from './tools-data';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -16,6 +16,8 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 // Centralized Icon Map
 const icons: { [key: string]: ReactElement } = {
@@ -64,6 +66,99 @@ const processToolsData = (data: ToolData[]): Feature[] => {
 export const tools: Feature[] = processToolsData(toolsData);
 
 
+const copyToClipboard = (text: string, toast: any) => {
+    navigator.clipboard.writeText(text);
+    toast({
+        title: "Copied to clipboard!",
+        description: "The HTML code has been copied successfully.",
+    });
+};
+
+const LandingPageResult = ({ result, toast }: { result: any, toast: any }) => {
+      const [liveHtml, setLiveHtml] = React.useState<string | null>(result.landingPageHtml);
+
+      const handleStrategyChange = (headline: string, cta: string) => {
+        if (!liveHtml) return;
+        const doc = new DOMParser().parseFromString(liveHtml, 'text/html');
+        const heroHeadline = doc.querySelector('h1');
+        const heroCta = doc.querySelector('a.cta-button'); // Assuming a CTA button has this class
+
+        if (heroHeadline) {
+          heroHeadline.textContent = headline;
+        }
+        if (heroCta) {
+          heroCta.textContent = cta;
+        }
+        setLiveHtml(doc.documentElement.outerHTML);
+      };
+
+      if (!liveHtml) return null;
+
+      return (
+        <div className="space-y-4">
+          <Alert>
+            <Wand2 className="h-4 w-4" />
+            <AlertTitle>Strategies & Live Preview</AlertTitle>
+            <AlertDescription>
+              Select a strategy to see it update on the live preview below.
+            </AlertDescription>
+          </Alert>
+
+          <RadioGroup
+            onValueChange={(value) => {
+              const [headline, cta] = value.split('||');
+              handleStrategyChange(headline, cta);
+            }}
+            defaultValue={`${result.headlineOptions[0].headline}||${result.headlineOptions[0].cta}`}
+          >
+            {result.headlineOptions.map((strategy: any) => (
+              <Label
+                key={strategy.id}
+                htmlFor={strategy.id}
+                className="block cursor-pointer rounded-lg border p-4 has-[:checked]:border-primary has-[:checked]:bg-primary/10"
+              >
+                <div className="flex items-start gap-4">
+                  <RadioGroupItem
+                    value={`${strategy.headline}||${strategy.cta}`}
+                    id={strategy.id}
+                  />
+                  <div>
+                    <p className="font-bold">
+                      {strategy.strategy}:{' '}
+                      <span className="font-normal">"{strategy.headline}"</span>
+                    </p>
+                    <p className="text-sm text-muted-foreground">
+                      CTA: "{strategy.cta}"
+                    </p>
+                  </div>
+                </div>
+              </Label>
+            ))}
+          </RadioGroup>
+
+          <Card>
+            <CardHeader>
+              <CardTitle>Live Preview</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <iframe
+                srcDoc={liveHtml}
+                title="Landing Page Preview"
+                className="h-[600px] w-full rounded-md border"
+              />
+            </CardContent>
+             <CardFooter>
+                 <Button onClick={() => copyToClipboard(liveHtml, toast)}>
+                    <Copy className="mr-2 h-4 w-4" />
+                    Copy HTML
+                 </Button>
+            </CardFooter>
+          </Card>
+        </div>
+      );
+  }
+
+
 // This object holds the UI-specific configurations (forms, result renderers)
 // It is NOT exported, but used by the functions below.
 const toolUiConfig: { [key: string]: { creationFields: Field[]; renderResult?: (result: any, toast: any) => React.ReactNode; } } = {
@@ -87,6 +182,15 @@ const toolUiConfig: { [key: string]: { creationFields: Field[]; renderResult?: (
                 </CardContent>
             </Card>
         ),
+    },
+    'landing-pages': {
+        creationFields: [
+            { id: 'projectName', name: 'Project Name', type: 'text', value: 'Emaar Beachfront', placeholder: 'e.g., Emaar Beachfront', description: 'The name of the project for the page.' },
+            { id: 'projectDetails', name: 'Project Details / Offer', type: 'textarea', value: 'Luxury 2-bedroom apartments with a private beach and stunning marina views. Limited-time offer: 5% down payment.', placeholder: 'e.g., Luxury 2-bedroom apartments...', description: 'Key selling points and offers.' },
+            { id: 'brandingStyle', name: 'Branding Style', type: 'select', options: ['Modern & Minimalist', 'Luxury & Elegant', 'Bold & Vibrant'], description: 'The visual style for the landing page.' },
+            { id: 'numberOfSections', name: 'Number of Sections', type: 'number', value: '4', placeholder: 'e.g., 4', description: 'The number of content sections (2-5).' },
+        ],
+        renderResult: (result, toast) => <LandingPageResult result={result} toast={toast} />
     },
     'rebranding': {
         creationFields: [

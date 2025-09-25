@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, GanttChartSquare, User as UserIcon } from 'lucide-react';
+import { LogOut, Settings, GanttChartSquare, User as UserIcon, LayoutDashboard, Compass, Workflow, FolderCog, Library } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import { Logo } from '@/components/logo';
@@ -19,13 +19,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname } from 'next/navigation';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbLink, BreadcrumbSeparator, BreadcrumbPage } from '@/components/ui/breadcrumb';
+import { NavigationMenu, NavigationMenuList, NavigationMenuItem, NavigationMenuLink, navigationMenuTriggerStyle } from '@/components/ui/navigation-menu';
 
 function generateBreadcrumbs(pathname: string) {
     const pathSegments = pathname.split('/').filter(Boolean);
-    // We expect paths like /me/workspace, /me/tool/listing-generator etc.
-    // The "me" segment can be considered the root of the authenticated app.
-    
-    // Start with a root breadcrumb for the intelligence hub
     const breadcrumbs = [
         <BreadcrumbItem key="me">
              <BreadcrumbLink asChild>
@@ -35,7 +32,6 @@ function generateBreadcrumbs(pathname: string) {
     ];
 
     if (pathSegments.length > 1) {
-        // This means we are inside /me/something
         pathSegments.slice(1).forEach((segment, index) => {
             const currentPath = `/${pathSegments.slice(0, index + 2).join('/')}`;
             const isLast = index === pathSegments.length - 2;
@@ -55,10 +51,16 @@ function generateBreadcrumbs(pathname: string) {
             );
         });
     }
-
     return breadcrumbs;
 }
 
+const mainNavLinks = [
+  { href: '/me/workspace', label: 'Workspace', icon: <LayoutDashboard /> },
+  { href: '/me/marketing', label: 'Marketplace', icon: <Compass /> },
+  { href: '/me/flows', label: 'Flows', icon: <Workflow /> },
+  { href: '/me/brand', label: 'Brand & Assets', icon: <FolderCog /> },
+  { href: '/me/tool/prompt-library', label: 'Prompt Library', icon: <Library /> },
+];
 
 export function WorkspaceHeader() {
   const { user } = useAuth();
@@ -79,11 +81,20 @@ export function WorkspaceHeader() {
           <div className="hidden sm:block">
             <Logo href="/me" />
           </div>
-          <Breadcrumb className="hidden md:flex">
-            <BreadcrumbList>
-                {breadcrumbs}
-            </BreadcrumbList>
-          </Breadcrumb>
+          <NavigationMenu className="hidden md:flex">
+            <NavigationMenuList>
+              {mainNavLinks.map((link) => (
+                <NavigationMenuItem key={link.href}>
+                  <Link href={link.href} legacyBehavior passHref>
+                    <NavigationMenuLink active={pathname.startsWith(link.href)} className={navigationMenuTriggerStyle()}>
+                       {React.cloneElement(link.icon, { className: 'mr-2 h-4 w-4' })}
+                       {link.label}
+                    </NavigationMenuLink>
+                  </Link>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
         
         <div className="flex items-center gap-4">

@@ -9,7 +9,7 @@ import { ScrollArea } from './ui/scroll-area';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { secretCodes } from '@/lib/codes';
-import { Sheet, SheetContent, SheetTrigger, SheetClose } from './ui/sheet';
+import { Sheet, SheetContent, SheetTrigger } from './ui/sheet';
 import { usePathname, useRouter } from 'next/navigation';
 import { useSensitiveArea } from '@/context/SensitiveAreaContext';
 import { CommandMenu } from './ui/command-menu';
