@@ -41,23 +41,47 @@ const GettingStarted = () => (
     </Card>
 );
 
+const mottos = [
+    "Hobbyists promise, professionals perform.",
+    "Ideas are easy, execution is everything.",
+    "Plan less, do more.",
+    "Focus, act, deliver.",
+    "Results speak louder than words.",
+    "The future is built by those who ship.",
+    "Don't talk, build.",
+    "Done is better than perfect."
+];
+
 const WorkspaceHero = () => {
     const [currentDate, setCurrentDate] = useState('');
+    const [currentMotto, setCurrentMotto] = useState(mottos[0]);
 
     useEffect(() => {
         const date = new Date();
         const formattedDate = date.toLocaleDateString('en-US', {
             weekday: 'short',
-            day: '2-digit',
+            day: 'numeric',
             month: 'short',
         });
         setCurrentDate(formattedDate);
+
+        let index = 0;
+        const intervalId = setInterval(() => {
+            index = (index + 1) % mottos.length;
+            setCurrentMotto(mottos[index]);
+        }, 5000);
+
+        return () => clearInterval(intervalId);
     }, []);
 
     return (
         <div className="text-left py-8">
-            <h1 className="text-3xl md:text-4xl font-bold font-heading tracking-tight">Pro Workspace — Today is {currentDate}</h1>
-            <p className="mt-2 text-lg text-muted-foreground">Hobbyists promise, professionals perform.</p>
+            <h1 className="text-3xl md:text-4xl font-bold font-heading tracking-tight">
+                Pro Workspace — Today is {currentDate}
+            </h1>
+            <p className="mt-2 text-lg text-muted-foreground font-semibold">
+                {currentMotto}
+            </p>
         </div>
     );
 };
