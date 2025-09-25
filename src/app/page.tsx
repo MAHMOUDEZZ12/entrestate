@@ -107,24 +107,6 @@ export default function HomePage() {
                 </div>
                 
                 <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center border-border/30 shadow-xl">
-                   <div className="space-y-4 text-left">
-                       <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Telescope className="h-8 w-8" /></div>
-                       <h3 className="text-3xl font-bold font-heading">
-                          Market Search Engine
-                       </h3>
-                       <p className="text-lg text-muted-foreground">
-                            Redefine how you discover opportunities. Our triple-engine search combines keyword-based speed, semantic AI understanding, and predictive historical analysis to give you a complete market view.
-                       </p>
-                       <Link href="/solutions/pro-search-eng-x3">
-                           <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
-                       </Link>
-                   </div>
-                   <div>
-                        <ProSearchSimulation />
-                   </div>
-                </Card>
-
-                <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center border-border/30 shadow-xl">
                     <div className="space-y-4 text-left md:order-2">
                        <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><MessageCircle className="h-8 w-8" /></div>
                         <h3 className="text-3xl font-bold font-heading">
@@ -134,7 +116,7 @@ export default function HomePage() {
                             Deploy a super-intelligent agent on your website or social media. It engages users proactively, answers complex questions with market data, and captures qualified leads 24/7.
                        </p>
                        <Link href="/solutions/estchat-x3">
-                           <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                           <Button variant="outline" className="mt-6 shadow">Try yourself <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                    <div className="md:order-1">
@@ -152,13 +134,32 @@ export default function HomePage() {
                            Create a single source of truth for your property data. Our AI consolidates, verifies, and archives listings to eliminate noise, enforce accuracy, and syndicate perfectly formatted data to all major portals.
                        </p>
                        <Link href="/solutions/mega-listing-pro-2">
-                           <Button variant="outline" className="mt-6 shadow">Learn More <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                           <Button variant="outline" className="mt-6 shadow">List in minutes <ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                     <div>
                         <MegaListingSimulation />
                     </div>
                 </Card>
+
+                <Card className="p-8 bg-card/80 backdrop-blur-sm grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center border-border/30 shadow-xl">
+                   <div className="space-y-4 text-left">
+                       <div className="p-3 bg-primary/10 text-primary rounded-lg w-fit inline-block"><Telescope className="h-8 w-8" /></div>
+                       <h3 className="text-3xl font-bold font-heading">
+                          Market Search Engine
+                       </h3>
+                       <p className="text-lg text-muted-foreground">
+                            This is not just a search bar. It's a triple-engine AI that combines keyword speed, semantic understanding, and predictive analysis to find opportunities others miss.
+                       </p>
+                       <Link href="/solutions/pro-search-eng-x3">
+                           <Button variant="outline" className="mt-6 shadow">Ready when you are <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                       </Link>
+                   </div>
+                   <div>
+                        <ProSearchSimulation />
+                   </div>
+                </Card>
+
             </div>
         </section>
 
@@ -173,20 +174,24 @@ export default function HomePage() {
                     </p>
                 </div>
                 <div className="relative mt-16 flex justify-center">
-                     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
+                    <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-4">
                         {featuredTools.map((tool, i) => (
-                            <motion.div 
+                            <motion.div
                                 key={tool.id}
+                                className="group relative flex flex-col items-center gap-2 text-center"
                                 initial={{ opacity: 0, scale: 0.5 }}
                                 whileInView={{ opacity: 1, scale: 1 }}
                                 transition={{ duration: 0.3, delay: i * 0.05 }}
                                 viewport={{ once: true, amount: 0.8 }}
-                                className="flex flex-col items-center gap-2 text-center"
                             >
                                 <div className="p-4 rounded-2xl text-white" style={{ backgroundColor: tool.color }}>
                                     {React.cloneElement(tool.icon, { className: 'h-8 w-8' })}
                                 </div>
                                 <p className="text-xs font-semibold">{tool.dashboardTitle || tool.title}</p>
+                                <div className="absolute bottom-full mb-2 w-48 p-2 text-xs text-center text-white bg-foreground rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                    {tool.description}
+                                    <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-8 border-x-transparent border-t-8 border-t-foreground"></div>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
@@ -213,8 +218,8 @@ export default function HomePage() {
                        <p className="text-lg text-muted-foreground">
                             Your interactive AI partner for creating and executing winning deals. It's like having a world-class sales manager in your pocket, guiding you on what to say and do next.
                        </p>
-                       <Link href="/me/tool/deals-smart-planner">
-                           <Button variant="outline" className="mt-6 shadow">Try The Planner <ArrowRight className="ml-2 h-4 w-4"/></Button>
+                       <Link href="/me">
+                           <Button variant="outline" className="mt-6 shadow">Start a Workspace<ArrowRight className="ml-2 h-4 w-4"/></Button>
                        </Link>
                    </div>
                    <div>
