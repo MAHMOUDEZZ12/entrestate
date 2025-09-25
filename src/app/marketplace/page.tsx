@@ -97,6 +97,45 @@ export default function MarketplacePage() {
           <p className="text-xl md:text-2xl font-semibold text-foreground/90">“Lead generation quality isn’t a wish—it requires AI speaking to AI, so you get exactly what you want. Unless you can speak algorithmic, you need a platform that does it for you.”</p>
       </div>
 
+        
+       <section>
+        {suitesToDisplay.map(suite => {
+          const suiteTools = filteredTools.filter(t => t.suite === suite.name);
+          if (suiteTools.length === 0) return null;
+          
+          return (
+            <div key={suite.id} className="mb-16">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="p-3 bg-primary/10 text-primary rounded-lg">
+                    <suite.icon className="h-6 w-6" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold font-heading">{suite.name}</h3>
+                </div>
+              </div>
+              
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                  {suiteTools.map(tool => (
+                       <DashboardServiceCard 
+                            key={tool.id} 
+                            tool={tool}
+                            isAdded={addedApps.includes(tool.id)}
+                            setIsAdded={(isAdded) => handleSetIsAdded(tool.id, isAdded)}
+                            connectionRequired={appsThatNeedConnection[tool.id]}
+                        />
+                  ))}
+                </div>
+            </div>
+          )
+      })}
+
+      {searchTerm && suitesToDisplay.length === 0 && (
+          <div className="text-center py-16 text-muted-foreground col-span-full">
+              <p>No apps or suites found for your search criteria.</p>
+          </div>
+      )}
+      </section>
+
        <section>
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold font-heading">Core Solutions</h2>
@@ -126,55 +165,6 @@ export default function MarketplacePage() {
                 ))}
             </div>
       </section>
-
-       <Separator />
-        
-       <section>
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold font-heading">App Suites & Individual Tools</h2>
-             <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-                Explore our collections of specialized apps or browse individual tools to customize your workspace.
-            </p>
-          </div>
-          
-        {suitesToDisplay.map(suite => {
-          const suiteTools = filteredTools.filter(t => t.suite === suite.name);
-          if (suiteTools.length === 0) return null;
-          
-          return (
-            <div key={suite.id} className="mb-16">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="p-3 bg-primary/10 text-primary rounded-lg">
-                    <suite.icon className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="text-2xl font-bold font-heading">{suite.name}</h3>
-                  <p className="text-muted-foreground">{suite.description}</p>
-                </div>
-              </div>
-              
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {suiteTools.map(tool => (
-                       <DashboardServiceCard 
-                            key={tool.id} 
-                            tool={tool}
-                            isAdded={addedApps.includes(tool.id)}
-                            setIsAdded={(isAdded) => handleSetIsAdded(tool.id, isAdded)}
-                            connectionRequired={appsThatNeedConnection[tool.id]}
-                        />
-                  ))}
-                </div>
-            </div>
-          )
-      })}
-
-      {searchTerm && suitesToDisplay.length === 0 && (
-          <div className="text-center py-16 text-muted-foreground col-span-full">
-              <p>No apps or suites found for your search criteria.</p>
-          </div>
-      )}
-      </section>
-
 
         <Card className="mt-12 bg-primary/10 border-primary/20">
             <div className="p-6 flex flex-col md:flex-row items-center justify-between gap-4">
