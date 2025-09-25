@@ -51,6 +51,7 @@ export interface Feature extends ToolData {
     href: string;
     guideHref: string;
     icon: React.ReactElement;
+    creationFields?: Field[]; // Added to resolve the type error
 }
 
 // Function to process raw data and add client-side properties

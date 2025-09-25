@@ -1,6 +1,4 @@
 
-'use server';
-
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { ai } from '@/ai/genkit';
@@ -54,7 +52,7 @@ const runToolSchema = z.object({
 
 const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'meta-auto-pilot': runMetaAutoPilot,
-    'campaign-builder': createMetaCampaign, // Renamed
+    'campaign-builder': createMetaCampaign,
     'audience-creator': suggestTargetingOptions,
     'insta-ads-designer': generateAdFromBrochure,
     'reel-ads': generateReel,
@@ -67,8 +65,8 @@ const flowRunnerMap: { [key: string]: (payload: any) => Promise<any> } = {
     'rebranding': rebrandBrochure,
     'brochure-translator': translateBrochure,
     'pdf-editor-ai': editPdf,
-    'images-hq-ai': (payload) => Promise.resolve({ error: "This tool is a placeholder for direct image generation." }),
-    'logo-creator-ai': (payload) => Promise.resolve({ error: "This tool is a placeholder for direct logo generation." }),
+    'images-hq-ai': generateAdFromBrochure,
+    'logo-creator-ai': generateAdFromBrochure,
     'aerial-view-generator': generateReel, // Uses a similar video generation flow
     'listing-manager': (payload) => Promise.resolve({ error: "Listing Manager is a UI-driven tool, not a direct flow." }),
     'listing-performance': (payload) => Promise.resolve({ error: "Listing Performance is a UI-driven tool." }),

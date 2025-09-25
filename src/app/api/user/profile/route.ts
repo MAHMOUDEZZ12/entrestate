@@ -1,6 +1,4 @@
 
-'use server';
-
 import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, fail, bad, getUidFromRequest } from "@/lib/api-helpers";
 import { saveUserData } from "@/services/database";
@@ -45,4 +43,3 @@ export async function POST(req: Request) {
     return fail(e);
   }
 }
-

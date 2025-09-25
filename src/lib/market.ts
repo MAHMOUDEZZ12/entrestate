@@ -9,8 +9,8 @@ export const splitMK = (key: MarketKey) => {
 
 
 // Server side:
-export function getMarketFromCookies() {
-  const c = cookies();
+export async function getMarketFromCookies() {
+  const c = await cookies();
   const country = c.get("country")?.value || "AE";
   const city = c.get("city")?.value || "Dubai";
   return { country, city };

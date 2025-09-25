@@ -1,6 +1,4 @@
 
-'use server';
-
 import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, fail, bad, getUidFromRequest } from "@/lib/api-helpers";
 import { z } from 'zod';
@@ -42,7 +40,10 @@ export async function POST(req: Request) {
     const validation = leadSchema.safeParse(body);
 
     if (!validation.success) {
-        return bad(validation.error.formErrors.fieldErrors);
+      const message = validation.error.issues
+        .map(i => `${i.path.join('.') || '(root)'}: ${i.message}`)
+        .join('; ');
+      return bad(message);
     }
     
     const userDoc = await adminDb.collection('users').doc(uid).get();
@@ -66,4 +67,3 @@ export async function POST(req: Request) {
     return fail(e);
   }
 }
-

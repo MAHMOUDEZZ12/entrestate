@@ -137,7 +137,7 @@ export const tools: ToolData[] = [
         longDescription: "AI Video Presenter generates a realistic AI presenter that reads your script and presents your pitch with natural voice, gestures, and teleprompter-style delivery. Output is ready for landing pages, pitch decks, or social ads.",
         iconName: 'User', 
         color: '#8A2BE2', 
-        categories: ['Creative', 'Video'], 
+        categories: ['Creative'], 
         suite: 'AI Creative Studio', 
         badge: 'NEW', 
         cta: 'Generate Presenter' 
@@ -161,7 +161,7 @@ export const tools: ToolData[] = [
         longDescription: "AI YouTube Video Editor automates editing tasks like trimming silence, creating chapters, generating titles and descriptions, adding optimized thumbnails, and repackaging long-form content into short-form clips.",
         iconName: 'Youtube', 
         color: '#FF0000', 
-        categories: ['Editing', 'Video'], 
+        categories: ['Editing'], 
         suite: 'AI Creative Studio', 
         cta: 'Edit Video' 
     },
@@ -227,7 +227,7 @@ export const tools: ToolData[] = [
         longDescription: "Aerial View Generator synthesizes cinematic aerial video sequences for properties using available imagery, 3D models, or drone footage. It produces smooth flights, flyovers, and dynamic reveal shots ideal for listing videos and promotional content.",
         iconName: 'Camera', 
         color: '#8A2BE2', 
-        categories: ['Creative', 'Video'], 
+        categories: ['Creative'], 
         suite: 'AI Creative Studio', 
         cta: 'Generate Aerial View' 
     },

@@ -1,16 +1,18 @@
 'use server';
 
-import {genkit} from 'genkit';
-import {googleAI} from '@genkit-ai/googleai';
-import {firebase} from '@genkit-ai/firebase';
+import { genkit } from 'genkit';
+import { googleAI } from '@genkit-ai/googleai';
+import { enableFirebaseTelemetry } from '@genkit-ai/firebase'; // Corrected import for telemetry
+import { adminApp } from '@/lib/firebaseAdmin';
 
-// This is the production AI object, configured for the App Hosting environment.
-// It is explicitly a server-side module.
+// (Optional) enable Genkit → Firebase telemetry
+enableFirebaseTelemetry();
+
 export const ai = genkit({
   plugins: [
-    firebase(),
     googleAI({
       apiVersion: 'v1',
     }),
+    // Removed: firebase({ app: adminApp }) - as it no longer exists in this package version
   ],
 });

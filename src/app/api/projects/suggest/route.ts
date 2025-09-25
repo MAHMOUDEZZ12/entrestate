@@ -1,6 +1,4 @@
 
-'use server';
-
 import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, bad, fail } from "@/lib/api-helpers";
 import { NextRequest } from "next/server";

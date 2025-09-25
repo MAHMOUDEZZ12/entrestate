@@ -9,12 +9,12 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight, Bot, Check, FileJson, MessageCircle, Telescope, Shield, Cpu, Workflow, BarChart } from 'lucide-react';
 import { ShinyButton } from '@/components/ui/shiny-button';
+import { SolutionDetails, solutionsData } from '@/lib/solutions-data';
 
 // Import Simulations
 import { ProSearchSimulation } from '@/components/pro-search-simulation';
 import { EstChatSimulation } from '@/components/est-chat-simulation';
 import { MegaListingSimulation } from '@/components/mega-listing-simulation';
-import { solutionsData } from '@/lib/solutions-data';
 
 
 export default function SolutionPage() {
@@ -24,7 +24,7 @@ export default function SolutionPage() {
     notFound();
   }
 
-  const solution = solutionsData[slug as keyof typeof solutionsData];
+  const solution: SolutionDetails | undefined = solutionsData[slug as keyof typeof solutionsData];
 
   if (!solution) {
     notFound();
@@ -42,8 +42,8 @@ export default function SolutionPage() {
         <PageHeader
           title={solution.title}
           description={solution.tagline}
-          icon={solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
-          simulation={simulations[solution.slug]}
+          icon={solution.icon === 'Telescope' ? <Telescope className="h-8 w-8" /> : solution.icon === 'MessageCircle' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
+          simulation={simulations[slug]}
         >
             <div className="mt-6 space-y-4">
                  <p className="text-lg text-muted-foreground max-w-xl">{solution.vision}</p>

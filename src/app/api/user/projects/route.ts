@@ -1,6 +1,4 @@
 
-'use server';
-
 import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, fail, bad, getUidFromRequest } from "@/lib/api-helpers";
 import type { Project } from "@/types";
@@ -69,4 +67,3 @@ export async function DELETE(req: Request) {
         return fail(e);
     }
 }
-

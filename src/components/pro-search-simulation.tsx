@@ -10,6 +10,13 @@ import { cn } from '@/lib/utils';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
 
+interface Result {
+    title: string;
+    description: string;
+    badge?: string;
+    delay: number;
+}
+
 const ResultCard = ({ title, description, badge, delay }: { title: string, description: string, badge?: string, delay: number }) => (
     <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -50,7 +57,7 @@ export const ProSearchSimulation = () => {
     }
 
     let searchMode = 'Fast';
-    let results = [];
+    let results: Result[] = [];
     let modeIcon = <Zap className="h-4 w-4" />;
     
     if (submittedQuery) {

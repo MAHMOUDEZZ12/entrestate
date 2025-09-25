@@ -15,6 +15,9 @@ import { Loader2 } from 'lucide-react';
 import { tools } from '@/lib/tools-client';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
 import Autoplay from "embla-carousel-autoplay";
+import { UseEmblaCarouselType } from 'embla-carousel-react';
+import type { EmblaPluginType } from 'embla-carousel';
+
 
 const ProSearchSimulation = dynamic(() => import('@/components/pro-search-simulation').then(mod => mod.ProSearchSimulation), {
   ssr: false,
@@ -168,7 +171,7 @@ export default function HomePage() {
                 </div>
                 <div className="mt-16">
                      <Carousel
-                        plugins={[autoplayPlugin.current]}
+                        plugins={[autoplayPlugin.current] as EmblaPluginType[]}
                         onMouseEnter={autoplayPlugin.current.stop}
                         onMouseLeave={autoplayPlugin.current.reset}
                         opts={{ align: "start", loop: true, }}

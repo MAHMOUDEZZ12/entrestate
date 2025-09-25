@@ -13,7 +13,7 @@ export interface Project {
   developer: string;
   city: string;
   country: string;
-  area?: string;
+  area: string; // Made area a required string
   priceFrom?: string | number;
   unitTypes?: string[];
   handover?: string;
@@ -73,6 +73,14 @@ export interface KnowledgeFile {
     createdAt: any;
 }
 
-export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library';
+// Feature interface (added to resolve build error in toolId page)
+export interface Feature {
+  id: string;
+  name: string;
+  creationFields?: any[]; // Added to resolve the type error
+  // Add other properties of Feature as needed
+}
+
+export type FilterCategory = 'All' | 'Marketing' | 'Lead Gen' | 'Creative' | 'Sales Tools' | 'Social & Comms' | 'Web' | 'Editing' | 'Ads' | 'Market Intelligence' | 'CRM' | 'Developer' | 'Market Library' | 'Video';
 export type BadgeType = 'NEW' | 'AUTO' | 'DEPRECATED';
 export type Suite = 'Meta Marketing Suite' | 'Web Development Lab' | 'AI Listing Portal' | 'AI Creative Studio' | 'Marketing Management' | 'Lead Intelligence AI' | 'Google Ads Suite' | 'Core AI' | 'Utility';

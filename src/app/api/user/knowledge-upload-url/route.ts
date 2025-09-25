@@ -1,6 +1,4 @@
 
-'use server';
-
 import { adminDb } from "@/lib/firebaseAdmin";
 import { ok, fail, bad, getUidFromRequest } from "@/lib/api-helpers";
 import { getStorage } from 'firebase-admin/storage';
@@ -80,4 +78,3 @@ export async function PUT(req: Request) {
         return fail(e);
     }
 }
-

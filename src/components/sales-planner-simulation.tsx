@@ -10,7 +10,13 @@ import { cn } from '@/lib/utils';
 import { Textarea } from './ui/textarea';
 import Link from 'next/link';
 
-const messages = [
+interface Message {
+    from: 'user' | 'bot';
+    text: string;
+    isRewritten?: boolean;
+}
+
+const initialMessages: Message[] = [
   { from: 'bot', text: "SalesMaster: Let's play! Copy your last client WhatsApp message, paste it here, and I will show you the magic." },
   { from: 'user', text: '' }, // This will be filled by user input
   { from: 'bot', text: 'That message has a low chance of getting a reply. Let me rewrite it for you...' },
@@ -53,12 +59,12 @@ const ChatBubble = ({ children, from, isRewritten }: { children: React.ReactNode
 export const SalesPlannerSimulation = () => {
     const [step, setStep] = useState(0);
     const [userMessage, setUserMessage] = useState('');
-    const [finalMessages, setFinalMessages] = useState<any[]>([]);
+    const [finalMessages, setFinalMessages] = useState<Message[]>([]);
 
     const handleMagicClick = () => {
         if (!userMessage) return;
 
-        const newMessages = [...messages];
+        const newMessages = [...initialMessages];
         newMessages[1].text = userMessage;
         setFinalMessages(newMessages);
 
@@ -93,8 +99,8 @@ export const SalesPlannerSimulation = () => {
                         ))}
                     </AnimatePresence>
                     {step === 0 && (
-                        <ChatBubble key={0} from={messages[0].from}>
-                            {messages[0].text}
+                        <ChatBubble key={0} from={initialMessages[0].from}>
+                            {initialMessages[0].text}
                         </ChatBubble>
                     )}
                 </CardContent>

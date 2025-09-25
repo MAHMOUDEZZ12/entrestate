@@ -2,7 +2,7 @@
 'use client';
 
 import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, Controller, FieldValues, Path } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Feature, Field } from '@/lib/tools-client';
@@ -76,12 +76,14 @@ const ToolPage = () => {
   
   const schema = React.useMemo(() => getToolSchema(tool), [tool]);
 
+  type FormData = z.infer<typeof schema>;
+
   const {
     control,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
      defaultValues: React.useMemo(() => {
         if (!tool || !tool.creationFields) return {};
@@ -101,7 +103,7 @@ const ToolPage = () => {
              (acc as any)[field.id] = field.value || (field.type === 'select' ? (field.options?.[0] || '') : '');
         }
         return acc;
-    }, {}));
+    }, {} as any));
   }, [tool, reset]);
 
 
@@ -203,21 +205,21 @@ const ToolPage = () => {
         );
     }
 
-    const fieldError = errors[field.id];
+    const fieldError = errors[field.id as keyof typeof errors];
 
     return (
         <div key={field.id} className={cn("space-y-2", "md:col-span-2" )}>
         <Label htmlFor={field.id} className="font-semibold">{field.name}</Label>
         <Controller
-            name={field.id as any}
+            name={field.id as Path<FormData>}
             control={control}
             render={({ field: { onChange, onBlur, value, name, ref } }) => {
                 if (field.type === 'textarea') {
-                    return <Textarea id={field.id} placeholder={field.placeholder} onChange={onChange} value={value || ''} onBlur={onBlur} name={name} ref={ref} />;
+                    return <Textarea id={field.id} placeholder={field.placeholder} onChange={onChange} value={value as string || ''} onBlur={onBlur} name={name} ref={ref} />;
                 }
                  if (field.type === 'select') {
                     return (
-                        <Select onValueChange={onChange} defaultValue={value || field.options?.[0]}>
+                        <Select onValueChange={onChange} defaultValue={value as string || field.options?.[0]}>
                             <SelectTrigger id={field.id}>
                                 <SelectValue placeholder={field.placeholder} />
                             </SelectTrigger>
@@ -230,7 +232,7 @@ const ToolPage = () => {
                 if (field.type === 'file') {
                     return <Input id={field.id} type="file" multiple={field.multiple} onChange={(e) => handleFileChange(e, field)} />
                 }
-                return <Input id={field.id} type={field.type === 'number' ? 'number' : 'text'} placeholder={field.placeholder} onChange={onChange} value={value || ''} onBlur={onBlur} name={name} ref={ref} />
+                return <Input id={field.id} type={field.type === 'number' ? 'number' : 'text'} placeholder={field.placeholder} onChange={onChange} value={value as string || ''} onBlur={onBlur} name={name} ref={ref} />
             }}
             />
         <p className="text-xs text-muted-foreground">{field.description}</p>
