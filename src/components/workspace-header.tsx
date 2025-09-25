@@ -4,7 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings, GanttChartSquare, User as UserIcon, LayoutDashboard, Telescope, Workflow, Palette } from 'lucide-react';
+import { LogOut, Settings, GanttChartSquare, User as UserIcon } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import { Logo } from '@/components/logo';
@@ -26,23 +26,23 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
+import { tools } from '@/lib/tools-client';
 
 export function WorkspaceHeader() {
   const { user } = useAuth();
   const pathname = usePathname();
 
-  const navLinks = [
-    { href: "/me", label: "Workspace", icon: <LayoutDashboard className="mr-2 h-4 w-4" /> },
-    { href: "/me/discover", label: "Discover", icon: <Telescope className="mr-2 h-4 w-4" /> },
-    { href: "/me/marketing", label: "Marketplace", icon: <Palette className="mr-2 h-4 w-4" /> },
-    { href: "/me/flows", label: "Flows", icon: <Workflow className="mr-2 h-4 w-4" /> },
-    { href: "/me/brand", label: "Brand & Assets", icon: <Palette className="mr-2 h-4 w-4" /> },
-  ];
+  const navLinks = tools
+    .filter(tool => ['Workspace', 'Discover', 'Marketplace', 'Flows', 'Brand & Assets'].includes(tool.title))
+    .map(tool => ({
+        href: tool.href,
+        label: tool.title,
+        icon: React.cloneElement(tool.icon, { className: "mr-2 h-4 w-4" }),
+    }));
   
   const handleLogout = async () => {
     if (auth) {
         await auth.signOut();
-        // After signing out, redirect to the homepage.
         window.location.href = '/';
     }
   }
@@ -58,12 +58,10 @@ export function WorkspaceHeader() {
             <NavigationMenuList>
               {navLinks.map((link) => (
                 <NavigationMenuItem key={link.href}>
-                  <Link href={link.href} passHref>
-                    <NavigationMenuLink asChild active={pathname === link.href}>
-                         <a className={cn(navigationMenuTriggerStyle(), "gap-2")}>
-                            {link.icon}
-                            {link.label}
-                        </a>
+                  <Link href={link.href} legacyBehavior passHref>
+                    <NavigationMenuLink active={pathname === link.href} className={navigationMenuTriggerStyle()}>
+                        {link.icon}
+                        {link.label}
                     </NavigationMenuLink>
                   </Link>
                 </NavigationMenuItem>

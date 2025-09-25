@@ -1,10 +1,10 @@
 
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Menu, LayoutDashboard } from 'lucide-react';
+import { ArrowRight, Menu } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { useAuth } from '@/hooks/useAuth';
@@ -14,6 +14,7 @@ const navLinks = [
     { name: 'Pricing', href: '/pricing' },
     { name: 'Solutions', href: '/solutions' },
     { name: 'Blog', href: '/blog' },
+    { name: 'Academy', href: '/academy' },
 ];
 
 export function LandingHeader() {
@@ -37,7 +38,7 @@ export function LandingHeader() {
 
         <div className="hidden md:flex items-center gap-2">
           <Link href="/me">
-            <Button>{user ? 'Go to Workspace' : 'Get Started'} <ArrowRight className="ml-2 h-4 w-4" /></Button>
+            <Button>Workspace <ArrowRight className="ml-2 h-4 w-4" /></Button>
           </Link>
         </div>
         
@@ -63,7 +64,7 @@ export function LandingHeader() {
                             ))}
                              <SheetClose asChild>
                                 <Link href="/me">
-                                    <Button className="w-full justify-start text-lg">{user ? 'Go to Workspace' : 'Get Started'}</Button>
+                                    <Button className="w-full justify-start text-lg">Workspace</Button>
                                 </Link>
                              </SheetClose>
                         </nav>
