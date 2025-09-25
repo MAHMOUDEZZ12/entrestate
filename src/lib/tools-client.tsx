@@ -427,8 +427,37 @@ const toolUiConfig: { [key: string]: { creationFields: Field[]; renderResult?: (
         )
     },
     'deals-smart-planner': {
-        creationFields: [], // No form needed, it's an interactive page
-        renderResult: (result, toast) => null, // The page itself is the UI
+        creationFields: [
+             { id: 'goal', name: 'Goal', type: 'text', placeholder: 'e.g., "Plan a deal", "Follow up on a lead"' },
+             { id: 'userContext', name: 'Current Context (Optional)', type: 'textarea', placeholder: 'e.g., "The lead John Doe has gone cold for 2 weeks."' },
+             { id: 'userStrengths', name: 'Your Strengths (Optional)', type: 'text', placeholder: 'e.g., "Strong on TikTok, speaks Chinese"', description: 'Comma-separated list of your skills or assets.' },
+        ],
+        renderResult: (result: any, toast: any) => (
+            <Card>
+                <CardHeader>
+                    <CardTitle>Next Step: {result.nextStep.title}</CardTitle>
+                    <CardDescription>{result.nextStep.description}</CardDescription>
+                </CardHeader>
+                {result.nextStep.actionable_item && (
+                    <CardContent>
+                        <Alert>
+                            <Wand2 className="h-4 w-4" />
+                            <AlertTitle>Actionable Item</AlertTitle>
+                            <AlertDescription className="whitespace-pre-wrap font-mono text-xs p-2 bg-muted rounded-md">
+                                {result.nextStep.actionable_item}
+                            </AlertDescription>
+                        </Alert>
+                    </CardContent>
+                )}
+                {result.nextStep.tool_id && (
+                    <CardFooter>
+                         <a href={`/me/tool/${result.nextStep.tool_id}`}>
+                            <Button variant="outline"><Sparkles className="mr-2 h-4 w-4" /> Go to {result.nextStep.tool_id.replace(/-/g, ' ')}</Button>
+                        </a>
+                    </CardFooter>
+                )}
+            </Card>
+        )
     }
 };
 
