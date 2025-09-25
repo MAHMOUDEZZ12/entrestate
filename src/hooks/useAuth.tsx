@@ -16,7 +16,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // In a real application, this would come from a secure database role system.
-const ADMIN_USERNAMES = ['dev'];
+const ADMIN_USER_EMAIL = 'dev@entrestate.com';
 
 const isProtectedRoute = (path: string) => path.startsWith('/me') || path.startsWith('/onboarding');
 const isAdminRoute = (path: string) => path.startsWith('/gem');
@@ -40,7 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setUser(user);
       if (user) {
-        const isAdminUser = ADMIN_USERNAMES.includes(user.displayName || '');
+        const isAdminUser = user.email === ADMIN_USER_EMAIL;
         setIsAdmin(isAdminUser);
         
         const onboardingComplete = localStorage.getItem('onboardingComplete') === 'true';

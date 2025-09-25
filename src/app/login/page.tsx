@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -9,7 +10,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { auth } from '@/lib/firebase';
 import { GoogleAuthProvider, signInWithPopup, signInWithEmailAndPassword } from "firebase/auth";
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Mail } from 'lucide-react';
+import { Loader2, Mail, KeyRound } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Logo } from '@/components/logo';
@@ -20,6 +21,7 @@ export default function LoginPage() {
     const searchParams = useSearchParams();
     const [isLoading, setIsLoading] = React.useState(false);
     const [isGoogleLoading, setIsGoogleLoading] = React.useState(false);
+    const [isDevLoading, setIsDevLoading] = React.useState(false);
 
     const handleGoogleSignIn = async () => {
         if (!auth) return;
@@ -56,6 +58,32 @@ export default function LoginPage() {
         }
     };
 
+    const handleDeveloperSignIn = async () => {
+        if (!auth) return;
+        setIsDevLoading(true);
+        try {
+            await signInWithEmailAndPassword(auth, 'dev@entrestate.com', 'gemini');
+            toast({ title: "Developer Access Granted", description: "Welcome, partner." });
+            localStorage.setItem('onboardingComplete', 'true');
+            router.push('/gem'); // Go directly to the admin dashboard
+        } catch (error: any) {
+            toast({ title: "Developer Login Failed", description: "This may be the first sign-in. Please try again in a moment as the user is created.", variant: "destructive" });
+            // Attempt to create the user if they don't exist
+            try {
+                const { createUserWithEmailAndPassword } = await import("firebase/auth");
+                await createUserWithEmailAndPassword(auth, 'dev@entrestate.com', 'gemini');
+                await signInWithEmailAndPassword(auth, 'dev@entrestate.com', 'gemini');
+                toast({ title: "Developer Account Created & Signed In" });
+                localStorage.setItem('onboardingComplete', 'true');
+                router.push('/gem');
+            } catch (creationError: any) {
+                 toast({ title: "Fatal Auth Error", description: creationError.message, variant: "destructive" });
+            }
+        } finally {
+            setIsDevLoading(false);
+        }
+    }
+
     return (
         <div className="flex items-center justify-center min-h-screen bg-muted/30">
             <Card className="w-full max-w-md mx-4 shadow-2xl">
@@ -65,10 +93,17 @@ export default function LoginPage() {
                     <CardDescription>Sign in to access your AI-powered workspace.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <Button onClick={handleGoogleSignIn} variant="outline" className="w-full" disabled={isGoogleLoading}>
-                        {isGoogleLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Mail className="mr-2 h-4 w-4" />}
-                        Continue with Google
-                    </Button>
+                    <div className="grid grid-cols-2 gap-4">
+                        <Button onClick={handleGoogleSignIn} variant="outline" className="w-full" disabled={isGoogleLoading || isDevLoading}>
+                            {isGoogleLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <Mail className="mr-2 h-4 w-4" />}
+                            Google
+                        </Button>
+                         <Button onClick={handleDeveloperSignIn} variant="secondary" className="w-full" disabled={isGoogleLoading || isDevLoading}>
+                            {isDevLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin"/> : <KeyRound className="mr-2 h-4 w-4" />}
+                            Dev Login
+                        </Button>
+                    </div>
+
                     <div className="relative">
                         <div className="absolute inset-0 flex items-center">
                             <span className="w-full border-t" />
@@ -80,13 +115,13 @@ export default function LoginPage() {
                      <form onSubmit={handleEmailSignIn} className="space-y-4">
                          <div className="space-y-2">
                              <Label htmlFor="email">Email</Label>
-                             <Input id="email" name="email" type="email" placeholder="m@example.com" required />
+                             <Input id="email" name="email" type="email" placeholder="m@example.com" required disabled={isDevLoading} />
                          </div>
                          <div className="space-y-2">
                             <Label htmlFor="password">Password</Label>
-                            <Input id="password" name="password" type="password" required />
+                            <Input id="password" name="password" type="password" required disabled={isDevLoading}/>
                         </div>
-                        <Button type="submit" className="w-full" disabled={isLoading}>
+                        <Button type="submit" className="w-full" disabled={isLoading || isDevLoading}>
                              {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                             Sign In
                         </Button>
