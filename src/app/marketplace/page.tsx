@@ -86,7 +86,7 @@ export default function MarketplacePage() {
     <div className="p-4 md:p-10 space-y-12 container mx-auto">
        <PageHeader
         title="The Entrestate Marketplace"
-        description="Discover our powerful Solutions, App Suites, and individual AI tools to build your perfect workspace."
+        description="Lead Generation Quality is not a wish. It requires AI that speaks to other AI so you get what you want—unless you know how to talk 'algorithmic'."
         icon={<LayoutGrid className="h-8 w-8" />}
       >
         <div className="relative w-full max-w-lg">
@@ -100,38 +100,6 @@ export default function MarketplacePage() {
         </div>
       </PageHeader>
       
-      <section>
-            <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold font-heading">Core Solutions</h2>
-                <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-                    High-level, outcome-oriented products designed to solve major business problems for the real estate industry.
-                </p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {solutions.map(solution => (
-                    <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
-                        <Card 
-                            className="h-full hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg border-b-4"
-                            style={{'--card-border-color': solutionColors[solution.slug] || 'hsl(var(--accent))', borderBottomColor: 'var(--card-border-color)'} as React.CSSProperties}
-                        >
-                            <CardHeader>
-                                <div 
-                                    className="p-4 rounded-2xl w-fit mb-4 text-white"
-                                    style={{backgroundColor: solutionColors[solution.slug] || 'hsl(var(--accent))'}}
-                                >
-                                    {solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
-                                </div>
-                                <CardTitle>{solution.title}</CardTitle>
-                                <CardDescription>{solution.description}</CardDescription>
-                            </CardHeader>
-                        </Card>
-                    </Link>
-                ))}
-            </div>
-      </section>
-
-      <Separator />
-
       <section>
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold font-heading">App Suites & Individual Tools</h2>
@@ -188,6 +156,38 @@ export default function MarketplacePage() {
               <p>No apps or suites found for your search criteria.</p>
           </div>
       )}
+      </section>
+
+      <Separator />
+
+      <section>
+            <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-4xl font-bold font-heading">Core Solutions</h2>
+                <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
+                    High-level, outcome-oriented products designed to solve major business problems for the real estate industry.
+                </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {solutions.map(solution => (
+                    <Link href={`/solutions/${solution.slug}`} key={solution.slug}>
+                        <Card 
+                            className="h-full hover:shadow-lg transition-all hover:-translate-y-1 bg-card/50 backdrop-blur-lg border-b-4"
+                            style={{'--card-border-color': solutionColors[solution.slug] || 'hsl(var(--accent))', borderBottomColor: 'var(--card-border-color)'} as React.CSSProperties}
+                        >
+                            <CardHeader>
+                                <div 
+                                    className="p-4 rounded-2xl w-fit mb-4 text-white"
+                                    style={{backgroundColor: solutionColors[solution.slug] || 'hsl(var(--accent))'}}
+                                >
+                                    {solution.slug === 'pro-search-eng-x3' ? <Telescope className="h-8 w-8" /> : solution.slug === 'estchat-x3' ? <MessageCircle className="h-8 w-8" /> : <FileJson className="h-8 w-8" />}
+                                </div>
+                                <CardTitle>{solution.title}</CardTitle>
+                                <CardDescription>{solution.description}</CardDescription>
+                            </CardHeader>
+                        </Card>
+                    </Link>
+                ))}
+            </div>
       </section>
 
         <Card className="mt-12 bg-primary/10 border-primary/20">
