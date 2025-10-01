@@ -13,7 +13,6 @@ import { useAuth } from '@/hooks/useAuth';
 import type { Project } from '@/types';
 import { tools } from '@/lib/tools-client';
 import { ProjectCard } from '@/components/ui/project-card';
-import { PageHeader } from '@/components/ui/page-header';
 
 const GettingStarted = () => (
     <Card className="bg-primary/10 border-primary/20 text-center">
